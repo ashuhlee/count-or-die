@@ -1,16 +1,13 @@
 {
-  "name": "counter-app",
+  "name": "counter-or-die",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "src/main/main.js",
   "scripts": {
     "start": "electron ."
   },
   "devDependencies": {
     "electron": "^40.0.0",
     "electron-reload": "^2.0.0-alpha.1"
-  },
-  "dependencies": {
-    "animate.css": "^4.1.1"
   }
 }

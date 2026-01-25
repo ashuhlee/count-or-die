@@ -1,6 +1,22 @@
 const { app, BrowserWindow } = require("electron");
 const { ipcMain } = require("electron")
 
+const path = require("path");
+
+try {
+  require("electron-reload")(
+    path.join(__dirname, "..", "renderer"),
+    {
+      electron: path.join(__dirname, "..", "..", "node_modules", ".bin", "electron"),
+      hardResetMethod: "exit"
+    }
+  );
+  console.log("Electron reload active");
+} catch (err) {
+  console.error("Electron reload failed:", err);
+}
+
+
 function createWindow() {
 
     const win = new BrowserWindow({
@@ -16,7 +32,7 @@ function createWindow() {
         }
     });
 
-    win.loadFile("game.html");
+    win.loadFile("src/renderer/game.html");
 }
 
 app.whenReady().then(() => {
@@ -32,14 +48,3 @@ app.on("window-all-closed", () => {
         app.quit();
     }
 });
-
-// auto reload electron app
-try {
-    require("electron-reload")(__dirname);
-}   catch (err) {
-}
-
-// auto listen for close-app event
-// ipcMain.on('close-app', () => {
-//     app.quit();
-// })

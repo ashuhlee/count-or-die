@@ -4,3 +4,4 @@ out/
 build/
 .idea/
 .DS_Store
+styles/*.map

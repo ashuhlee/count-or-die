@@ -18,10 +18,10 @@ const countOuter = document.getElementById('counter-outer')
 function increase() {
 
   const img = document.getElementById("increase-img");
-  img.src = "assets/png/buttons/increase-press.png";
+  img.src = "../../assets/images/png/buttons/increase-press.png";
 
   setTimeout(() => {
-    img.src = "assets/png/buttons/increase.png";}, 150);
+    img.src = "../../assets/images/png/buttons/increase.png";}, 150);
 
     counter++;
 
@@ -45,10 +45,10 @@ function increase() {
 function decrease() {
 
   const img = document.getElementById("decrease-img");
-  img.src = "assets/png/buttons/decrease-press.png";
+  img.src = "../../assets/images/png/buttons/decrease-press.png";
 
   setTimeout(() => {
-    img.src = "assets/png/buttons/decrease.png";}, 150);
+    img.src = "../../assets/images/png/buttons/decrease.png";}, 150);
 
     if (counter === 0) {
         playAnimation("reset-shake");
