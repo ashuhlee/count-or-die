@@ -4,31 +4,46 @@
     <meta charset="UTF-8">
     <title>Count or Die</title>
     <link rel="stylesheet" href="styles/styles.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
 </head>
 <body>
 
     <div class="app">
         <img id="closeApp" onclick="handleCloseApp()" alt="close icon" src="../../assets/images/svg/close-button.svg"/>
 
-        <div class="progress">
-            <div class="progress-bar"></div>
-        </div>
-
+        <div class="progress"><div class="progress-bar"></div></div>
         <h1 class="title">count or die</h1>
+
         <div class="counter-container">
+<!--            <img alt="sparkle" class="sparkle" src="../../assets/images/png/sparkle.png"/>-->
 
             <svg viewBox="0 0 200 140" class="counter-svg">
               <!-- outer stroke -->
-              <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle"
-                    stroke="#B35F9F" stroke-width="12" stroke-linejoin="round"
-                    stroke-linecap="round" fill="none"
-                    paint-order="stroke" id="counter-outer">00</text>
+              <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle"  stroke="#39232B" stroke-width="12" stroke-linejoin="round"
+                    stroke-linecap="round" fill="none" paint-order="stroke" id="counter-outer">00</text>
 
               <!-- inner stroke -->
-              <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle"
-                    stroke="#FFF4F7" stroke-width="8" stroke-linejoin="round"
-                    stroke-linecap="round"
-                    paint-order="stroke fill" id="counter">00</text>
+              <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" stroke="#FFF4F7" stroke-width="8" stroke-linejoin="round"
+                    stroke-linecap="round" paint-order="stroke fill" id="counter">00</text>
+
+              <defs>
+                <linearGradient id="gradient-counter" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#FFACAD" /> <stop offset="14.28%" style="stop-color:#FFD5A5" />
+                    <stop offset="28.57%" style="stop-color:#FDFFB6" /> <stop offset="42.85%" style="stop-color:#CBFFBF" />
+                    <stop offset="57.14%" style="stop-color:#9BF6FF" /> <stop offset="85.71%" style="stop-color:#BDB2FF" /> <stop offset="100%" style="stop-color:#ffb7fe" />
+                </linearGradient>
+                <linearGradient id="default-color" x1="0%" x2="0%" y1="0%" y2="100%">
+                  <stop offset="0%" stop-color="#FFDAF6" />
+                  <stop offset="30%" stop-color="#DF7FC7" />
+                  <stop offset="100%" stop-color="#B5519C" />
+                </linearGradient>
+                <linearGradient id="reset-color" x1="0%" x2="0%" y1="0%" y2="100%">
+                  <stop offset="0%" stop-color="#FFDAF6" />
+                  <stop offset="30%" stop-color="#F7609C" />
+                  <stop offset="100%" stop-color="#E8538E" />
+                </linearGradient>
+              </defs>
             </svg>
         </div>
 
@@ -56,25 +71,8 @@
             <img src="../../assets/images/png/buttons/reset-btn.png" id="reset-img" alt="increase-reg"/>
         </div>
 
-        <h1 id="high-score">high score: 0</h1>
-
-        <svg width="0" height="0">
-          <defs>
-            <linearGradient id="gradient-counter" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" style="stop-color:#FFACAD" />
-                <stop offset="14.28%" style="stop-color:#FFD5A5" />
-                <stop offset="28.57%" style="stop-color:#FDFFB6" />
-                <stop offset="42.85%" style="stop-color:#CBFFBF" />
-                <stop offset="57.14%" style="stop-color:#9BF6FF" />
-                <stop offset="71.42%" style="stop-color:#A0C4FF" />
-                <stop offset="85.71%" style="stop-color:#BDB2FF" />
-                <stop offset="100%" style="stop-color:#FFC6FF" />
-            </linearGradient>
-          </defs>
-        </svg>
-
+        <h1 id="high-score" class="animate__animated">high score: 0</h1>
     </div>
     <script src="script.js"></script>
-
 </body>
 </html>
