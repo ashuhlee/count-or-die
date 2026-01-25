@@ -3,26 +3,12 @@ const { ipcMain } = require("electron")
 
 const path = require("path");
 
-try {
-  require("electron-reload")(
-    path.join(__dirname, "..", "renderer"),
-    {
-      electron: path.join(__dirname, "..", "..", "node_modules", ".bin", "electron"),
-      hardResetMethod: "exit"
-    }
-  );
-  console.log("Electron reload active");
-} catch (err) {
-  console.error("Electron reload failed:", err);
-}
-
-
 function createWindow() {
 
     const win = new BrowserWindow({
         width: 500,
         height: 840,
-        resizable: true,
+        resizable: false,
         maximizable: true,
         fullscreenable: true,
         webPreferences: {
@@ -48,3 +34,17 @@ app.on("window-all-closed", () => {
         app.quit();
     }
 });
+
+try {
+
+  require("electron-reload")(
+    path.join(__dirname, "..", "renderer"),
+    {
+      electron: path.join(__dirname, "..", "..", "node_modules", ".bin", "electron"),
+      // hardResetMethod: "exit"
+    }
+  );
+  console.log("Electron reload active");
+} catch (err) {
+  console.log("Electron reload failed:", err);
+}
