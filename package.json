@@ -9,5 +9,8 @@
   "devDependencies": {
     "electron": "^40.0.0",
     "electron-reload": "^2.0.0-alpha.1"
+  },
+  "dependencies": {
+    "animate.css": "^4.1.1"
   }
 }
