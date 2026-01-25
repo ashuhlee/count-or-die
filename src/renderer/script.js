@@ -1,7 +1,7 @@
 
 localStorage.setItem("high-score", 5); // manually reset high score for tests
 
-const backgroundMusic = new Audio("../../assets/audio/music/pressxtwice.mp3");
+const backgroundMusic = new Audio("../assets/audio/music/pressxtwice.mp3");
 
 backgroundMusic.loop = true;
 backgroundMusic.volume = 0.15;
@@ -13,13 +13,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-const highScoreFx = new Audio("../../assets/audio/sfx/highscore.mp3");
+const highScoreFx = new Audio("../assets/audio/sfx/highscore.mp3");
 highScoreFx.volume = 0.7;
 let highScoreFxPlayed = false;
 
-const buttonSoundInc = new Audio("../../assets/audio/sfx/button-press-1.mp3");
-const buttonSoundDec = new Audio("../../assets/audio/sfx/button-press-2.mp3");
-const buttonSoundReset = new Audio("../../assets/audio/sfx/reset-press.mp3");
+const buttonSoundInc = new Audio("../assets/audio/sfx/button-press-1.mp3");
+const buttonSoundDec = new Audio("../assets/audio/sfx/button-press-2.mp3");
+const buttonSoundReset = new Audio("../assets/audio/sfx/reset-press.mp3");
 
 let counter = 0;
 
@@ -36,10 +36,10 @@ const countOuter = document.getElementById('counter-outer')
 function increase() {
 
     const img = document.getElementById("increase-img");
-    img.src = "../../assets/images/png/buttons/increase-press.png";
+    img.src = "../assets/images/png/buttons/increase-press.png";
 
     setTimeout(() => {
-        img.src = "../../assets/images/png/buttons/increase.png";}, 150);
+        img.src = "../assets/images/png/buttons/increase.png";}, 150);
 
     buttonSoundInc.currentTime = 0;
     buttonSoundInc.play();
@@ -78,10 +78,10 @@ function increase() {
 function decrease() {
 
     const img = document.getElementById("decrease-img");
-    img.src = "../../assets/images/png/buttons/decrease-press.png";
+    img.src = "../assets/images/png/buttons/decrease-press.png";
 
     setTimeout(() => {
-        img.src = "../../assets/images/png/buttons/decrease.png";}, 150);
+        img.src = "../assets/images/png/buttons/decrease.png";}, 150);
 
     if (counter === 0) {
         playAnimation("reset-shake");
