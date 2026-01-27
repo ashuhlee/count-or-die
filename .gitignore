@@ -2,6 +2,7 @@ node_modules/
 dist/
 out/
 build/
+tests/
 .idea/
 .DS_Store
 src/renderer/styles/*.css
