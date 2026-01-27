@@ -1,39 +1,46 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, nativeImage } = require("electron");
 const { ipcMain } = require("electron")
-
 const path = require("path");
 
 function createWindow() {
 
-    const win = new BrowserWindow({
+    const iconPath = path.resolve(__dirname, '../assets/icons/mac/icon.icns');
+
+    const mainWindow = new BrowserWindow({
         width: 500,
         height: 840,
-        resizable: false,
+        resizable: true,
         maximizable: true,
         fullscreenable: true,
+        icon: iconPath,
         webPreferences: {
-            // preload: path.join(__dirname, 'preload.js'),
+            preload: path.join(__dirname, '../preload/preload.js'),
             contextIsolation: true,
             nodeIntegration: false
         }
     });
 
-    win.loadFile("src/renderer/game.html");
+    if (process.platform === "darwin") {
+        const dockIcon = nativeImage.createFromPath(iconPath);
+        app.dock.setIcon(dockIcon);
+    }
+
+    mainWindow.loadFile("src/renderer/game.html")
 }
 
 app.whenReady().then(() => {
-  createWindow()
+    createWindow()
 
-  app.on('activate', () => {
+app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
-  })
+    })
 })
 
 app.on("window-all-closed", () => {
     if (process.platform !== "darwin") {
         app.quit();
     }
-});
+})
 
 try {
 
