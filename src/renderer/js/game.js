@@ -1,21 +1,25 @@
-import {
-    bgMusic,
-    highScoreFx,
-    buttonSoundInc,
-    buttonSoundDec, buttonSoundReset,
-    playAudio
-} from "./audio.js";
 
-// localStorage.setItem("high-score", 5); // manually reset high score for tests
+import { bgMusic, highScoreFx, buttonSoundInc, buttonSoundDec, buttonSoundReset, playAudio } from "./audio.js";
+import { initProgressBar, updateBarColor, resetBar } from "./components/progress-bar.js";
+
+
+let progressBar;
 
 document.addEventListener("DOMContentLoaded", () => {
     playAudio(bgMusic);
+
+    progressBar = initProgressBar();
+
+    const closeBtn = document.getElementById('closeApp');
+    closeBtn.addEventListener('click', () => {
+        window.electron.closeApp();
+    });
 });
 
-let highScoreFxPlayed = false;
+localStorage.setItem("high-score", 5); // manually reset high score for tests
 
 let counter = 0;
-
+let highScoreFxPlayed = false;
 const highScoreEl = document.getElementById("high-score");
 
 let highScore = Number(localStorage.getItem("high-score")) || 0;
@@ -28,6 +32,8 @@ const countOuter = document.getElementById('counter-outer');
 // increase counter
 function increase() {
 
+    counter++;
+
     const img = document.getElementById("increase-img");
     img.src = "../assets/images/png/buttons/increase-press.png";
 
@@ -36,8 +42,6 @@ function increase() {
     }, 150);
 
     playAudio(buttonSoundInc);
-
-    counter++;
 
     if (counter === highScore + 1) {
         countText.classList.add("new-score-counter");
@@ -52,6 +56,7 @@ function increase() {
         localStorage.setItem("high-score", highScore);
         highScoreEl.textContent = "high score: " + highScore;
         highScoreEl.classList.add("new-score");
+        playAnimation("reset-shake")
 
         if (highScoreFxPlayed === false) {
 
@@ -62,12 +67,14 @@ function increase() {
     else {
         countText.classList.remove("new-score-counter");
     }
-
-    updateCounter("pop");
+    playAnimation("pop");
+    updateCounter();
 }
 
 // decrease counter
 function decrease() {
+
+    counter = counter > 0 ? counter - 1 : 0;
 
     const img = document.getElementById("decrease-img");
     img.src = "../assets/images/png/buttons/decrease-press.png";
@@ -84,9 +91,8 @@ function decrease() {
     }
 
     playAudio(buttonSoundDec);
-
-    counter = counter > 0 ? counter - 1 : 0;
-    updateCounter("pop-dec")
+    playAnimation("pop-dec");
+    updateCounter()
 }
 
 // restart game
@@ -94,13 +100,17 @@ function restartGame() {
 
     counter = 0;
     highScoreFxPlayed = false;
-    updateCounter("reset-shake");
+
+    playAnimation("reset-shake");
+    updateCounter();
 
     playAudio(buttonSoundReset);
     playAudio(bgMusic);
 
     highScoreEl.classList.remove("new-score");
     countText.classList.remove("new-score-counter");
+
+    resetBar(progressBar);
 }
 
 // pop animation
@@ -121,28 +131,16 @@ function playAnimation(className) {
     countOuter.classList.add(className);
 }
 
-function updateCounter(animation = "pop") {
-
+function updateCounter() {
     let value = counter.toString();
-    playAnimation(animation);
 
     countText.textContent = value.padStart(2, '0');
     countOuter.textContent = value.padStart(2, '0');
-
 }
 
 document.getElementById("increase-img").addEventListener("click", increase);
 document.getElementById("decrease-img").addEventListener("click", decrease);
 document.getElementById("reset-img").addEventListener("click", restartGame);
-
-// close app
-document.addEventListener('DOMContentLoaded', () => {
-
-    const closeBtn = document.getElementById('closeApp');
-    closeBtn.addEventListener('click', () => {
-        window.electron.closeApp();
-    });
-});
 
 function handleCloseApp() {
 }
