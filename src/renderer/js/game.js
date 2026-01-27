@@ -11,6 +11,17 @@ let highScoreEl;
 let countText;
 let countOuter;
 
+const btnImages = {
+    increase: {
+        normal: "../assets/images/png/buttons/increase.png",
+        pressed: "../assets/images/png/buttons/increase-press.png",
+    },
+    decrease: {
+        normal: "../assets/images/png/buttons/decrease.png",
+        pressed: "../assets/images/png/buttons/decrease-press.png"
+    }
+};
+
 document.addEventListener("DOMContentLoaded", () => {
     playAudio(bgMusic);
 
@@ -47,19 +58,23 @@ function updateCounter() {
     countOuter.textContent = value.padStart(2, '0');
 }
 
+function animateBtn(btnType) {
+
+    const img = document.getElementById(`${btnType}-img`);
+    img.src = btnImages[btnType].pressed;
+
+    setTimeout(() => {
+        img.src = btnImages[btnType].normal;
+    }, 150);
+
+}
 
 // increase counter
 function increase() {
 
     counter++;
 
-    const img = document.getElementById("increase-img");
-    img.src = "../assets/images/png/buttons/increase-press.png";
-
-    setTimeout(() => {
-        img.src = "../assets/images/png/buttons/increase.png";
-    }, 150);
-
+    animateBtn("increase");
     playAudio(buttonSoundInc);
 
     if (counter === highScore + 1) {
@@ -95,12 +110,7 @@ function decrease() {
 
     counter = counter > 0 ? counter - 1 : 0;
 
-    const img = document.getElementById("decrease-img");
-    img.src = "../assets/images/png/buttons/decrease-press.png";
-
-    setTimeout(() => {
-        img.src = "../assets/images/png/buttons/decrease.png";
-    }, 150);
+    animateBtn("decrease");
 
     if (counter === 0) {
         playAnimation("reset-shake");
@@ -139,6 +149,7 @@ function playAnimation(className) {
     countOuter.style.animation = "none";
 
     countText.getBoundingClientRect();
+    countOuter.getBoundingClientRect();
 
     countText.style.animation = "";
     countOuter.style.animation = "";
@@ -148,7 +159,4 @@ function playAnimation(className) {
 
     countText.classList.add(className);
     countOuter.classList.add(className);
-}
-
-function handleCloseApp() {
 }
