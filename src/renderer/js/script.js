@@ -1,25 +1,18 @@
+import {
+    bgMusic,
+    highScoreFx,
+    buttonSoundInc,
+    buttonSoundDec, buttonSoundReset,
+    playAudio
+} from "./audio.js";
 
-localStorage.setItem("high-score", 5); // manually reset high score for tests
-
-const backgroundMusic = new Audio("../assets/audio/music/pressxtwice.mp3");
-
-backgroundMusic.loop = true;
-backgroundMusic.volume = 0.15;
+// localStorage.setItem("high-score", 5); // manually reset high score for tests
 
 document.addEventListener("DOMContentLoaded", () => {
-
-    backgroundMusic.play().catch(err => {
-        console.log("autoplay failed :/", err)
-    });
+    playAudio(bgMusic);
 });
 
-const highScoreFx = new Audio("../assets/audio/sfx/highscore.mp3");
-highScoreFx.volume = 0.7;
 let highScoreFxPlayed = false;
-
-const buttonSoundInc = new Audio("../assets/audio/sfx/button-press-1.mp3");
-const buttonSoundDec = new Audio("../assets/audio/sfx/button-press-2.mp3");
-const buttonSoundReset = new Audio("../assets/audio/sfx/reset-press.mp3");
 
 let counter = 0;
 
@@ -29,8 +22,8 @@ let highScore = Number(localStorage.getItem("high-score")) || 0;
 highScoreEl.textContent = "high score: " + highScore;
 
 // store html elements in variables
-const countText = document.getElementById('counter')
-const countOuter = document.getElementById('counter-outer')
+const countText = document.getElementById('counter');
+const countOuter = document.getElementById('counter-outer');
 
 // increase counter
 function increase() {
@@ -39,10 +32,10 @@ function increase() {
     img.src = "../assets/images/png/buttons/increase-press.png";
 
     setTimeout(() => {
-        img.src = "../assets/images/png/buttons/increase.png";}, 150);
+        img.src = "../assets/images/png/buttons/increase.png";
+    }, 150);
 
-    buttonSoundInc.currentTime = 0;
-    buttonSoundInc.play();
+    playAudio(buttonSoundInc);
 
     counter++;
 
@@ -62,8 +55,7 @@ function increase() {
 
         if (highScoreFxPlayed === false) {
 
-            highScoreFx.currentTime = 0;
-            highScoreFx.play();
+            playAudio(highScoreFx);
             highScoreFxPlayed = true;
         }
     }
@@ -81,34 +73,31 @@ function decrease() {
     img.src = "../assets/images/png/buttons/decrease-press.png";
 
     setTimeout(() => {
-        img.src = "../assets/images/png/buttons/decrease.png";}, 150);
+        img.src = "../assets/images/png/buttons/decrease.png";
+    }, 150);
 
     if (counter === 0) {
         playAnimation("reset-shake");
 
-        buttonSoundReset.currentTime = 0;
-        buttonSoundReset.play();
+        playAudio(buttonSoundReset);
         return;
     }
 
-    buttonSoundDec.currentTime = 0;
-    buttonSoundDec.volume = 0.2;
-    buttonSoundDec.play();
+    playAudio(buttonSoundDec);
 
     counter = counter > 0 ? counter - 1 : 0;
     updateCounter("pop-dec")
 }
 
-// reset counter
-function reset() {
+// restart game
+function restartGame() {
 
     counter = 0;
     highScoreFxPlayed = false;
     updateCounter("reset-shake");
 
-    buttonSoundReset.currentTime = 0;
-    buttonSoundReset.volume = 0.7;
-    buttonSoundReset.play();
+    playAudio(buttonSoundReset);
+    playAudio(bgMusic);
 
     highScoreEl.classList.remove("new-score");
     countText.classList.remove("new-score-counter");
@@ -134,13 +123,17 @@ function playAnimation(className) {
 
 function updateCounter(animation = "pop") {
 
-    let value = counter.toString()
-    playAnimation(animation)
+    let value = counter.toString();
+    playAnimation(animation);
 
     countText.textContent = value.padStart(2, '0');
     countOuter.textContent = value.padStart(2, '0');
 
 }
+
+document.getElementById("increase-img").addEventListener("click", increase);
+document.getElementById("decrease-img").addEventListener("click", decrease);
+document.getElementById("reset-img").addEventListener("click", restartGame);
 
 // close app
 document.addEventListener('DOMContentLoaded', () => {
