@@ -2,13 +2,35 @@
 import { bgMusic, highScoreFx, buttonSoundInc, buttonSoundDec, buttonSoundReset, playAudio } from "./audio.js";
 import { initProgressBar, updateBarColor, resetBar } from "./components/progress-bar.js";
 
+let counter = 0;
+let highScoreFxPlayed = false;
+let highScore = Number(localStorage.getItem("high-score")) || 0;
 
 let progressBar;
+let highScoreEl;
+let countText;
+let countOuter;
 
 document.addEventListener("DOMContentLoaded", () => {
     playAudio(bgMusic);
 
     progressBar = initProgressBar();
+
+    // element references
+    highScoreEl = document.getElementById("high-score");
+    countText = document.getElementById('counter');
+    countOuter = document.getElementById('counter-outer');
+
+    // set initial high score display
+    highScoreEl.textContent = "high score: " + highScore;
+
+    // set initial counter display
+    updateCounter();
+
+    // event listeners
+    document.getElementById("increase-img").addEventListener("click", increase);
+    document.getElementById("decrease-img").addEventListener("click", decrease);
+    document.getElementById("reset-img").addEventListener("click", restartGame);
 
     const closeBtn = document.getElementById('closeApp');
     closeBtn.addEventListener('click', () => {
@@ -18,16 +40,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 localStorage.setItem("high-score", 5); // manually reset high score for tests
 
-let counter = 0;
-let highScoreFxPlayed = false;
-const highScoreEl = document.getElementById("high-score");
+function updateCounter() {
+    let value = counter.toString();
 
-let highScore = Number(localStorage.getItem("high-score")) || 0;
-highScoreEl.textContent = "high score: " + highScore;
+    countText.textContent = value.padStart(2, '0');
+    countOuter.textContent = value.padStart(2, '0');
+}
 
-// store html elements in variables
-const countText = document.getElementById('counter');
-const countOuter = document.getElementById('counter-outer');
 
 // increase counter
 function increase() {
@@ -130,17 +149,6 @@ function playAnimation(className) {
     countText.classList.add(className);
     countOuter.classList.add(className);
 }
-
-function updateCounter() {
-    let value = counter.toString();
-
-    countText.textContent = value.padStart(2, '0');
-    countOuter.textContent = value.padStart(2, '0');
-}
-
-document.getElementById("increase-img").addEventListener("click", increase);
-document.getElementById("decrease-img").addEventListener("click", decrease);
-document.getElementById("reset-img").addEventListener("click", restartGame);
 
 function handleCloseApp() {
 }
