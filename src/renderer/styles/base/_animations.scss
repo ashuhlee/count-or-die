@@ -1,0 +1,96 @@
+
+@keyframes move-bg {
+  from { background-position: 0 0; }
+  to { background-position: 1280px 0; }
+}
+
+@keyframes gradient {
+  0% {
+    color: transparent;
+    background-image: linear-gradient(to right,
+      #FFACAD,
+      #FFD5A5,
+      #FDFFB6,
+      #CBFFBF,
+      #9BF6FF,
+      #A0C4FF,
+      #BDB2FF,
+      #FFC6FF);
+    background-clip: text;
+    background-size: 200% auto;
+    background-position: 0% center;
+  }
+  100% {
+    color: white;
+    background-position: 200% center;
+  }
+}
+
+@keyframes progress-anim {
+  from { transform: scaleX(1); } to { transform: scaleX(0); }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+    filter: none;
+  }
+  40% {
+    transform: scale(1.125);
+    filter: brightness(1.2) saturate(70%);
+  }
+  100% {
+    transform: scale(1);
+    filter: none;
+  }
+}
+
+@keyframes pop-dec {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fade-gradient {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes reset-shake {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-7px, 0);
+    fill: url(#reset-color);
+  }
+  50% {
+    transform: translate(7px, 0);
+    fill: url(#reset-color);
+  }
+  75% {
+    transform: translate(-2px, 0);
+    fill: url(#reset-color);
+  }
+}
+
+@keyframes heart-scale {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1) rotate(8deg); }
+  100% { transform: scale(1); }
+}

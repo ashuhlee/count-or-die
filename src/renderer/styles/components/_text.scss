@@ -1,0 +1,23 @@
+.title {
+  color: #fff;
+  text-shadow: 0px 5px 0px rgba(206,42,133,0.15);
+  transform: translateY(60px);
+  font-family: "Silkscreen", sans-serif; font-size: 30px;
+  font-weight: bold;
+  font-style: normal;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#high-score {
+  position: absolute;
+  font-size: 18px;
+  color: white;
+  text-shadow: 0px 5px 0px rgba(206,42,133,0.15);
+  font-family: "Silkscreen", sans-serif;
+  font-weight: bold;
+  bottom: -10px;
+  right: 0;
+  padding: 30px;
+  text-align: right;
+}

@@ -1,0 +1,9 @@
+.hearts {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    img {
+      width: 60px;
+      filter: drop-shadow(5px 5px 10px rgba(206,42,133,0.2));
+    }
+}

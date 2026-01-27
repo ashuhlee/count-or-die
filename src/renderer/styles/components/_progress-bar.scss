@@ -1,0 +1,17 @@
+.progress {
+  margin-top: 10px;
+  display: grid;
+  place-items: center;
+  transform: translateY(30px);
+  height: 13px;
+
+  .progress-bg, .progress-bar {
+  grid-area: 1 / 1;
+  height: 13px;
+  }
+  .progress-bg {
+    width: 140px;
+    background: #645D8A;
+    outline: 4px solid #FFE7F9;
+  }
+}

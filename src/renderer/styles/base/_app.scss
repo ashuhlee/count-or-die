@@ -1,0 +1,47 @@
+@use "../base/globals";
+
+* { box-sizing: border-box; }
+::-webkit-scrollbar { display: none; }
+
+.app {
+    padding: 40px;
+    align-items: center;
+}
+
+body {
+    margin: 0;
+    width: 100vw;
+    height: 100%;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 32px;
+    text-align: center;
+
+    background-size: auto 150% !important;
+    background: #FFBFF0 url("#{globals.$bg-main}") repeat-x center;
+    animation: move-bg 15s linear infinite;
+
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-app-region: no-drag;
+}
+
+button,
+input,
+textarea,
+select, {
+    -webkit-app-region: no-drag; cursor: pointer; }
+
+img {
+    -webkit-user-drag: none; user-drag: none;
+    :not(#closeApp) {
+    pointer-events: none;
+    }
+}
+
+svg { transition-duration: 0.2s; }
