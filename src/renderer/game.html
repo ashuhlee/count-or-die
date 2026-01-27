@@ -8,9 +8,8 @@
   />
 </head>
 <body>
-
+    <img id="closeApp" onclick="handleCloseApp()" alt="close icon" src="../assets/images/svg/close-button.svg"/>
     <div class="app">
-        <img id="closeApp" onclick="handleCloseApp()" alt="close icon" src="../assets/images/svg/close-button.svg"/>
 
         <div class="progress"><div class="progress-bar" id="progress-bar"></div><div class="progress-bg"></div></div>
         <h1 class="title">count or die</h1>
@@ -27,7 +26,7 @@
                     stroke-linecap="round" paint-order="stroke fill" id="counter">00</text>
 
               <defs>
-                <linearGradient id="gradient-counter" x1="0%" y1="0%" x2="100%" y2="0%">
+                <linearGradient id="gradient-counter" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" style="stop-color:#FFACAD" /> <stop offset="14.28%" style="stop-color:#FFD5A5" />
                     <stop offset="28.57%" style="stop-color:#FDFFB6" /> <stop offset="42.85%" style="stop-color:#CBFFBF" />
                     <stop offset="57.14%" style="stop-color:#9BF6FF" /> <stop offset="85.71%" style="stop-color:#BDB2FF" /> <stop offset="100%" style="stop-color:#ffb7fe" />
@@ -48,10 +47,10 @@
 
         <!-- heart pop-up -->
         <div class="hearts">
-            <img src="../assets/images/png/hearts/bit/px_heart_pink.png" alt="heart1" class="heart1"/>
-            <img src="../assets/images/png/hearts/bit/px_heart_purple.png" alt="heart2" class="heart2"/>
-            <img src="../assets/images/png/hearts/bit/px_heart_blue.png" alt="heart3" class="heart3"/>
-            <img src="../assets/images/png/hearts/bit/px_heart_white.png" alt="heart4" class="heart4"/>
+            <img src="../assets/images/png/hearts/px_heart_pink.png" alt="heart1" class="heart1"/>
+            <img src="../assets/images/png/hearts/px_heart_purple.png" alt="heart2" class="heart2"/>
+            <img src="../assets/images/png/hearts/px_heart_blue.png" alt="heart3" class="heart3"/>
+            <img src="../assets/images/png/hearts/px_heart_white.png" alt="heart4" class="heart4"/>
         </div>
 
         <div class="buttons">
@@ -69,9 +68,8 @@
         <div onclick="restartGame()" class="reset" id="reset">
             <img src="../assets/images/png/buttons/reset-btn.png" id="reset-img" alt="increase-reg"/>
         </div>
-
-        <h1 id="high-score" class="animate__animated">high score: 0</h1>
     </div>
+    <h1 id="high-score" class="animate__animated">high score: 0</h1>
     <script type="module" src="js/game.js"></script>
 </body>
 </html>
