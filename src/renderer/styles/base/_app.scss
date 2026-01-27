@@ -22,8 +22,8 @@ body {
     gap: 32px;
     text-align: center;
 
-    background-size: auto 150% !important;
-    background: #FFBFF0 url("#{globals.$bg-main}") repeat-x center;
+    background: #FFBFF0 url("#{globals.$bg-main}") repeat-x 0 center;
+    background-size: auto 150%;
     animation: move-bg 15s linear infinite;
 
     user-select: none;
