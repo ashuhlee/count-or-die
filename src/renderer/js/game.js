@@ -1,6 +1,9 @@
 
-import { bgMusic, highScoreFx, buttonSoundInc, buttonSoundDec, buttonSoundReset, playAudio } from "./audio.js";
-import { initProgressBar, updateBarColor, resetBar } from "./components/progress-bar.js";
+import { bgMusic, highScoreFx, buttonSoundInc, buttonSoundDec, buttonSoundReset, playAudio } from "./controls/audioHandler.js";
+import { keyboardControls } from "./controls/keyHandler.js";
+
+import { initProgressBar, updateBarColor, resetBar } from "./components/progressBar.js";
+
 
 let counter = 0;
 let highScoreFxPlayed = false;
@@ -43,13 +46,20 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("decrease-img").addEventListener("click", decrease);
     document.getElementById("reset-img").addEventListener("click", restartGame);
 
+    // play with a keyboard
+    keyboardControls({
+        onIncrease: increase,
+        onDecrease: decrease,
+        onRestart: restartGame
+    });
+
     const closeBtn = document.getElementById('closeApp');
     closeBtn.addEventListener('click', () => {
         window.electron.closeApp();
     });
 });
 
-localStorage.setItem("high-score", 5); // manually reset high score for tests
+localStorage.setItem("high-score", 5); // TESTS: manually reset high score
 
 function updateCounter() {
     let value = counter.toString();
@@ -66,7 +76,6 @@ function animateBtn(btnType) {
     setTimeout(() => {
         img.src = btnImages[btnType].normal;
     }, 150);
-
 }
 
 // increase counter
@@ -90,7 +99,6 @@ function increase() {
         localStorage.setItem("high-score", highScore);
         highScoreEl.textContent = "high score: " + highScore;
         highScoreEl.classList.add("new-score");
-        playAnimation("reset-shake")
 
         if (highScoreFxPlayed === false) {
 
@@ -109,12 +117,11 @@ function increase() {
 function decrease() {
 
     counter = counter > 0 ? counter - 1 : 0;
-
     animateBtn("decrease");
 
     if (counter === 0) {
         playAnimation("reset-shake");
-
+        updateCounter();
         playAudio(buttonSoundReset);
         return;
     }
