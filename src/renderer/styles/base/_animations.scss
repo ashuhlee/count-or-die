@@ -1,7 +1,7 @@
 
-@keyframes move-bg {
-  0% { background-position-x: 0; }
-  100% { background-position-x: -300%; }
+@keyframes slide {
+  0% { background-position: 0 0; }
+  100% { background-position: -128px -128px; }
 }
 
 @keyframes gradient {
@@ -90,7 +90,7 @@
 }
 
 @keyframes heart-scale {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1) rotate(8deg); }
-  100% { transform: scale(1); }
+  0% { transform: scale(1) rotate(-3deg);}
+  50% { transform: scale(1.1) rotate(7deg); }
+  100% { transform: scale(1) rotate(-3deg); }
 }
