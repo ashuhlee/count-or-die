@@ -8,7 +8,7 @@ function createWindow() {
 
     const mainWindow = new BrowserWindow({
         width: 500,
-        height: 840,
+        height: 860,
         resizable: true,
         maximizable: true,
         fullscreenable: true,

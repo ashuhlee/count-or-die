@@ -11,7 +11,7 @@ export function initProgressBar() {
     Object.assign(progressBar.style, {
     height: "13px",
     gridArea: "1 / 1",
-    animation: "progress-anim 20s linear infinite",
+    animation: "progress-anim 10s linear infinite",
     transformOrigin: "left",
     width: `140px`,
     background: barColors.primary,

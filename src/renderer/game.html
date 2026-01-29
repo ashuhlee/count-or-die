@@ -8,6 +8,9 @@
   />
 </head>
 <body>
+<div class="main">
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
     <img id="closeApp" onclick="handleCloseApp()" alt="close icon" src="../assets/images/svg/close-button.svg"/>
     <div class="app">
 
@@ -44,7 +47,6 @@
               </defs>
             </svg>
         </div>
-
         <!-- heart pop-up -->
         <div class="hearts">
             <img src="../assets/images/png/hearts/px_heart_pink.png" alt="heart1" class="heart1"/>
@@ -58,7 +60,6 @@
             <div id="decrease-button">
                 <img src="../assets/images/png/buttons/decrease.png" id="decrease-img" alt="decrease-reg"/>
             </div>
-
             <!-- increase button -->
             <div id="increase-button">
                 <img src="../assets/images/png/buttons/increase.png" id="increase-img" alt="increase-reg"/>
@@ -70,6 +71,7 @@
         </div>
     </div>
     <h1 id="high-score" class="animate__animated">high score: 0</h1>
+</div>
     <script type="module" src="js/game.js"></script>
 </body>
 </html>
