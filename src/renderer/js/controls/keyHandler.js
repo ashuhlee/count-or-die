@@ -2,6 +2,10 @@
 export function keyboardControls(handlers) {
     document.addEventListener("keydown", (event) => {
 
+        // dont trigger if modifier keys are pressed
+        if (event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) {
+            return;
+        }
         switch(event.key) {
             case "ArrowUp":
             case "ArrowRight":
