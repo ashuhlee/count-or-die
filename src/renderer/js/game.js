@@ -3,16 +3,16 @@ import { bgMusic, highScoreFx, buttonSoundInc, buttonSoundDec, buttonSoundReset,
 import { keyboardControls } from "./controls/keyHandler.js";
 
 import { initProgressBar, updateBarColor, resetBar } from "./components/progressBar.js";
+import { gameOver } from "./states/gameOver.js";
 
 
 let counter = 0;
+const goalIncrement = 25;
+
 let highScoreFxPlayed = false;
 let highScore = Number(localStorage.getItem("high-score")) || 0;
 
-let progressBar;
-let highScoreEl;
-let countText;
-let countOuter;
+let progressBar, highScoreEl, countText, countOuter;
 
 const btnImages = {
     increase: {
@@ -25,10 +25,17 @@ const btnImages = {
     }
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-    playAudio(bgMusic);
+const gameOverScreen = document.getElementById("game-over");
 
+document.addEventListener("DOMContentLoaded", () => {
+
+    playAudio(bgMusic);
     progressBar = initProgressBar();
+
+    // track progress bar (every 100 ms)
+    setInterval(() => {
+        updateBarColor(progressBar);
+    }, 100);
 
     // element references
     highScoreEl = document.getElementById("high-score");
@@ -45,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("increase-img").addEventListener("click", increase);
     document.getElementById("decrease-img").addEventListener("click", decrease);
     document.getElementById("reset-img").addEventListener("click", restartGame);
+    document.getElementById("game-over-btn").addEventListener("click", restartGame);
 
     // play with a keyboard
     keyboardControls({
@@ -53,15 +61,23 @@ document.addEventListener("DOMContentLoaded", () => {
         onRestart: restartGame
     });
 
+    // game over
+    document.addEventListener("progressBarExp", () => {
+        if (counter % goalIncrement !== 0) {
+            gameOver();
+        }
+    })
+
     const closeBtn = document.getElementById('closeApp');
     closeBtn.addEventListener('click', () => {
         window.electron.closeApp();
     });
 });
 
-localStorage.setItem("high-score", 5); // TESTS: manually reset high score
+// localStorage.setItem("high-score", 100); // TESTS: manually reset high score
 
 function updateCounter() {
+    // set text content to counter number
     let value = counter.toString();
 
     countText.textContent = value.padStart(2, '0');
@@ -109,6 +125,12 @@ function increase() {
     else {
         countText.classList.remove("new-score-counter");
     }
+
+    if (counter % goalIncrement === 0) {
+        // 1.25x speed increase
+        const barSpeed = 20 / Math.pow(1.25, Math.floor(counter / goalIncrement));
+        resetBar(progressBar, barSpeed);
+    }
     playAnimation("pop");
     updateCounter();
 }
@@ -146,7 +168,8 @@ function restartGame() {
     highScoreEl.classList.remove("new-score");
     countText.classList.remove("new-score-counter");
 
-    resetBar(progressBar);
+    resetBar(progressBar, 20);
+    gameOverScreen.style.display = "none";
 }
 
 // pop animation
