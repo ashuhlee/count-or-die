@@ -54,6 +54,18 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("reset-img").addEventListener("click", restartGame);
     document.getElementById("game-over-btn").addEventListener("click", restartGame);
 
+    // fullscreen game
+    document.getElementById("closeApp").addEventListener("click", () =>{
+        if (document.fullscreenElement) {
+            void document.exitFullscreen();
+        }
+        else {
+            document.documentElement.requestFullscreen().catch(err => {
+                console.error("Error when trying to fullscreen: ", err)
+            });
+        }
+    })
+
     // play with a keyboard
     keyboardControls({
         onIncrease: increase,
