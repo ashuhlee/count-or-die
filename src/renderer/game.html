@@ -11,7 +11,11 @@
 <div class="main">
     <div class="scanlines"></div>
     <div class="vignette"></div>
-    <img id="closeApp" onclick="handleCloseApp()" alt="close icon" src="../assets/images/svg/close-button.svg"/>
+    <img id="closeApp" alt="close icon" src="../assets/images/svg/close-button.svg"/>
+    <div id="game-over">
+        <h1 class="go-title">game over :(</h1>
+        <button id="game-over-btn">restart game</button>
+    </div>
     <div class="app">
 
         <div class="progress"><div class="progress-bar" id="progress-bar"></div><div class="progress-bg"></div></div>
@@ -66,7 +70,7 @@
             </div>
         </div>
 
-        <div onclick="restartGame()" class="reset" id="reset">
+        <div class="reset" id="reset">
             <img src="../assets/images/png/buttons/reset-btn.png" id="reset-img" alt="increase-reg"/>
         </div>
     </div>
