@@ -12,33 +12,31 @@
         height: 150px;
         filter: drop-shadow(0px 7px 0px rgba(206,42,133,0.2));
     }
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .reset {
-  img {
-      width: 170px; cursor: pointer;
-      filter: drop-shadow(0px 7px 0px rgba(206,42,133,0.2));
-  }
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    img {
+        width: 170px;
+        filter: drop-shadow(0px 7px 0px rgba(206,42,133,0.2));
+    }
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  &:hover {
-    filter: brightness(0.95) saturate(120%);
-  }
+    &:hover {
+      filter: brightness(0.95) saturate(120%);
+    }
 
-  &:active {
-    transform: scale(0.75);
-  }
+    &:active {
+      transform: scale(0.75);
+    }
 }
 
 #closeApp {
-  position: absolute;
-  padding: 30px;
-  width: 90px;
-  top: 0; right: 0;
-  cursor: pointer;
+    position: absolute;
+    padding: 30px;
+    width: 90px;
+    top: 0; right: 0;
 }
 

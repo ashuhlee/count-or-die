@@ -1,6 +1,6 @@
 @use "../base/globals";
 
-* { box-sizing: border-box; }
+* { box-sizing: border-box; cursor:url("#{globals.$cursor}"), auto !important; }
 ::-webkit-scrollbar { display: none; }
 
 .app {
@@ -39,7 +39,7 @@ button,
 input,
 textarea,
 select, {
-    -webkit-app-region: no-drag; cursor: pointer; }
+    -webkit-app-region: no-drag;}
 
 img {
     -webkit-user-drag: none; user-drag: none;
