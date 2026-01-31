@@ -1,7 +1,7 @@
 
 export const barColors = {
     primary: "#B4A6FF",
-    warning: "#FFD5A5",
+    warning: "#ffb199",
     critical: "#f7628b"
 }
 
@@ -11,18 +11,18 @@ let currAnimDuration = 20;
 export function initProgressBar() {
 
     const progressBar = document.getElementById("progress-bar");
+    currAnimDuration = 20;
 
     Object.assign(progressBar.style, {
     height: "13px",
     gridArea: "1 / 1",
-    animation: "progress-anim 20s linear infinite",
+    animation: `progress-anim ${currAnimDuration}s linear infinite`,
     transformOrigin: "left",
     width: `140px`,
     background: barColors.primary,
     });
     // start animation timer
     animStartTime = Date.now();
-    currAnimDuration = 20;
 
     return progressBar;
 }
@@ -38,16 +38,22 @@ export function updateBarColor(progressBar) {
     const percentage = Math.round((1 - cycle) * 100);
 
     let progressAnim = `progress-anim ${currAnimDuration}s linear infinite`;
-    const blinkAnim = `blink 1s linear infinite`;
+
+    const blinkSlow = `blink 0.8s linear infinite`;
+    const blinkFast = `blink 0.5s linear infinite`;
 
     if (percentage < 0.1) {
         const barExpired = new CustomEvent("progressBarExp");
         document.dispatchEvent(barExpired);
         console.log('Game over!');
     }
-    if (percentage <= 20) {
+    else if (percentage <= 15) {
         progressBar.style.background = barColors.critical;
-        progressBar.style.animation = `${blinkAnim}, ${progressAnim}`;
+        progressBar.style.animation = `${blinkFast}, ${progressAnim}`;
+    }
+    else if (percentage <= 30) {
+        progressBar.style.background = barColors.critical;
+        progressBar.style.animation = `${blinkSlow}, ${progressAnim}`;
     }
     else if (percentage <= 50) {
         progressBar.style.background = barColors.warning;
