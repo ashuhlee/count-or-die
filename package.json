@@ -1,6 +1,6 @@
 {
   "name": "counter-or-die",
-  "productName" : "Count or Die",
+  "productName": "Count or Die",
   "version": "1.0.0",
   "author": "ashuhlee",
   "description": "",
@@ -20,7 +20,8 @@
     "@electron-forge/plugin-fuses": "^7.11.1",
     "@electron/fuses": "^1.8.0",
     "electron": "^40.0.0",
-    "electron-reload": "^2.0.0-alpha.1"
+    "electron-reload": "^2.0.0-alpha.1",
+    "prettier": "^3.8.1"
   },
   "dependencies": {
     "animate.css": "^4.1.1",
