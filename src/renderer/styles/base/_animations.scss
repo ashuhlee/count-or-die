@@ -1,104 +1,112 @@
 
 @keyframes slide {
-  0% { background-position: 0 0; }
-  100% { background-position: -128px -128px; }
+	0% { background-position: 0 0; }
+	100% { background-position: -128px -128px; }
 }
 @keyframes scanlines {
-  0% { background-position: 0 0; }
-  100% { background-position: 0 1920px; }
+	0% { background-position: 0 0; }
+	100% { background-position: 0 1920px; }
 }
 
 @keyframes gradient {
-  0% {
-    color: transparent;
-    background-image: linear-gradient(to right,
-      #FFACAD,
-      #FFD5A5,
-      #FDFFB6,
-      #CBFFBF,
-      #9BF6FF,
-      #A0C4FF,
-      #BDB2FF,
-      #FFC6FF);
-    background-clip: text;
-    background-size: 200% auto;
-    background-position: 0% center;
-  }
-  100% {
-    color: white;
-    background-position: 200% center;
-  }
+	0% {
+		color: transparent;
+		background-image: linear-gradient(
+			to right,
+			#ffacad,
+			#ffd5a5,
+			#fdffb6,
+			#cbffbf,
+			#9bf6ff,
+			#a0c4ff,
+			#bdb2ff,
+			#ffc6ff
+		);
+		background-clip: text;
+		background-size: 200% auto;
+		background-position: 0% center;
+	}
+	100% {
+		color: white;
+		background-position: 200% center;
+	}
 }
 
 @keyframes progress-anim {
-  from { transform: scaleX(1); } to { transform: scaleX(0); }
+	from { transform: scaleX(1); } to { transform: scaleX(0); }
 }
 
 @keyframes pop {
-  0% {
-    transform: scale(1);
-    filter: none;
-  }
-  40% {
-    transform: scale(1.125);
-    filter: brightness(1.2) saturate(70%);
-  }
-  100% {
-    transform: scale(1);
-    filter: none;
-  }
+	0% {
+		transform: scale(1);
+		filter: none;
+	}
+	40% {
+		transform: scale(1.125);
+		filter: brightness(1.2) saturate(70%);
+	}
+	100% {
+		transform: scale(1);
+		filter: none;
+	}
 }
 
 @keyframes pop-dec {
-  0% {
-    transform: scale(1);
-  }
-  40% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
+	0% {
+		transform: scale(1);
+	}
+	40% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(1);
+	}
 }
 
 @keyframes fade-gradient {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  40% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0;
-  }
+	0% {
+		transform: scale(1);
+		opacity: 1;
+	}
+	40% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(1);
+		opacity: 0;
+	}
 }
 
 @keyframes reset-shake {
-  0%, 100% {
-    transform: translate(0, 0);
-  }
-  25% {
-    transform: translate(-7px, 0);
-    fill: url(#reset-color);
-  }
-  50% {
-    transform: translate(7px, 0);
-    fill: url(#reset-color);
-  }
-  75% {
-    transform: translate(-2px, 0);
-    fill: url(#reset-color);
-  }
+	0%, 100% {
+		transform: translate(0, 0);
+	}
+	25% {
+		transform: translate(-7px, 0);
+		fill: url(#reset-color);
+	}
+	50% {
+		transform: translate(7px, 0);
+		fill: url(#reset-color);
+	}
+	75% {
+		transform: translate(-2px, 0);
+		fill: url(#reset-color);
+	}
 }
 
 @keyframes blink {
-  0% {opacity: 1} 50% {opacity: 0} 100% {opacity: 1}
+	0% {opacity: 1} 50% {opacity: 0} 100% {opacity: 1}
 }
 
 @keyframes heart-scale {
-  0% { transform: scale(1) rotate(-3deg);}
-  50% { transform: scale(1.1) rotate(7deg); }
-  100% { transform: scale(1) rotate(-3deg); }
+	0% {
+		transform: scale(1) rotate(-3deg);
+	}
+	50% {
+		transform: scale(1.1) rotate(7deg);
+	}
+	100% {
+		transform: scale(1) rotate(-3deg);
+	}
 }

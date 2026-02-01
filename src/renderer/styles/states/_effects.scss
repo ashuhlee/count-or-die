@@ -1,41 +1,41 @@
 @use "../base/globals";
 
 #high-score.new-score {
-  animation: bounce 0.6s, gradient 2s ease;
-  transform-origin: center;
+	animation: bounce 0.6s, gradient 2s ease;
+	transform-origin: center;
 }
 
 #counter.new-score-counter {
-    fill: url(#gradient-counter);
+	fill: url(#gradient-counter);
 }
 
 .hearts img {
-  animation: heart-scale 2s ease infinite;
+	animation: heart-scale 2s ease infinite;
 
-  @for $i from 1 through 4 {
-    &:nth-child(#{$i}) {
-      animation-delay: (globals.$delay-step * ($i - 1));
-    }
-  }
+	@for $i from 1 through 4 {
+		&:nth-child(#{$i}) {
+			animation-delay: (globals.$delay-step * ($i - 1));
+		}
+	}
 }
 
 .pop {
-  animation: pop 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
-  transform-origin: center;
+	animation: pop 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
+	transform-origin: center;
 }
 
 .pop-dec {
-  animation: pop-dec 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
-  transform-origin: center;
+	animation: pop-dec 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
+	transform-origin: center;
 }
 
 .pop-gradient {
-  animation: fade-gradient 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
-  transform-origin: center;
+	animation: fade-gradient 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
+	transform-origin: center;
 }
 
 .reset-shake {
-  animation: reset-shake 0.25s ease-out;
-  transform-box: fill-box;
-  transform-origin: center;
+	animation: reset-shake 0.25s ease-out;
+	transform-box: fill-box;
+	transform-origin: center;
 }
