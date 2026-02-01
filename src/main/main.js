@@ -1,5 +1,5 @@
 const { app, BrowserWindow, nativeImage } = require("electron");
-const { ipcMain } = require("electron")
+const { ipcMain } = require("electron");
 const path = require("path");
 
 function createWindow() {
@@ -15,8 +15,8 @@ function createWindow() {
         icon: iconPath,
         webPreferences: {
             preload: path.join(__dirname, '../preload/preload.js'),
-            contextIsolation: true,
-            nodeIntegration: false
+            nodeIntegration: true,
+			contextIsolation: false
         }
     });
 
@@ -25,33 +25,33 @@ function createWindow() {
         app.dock.setIcon(dockIcon);
     }
 
-    mainWindow.loadFile("src/renderer/game.html")
+    mainWindow.loadFile("src/renderer/index.html");
 }
 
 app.whenReady().then(() => {
-    createWindow()
+	createWindow();
 
-app.on("activate", () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-    })
+	app.on("activate", () => {
+    	if (BrowserWindow.getAllWindows().length === 0) {
+    		createWindow()
+    	}
+  	})
 })
 
 app.on("window-all-closed", () => {
-    if (process.platform !== "darwin") {
-        app.quit();
-    }
+	if (process.platform !== "darwin") {
+		app.quit()
+  	}
 })
 
-try {
+ipcMain.on("close", () => {
+  app.quit()
+})
 
-  require("electron-reload")(
+
+// reload app after changes
+require("electron-reload")(
     path.join(__dirname, "..", "renderer"),
-    {
-      electron: path.join(__dirname, "..", "..", "node_modules", ".bin", "electron"),
-      // hardResetMethod: "exit"
-    }
+    {electron: path.join(__dirname, "..", "..", "node_modules", ".bin", "electron"),}
   );
-  console.log("Electron reload active");
-} catch (err) {
-  console.log("Electron reload failed:", err);
-}
+console.log("Electron reload active");
