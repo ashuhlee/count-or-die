@@ -14,12 +14,12 @@ export function initProgressBar() {
     currAnimDuration = 20;
 
     Object.assign(progressBar.style, {
-    height: "13px",
-    gridArea: "1 / 1",
-    animation: `progress-anim ${currAnimDuration}s linear infinite`,
-    transformOrigin: "left",
-    width: `140px`,
-    background: barColors.primary,
+		height: "13px",
+		gridArea: "1 / 1",
+		animation: `progress-anim ${currAnimDuration}s linear infinite`,
+		transformOrigin: "left",
+		width: `140px`,
+		background: barColors.primary,
     });
     // start animation timer
     animStartTime = Date.now();
@@ -45,7 +45,6 @@ export function updateBarColor(progressBar) {
     if (percentage < 0.1) {
         const barExpired = new CustomEvent("progressBarExp");
         document.dispatchEvent(barExpired);
-        console.log('Game over!');
     }
     else if (percentage <= 15) {
         progressBar.style.background = barColors.critical;
