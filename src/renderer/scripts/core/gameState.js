@@ -3,7 +3,7 @@ export class GameState {
 
 	constructor() {
 		this.counter = 0;
-		this.currentGoal = 25;
+		this.currentGoal = 30;
 		this.goalIncrement = 25;
 		this.highScoreFxPlayed = false;
 		this.highScore = Number(localStorage.getItem("high-score")) || 0;
@@ -18,7 +18,7 @@ export class GameState {
 	}
 	reset() {
 		this.counter = 0;
-		this.currentGoal = 25;
+		this.currentGoal = 30;
 		this.highScoreFxPlayed = false;
 	}
 
@@ -38,7 +38,7 @@ export class GameState {
 	// goal logic
 	isGoalReached() {
 		// return true if the counter is divisible by 25
-		return this.counter % this.goalIncrement === 0;
+		return this.counter === this.currentGoal;
 	}
 	incrementGoal() {
 		this.currentGoal += this.goalIncrement; // goal sets to 25, 50, 75 etc.
@@ -47,7 +47,7 @@ export class GameState {
 	// progress bar logic
 	barSpeed() {
 		// 1.25x speed increase each round
-		let goalsReached = Math.floor(this.counter / this.goalIncrement);
+		let goalsReached = Math.floor((this.currentGoal - 30) / this.goalIncrement);
 		return 20 / Math.pow(1.25, goalsReached);
 	}
 }
