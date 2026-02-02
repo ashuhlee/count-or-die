@@ -6,7 +6,7 @@ export const buttonIncFx = new Audio("../assets/audio/sfx/button-press-1.mp3");
 export const buttonDecFx = new Audio("../assets/audio/sfx/button-press-2.mp3");
 export const buttonResetFx = new Audio("../assets/audio/sfx/reset-press.mp3");
 
-export const goalReachedFx = new Audio();
+export const goalReachedFx = new Audio("../assets/audio/sfx/goal-reached.mp3");
 
 // audio settings
 bgMusic.loop = true;
