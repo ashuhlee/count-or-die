@@ -1,7 +1,9 @@
 
 import { setGameActions } from "./core/gameActions.js";
 import { keyboardControls } from "./controls/keyHandler.js";
+import { wrapLetters } from "./anim/animations.js";
 
+import { setGoalDisplay, setGradientText } from "./components/goalDisplay.js";
 import { setHighScoreDisplay } from "./components/highScoreDisplay.js";
 import { initProgressBar, updateBarColor } from "./components/progressBarDisplay.js";
 
@@ -10,7 +12,16 @@ import { toggleGameOver } from "./core/gameOver.js";
 import { GameState } from "./core/gameState.js";
 import { Counter } from "./components/counterDisplay.js";
 
-import { bgMusic, highScoreFx, buttonIncFx, buttonDecFx, buttonResetFx, playAudio, pauseAudio } from "./controls/audioHandler.js";
+import {
+	bgMusic,
+	highScoreFx,
+	buttonIncFx,
+	buttonDecFx,
+	buttonResetFx,
+	goalReachedFx,
+	playAudio,
+	pauseAudio,
+} from "./controls/audioHandler.js";
 
 const ipc = require('electron').ipcRenderer;
 
@@ -28,6 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
 	let countText = document.getElementById("counter");
 	let countOuter = document.getElementById("counter-outer");
 	let highScoreText = document.getElementById("high-score");
+	let goalBox = document.getElementById("next-goal");
+	let goalText = document.querySelector(".goal-text");
 
 	// create class instances
 	const gameState = new GameState();
@@ -38,10 +51,13 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 
 	const highScoreDisplay = setHighScoreDisplay(highScoreText);
+	const goalDisplay = setGoalDisplay(goalBox);
+	const goalTextDisplay = setGradientText(goalText);
 
 	// set initial displays
 	highScoreDisplay.update(gameState.highScore);
 	counterDisplay.update(gameState.counter);
+	goalDisplay.update(gameState.currentGoal, false);
 
 	// store sound effects in an object
 	const soundFx = {
@@ -49,6 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		highScore: highScoreFx,
 		buttonInc: buttonIncFx,
 		buttonDec: buttonDecFx,
+		goalReached: goalReachedFx,
 		reset: buttonResetFx
 	};
 
@@ -57,6 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		state: gameState,
 		counter: counterDisplay,
 		highScore: highScoreDisplay,
+		goal: goalDisplay,
+		goalText: goalTextDisplay,
 		bar: progressBar,
 		sounds: soundFx
 	});
