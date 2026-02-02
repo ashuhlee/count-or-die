@@ -5,7 +5,7 @@ import { animateBtn } from "../anim/buttonAnim.js";
 import { toggleGameOver } from "./gameOver.js";
 
 
-export function setGameActions({ state, counter, highScore, bar, sounds }) {
+export function setGameActions({ state, counter, highScore, goal, goalText, bar, sounds }) {
 
 	function increase() {
 
@@ -30,8 +30,14 @@ export function setGameActions({ state, counter, highScore, bar, sounds }) {
 			counter.removeNewScoreEffect();
 		}
 
-		if (state.isGoalReached() === true) {
+		if (state.isGoalReached()) {
+
+			playAudio(sounds.goalReached);
+			goal.addNewGoalEffect();
+			goalText.addNewTextEffect();
+
 			state.incrementGoal();
+			goal.update(state.currentGoal, true);
 			resetBar(bar, state.barSpeed());
 
 			console.log(`new goal: ${state.currentGoal}`);
@@ -63,12 +69,15 @@ export function setGameActions({ state, counter, highScore, bar, sounds }) {
 		state.reset();
 		counter.animate("reset-shake");
 		counter.update(state.counter);
+		goal.update(state.currentGoal);
 
 		playAudio(sounds.reset);
 		playAudio(sounds.bgMusic);
 
 		counter.removeNewScoreEffect();
 		highScore.removeNewScoreEffect();
+
+		goal.removeNewGoalEffect();
 
 		resetBar(bar, 20);
 		toggleGameOver(false);
