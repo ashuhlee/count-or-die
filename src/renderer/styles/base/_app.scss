@@ -33,6 +33,7 @@ body {
     user-select: none;
     -webkit-user-select: none;
     -webkit-app-region: no-drag;
+    cursor: url("#{globals.$cursor}"), auto !important;
 }
 
 button,
