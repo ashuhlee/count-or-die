@@ -1,8 +1,32 @@
-<h1>Count Or ☠️</h1>
-<p>Just a fun little counter game <b>(wip)</b></p>
+# Count Or Die ☠️
+An arcade counting game with progressive difficulty, multiple game modes, and a timer that gets faster as you progress
 
-Track my progress: [Notion](https://ashuhlee.notion.site/Count-or-Die-2f5a30a56798803383e7dd6b54a77d4e?source=copy_link)
+(Work in progress)
 
-<img width="400" height="1680" alt="demo" src="https://github.com/user-attachments/assets/f4926a95-8291-4882-86d0-84da4d0106cf" />
-<img width="400" height="1680" alt="demo-gif" src="https://github.com/user-attachments/assets/91a48fca-4703-4f30-8711-eff67e35145e" />
+Follow development progress: [Notion](https://ashuhlee.notion.site/Count-or-Die-2f5a30a56798803383e7dd6b54a77d4e?source=copy_link)
 
+### Previews
+<div align="center">
+  <img width="400" alt="Game Screenshot" src="https://github.com/user-attachments/assets/0f46e47a-f697-4bbf-9d3f-28f1e975dad4" />
+  <img width="400" alt="Gameplay Demo" src="https://i.postimg.cc/cLCcbjfm/Clean-Shot-2026-02-01-at-20-23-21.gif" />
+</div>
+
+### How to Play
+- **Count** using on-screen buttons or keyboard controls
+- **Reach the goal** before the progress bar depletes
+- **Survive** as the levels become more challenging
+
+## Controls
+| Input               | Action              |
+|---------------------|---------------------|
+| `↑` `→` `W` `D` `+` | Increase counter    |
+| `↓` `←` `S` `A` `-` | Decrease counter    |
+| `Escape`            | Restart game        |
+| Mouse click         | Button interactions |
+
+### Contributing
+This is a personal project, but suggestions and contributions are welcome :)
+- Open issues for bugs or feature requests
+- Share feedback on gameplay and user experience
+
+🎮 Made for gamers, pixel art lovers and anyone with a slow reaction time
