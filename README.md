@@ -8,7 +8,7 @@ Follow development progress: [Notion](https://ashuhlee.notion.site/Count-or-Die-
 ### Previews
 <div align="center">
   <img width="400" alt="Game Screenshot" src="https://github.com/user-attachments/assets/0f46e47a-f697-4bbf-9d3f-28f1e975dad4" />
-  <img width="400" alt="Gameplay Demo" src="https://i.imgur.com/D5ZikCD.gif" />
+  <img width="400" alt="Gameplay Demo" src="https://github.com/user-attachments/assets/b0a05a78-71d6-4a53-b1d9-d3468e8ba484" />
 </div>
 
 ### How to Play
