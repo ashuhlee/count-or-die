@@ -32,6 +32,37 @@
 	}
 }
 
+@keyframes gradient-goal {
+	0% {
+		color: transparent;
+		background-image: linear-gradient(
+			to right,
+			#ffacad,
+			#ffd5a5,
+			#fdffb6,
+			#cbffbf,
+			#9bf6ff,
+			#a0c4ff,
+			#bdb2ff,
+			#ffc6ff
+		);
+		background-clip: text;
+		background-size: 100% auto;
+		background-position: 0% center;
+	}
+	100% {
+		color: #4B4D5A;
+		background-position: 200% center;
+	}
+}
+
+@keyframes fadeInUp {
+	to {
+		opacity: 1;
+		transform: translateY(0);
+  	}
+}
+
 @keyframes progress-anim {
 	from { transform: scaleX(1); } to { transform: scaleX(0); }
 }
@@ -108,5 +139,17 @@
 	}
 	100% {
 		transform: scale(1) rotate(-3deg);
+	}
+}
+
+@keyframes hover {
+	0% {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(5px);
+	}
+	100% {
+		transform: translateY(0px);
 	}
 }

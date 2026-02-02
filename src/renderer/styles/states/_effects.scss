@@ -8,6 +8,17 @@
 #counter.new-score-counter {
 	fill: url(#gradient-counter);
 }
+.new-goal {
+	animation: swing ease;
+	transform-origin: bottom;
+}
+
+//.new-goal-text {
+//	span {
+//		animation: gradient-goal 0.6s ease;
+//		//animation-delay: var(--delay); // Stagger the gradient effect per letter
+//	}
+//}
 
 .hearts img {
 	animation: heart-scale 2s ease infinite;
