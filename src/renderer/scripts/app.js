@@ -1,22 +1,24 @@
 
 import { setGameActions } from "./core/gameActions.js";
+import { toggleGameOver } from "./core/gameOver.js";
+
 import { keyboardControls } from "./controls/keyHandler.js";
+import { playAudio, pauseAudio, sounds } from "./controls/audioHandler.js";
+
 import { splitLetters } from "./anim/animations.js";
+import {createGlitch, heartGlitch} from "./anim/glitchEffect.js";
 
 import { setGoalDisplay, setGradientText } from "./components/goalDisplay.js";
 import { setHighScoreDisplay } from "./components/highScoreDisplay.js";
 import { initProgressBar, updateBarColor } from "./components/progressBarDisplay.js";
 
-import { toggleGameOver } from "./core/gameOver.js";
-
 import { GameState } from "./core/gameState.js";
 import { Counter } from "./components/counterDisplay.js";
 
-import {playAudio, pauseAudio, sounds } from "./controls/audioHandler.js";
 
 const ipc = require('electron').ipcRenderer;
 
-// localStorage.setItem("high-score", 5); // TESTS: manually reset high score
+localStorage.setItem("high-score", 36); // TESTS: manually reset high score
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -26,14 +28,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	let gameOverTriggered = false;
 
-	// title text animation
+	// animations
 	splitLetters(".game-name", "wavy");
+
+	setInterval(heartGlitch, 6000);
+	heartGlitch();
 
 	// track progress bar (every 1 ms)
 	setInterval(() =>  updateBarColor(progressBar), 1);
 
 	let countText = document.getElementById("counter");
 	let countOuter = document.getElementById("counter-outer");
+	let countShine = document.getElementById("counter-shine");
+
 	let highScoreText = document.getElementById("high-score");
 	let goalBox = document.getElementById("next-goal");
 	let goalText = document.querySelector(".goal-text");
@@ -43,7 +50,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	const counterDisplay = new Counter({
 		textElement: countText,
-		outerElement: countOuter
+		outerElement: countOuter,
+		textShine: countShine
 	});
 
 	const highScoreDisplay = setHighScoreDisplay(highScoreText);
@@ -75,6 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	document.getElementById("reset-img").addEventListener("click", () => {
 		actions.restartGame();
+		playAudio(sounds.reset);
 		gameOverTriggered = false;
 	});
 	document.getElementById("game-over-btn").addEventListener("click", () => {
@@ -110,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		e.preventDefault();
 		ipc.send("close");
 	}
-	const closeBtn = document.getElementById("closeApp")
-	closeBtn.addEventListener("click", closeApp);
+	// const closeBtn = document.getElementById("closeApp")
+	// closeBtn.addEventListener("click", closeApp);
 
 });

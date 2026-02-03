@@ -4,18 +4,18 @@ const animClasses = ["pop", "pop-dec", "reset-shake", "new-goal"];
 
 export const btnImages = {
 	increase: {
-		normal: "../assets/images/png/buttons/increase.png",
-		pressed: "../assets/images/png/buttons/increase-press.png",
+		normal: "../assets/ui/buttons/increase.png",
+		pressed: "../assets/ui/buttons/increase-press.png",
 	},
 	decrease: {
-		normal: "../assets/images/png/buttons/decrease.png",
-		pressed: "../assets/images/png/buttons/decrease-press.png",
+		normal: "../assets/ui/buttons/decrease.png",
+		pressed: "../assets/ui/buttons/decrease-press.png",
 	},
 };
 
 
 function updateColor() {
-	const colors = ['#e68ad6', '#A193FF', '#94BEFF', '#BEB9DC', "#FFB7A4"];
+	const colors = ['#e673d2', '#A193FF', '#94BEFF', '#BEB9DC', "#fff3a0"];
 	const color = colors[i];
 	i = (i + 1) % colors.length;
 
@@ -27,16 +27,6 @@ function applyColorTheme(color) {
 
 	const goalBox = document.querySelector(".next-goal");
 	goalBox.style.borderTop = `3px solid ${color}`;
-
-	// goalBox.style.borderTop = `4px solid ${color}`;
-	// goalBox.style.borderLeft = `4px solid ${color}`;
-	// goalBox.style.boxShadow = `-4px 0 0 0 ${color}, 4px 0 0 0 ${color}, 0 -4px 0 0 ${color}`
-
-	const chatDeco = document.querySelector(".chat-deco");
-	chatDeco.style.fill = `${color}`;
-
-	// const goalChatBox = document.querySelector(".goal-chatbox");
-	// goalChatBox.style.filter = `drop-shadow(4px 4px 0px ${color})`;
 }
 
 // main animation function
