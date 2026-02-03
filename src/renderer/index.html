@@ -10,10 +10,11 @@
 <body>
 <div class="main">
     <div class="scanlines"></div>
-<!--    <div class="vignette"></div>-->
+	<div class="scanlines-bg"></div>
+	<div class="top-gradient"></div>
 	<div class="controls">
-		<img id="closeApp" alt="close icon" src="../assets/images/svg/close-button.svg"/>
-		<img id="optionsBtn" alt="close icon" src="../assets/images/svg/options-button.svg"/>
+		<img id="soundBtn" alt="sound icon" src="../assets/ui/svg/sound-button-reg.svg"/>
+		<img id="optionsBtn" alt="options icon" src="../assets/ui/svg/options-button.svg"/>
 	</div>
     <div id="game-over">
         <h1 class="go-title">game over :(</h1>
@@ -22,29 +23,19 @@
     <div class="app">
 		<div class="goal-chatbox" id="goal-chatbox">
 			<div class="next-goal animate__animated animate__fast" id="next-goal">
-				<svg class="chat-deco"  width="41" height="8" viewBox="0 0 41 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path d="M4.99999 0H0V8H4.99999H9.99999H15H20H25V0H20H15H9.99999H4.99999Z"/>
-					<path d="M34.6 0H33V8H34.6H36.2H37.8H39.4H41V0H39.4H37.8H36.2H34.6Z"/>
-				</svg>
 				<span class="goal-text fade-up-text">next: 30</span>
 			</div>
-			<img src="../assets/images/svg/chat-tip.svg" class="chat-tip" alt="chat tip"/>
+			<img src="../assets/ui/svg/chat-tip.svg" class="chat-tip" alt="chat tip"/>
 		</div>
         <div class="progress"><div class="pg-lines"></div><div class="progress-bar" id="progress-bar"></div><div class="progress-bg"></div></div>
         <h1 class="title"><span class="game-name">count or die</span></h1>
 
         <div class="counter-container">
-
             <svg viewBox="0 0 260 140" class="counter-svg">
-              <!-- outer stroke -->
-              <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle"  stroke="#39232B" stroke-width="12" stroke-linejoin="round"
-                    stroke-linecap="round" fill="none" paint-order="stroke" id="counter-outer">00</text>
-
-              <!-- inner stroke -->
-              <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" stroke="#FFF4F7" stroke-width="8" stroke-linejoin="round"
-                    stroke-linecap="round" paint-order="stroke fill" id="counter">00</text>
-
               <defs>
+				<clipPath id="shine-effect">
+					<text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" id="counter-shine">00</text>
+				</clipPath>
                 <linearGradient id="gradient-counter" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" style="stop-color:#FFACAD" /> <stop offset="14.28%" style="stop-color:#FFD5A5" />
                     <stop offset="28.57%" style="stop-color:#FDFFB6" /> <stop offset="42.85%" style="stop-color:#CBFFBF" />
@@ -53,7 +44,7 @@
                 <linearGradient id="default-color" x1="0%" x2="0%" y1="0%" y2="100%">
                   <stop offset="0%" stop-color="#FFDAF6" />
                   <stop offset="30%" stop-color="#DF7FC7" />
-                  <stop offset="100%" stop-color="#B5519C" />
+                  <stop offset="100%" stop-color="#cc5cb0" />
                 </linearGradient>
                 <linearGradient id="reset-color" x1="0%" x2="0%" y1="0%" y2="100%">
                   <stop offset="0%" stop-color="#FFDAF6" />
@@ -61,29 +52,37 @@
                   <stop offset="100%" stop-color="#E8538E" />
                 </linearGradient>
               </defs>
+              <!-- outer stroke -->
+              <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle"  stroke="#39232B" stroke-width="12" stroke-linejoin="round"
+                    stroke-linecap="round" fill="none" paint-order="stroke" id="counter-outer">00</text>
+              <!-- inner stroke -->
+              <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" stroke="#FFF4F7" stroke-width="8" stroke-linejoin="round"
+                    stroke-linecap="round" paint-order="stroke fill" id="counter">00</text>
+			  <!-- shine effect -->
+			  <rect x="0" y="0" width="100%" height="100%" clip-path="url(#shine-effect)" class="shine-rect"/>
             </svg>
         </div>
         <!-- heart pop-up -->
         <div class="hearts">
-            <img src="../assets/images/png/hearts/px_heart_pink.png" alt="heart1" class="heart1"/>
-            <img src="../assets/images/png/hearts/px_heart_purple.png" alt="heart2" class="heart2"/>
-            <img src="../assets/images/png/hearts/px_heart_blue.png" alt="heart3" class="heart3"/>
-            <img src="../assets/images/png/hearts/px_heart_white.png" alt="heart4" class="heart4"/>
+			<div class="heart-pink"><img src="../assets/ui/deco/px_heart_pink.png" alt="heart1" class="heart1"/></div>
+            <div class="heart-purple"><img src="../assets/ui/deco/px_heart_purple.png" alt="heart2" class="heart2"/></div>
+			<div class="heart-blue"><img src="../assets/ui/deco/px_heart_blue.png" alt="heart3" class="heart3"/></div>
+			<div class="heart-white"><img src="../assets/ui/deco/px_heart_white.png" alt="heart4" class="heart4"/></div>
         </div>
 
         <div class="buttons">
             <!-- decrease button -->
             <div id="decrease-button">
-                <img src="../assets/images/png/buttons/decrease.png" id="decrease-img" alt="decrease-reg"/>
+                <img src="../assets/ui/buttons/decrease.png" id="decrease-img" alt="decrease-reg"/>
             </div>
             <!-- increase button -->
             <div id="increase-button">
-                <img src="../assets/images/png/buttons/increase.png" id="increase-img" alt="increase-reg"/>
+                <img src="../assets/ui/buttons/increase.png" id="increase-img" alt="increase-reg"/>
             </div>
         </div>
 
         <div class="reset" id="reset">
-            <img src="../assets/images/png/buttons/reset-btn.png" id="reset-img" alt="increase-reg"/>
+            <img src="../assets/ui/buttons/reset-btn.png" id="reset-img" alt="increase-reg"/>
         </div>
     </div>
     <h1 id="high-score" class="animate__animated">high score: 0</h1>
