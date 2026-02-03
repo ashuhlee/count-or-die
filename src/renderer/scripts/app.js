@@ -1,7 +1,7 @@
 
 import { setGameActions } from "./core/gameActions.js";
 import { keyboardControls } from "./controls/keyHandler.js";
-import { wrapLetters } from "./anim/animations.js";
+import { splitLetters } from "./anim/animations.js";
 
 import { setGoalDisplay, setGradientText } from "./components/goalDisplay.js";
 import { setHighScoreDisplay } from "./components/highScoreDisplay.js";
@@ -25,13 +25,18 @@ import {
 
 const ipc = require('electron').ipcRenderer;
 
-localStorage.setItem("high-score", 10); // TESTS: manually reset high score
+// localStorage.setItem("high-score", 5); // TESTS: manually reset high score
 
 document.addEventListener("DOMContentLoaded", () => {
 
 	// initialize game (start audio and progress bar)
 	playAudio(bgMusic);
 	const progressBar = initProgressBar();
+
+	let gameOverTriggered = false;
+
+	// title text animation
+	splitLetters(".game-name", "wavy");
 
 	// track progress bar (every 1 ms)
 	setInterval(() =>  updateBarColor(progressBar), 1);
@@ -77,29 +82,44 @@ document.addEventListener("DOMContentLoaded", () => {
 		goal: goalDisplay,
 		goalText: goalTextDisplay,
 		bar: progressBar,
-		sounds: soundFx
+		sounds: soundFx,
+		onRestart: () => {
+			gameOverTriggered = false;
+		}
 	});
 
 	// button clicks
 	document.getElementById("increase-img").addEventListener("click", actions.increase);
 	document.getElementById("decrease-img").addEventListener("click", actions.decrease);
-	document.getElementById("reset-img").addEventListener("click", actions.restartGame);
-	document.getElementById("game-over-btn").addEventListener("click", actions.restartGame);
+
+	document.getElementById("reset-img").addEventListener("click", () => {
+		actions.restartGame();
+		gameOverTriggered = false;
+	});
+	document.getElementById("game-over-btn").addEventListener("click", () => {
+		actions.restartGame();
+		gameOverTriggered = false;
+	});
 
 	// keyb controls
 	keyboardControls({
 		onIncrease: actions.increase,
 		onDecrease: actions.decrease,
-		onRestart: actions.restartGame,
+		onRestart: () => {
+			actions.restartGame();
+			gameOverTriggered = false;
+		},
 	});
 
 	// game over
 	document.addEventListener("progressBarExp", () => {
-		if (!gameState.isGoalReached()) {
+		if (!gameState.isGoalReached() && !gameOverTriggered) {
+
+			gameOverTriggered = true;
 			toggleGameOver(true);
 			pauseAudio(bgMusic);
 
-			console.log("game over!")
+			console.log(`\u{1F480} game over! final score: ${countText.textContent}`)
 		}
 	});
 
