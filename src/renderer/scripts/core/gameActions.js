@@ -1,7 +1,7 @@
 
 import { playAudio } from "../controls/audioHandler.js";
 import { resetBar } from "../components/progressBarDisplay.js";
-import { animateBtn } from "../anim/buttonAnim.js";
+import { animateBtn } from "../anim/animations.js";
 import { toggleGameOver } from "./gameOver.js";
 
 
@@ -40,7 +40,6 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 			goal.update(state.currentGoal, true);
 			resetBar(bar, state.barSpeed());
 
-			console.log(`new goal: ${state.currentGoal}`);
 		}
 
 		counter.animate("pop");
@@ -67,20 +66,24 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 	function restartGame() {
 
 		state.reset();
-		counter.animate("reset-shake");
-		counter.update(state.counter);
-		goal.update(state.currentGoal);
 
-		playAudio(sounds.reset);
-		playAudio(sounds.bgMusic);
-
+		// remove vfx from last game
 		counter.removeNewScoreEffect();
 		highScore.removeNewScoreEffect();
-
 		goal.removeNewGoalEffect();
 
-		resetBar(bar, 20);
 		toggleGameOver(false);
+
+		// reset values
+		counter.update(state.counter);
+		goal.update(state.currentGoal);
+		resetBar(bar, 20);
+
+		// play reset anim + audio
+		playAudio(sounds.reset);
+		playAudio(sounds.bgMusic);
+		counter.animate("reset-shake");
+
 	}
 
 	return { increase, decrease, restartGame };
