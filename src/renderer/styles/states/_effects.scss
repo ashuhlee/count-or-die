@@ -4,8 +4,8 @@
 	fill: url(#gradient-counter);
 }
 
-.hearts img {
-	animation: heart-scale 2s cubic-bezier(0.25,0.10,0.25,1.00) infinite;
+.hearts .heart-pink, .heart-purple, .heart-blue, .heart-white {
+	animation: heart-scale 2.5s cubic-bezier(0.25,0.10,0.25,1.00) infinite;
 
 	@for $i from 1 through 4 {
 		&:nth-child(#{$i}) {
