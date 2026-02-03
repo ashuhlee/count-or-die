@@ -50,8 +50,10 @@ ipcMain.on("close", () => {
 
 
 // reload app after changes
-require("electron-reload")(
+if (!app.isPackaged) {
+	require("electron-reload")(
     path.join(__dirname, "..", "renderer"),
     {electron: path.join(__dirname, "..", "..", "node_modules", ".bin", "electron"),}
   );
-console.log("Electron reload active");
+	console.log("Electron reload active");
+}
