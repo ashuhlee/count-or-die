@@ -11,18 +11,27 @@
 <div class="main">
     <div class="scanlines"></div>
 <!--    <div class="vignette"></div>-->
-    <img id="closeApp" alt="close icon" src="../assets/images/svg/close-button.svg"/>
+	<div class="controls">
+		<img id="closeApp" alt="close icon" src="../assets/images/svg/close-button.svg"/>
+		<img id="optionsBtn" alt="close icon" src="../assets/images/svg/options-button.svg"/>
+	</div>
     <div id="game-over">
         <h1 class="go-title">game over :(</h1>
         <button id="game-over-btn">restart game</button>
     </div>
     <div class="app">
 		<div class="goal-chatbox" id="goal-chatbox">
-			<div class="next-goal animate__animated animate__fast" id="next-goal"><span class="goal-text fade-up-text">next: 30</span></div>
-			<div class="triangle"></div>
+			<div class="next-goal animate__animated animate__fast" id="next-goal">
+				<svg class="chat-deco"  width="41" height="8" viewBox="0 0 41 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M4.99999 0H0V8H4.99999H9.99999H15H20H25V0H20H15H9.99999H4.99999Z"/>
+					<path d="M34.6 0H33V8H34.6H36.2H37.8H39.4H41V0H39.4H37.8H36.2H34.6Z"/>
+				</svg>
+				<span class="goal-text fade-up-text">next: 30</span>
+			</div>
+			<img src="../assets/images/svg/chat-tip.svg" class="chat-tip" alt="chat tip"/>
 		</div>
-        <div class="progress"><div class="progress-bar" id="progress-bar"></div><div class="progress-bg"></div></div>
-        <h1 class="title">count or die</h1>
+        <div class="progress"><div class="pg-lines"></div><div class="progress-bar" id="progress-bar"></div><div class="progress-bg"></div></div>
+        <h1 class="title"><span class="game-name">count or die</span></h1>
 
         <div class="counter-container">
 
