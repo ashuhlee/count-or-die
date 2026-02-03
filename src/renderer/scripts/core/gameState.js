@@ -3,8 +3,12 @@ export class GameState {
 
 	constructor() {
 		this.counter = 0;
+
 		this.currentGoal = 30;
-		this.goalIncrement = 25;
+		this.goalsReached = 0;
+		this.goalIncrement = 25; // starting increment
+		this.goalIncRandomizer = [10, 15, 20, 25, 30];
+
 		this.highScoreFxPlayed = false;
 		this.highScore = Number(localStorage.getItem("high-score")) || 0;
 	}
@@ -19,12 +23,18 @@ export class GameState {
 	reset() {
 		this.counter = 0;
 		this.currentGoal = 30;
+		this.goalsReached = 0;
 		this.highScoreFxPlayed = false;
+	}
+
+	getRandomGoal() {
+		const i = Math.floor(Math.random() * this.goalIncRandomizer.length);
+		return this.goalIncRandomizer[i];
 	}
 
 	// update high score logic
 	updateHighScore() {
-		// if counter is greater than high score, set new high score in local storage
+
 		// TO-DO: implement better high score storing
 		if (this.counter > this.highScore) {
 
@@ -37,17 +47,17 @@ export class GameState {
 
 	// goal logic
 	isGoalReached() {
-		// return true if the counter is divisible by 25
 		return this.counter === this.currentGoal;
 	}
 	incrementGoal() {
-		this.currentGoal += this.goalIncrement; // goal sets to 25, 50, 75 etc.
+		this.goalIncrement = this.getRandomGoal();
+		this.currentGoal += this.goalIncrement; // random increments of [10, 15, 20, 25, 30]
+		this.goalsReached++;
 	}
 
 	// progress bar logic
 	barSpeed() {
 		// 1.25x speed increase each round
-		let goalsReached = Math.floor((this.currentGoal - 30) / this.goalIncrement);
-		return 20 / Math.pow(1.25, goalsReached);
+		return 20 / Math.pow(1.25, this.goalsReached);
 	}
 }
