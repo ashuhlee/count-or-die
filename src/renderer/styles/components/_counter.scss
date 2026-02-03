@@ -1,6 +1,6 @@
 #counter {
   fill: url(#default-color);
-  text-shadow: 0px 12px 0px rgba(206,42,133,0.15);
+  text-shadow: 0px 12px 0px var(--shadow-pink-015);
   transition: fill 0.3s ease !important;
 }
 
@@ -18,6 +18,11 @@
     letter-spacing: 10px;
     transform: scale(1.55);
     padding: 30px;
-    //background: red;
   }
+	.shine-rect {
+		fill: white;
+		height: 48%;
+		mix-blend-mode: soft-light;
+		opacity: 0.2;
+	}
 }

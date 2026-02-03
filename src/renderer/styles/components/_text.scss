@@ -1,6 +1,6 @@
 .title {
   color: #fff;
-  text-shadow: 0px 5px 0px rgba(206,42,133,0.15);
+  text-shadow: 0 5px 0 var(--shadow-pink-015);
   transform: translateY(60px);
   font-family: "Silkscreen", sans-serif; font-size: 30px;
   font-weight: bold;
@@ -13,7 +13,7 @@
   position: absolute;
   font-size: 18px;
   color: white;
-  text-shadow: 0px 5px 0px rgba(206,42,133,0.15);
+  text-shadow: 0 5px 0 var(--shadow-pink-015);
   font-family: "Silkscreen", sans-serif;
   font-weight: bold;
   bottom: -10px;

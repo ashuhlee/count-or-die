@@ -3,7 +3,7 @@
 	place-items: center;
 	transform: translateY(30px);
 	height: 13px;
-	filter: drop-shadow(5px 5px 0px rgba(206,42,133,0.05));
+	filter: drop-shadow(5px 5px 0px var(--shadow-pink-005));
 
 	.pg-lines {
 		grid-area: 1 / 1;

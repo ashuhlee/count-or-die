@@ -10,7 +10,7 @@
     img {
         width: 150px;
         height: 150px;
-        filter: drop-shadow(0px 7px 0px rgba(206,42,133,0.2));
+        filter: drop-shadow(0px 7px 0px var(--shadow-pink-020));
     }
     display: flex;
     align-items: center;
@@ -20,7 +20,7 @@
 .reset {
     img {
         width: 170px;
-        filter: drop-shadow(0px 7px 0px rgba(206,42,133,0.2));
+        filter: drop-shadow(0px 7px 0px var(--shadow-pink-020));
     }
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 
@@ -41,10 +41,10 @@
     grid-template-rows: auto auto;
     gap: 20px;
     justify-items: end;
+	filter: drop-shadow(0px 4px 0px var(--shadow-pink-005));
 
 	img {
 		width: 30px;
-    	height: 30px;
 	}
 }
 
