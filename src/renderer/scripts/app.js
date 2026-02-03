@@ -12,16 +12,7 @@ import { toggleGameOver } from "./core/gameOver.js";
 import { GameState } from "./core/gameState.js";
 import { Counter } from "./components/counterDisplay.js";
 
-import {
-	bgMusic,
-	highScoreFx,
-	buttonIncFx,
-	buttonDecFx,
-	buttonResetFx,
-	goalReachedFx,
-	playAudio,
-	pauseAudio,
-} from "./controls/audioHandler.js";
+import {playAudio, pauseAudio, sounds } from "./controls/audioHandler.js";
 
 const ipc = require('electron').ipcRenderer;
 
@@ -30,7 +21,7 @@ const ipc = require('electron').ipcRenderer;
 document.addEventListener("DOMContentLoaded", () => {
 
 	// initialize game (start audio and progress bar)
-	playAudio(bgMusic);
+	playAudio(sounds.bgMusic);
 	const progressBar = initProgressBar();
 
 	let gameOverTriggered = false;
@@ -64,16 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	counterDisplay.update(gameState.counter);
 	goalDisplay.update(gameState.currentGoal, false);
 
-	// store sound effects in an object
-	const soundFx = {
-		bgMusic,
-		highScore: highScoreFx,
-		buttonInc: buttonIncFx,
-		buttonDec: buttonDecFx,
-		goalReached: goalReachedFx,
-		reset: buttonResetFx
-	};
-
 	// create game actions
 	const actions = setGameActions({
 		state: gameState,
@@ -82,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		goal: goalDisplay,
 		goalText: goalTextDisplay,
 		bar: progressBar,
-		sounds: soundFx,
+		sounds: sounds,
 		onRestart: () => {
 			gameOverTriggered = false;
 		}
@@ -117,7 +98,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 			gameOverTriggered = true;
 			toggleGameOver(true);
-			pauseAudio(bgMusic);
+			playAudio(sounds.gameOver);
+			pauseAudio(sounds.bgMusic);
 
 			console.log(`\u{1F480} game over! final score: ${countText.textContent}`)
 		}

@@ -1,23 +1,41 @@
 
-export const bgMusic = new Audio("../assets/audio/music/pixels.mp3");
-export const highScoreFx = new Audio("../assets/audio/sfx/highscore.mp3");
+// declare assets
+const bgMusic = new Audio("../assets/audio/music/the-return-of-the-8-bit-era.mp3");
 
-export const buttonIncFx = new Audio("../assets/audio/sfx/button-press-1.mp3");
-export const buttonDecFx = new Audio("../assets/audio/sfx/button-press-2.mp3");
-export const buttonResetFx = new Audio("../assets/audio/sfx/reset-press.mp3");
+const buttonIncFx = new Audio("../assets/audio/sfx/button-press-1.mp3");
+const buttonDecFx = new Audio("../assets/audio/sfx/button-press-2.mp3");
+const buttonResetFx = new Audio("../assets/audio/sfx/reset-press.mp3");
 
-export const goalReachedFx = new Audio("../assets/audio/sfx/goal-reached.mp3");
+const highScoreFx = new Audio("../assets/audio/sfx/highscore.mp3");
+const goalReachedFx = new Audio("../assets/audio/sfx/goal-reached.mp3");
+const gameOverFx = new Audio("../assets/audio/sfx/game-over.mp3");
 
-// audio settings
+// audio configuration
 bgMusic.loop = true;
-bgMusic.volume = 0;
+bgMusic.volume = 0.2;
 
-highScoreFx.volume = 0.8;
 buttonIncFx.volume = 1;
 buttonDecFx.volume = 0.4;
 buttonResetFx.volume = 0.7;
 
-export const playAudio = (audio, fromStart = true) => {
+highScoreFx.volume = 0.8;
+goalReachedFx.volume = 0.2;
+gameOverFx.volume = 1;
+
+// store sound effects in an object
+export const sounds = {
+	bgMusic,
+	highScore: highScoreFx,
+	buttonInc: buttonIncFx,
+	buttonDec: buttonDecFx,
+	goalReached: goalReachedFx,
+	gameOver: gameOverFx,
+	reset: buttonResetFx
+};
+
+
+// audio controls
+export function playAudio(audio, fromStart = true) {
     if (fromStart) {
         audio.currentTime = 0;
     }
@@ -28,8 +46,14 @@ export const playAudio = (audio, fromStart = true) => {
             audioElement: audio
         });
     });
-};
+}
 
-export const pauseAudio = (audio) => {
+export function pauseAudio(audio) {
     audio.pause();
-};
+}
+
+export function lowerVolume(audio, targetVolume) {
+	if (audio && !audio.paused) {
+		audio.volume = targetVolume;
+	}
+}
