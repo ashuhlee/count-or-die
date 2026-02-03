@@ -1,33 +1,39 @@
 @use "../base/globals";
 
-#high-score.new-score {
-	animation: bounce 0.6s, gradient 2s ease;
-	transform-origin: center;
-}
-
 #counter.new-score-counter {
 	fill: url(#gradient-counter);
 }
-.new-goal {
-	animation: swing ease;
-	transform-origin: bottom;
-}
-
-//.new-goal-text {
-//	span {
-//		animation: gradient-goal 0.6s ease;
-//		//animation-delay: var(--delay); // Stagger the gradient effect per letter
-//	}
-//}
 
 .hearts img {
-	animation: heart-scale 2s ease infinite;
+	animation: heart-scale 2s cubic-bezier(0.25,0.10,0.25,1.00) infinite;
 
 	@for $i from 1 through 4 {
 		&:nth-child(#{$i}) {
 			animation-delay: (globals.$delay-step * ($i - 1));
 		}
 	}
+}
+
+#high-score.new-score {
+	animation: bounce 0.6s, gradient 2s ease;
+	transform-origin: center;
+}
+
+.new-goal {
+	animation: swing ease;
+	transform-origin: bottom;
+}
+
+.fade-up-text span {
+	opacity: 0;
+	transform: translateY(20px);
+	display: inline-block;
+	animation: fade-in-up 0.2s ease-out forwards var(--delay);
+}
+
+.game-name span {
+	display: inline-block;
+	animation: wavy-text 2.5s cubic-bezier(0.25,0.10,0.25,1.00) infinite var(--delay);
 }
 
 .pop {
