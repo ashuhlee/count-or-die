@@ -3,9 +3,10 @@ import { playAnimation } from "../anim/animations.js";
 
 export class Counter {
 
-	constructor({ textElement, outerElement }) {
+	constructor({ textElement, outerElement, textShine }) {
 		this.textElement = textElement;
 		this.outerElement = outerElement;
+		this.textShine = textShine;
 	}
 
 	update(counter) {
@@ -13,11 +14,13 @@ export class Counter {
 
 		this.textElement.textContent = displayValue;
 		this.outerElement.textContent = displayValue;
+		this.textShine.textContent = displayValue;
 	}
 
 	animate(className) {
 		playAnimation(this.textElement, className);
 		playAnimation(this.outerElement, className);
+		playAnimation(this.textShine, className);
 	}
 
 	addNewScoreEffect() {
