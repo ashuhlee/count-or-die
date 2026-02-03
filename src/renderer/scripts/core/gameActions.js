@@ -3,6 +3,7 @@ import { playAudio } from "../controls/audioHandler.js";
 import { resetBar } from "../components/progressBarDisplay.js";
 import { animateBtn } from "../anim/animations.js";
 import { toggleGameOver } from "./gameOver.js";
+import { changeTheme, resetTheme } from "../themes/levelTheme.js";
 
 
 export function setGameActions({ state, counter, highScore, goal, goalText, bar, sounds }) {
@@ -15,6 +16,13 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 
 		if (state.counter === state.highScore + 1) {
 			counter.addNewScoreEffect();
+		}
+
+		if (state.counter === 100) {
+			changeTheme("theme100", bar);
+		}
+		if (state.counter === 200) {
+			changeTheme("theme200");
 		}
 
 		if (state.updateHighScore()) {
@@ -67,6 +75,9 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 
 		state.reset();
 
+		// reset ui
+		resetTheme();
+
 		// remove vfx from last game
 		counter.removeNewScoreEffect();
 		highScore.removeNewScoreEffect();
@@ -80,7 +91,6 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 		resetBar(bar, 20);
 
 		// play reset anim + audio
-		playAudio(sounds.reset);
 		playAudio(sounds.bgMusic);
 		counter.animate("reset-shake");
 
