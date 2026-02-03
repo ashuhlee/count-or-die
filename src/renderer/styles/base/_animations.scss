@@ -1,3 +1,4 @@
+@use "globals";
 
 @keyframes slide {
 	0% { background-position: 0 0; }
@@ -11,17 +12,7 @@
 @keyframes gradient {
 	0% {
 		color: transparent;
-		background-image: linear-gradient(
-			to right,
-			#ffacad,
-			#ffd5a5,
-			#fdffb6,
-			#cbffbf,
-			#9bf6ff,
-			#a0c4ff,
-			#bdb2ff,
-			#ffc6ff
-		);
+		background-image: globals.$rainbow-gradient;
 		background-clip: text;
 		background-size: 200% auto;
 		background-position: 0% center;
@@ -32,20 +23,18 @@
 	}
 }
 
-@keyframes gradient-goal {
+@keyframes fade-in-up {
+	to {
+		color: #4B4D5A;
+		opacity: 1;
+		transform: translateY(0);
+  	}
+}
+
+@keyframes text-gradient {
 	0% {
 		color: transparent;
-		background-image: linear-gradient(
-			to right,
-			#ffacad,
-			#ffd5a5,
-			#fdffb6,
-			#cbffbf,
-			#9bf6ff,
-			#a0c4ff,
-			#bdb2ff,
-			#ffc6ff
-		);
+		background-image: globals.$rainbow-gradient;
 		background-clip: text;
 		background-size: 100% auto;
 		background-position: 0% center;
@@ -56,11 +45,33 @@
 	}
 }
 
-@keyframes fadeInUp {
-	to {
-		opacity: 1;
+@keyframes wavy-text {
+	0% {
 		transform: translateY(0);
-  	}
+	}
+	50% {
+		transform: translateY(-10px);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+
+@keyframes move-stripes {
+	from { background-position: 0 0; }
+	to { background-position: -28px 0; }
+}
+
+@keyframes point {
+	0% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-2px);
+	}
+	100% {
+		transform: translateY(0);
+	}
 }
 
 @keyframes progress-anim {
