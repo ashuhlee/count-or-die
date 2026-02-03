@@ -1,4 +1,4 @@
-import { wrapLetters, playLetterAnim } from "../anim/animations.js";
+import { splitLetters } from "../anim/animations.js";
 
 export function setGoalDisplay(element) {
 
@@ -10,8 +10,7 @@ export function setGoalDisplay(element) {
 				textSpan.textContent = `next: ${goal}`;
 
 				if (shouldAnimate) {
-					wrapLetters('.goal-text');
-					playLetterAnim(textSpan);
+					splitLetters('.goal-text');
 				}
 			} else {
 				element.textContent = `next: ${goal}`;
