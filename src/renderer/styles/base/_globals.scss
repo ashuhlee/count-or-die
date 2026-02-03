@@ -2,7 +2,21 @@
 @import url('https://fonts.cdnfonts.com/css/alien-cyborg');
 
 $assets: "../../assets";
-$body-bg-image: "#{$assets}/images/png/textures/tile.png";
+
+$body-bg-image: "#{$assets}/images/png/textures/tile-2.png";
 $cursor: "#{$assets}/ui/hand.png";
 $scanline: "#{$assets}/images/png/textures/scanlines-2.png";
+
 $delay-step: 0.5s;
+
+$rainbow-gradient: linear-gradient(
+    to right,
+    #ffacad,
+    #ffd5a5,
+    #fdffb6,
+    #cbffbf,
+    #9bf6ff,
+    #a0c4ff,
+    #bdb2ff,
+    #ffc6ff
+);
