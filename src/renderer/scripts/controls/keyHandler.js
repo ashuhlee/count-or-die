@@ -26,7 +26,7 @@ export function keyboardControls(handlers) {
             case "a":
             case "-":
             case "_":
-                handlers.onDecrease();
+                handlers.onBoost();
                 break;
 
             case "Escape":

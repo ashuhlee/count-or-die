@@ -18,7 +18,7 @@ import { Counter } from "./components/counterDisplay.js";
 
 const ipc = require('electron').ipcRenderer;
 
-localStorage.setItem("high-score", 36); // TESTS: manually reset high score
+// localStorage.setItem("high-score", 36); // TESTS: manually reset high score
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -79,13 +79,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// button clicks
 	document.getElementById("increase-img").addEventListener("click", actions.increase);
-	document.getElementById("decrease-img").addEventListener("click", actions.decrease);
+	document.getElementById("decrease-img").addEventListener("click", actions.jumpToGoal);
 
 	document.getElementById("reset-img").addEventListener("click", () => {
+
 		actions.restartGame();
 		playAudio(sounds.reset);
 		gameOverTriggered = false;
 	});
+
 	document.getElementById("game-over-btn").addEventListener("click", () => {
 		actions.restartGame();
 		gameOverTriggered = false;
@@ -94,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	// keyb controls
 	keyboardControls({
 		onIncrease: actions.increase,
-		onDecrease: actions.decrease,
+		onBoost: actions.jumpToGoal,
 		onRestart: () => {
 			actions.restartGame();
 			gameOverTriggered = false;

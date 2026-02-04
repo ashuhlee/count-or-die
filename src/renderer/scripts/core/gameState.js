@@ -3,9 +3,12 @@ export class GameState {
 
 	constructor() {
 		this.counter = 0;
+		this.boostsAvailable = 4;
 
 		this.currentGoal = 30;
 		this.goalsReached = 0;
+		this.trueGoalsReached = 0; // without boosts
+
 		this.goalIncrement = 25; // starting increment
 		this.goalIncRandomizer = [10, 15, 20, 25, 30];
 
@@ -17,13 +20,26 @@ export class GameState {
 	increment() {
 		this.counter++;
 	}
-	decrement() {
-		this.counter = this.counter > 0 ? this.counter - 1 : 0; // TO-DO: update this with the power-up button
+	boost() {
+		// TODO: update this with the boost button + other files
+		if (this.boostsAvailable <= 0) {
+			return false;
+		}
+		this.counter = this.currentGoal;
+
+		this.goalsReached++;
+		this.boostsAvailable--;
+
+		return true;
 	}
 	reset() {
 		this.counter = 0;
+		this.boostsAvailable = 4;
 		this.currentGoal = 30;
+
 		this.goalsReached = 0;
+		this.trueGoalsReached = 0;
+
 		this.highScoreFxPlayed = false;
 	}
 
@@ -34,8 +50,7 @@ export class GameState {
 
 	// update high score logic
 	updateHighScore() {
-
-		// TO-DO: implement better high score storing
+		// TODO: implement better high score storing
 		if (this.counter > this.highScore) {
 
 			this.highScore = this.counter;
@@ -49,15 +64,22 @@ export class GameState {
 	isGoalReached() {
 		return this.counter === this.currentGoal;
 	}
-	incrementGoal() {
+	incrementGoal(boosted = false) {
 		this.goalIncrement = this.getRandomGoal();
 		this.currentGoal += this.goalIncrement; // random increments of [10, 15, 20, 25, 30]
 		this.goalsReached++;
+
+		if (!boosted) {
+			this.trueGoalsReached++;
+		}
 	}
 
-	// progress bar logic
+	// 1.2x speed increase each round
 	barSpeed() {
-		// 1.25x speed increase each round
-		return 20 / Math.pow(1.25, this.goalsReached);
+		let multiplier = Math.pow(1.2, this.trueGoalsReached);
+		let speedIncrease = 20 / multiplier;
+
+		console.log(`${multiplier.toFixed(2)}x faster`);
+		return speedIncrease;
 	}
 }

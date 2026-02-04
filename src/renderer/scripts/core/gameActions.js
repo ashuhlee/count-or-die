@@ -1,12 +1,49 @@
 
 import { playAudio } from "../controls/audioHandler.js";
+
 import { resetBar } from "../components/progressBarDisplay.js";
-import { animateBtn } from "../anim/animations.js";
+import { removeHeart, resetHearts } from "../components/heartDisplay.js";
+
+import { animateBtn, playAnimation } from "../anim/animations.js";
 import { toggleGameOver } from "./gameOver.js";
-import { changeTheme, resetTheme } from "../themes/levelTheme.js";
+import { changeTheme, resetTheme } from "../controls/themeHandler.js";
 
 
 export function setGameActions({ state, counter, highScore, goal, goalText, bar, sounds }) {
+
+	function updateScoreAndGoal(animationType, boosted) {
+
+		// handle high score
+		if (state.updateHighScore()) {
+			highScore.update(state.highScore);
+			highScore.addNewScoreEffect();
+
+			if (!state.highScoreFxPlayed) {
+
+				playAudio(sounds.highScore);
+				state.highScoreFxPlayed = true;
+			}
+		} else {
+			counter.removeNewScoreEffect();
+		}
+
+		// handle goal reached
+		if (state.isGoalReached()) {
+
+			playAudio(sounds.goalReached);
+			goal.addNewGoalEffect();
+			goalText.addNewTextEffect();
+
+			state.incrementGoal(boosted);
+			console.log(`boosted: ${boosted}`); // tests
+
+			goal.update(state.currentGoal, true);
+			resetBar(bar, state.barSpeed());
+		}
+
+		counter.animate(animationType);
+		counter.update(state.counter);
+	}
 
 	function increase() {
 
@@ -22,67 +59,44 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 			changeTheme("theme100", bar);
 		}
 		if (state.counter === 200) {
-			changeTheme("theme200");
+			changeTheme("theme200", bar);
 		}
-
-		if (state.updateHighScore()) {
-			highScore.update(state.highScore);
-			highScore.addNewScoreEffect();
-
-			if (!state.highScoreFxPlayed) {
-
-				playAudio(sounds.highScore);
-				state.highScoreFxPlayed = true;
-			}
-		} else {
-			counter.removeNewScoreEffect();
-		}
-
-		if (state.isGoalReached()) {
-
-			playAudio(sounds.goalReached);
-			goal.addNewGoalEffect();
-			goalText.addNewTextEffect();
-
-			state.incrementGoal();
-			goal.update(state.currentGoal, true);
-			resetBar(bar, state.barSpeed());
-
-		}
-
-		counter.animate("pop");
-		counter.update(state.counter);
+		updateScoreAndGoal("pop", false);
 	}
 
-	function decrease() {
+	function jumpToGoal() {
 
-		state.decrement();
-		animateBtn("decrease");
+		const noBoostsText = document.getElementById("no-boosts");
 
-		if (state.counter === 0) {
-			counter.animate("reset-shake");
-			counter.update(state.counter);
-			playAudio(sounds.reset);
+		if (state.boostsAvailable <= 0) {
+			playAnimation(noBoostsText, "no-boosts-shake");
+			console.log('no boosts left!'); // tests
 			return;
 		}
 
-		playAudio(sounds.buttonDec);
-		counter.animate("pop-dec");
-		counter.update(state.counter);
+		state.boost();
+		console.log(`boosts left: ${state.boostsAvailable}`); // tests
+
+		animateBtn("decrease");
+		playAudio(sounds.highScore);
+
+		removeHeart(state.boostsAvailable);
+		updateScoreAndGoal("pop-dec", true);
 	}
 
 	function restartGame() {
-
+		// reset ui
 		state.reset();
 
-		// reset ui
 		resetTheme();
+		resetHearts();
 
 		// remove vfx from last game
 		counter.removeNewScoreEffect();
 		highScore.removeNewScoreEffect();
 		goal.removeNewGoalEffect();
 
+		// remove game over div
 		toggleGameOver(false);
 
 		// reset values
@@ -96,6 +110,6 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 
 	}
 
-	return { increase, decrease, restartGame };
+	return { increase, jumpToGoal, restartGame };
 
 }
