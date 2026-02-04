@@ -1,6 +1,6 @@
 
 let i = 0;
-const animClasses = ["pop", "pop-dec", "reset-shake", "new-goal"];
+const animClasses = ["pop", "pop-dec", "reset-shake", "no-boosts-shake", "new-goal"];
 
 export const btnImages = {
 	increase: {
