@@ -1,4 +1,4 @@
-@use "../base/globals";
+@use "globals";
 
 #counter.new-score-counter {
 	fill: url(#gradient-counter);
@@ -53,6 +53,11 @@
 
 .reset-shake {
 	animation: reset-shake 0.25s ease-out;
+	transform-box: fill-box;
+	transform-origin: center;
+}
+.no-boosts-shake {
+	animation: no-boosts-shake 0.25s ease-out;
 	transform-box: fill-box;
 	transform-origin: center;
 }
