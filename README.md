@@ -1,5 +1,5 @@
 # Count Or Die ☠️
-(WIP) An arcade counting game with progressive difficulty, multiple game modes, and a timer that gets faster as you level up
+(Still in development) An arcade counting game with progressive difficulty, multiple game modes (coming soon), and a timer that gets faster as you level up
 
 Follow development progress: [Notion](https://ashuhlee.notion.site/Count-or-Die-2f5a30a56798803383e7dd6b54a77d4e?source=copy_link)
 
@@ -13,7 +13,7 @@ Follow development progress: [Notion](https://ashuhlee.notion.site/Count-or-Die-
 | Input               | Action              |
 |---------------------|---------------------|
 | `↑` `→` `W` `D` `+` | Increase counter    |
-| `↓` `←` `S` `A` `-` | Decrease counter    |
+| `↓` `←` `S` `A` `-` | Use boost           |
 | `Escape`            | Restart game        |
 | Mouse click         | Button interactions |
 
