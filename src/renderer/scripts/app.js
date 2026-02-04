@@ -1,6 +1,6 @@
 
 import { setGameActions } from "./core/gameActions.js";
-import { toggleGameOver } from "./core/gameOver.js";
+import { toggleGameOver, youDiedConsole } from "./core/gameOver.js";
 
 import { keyboardControls } from "./controls/keyHandler.js";
 import { playAudio, pauseAudio, sounds } from "./controls/audioHandler.js";
@@ -109,10 +109,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 			gameOverTriggered = true;
 			toggleGameOver(true);
+			youDiedConsole(countText.textContent);
+
 			playAudio(sounds.gameOver);
 			pauseAudio(sounds.bgMusic);
 
-			console.log(`\u{1F480} game over! final score: ${countText.textContent}`)
 		}
 	});
 
