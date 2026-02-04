@@ -1,12 +1,20 @@
-.title {
+.title, .no-boosts {
   color: #fff;
   text-shadow: 0 5px 0 var(--shadow-pink-015);
-  transform: translateY(60px);
-  font-family: "Silkscreen", sans-serif; font-size: 30px;
+  font-family: "Silkscreen", sans-serif;
   font-weight: bold;
   font-style: normal;
   margin: 0 auto;
   text-align: center;
+}
+.title {
+	transform: translateY(60px);
+	font-size: 30px;
+}
+.no-boosts {
+	display: none;
+	padding-top: 10px !important;
+	font-size: 26px;
 }
 
 #high-score {
