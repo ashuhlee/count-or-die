@@ -79,7 +79,7 @@ export class GameState {
 		let multiplier = Math.pow(1.2, this.trueGoalsReached);
 		let speedIncrease = 20 / multiplier;
 
-		console.log(`${multiplier.toFixed(2)}x faster`);
+		// console.log(`${multiplier.toFixed(2)}x faster`); // tests
 		return speedIncrease;
 	}
 }

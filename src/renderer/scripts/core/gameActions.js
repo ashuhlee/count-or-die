@@ -35,7 +35,7 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 			goalText.addNewTextEffect();
 
 			state.incrementGoal(boosted);
-			console.log(`boosted: ${boosted}`); // tests
+			// console.log(`boosted: ${boosted}`); // tests
 
 			goal.update(state.currentGoal, true);
 			resetBar(bar, state.barSpeed());
@@ -70,12 +70,12 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 
 		if (state.boostsAvailable <= 0) {
 			playAnimation(noBoostsText, "no-boosts-shake");
-			console.log('no boosts left!'); // tests
+			// console.log('no boosts left!'); // tests
 			return;
 		}
 
 		state.boost();
-		console.log(`boosts left: ${state.boostsAvailable}`); // tests
+		// console.log(`boosts left: ${state.boostsAvailable}`); // tests
 
 		animateBtn("decrease");
 		playAudio(sounds.highScore);
