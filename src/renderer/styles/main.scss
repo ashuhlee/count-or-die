@@ -8,6 +8,7 @@
 @use "components/text";
 @use "components/vfx";
 @use "components/goal";
+@use "components/hearts";
 
-@use "states/effects";
+@use "base/effects";
 @use "states/game-over";
