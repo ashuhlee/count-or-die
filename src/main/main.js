@@ -14,7 +14,7 @@ function createWindow() {
         fullscreenable: true,
         icon: iconPath,
         webPreferences: {
-            preload: path.join(__dirname, '../preload/preload.js'),
+            preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: true,
 			contextIsolation: false
         }
@@ -25,7 +25,11 @@ function createWindow() {
         app.dock.setIcon(dockIcon);
     }
 
-    mainWindow.loadFile("src/renderer/index.html");
+    if (!app.isPackaged) {
+        mainWindow.loadURL('http://localhost:5173');
+    } else {
+        mainWindow.loadFile(path.join(__dirname, '../renderer/main_window/index.html'));
+    }
 }
 
 app.whenReady().then(() => {
@@ -55,5 +59,4 @@ if (!app.isPackaged) {
     path.join(__dirname, "..", "renderer"),
     {electron: path.join(__dirname, "..", "..", "node_modules", ".bin", "electron"),}
   );
-	console.log("Electron reload active");
 }
