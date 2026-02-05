@@ -1,21 +1,32 @@
 
+// import files
+import bgMusicFile from "../../assets/audio/music/the-return-of-the-8-bit-era.mp3";
+
+import btnIncFxFile from "../../assets/audio/sfx/button-press-1.mp3";
+import btnDecFxFile from "../../assets/audio/sfx/button-press-2.mp3";
+import btnResetFxFile from "../../assets/audio/sfx/reset-press.mp3";
+
+import goalReachedFxFile from "../../assets/audio/sfx/goal-reached.mp3";
+import highScoreFxFile from "../../assets/audio/sfx/highscore.mp3";
+import gameOverFxFile from "../../assets/audio/sfx/game-over.mp3";
+
 // declare assets
-const bgMusic = new Audio("../assets/audio/music/the-return-of-the-8-bit-era.mp3");
+const bgMusic = new Audio(bgMusicFile);
 
-const buttonIncFx = new Audio("../assets/audio/sfx/button-press-1.mp3");
-const buttonDecFx = new Audio("../assets/audio/sfx/button-press-2.mp3");
-const buttonResetFx = new Audio("../assets/audio/sfx/reset-press.mp3");
+const buttonIncFx = new Audio(btnIncFxFile);
+const buttonDecFx = new Audio(btnDecFxFile);
+const buttonResetFx = new Audio(btnResetFxFile);
 
-const goalReachedFx = new Audio("../assets/audio/sfx/goal-reached.mp3");
-const highScoreFx = new Audio("../assets/audio/sfx/highscore.mp3");
-const gameOverFx = new Audio("../assets/audio/sfx/game-over.mp3");
+const goalReachedFx = new Audio(goalReachedFxFile);
+const highScoreFx = new Audio(highScoreFxFile);
+const gameOverFx = new Audio(gameOverFxFile);
 
 const boostUsedFx = new Audio();
 const noBoostsFx = new Audio();
 
 // audio configuration
 bgMusic.loop = true;
-bgMusic.volume = 0;
+bgMusic.volume = 0.3;
 
 buttonIncFx.volume = 1;
 buttonDecFx.volume = 0.4;

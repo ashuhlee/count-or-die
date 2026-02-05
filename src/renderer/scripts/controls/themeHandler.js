@@ -1,6 +1,10 @@
 
 import { barColors } from "../components/progressBarDisplay.js";
 
+import tile4 from "../../assets/ui/textures/tile-4.png";
+import resetBtnPink from "../../assets/ui/buttons/reset-btn-pink.png";
+import resetBtnDefault from "../../assets/ui/buttons/reset-btn.png";
+
 export function changeTheme(level, progressBar) {
 
 	const resetBtn = document.getElementById('reset-img');
@@ -13,8 +17,8 @@ export function changeTheme(level, progressBar) {
 				progressBar.style.background = barColors.primary;
 			}
 
-			document.body.style.backgroundImage = 'url("../assets/ui/textures/tile-4.png")';
-			resetBtn.src = '../assets/ui/buttons/reset-btn-pink.png';
+			document.body.style.backgroundImage = `url("${tile4}")`;
+			resetBtn.src = resetBtnPink;
 
 			document.documentElement.style.setProperty('--shadow-pink-005', 'var(--shadow-purple-005)');
 			document.documentElement.style.setProperty('--shadow-pink-015', 'var(--shadow-purple-015)');
@@ -29,7 +33,7 @@ export function changeTheme(level, progressBar) {
 			break;
 
 		case 'theme200':
-			document.body.style.backgroundImage = 'url("../assets/ui/textures/tile-4.png")';
+			document.body.style.backgroundImage = `url("${tile4}")`;
 			break;
 	}
 }
@@ -40,7 +44,7 @@ export function resetTheme() {
 	document.body.style.backgroundImage = '';
 
 	const resetBtn = document.getElementById('reset-img');
-	resetBtn.src = '../assets/ui/buttons/reset-btn.png'
+	resetBtn.src = resetBtnDefault;
 
 	document.documentElement.style.setProperty('--shadow-pink-005', '');
 	document.documentElement.style.setProperty('--shadow-pink-015', '');

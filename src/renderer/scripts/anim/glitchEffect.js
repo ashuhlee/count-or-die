@@ -1,5 +1,5 @@
 
-const PowerGlitch = require('powerglitch').PowerGlitch;
+import { PowerGlitch } from "powerglitch";
 
 export function createGlitch(element, duration, iterations) {
 

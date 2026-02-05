@@ -3,9 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Count or Die</title>
-    <link rel="stylesheet" href="styles/main.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-  />
+    <link rel="stylesheet" href="./styles/main.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+	<link rel="icon" type="image/png" href="assets/favicon/favicon-96x96.png" sizes="96x96" />
+	<link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg" />
+	<link rel="shortcut icon" href="assets/favicon/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
+	<meta name="apple-mobile-web-app-title" content="Count or Die" />
+	<link rel="manifest" href="assets/favicon/site.webmanifest" />
 </head>
 <body>
 <div class="main">
@@ -13,8 +18,8 @@
 	<div class="scanlines-bg"></div>
 	<div class="top-gradient"></div>
 	<div class="controls">
-		<img id="soundBtn" alt="sound icon" src="../assets/ui/svg/sound-button-reg.svg"/>
-		<img id="optionsBtn" alt="options icon" src="../assets/ui/svg/options-button.svg"/>
+		<img id="soundBtn" alt="sound icon" src="assets/ui/svg/sound-button-reg.svg"/>
+		<img id="optionsBtn" alt="options icon" src="assets/ui/svg/options-button.svg"/>
 	</div>
     <div id="game-over">
         <h1 class="go-title">game over :(</h1>
@@ -25,7 +30,7 @@
 			<div class="next-goal animate__animated animate__fast" id="next-goal">
 				<span class="goal-text fade-up-text">next: 30</span>
 			</div>
-			<img src="../assets/ui/svg/chat-tip.svg" class="chat-tip" alt="chat tip"/>
+			<img src="assets/ui/svg/chat-tip.svg" class="chat-tip" alt="chat tip"/>
 		</div>
         <div class="progress"><div class="pg-lines"></div><div class="progress-bar" id="progress-bar"></div><div class="progress-bg"></div></div>
         <h1 class="title"><span class="game-name">count or die</span></h1>
@@ -57,34 +62,31 @@
 			  <rect x="0" y="0" width="100%" height="100%" clip-path="url(#shine-effect)" class="shine-rect"/>
             </svg>
         </div>
-        <!-- heart pop-up -->
 		<div class="boost-stuff">
 			<h1 class="no-boosts" id="no-boosts">no boosts left!</h1>
 			<div class="hearts">
-				<div class="heart-pink" id="boost-1"><img src="../assets/ui/deco/px_heart_pink.png" alt="heart1" class="heart1"/></div>
-				<div class="heart-purple" id="boost-2"><img src="../assets/ui/deco/px_heart_purple.png" alt="heart2" class="heart2"/></div>
-				<div class="heart-blue" id="boost-3"><img src="../assets/ui/deco/px_heart_blue.png" alt="heart3" class="heart3"/></div>
-				<div class="heart-white" id="boost-4"><img src="../assets/ui/deco/px_heart_white.png" alt="heart4" class="heart4"/></div>
+				<div class="heart-pink" id="boost-1"><img src="assets/ui/deco/px_heart_pink.png" alt="heart1" class="heart1"/></div>
+				<div class="heart-purple" id="boost-2"><img src="assets/ui/deco/px_heart_purple.png" alt="heart2" class="heart2"/></div>
+				<div class="heart-blue" id="boost-3"><img src="assets/ui/deco/px_heart_blue.png" alt="heart3" class="heart3"/></div>
+				<div class="heart-white" id="boost-4"><img src="assets/ui/deco/px_heart_white.png" alt="heart4" class="heart4"/></div>
 			</div>
 		</div>
 
         <div class="buttons">
-            <!-- decrease button -->
             <div id="decrease-button">
-                <img src="../assets/ui/buttons/decrease.png" id="decrease-img" alt="decrease-reg"/>
+                <img src="assets/ui/buttons/decrease.png" id="decrease-img" alt="decrease-reg"/>
             </div>
-            <!-- increase button -->
             <div id="increase-button">
-                <img src="../assets/ui/buttons/increase.png" id="increase-img" alt="increase-reg"/>
+                <img src="assets/ui/buttons/increase.png" id="increase-img" alt="increase-reg"/>
             </div>
         </div>
 
         <div class="reset" id="reset">
-            <img src="../assets/ui/buttons/reset-btn.png" id="reset-img" alt="increase-reg"/>
+            <img src="assets/ui/buttons/reset-btn.png" id="reset-img" alt="increase-reg"/>
         </div>
     </div>
     <h1 id="high-score" class="animate__animated">high score: 0</h1>
 </div>
-    <script type="module" src="scripts/app.js"></script>
+    <script type="module" src="./scripts/app.js"></script>
 </body>
 </html>
