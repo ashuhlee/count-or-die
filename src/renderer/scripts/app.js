@@ -16,7 +16,7 @@ import { GameState } from "./core/gameState.js";
 import { Counter } from "./components/counterDisplay.js";
 
 
-const ipc = require('electron').ipcRenderer;
+// const ipc = require('electron').ipcRenderer;
 
 // localStorage.setItem("high-score", 36); // TESTS: manually reset high score
 
@@ -118,10 +118,10 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 
 	// close app
-	function closeApp(e) {
-		e.preventDefault();
-		ipc.send("close");
-	}
+	// function closeApp(e) {
+	// 	e.preventDefault();
+	// 	ipc.send("close");
+	// }
 	// const closeBtn = document.getElementById("closeApp")
 	// closeBtn.addEventListener("click", closeApp);
 
