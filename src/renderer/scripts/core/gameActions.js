@@ -55,11 +55,11 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 			counter.addNewScoreEffect();
 		}
 
-		if (state.counter === 100) {
-			changeTheme("theme100", bar);
-		}
 		if (state.counter === 200) {
 			changeTheme("theme200", bar);
+		}
+		if (state.counter === 300) {
+			changeTheme("theme300", bar);
 		}
 		updateScoreAndGoal("pop", false);
 	}
