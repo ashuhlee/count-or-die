@@ -10,7 +10,7 @@ export function changeTheme(level, progressBar) {
 	const resetBtn = document.getElementById('reset-img');
 
 	switch (level) {
-		case 'theme100':
+		case 'theme200':
 
 			barColors.primary = "#ffa2f1";
 			if (progressBar) {
@@ -32,7 +32,7 @@ export function changeTheme(level, progressBar) {
 
 			break;
 
-		case 'theme200':
+		case 'theme300':
 			document.body.style.backgroundImage = `url("${tile4}")`;
 			break;
 	}
