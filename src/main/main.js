@@ -51,12 +51,3 @@ app.on("window-all-closed", () => {
 ipcMain.on("close", () => {
   app.quit()
 })
-
-
-// reload app after changes
-if (!app.isPackaged) {
-	require("electron-reload")(
-    path.join(__dirname, "..", "renderer"),
-    {electron: path.join(__dirname, "..", "..", "node_modules", ".bin", "electron"),}
-  );
-}
