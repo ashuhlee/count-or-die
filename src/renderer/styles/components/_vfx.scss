@@ -9,13 +9,13 @@
 }
 
 .scanlines {
-  opacity: 0.8;
+  opacity: 0.6;
   mix-blend-mode: soft-light;
-  z-index: 3;
+  z-index: 10;
 }
 
 .scanlines-bg {
-  opacity: 0.6;
+  opacity: 0.8;
   mix-blend-mode: soft-light;
   z-index: -2;
 }
