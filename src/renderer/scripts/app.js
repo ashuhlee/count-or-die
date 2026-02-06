@@ -35,8 +35,13 @@ document.addEventListener("DOMContentLoaded", () => {
 	setInterval(heartGlitch, 6000);
 	heartGlitch();
 
-	// track progress bar (every 1 ms)
-	setInterval(() =>  updateBarColor(progressBar), 1);
+	// track progress bar
+	function animate() {
+		updateBarColor(progressBar);
+		requestAnimationFrame(animate);
+	}
+
+	animate();
 
 	let countText = document.getElementById("counter");
 	let countOuter = document.getElementById("counter-outer");
