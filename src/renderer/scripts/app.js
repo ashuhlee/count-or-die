@@ -3,14 +3,15 @@ import { setGameActions } from "./core/gameActions.js";
 import { toggleGameOver, youDiedConsole } from "./core/gameOver.js";
 
 import { keyboardControls } from "./controls/keyHandler.js";
-import { playAudio, pauseAudio, sounds } from "./controls/audioHandler.js";
+import { playAudio, pauseAudio, sounds, toggleMusic } from "./controls/audioHandler.js";
 
 import { splitLetters } from "./anim/animations.js";
-import {createGlitch, heartGlitch} from "./anim/glitchEffect.js";
+import { heartGlitch } from "./anim/glitchEffect.js";
 
 import { setGoalDisplay, setGradientText } from "./components/goalDisplay.js";
 import { setHighScoreDisplay } from "./components/highScoreDisplay.js";
 import { initProgressBar, updateBarColor } from "./components/progressBarDisplay.js";
+import { soundToggle } from "./components/menuBar.js";
 
 import { GameState } from "./core/gameState.js";
 import { Counter } from "./components/counterDisplay.js";
@@ -102,6 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			gameOverTriggered = false;
 		},
 	});
+	soundToggle();
 
 	// game over
 	document.addEventListener("progressBarExp", () => {
@@ -116,13 +118,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		}
 	});
-
-	// close app
-	// function closeApp(e) {
-	// 	e.preventDefault();
-	// 	ipc.send("close");
-	// }
-	// const closeBtn = document.getElementById("closeApp")
-	// closeBtn.addEventListener("click", closeApp);
 
 });

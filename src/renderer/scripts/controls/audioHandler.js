@@ -38,7 +38,7 @@ gameOverFx.volume = 1;
 
 // store sound effects in an object
 export const sounds = {
-	bgMusic,
+	bgMusic: bgMusic,
 
 	buttonInc: buttonIncFx,
 	buttonDec: buttonDecFx,
@@ -75,5 +75,12 @@ export function pauseAudio(audio) {
 export function lowerVolume(audio, targetVolume) {
 	if (audio && !audio.paused) {
 		audio.volume = targetVolume;
+	}
+}
+
+export function toggleMusic(audio) {
+	audio.muted = !audio.muted;
+	if (!audio.muted) {
+		audio.play();
 	}
 }
