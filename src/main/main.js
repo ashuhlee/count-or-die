@@ -7,7 +7,7 @@ function createWindow() {
     const iconPath = path.resolve(__dirname, '../assets/icons/mac/icon.icns');
 
     const mainWindow = new BrowserWindow({
-        width: 500,
+        width: 475,
         height: 900,
         resizable: true,
         maximizable: true,
