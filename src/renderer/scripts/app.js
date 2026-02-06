@@ -3,7 +3,7 @@ import { setGameActions } from "./core/gameActions.js";
 import { toggleGameOver, youDiedConsole } from "./core/gameOver.js";
 
 import { keyboardControls } from "./controls/keyHandler.js";
-import { playAudio, pauseAudio, sounds, toggleMusic } from "./controls/audioHandler.js";
+import { playAudio, pauseAudio, sounds } from "./controls/audioHandler.js";
 
 import { splitLetters } from "./anim/animations.js";
 import { heartGlitch } from "./anim/glitchEffect.js";
@@ -28,11 +28,15 @@ document.addEventListener("DOMContentLoaded", () => {
 	const progressBar = initProgressBar();
 
 	let gameOverTriggered = false;
+	let heartGlitchInterval = null;
 
 	// animations
 	splitLetters(".game-name", "wavy");
 
-	setInterval(heartGlitch, 6000);
+	if (heartGlitchInterval) {
+		clearInterval(heartGlitchInterval);
+	}
+	heartGlitchInterval = setInterval(heartGlitch, 6000);
 	heartGlitch();
 
 	// track progress bar
@@ -48,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	let countShine = document.getElementById("counter-shine");
 
 	let highScoreText = document.getElementById("high-score");
+	let finalScore = document.getElementById("final-score");
 	let goalBox = document.getElementById("next-goal");
 	let goalText = document.querySelector(".goal-text");
 
@@ -80,6 +85,11 @@ document.addEventListener("DOMContentLoaded", () => {
 		sounds: sounds,
 		onRestart: () => {
 			gameOverTriggered = false;
+			if (heartGlitchInterval) {
+				clearInterval(heartGlitchInterval);
+			}
+			heartGlitchInterval = setInterval(heartGlitch, 6000);
+			heartGlitch();
 		}
 	});
 
@@ -117,6 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			gameOverTriggered = true;
 			toggleGameOver(true);
 			youDiedConsole(countText.textContent);
+			finalScore.textContent = `Score: ${countText.textContent}`;
 
 			playAudio(sounds.gameOver);
 			pauseAudio(sounds.bgMusic);
