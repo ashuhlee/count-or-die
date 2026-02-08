@@ -33,8 +33,8 @@ Project Tracker: [Count or Die](https://ashuhlee.notion.site/Count-or-Die-2f5a30
 For local development or contributing:
 1. Clone this repository:
 ```zsh
-git clone https://github.com/ashuhlee/starlit.git
-cd starlit
+git clone https://github.com/ashuhlee/count-or-die.git
+cd count-or-die
 ```
 2. Install dependencies:
 ```zsh
