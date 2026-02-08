@@ -6,5 +6,5 @@ tests/
 .idea/
 .DS_Store
 .editorconfig
-src/renderer/styles/*.css
-src/renderer/styles/*.css.map
+#src/renderer/styles/*.css
+#src/renderer/styles/*.css.map
