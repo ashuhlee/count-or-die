@@ -93,3 +93,17 @@ export function splitLetters(className, animationType = "fade") {
 		});
 	});
 }
+
+export function resetHeartEffect() {
+
+    const heartIds = ['heart1', 'heart2', 'heart3', 'heart4'];
+
+    heartIds.forEach(id => {
+        const heart = document.getElementById(id);
+        if (heart) {
+            heart.style.visibility = "hidden";
+			heart.getBoundingClientRect();
+			heart.style.visibility = "visible";
+        }
+    });
+}

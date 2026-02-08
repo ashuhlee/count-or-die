@@ -9,7 +9,7 @@ import { toggleGameOver } from "./gameOver.js";
 import { changeTheme, resetTheme } from "../controls/themeHandler.js";
 
 
-export function setGameActions({ state, counter, highScore, goal, goalText, bar, sounds, onGameOver, onRestart }) {
+export function setGameActions({ state, counter, highScore, goal, goalText, bar, sounds }) {
 
 	function updateScoreAndGoal(animationType, boosted) {
 
@@ -106,10 +106,6 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 		// play reset anim + audio
 		playAudio(sounds.bgMusic);
 		counter.animate("reset-shake");
-
-		if (onRestart) {
-			onRestart();
-		}
 
 	}
 

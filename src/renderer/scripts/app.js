@@ -5,7 +5,7 @@ import { toggleGameOver, youDiedConsole } from "./core/gameOver.js";
 import { keyboardControls } from "./controls/keyHandler.js";
 import { playAudio, pauseAudio, sounds } from "./controls/audioHandler.js";
 
-import { splitLetters } from "./anim/animations.js";
+import { resetHeartEffect, splitLetters} from "./anim/animations.js";
 import { heartGlitch } from "./anim/glitchEffect.js";
 
 import { setGoalDisplay, setGradientText } from "./components/goalDisplay.js";
@@ -27,16 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
 	// animations
 	splitLetters(".game-name", "wavy");
 
-	let heartGlitchInterval = null;
-
-	function startHeartGlitchEffect() {
-		if (heartGlitchInterval) {
-			clearInterval(heartGlitchInterval);
-		}
-		heartGlitchInterval = setInterval(heartGlitch, 6000);
-		heartGlitch();
-	}
-	startHeartGlitchEffect();
+	setInterval(heartGlitch, 6000);
+	heartGlitch();
 
 	// track progress bar
 	function animate() {
@@ -82,17 +74,13 @@ document.addEventListener("DOMContentLoaded", () => {
 		goalText: goalTextDisplay,
 		bar: progressBar,
 		sounds: sounds,
-		onGameOver: () => {
-			if (heartGlitchInterval) {
-				clearInterval(heartGlitchInterval);
-			}
-		},
-		onRestart: startHeartGlitchEffect
 	});
 
 	const handleRestart = () => {
 		actions.restartGame();
 		playAudio(sounds.reset);
+		resetHeartEffect();
+		// addHeartEffect();
 	}
 
 	// button clicks
@@ -100,7 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	document.getElementById("decrease-img").addEventListener("click", actions.jumpToGoal);
 	document.getElementById("reset-img").addEventListener("click", handleRestart);
 	document.getElementById("game-over-btn").addEventListener("click", handleRestart);
-
 	// keyb controls
 	keyboardControls({
 		onIncrease: actions.increase,

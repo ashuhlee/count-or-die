@@ -26,6 +26,7 @@ export function heartGlitch() {
 	hearts.forEach((heartItem, index) => {
 		setTimeout(() => {
 			PowerGlitch.glitch(heartItem, {
+				playMode: 'always',
 				timing: {
 					duration: 2500,
 					easing: 'ease',
