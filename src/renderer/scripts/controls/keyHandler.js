@@ -1,8 +1,10 @@
 
 export function keyboardControls(handlers) {
     document.addEventListener("keydown", (event) => {
-
-        // dont trigger if modifier keys are pressed
+		// dont trigger if disabled or modifier keys are pressed
+		if (handlers.disabled && handlers.disabled()) {
+			return;
+		}
         if (event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) {
             return;
         }

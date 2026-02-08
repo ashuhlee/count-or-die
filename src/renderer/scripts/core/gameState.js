@@ -2,6 +2,9 @@
 export class GameState {
 
 	constructor() {
+
+		this.isGameOver = false;
+
 		this.counter = 0;
 		this.boostsAvailable = 4;
 
@@ -32,6 +35,10 @@ export class GameState {
 
 		return true;
 	}
+
+	setGameOver(value) {
+		this.isGameOver = value;
+	}
 	reset() {
 		this.counter = 0;
 		this.boostsAvailable = 4;
@@ -41,6 +48,7 @@ export class GameState {
 		this.trueGoalsReached = 0;
 
 		this.highScoreFxPlayed = false;
+		this.isGameOver = false;
 	}
 
 	getRandomGoal() {
