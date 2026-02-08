@@ -16,9 +16,6 @@ import { soundToggle } from "./components/menuBar.js";
 import { GameState } from "./core/gameState.js";
 import { Counter } from "./components/counterDisplay.js";
 
-
-// const ipc = require('electron').ipcRenderer;
-
 // localStorage.setItem("high-score", 36); // TESTS: manually reset high score
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -27,17 +24,19 @@ document.addEventListener("DOMContentLoaded", () => {
 	playAudio(sounds.bgMusic);
 	const progressBar = initProgressBar();
 
-	let gameOverTriggered = false;
-	let heartGlitchInterval = null;
-
 	// animations
 	splitLetters(".game-name", "wavy");
 
-	if (heartGlitchInterval) {
-		clearInterval(heartGlitchInterval);
+	let heartGlitchInterval = null;
+
+	function startHeartGlitchEffect() {
+		if (heartGlitchInterval) {
+			clearInterval(heartGlitchInterval);
+		}
+		heartGlitchInterval = setInterval(heartGlitch, 6000);
+		heartGlitch();
 	}
-	heartGlitchInterval = setInterval(heartGlitch, 6000);
-	heartGlitch();
+	startHeartGlitchEffect();
 
 	// track progress bar
 	function animate() {
@@ -83,49 +82,41 @@ document.addEventListener("DOMContentLoaded", () => {
 		goalText: goalTextDisplay,
 		bar: progressBar,
 		sounds: sounds,
-		onRestart: () => {
-			gameOverTriggered = false;
+		onGameOver: () => {
 			if (heartGlitchInterval) {
 				clearInterval(heartGlitchInterval);
 			}
-			heartGlitchInterval = setInterval(heartGlitch, 6000);
-			heartGlitch();
-		}
+		},
+		onRestart: startHeartGlitchEffect
 	});
+
+	const handleRestart = () => {
+		actions.restartGame();
+		playAudio(sounds.reset);
+	}
 
 	// button clicks
 	document.getElementById("increase-img").addEventListener("click", actions.increase);
 	document.getElementById("decrease-img").addEventListener("click", actions.jumpToGoal);
-
-	document.getElementById("reset-img").addEventListener("click", () => {
-
-		actions.restartGame();
-		playAudio(sounds.reset);
-		gameOverTriggered = false;
-	});
-
-	document.getElementById("game-over-btn").addEventListener("click", () => {
-		actions.restartGame();
-		gameOverTriggered = false;
-	});
+	document.getElementById("reset-img").addEventListener("click", handleRestart);
+	document.getElementById("game-over-btn").addEventListener("click", handleRestart);
 
 	// keyb controls
 	keyboardControls({
 		onIncrease: actions.increase,
 		onBoost: actions.jumpToGoal,
-		onRestart: () => {
-			actions.restartGame();
-			gameOverTriggered = false;
-		},
+		onRestart: handleRestart,
+		disabled: () => gameState.isGameOver
 	});
 	soundToggle();
 
 	// game over
 	document.addEventListener("progressBarExp", () => {
-		if (!gameState.isGoalReached() && !gameOverTriggered) {
+		if (!gameState.isGoalReached() && !gameState.isGameOver) {
 
-			gameOverTriggered = true;
+			gameState.setGameOver(true);
 			toggleGameOver(true);
+
 			youDiedConsole(countText.textContent);
 			finalScore.textContent = `Score: ${countText.textContent}`;
 
