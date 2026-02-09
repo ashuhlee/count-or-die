@@ -6,7 +6,16 @@ import powerBtn from "../../assets/ui/buttons/decrease.png";
 import powerBtnPress from "../../assets/ui/buttons/decrease-press.png";
 
 let i = 0;
-const animClasses = ["pop", "pop-dec", "reset-shake", "no-boosts-shake", "new-goal"];
+
+const animClasses = [
+	"pop",
+	"pop-dec",
+	"reset-shake",
+	"no-boosts-shake",
+	"no-boosts-flash",
+	"new-goal",
+	"boost-notification"
+];
 
 export const btnImages = {
 	increase: {
@@ -21,7 +30,7 @@ export const btnImages = {
 
 
 function updateColor() {
-	const colors = ['#e673d2', '#A193FF', '#94BEFF', '#BEB9DC', "#fff3a0"];
+	const colors = ['#e673d2', '#A193FF', '#94BEFF', '#BEB9DC'];
 	const color = colors[i];
 	i = (i + 1) % colors.length;
 
@@ -56,11 +65,22 @@ export function playAnimationMulti(elements, className) {
 }
 
 // clicking animation
-export function animateBtn(btnType) {
+export function animateBtn(btnType, disabled = false) {
 
     const img = document.getElementById(`${btnType}-img`);
     img.src = btnImages[btnType].pressed;
 
+	if (disabled) {
+		playAnimation(img, "no-boosts-shake");
+		img.animate([
+			{ filter: 'opacity(0.4) drop-shadow(0 0 0 red) drop-shadow(0 0 0 red) brightness(0.8) saturate(120%)' },
+			{ filter: 'none' }
+		], {
+			duration: 800,
+			easing: 'ease',
+			fill: 'forwards'
+		});
+	}
 	setTimeout(() => {
 		img.src = btnImages[btnType].normal;
 	}, 100);
@@ -84,6 +104,8 @@ export function splitLetters(className, animationType = "fade") {
 			if (animationType === "wavy") {
 				span.style.setProperty('--delay', `${index * 0.1}s`);
 
+			} else if (animationType === "shake") {
+				span.style.setProperty('--delay', `${index * 0.2}s`);
 			} else {
 				span.style.setProperty('--delay', `${index * 0.05}s`);
 				span.style.setProperty("color", newColor);
