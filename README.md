@@ -6,6 +6,11 @@ An arcade counting game with progressive difficulty, randomized power-ups, multi
 
 Project Tracker: [Count or Die](https://ashuhlee.notion.site/Count-or-Die-2f5a30a56798803383e7dd6b54a77d4e?source=copy_link)
 
+[![GitHub Repo stars](https://img.shields.io/github/stars/ashuhlee/count-or-die?style=for-the-badge&logo=starship&logoColor=%23D7E0ED&labelColor=%232F2D42&color=%23FFBDF2)](https://github.com/ashuhlee/count-or-die/stargazers)
+[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/ashuhlee/count-or-die?style=for-the-badge&logo=gitbook&logoColor=%23D9E0EE&labelColor=%232F2D42&color=FFD0CF)](https://github.com/ashuhlee/count-or-die/issues)
+[![GitHub last commit](https://img.shields.io/github/last-commit/ashuhlee/count-or-die?style=for-the-badge&logo=githubsponsors&logoColor=%23D7E0ED&labelColor=2F2D42&color=BBC0FF)](https://github.com/ashuhlee/count-or-die/commits/main/)
+[![GitHub repo size](https://img.shields.io/github/repo-size/ashuhlee/count-or-die?style=for-the-badge&logo=removedotbg&logoColor=%23D9E0EE&labelColor=%232F2D42&color=AEE5FF)](https://github.com/ashuhlee/count-or-die)
+
 ## Previews
 <div align="center">
   <img width="400" alt="Game Screenshot" src="https://github.com/user-attachments/assets/692b5e49-c3a0-4bba-b4a7-8af8da76c84b" />
