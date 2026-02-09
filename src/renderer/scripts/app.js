@@ -80,7 +80,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		actions.restartGame();
 		playAudio(sounds.reset);
 		resetHeartEffect();
-		// addHeartEffect();
 	}
 
 	// button clicks
@@ -88,6 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	document.getElementById("decrease-img").addEventListener("click", actions.jumpToGoal);
 	document.getElementById("reset-img").addEventListener("click", handleRestart);
 	document.getElementById("game-over-btn").addEventListener("click", handleRestart);
+
 	// keyb controls
 	keyboardControls({
 		onIncrease: actions.increase,
