@@ -66,6 +66,7 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 	function jumpToGoal() {
 
 		const noBoostsText = document.getElementById("no-boosts");
+		animateBtn("decrease");
 
 		if (state.boostsAvailable <= 0) {
 			playAnimation(noBoostsText, "no-boosts-shake");
@@ -74,10 +75,8 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 		}
 
 		state.boost();
-		// console.log(`boosts left: ${state.boostsAvailable}`); // tests
-
-		animateBtn("decrease");
 		playAudio(sounds.highScore);
+		// console.log(`boosts left: ${state.boostsAvailable}`); // tests
 
 		removeHeart(state.boostsAvailable);
 		updateScoreAndGoal("pop-dec", true);
