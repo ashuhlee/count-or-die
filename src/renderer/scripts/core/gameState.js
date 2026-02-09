@@ -7,6 +7,7 @@ export class GameState {
 
 		this.counter = 0;
 		this.boostsAvailable = 4;
+		this.countIncrement = 1;
 
 		this.currentGoal = 30;
 		this.goalsReached = 0;
@@ -21,7 +22,7 @@ export class GameState {
 
 	// buttons logic
 	increment() {
-		this.counter++;
+		this.counter += this.countIncrement;
 	}
 	boost() {
 		// TODO: update this with the boost button + other files
