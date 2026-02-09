@@ -25,7 +25,8 @@
     "electron-reload": "^2.0.0-alpha.1",
     "eslint": "^9.39.2",
     "globals": "^17.3.0",
-    "prettier": "^3.8.1"
+    "prettier": "^3.8.1",
+    "sass": "^1.97.3"
   },
   "dependencies": {
     "animate.css": "^4.1.1",
