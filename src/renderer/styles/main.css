@@ -500,6 +500,13 @@ svg {
   max-height: 60px;
 }
 
+#popupElement {
+  position: fixed;
+  width: 65px;
+  height: 65px;
+  display: none;
+}
+
 #counter.new-score-counter {
   fill: url(#gradient-counter);
 }
