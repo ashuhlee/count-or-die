@@ -4,7 +4,7 @@
 
 An arcade counting game with progressive difficulty, randomized power-ups, multiple game modes (coming soon), and a timer that gets faster as you level up
 
-Project Tracker: [Count or Die](https://ashuhlee.notion.site/Count-or-Die-2f5a30a56798803383e7dd6b54a77d4e?source=copy_link)
+[Gameplay Demo](https://www.youtube.com/watch?v=l_mUEsx0na8)
 
 [![GitHub Repo stars](https://img.shields.io/github/stars/ashuhlee/count-or-die?style=for-the-badge&logo=starship&logoColor=%23D7E0ED&labelColor=%232F2D42&color=%23FFBDF2)](https://github.com/ashuhlee/count-or-die/stargazers)
 [![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/ashuhlee/count-or-die?style=for-the-badge&logo=gitbook&logoColor=%23D9E0EE&labelColor=%232F2D42&color=FFD0CF)](https://github.com/ashuhlee/count-or-die/issues)
@@ -59,5 +59,7 @@ npm run make
 This is a personal project, but suggestions and contributions are welcome!
 - Open issues for bugs or feature requests
 - Share feedback on gameplay and user experience
+
+Project Tracker: [Count or Die](https://ashuhlee.notion.site/Count-or-Die-2f5a30a56798803383e7dd6b54a77d4e?source=copy_link)
 
 🎮 Made for gamers, pixel art lovers, and anyone with a slow reaction time
