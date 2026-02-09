@@ -1,6 +1,12 @@
 
 export function keyboardControls(handlers) {
     document.addEventListener("keydown", (event) => {
+
+		if (event.key === "Escape") {
+			handlers.onRestart();
+			return;
+		}
+
 		// dont trigger if disabled or modifier keys are pressed
 		if (handlers.disabled && handlers.disabled()) {
 			return;
@@ -15,8 +21,6 @@ export function keyboardControls(handlers) {
             case "w":
             case "D":
             case "d":
-            case "+":
-            case "=":
                 handlers.onIncrease();
                 break;
 
@@ -26,13 +30,8 @@ export function keyboardControls(handlers) {
             case "s":
             case "A":
             case "a":
-            case "-":
-            case "_":
                 handlers.onBoost();
                 break;
-
-            case "Escape":
-                handlers.onRestart();
         }
     });
 }
