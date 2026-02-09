@@ -13,8 +13,8 @@ Project Tracker: [Count or Die](https://ashuhlee.notion.site/Count-or-Die-2f5a30
 
 ## Previews
 <div align="center">
-  <img width="400" alt="Game Screenshot" src="https://github.com/user-attachments/assets/692b5e49-c3a0-4bba-b4a7-8af8da76c84b" />
-  <img width="400" alt="Gameplay Demo" src="https://github.com/user-attachments/assets/b85f3e2c-d432-4a8c-83b9-79d34a0e3b76" />
+  <img width="400" alt="Game Screenshot" src="https://github.com/user-attachments/assets/12f9a0af-2b04-462c-81fb-c3d288edbfdd" />
+  <img width="400" alt="Gameplay Demo" src="https://github.com/user-attachments/assets/8a767794-210f-400b-a7fa-fc31586e4f77" />
 </div>
 
 ## Core Gameplay
