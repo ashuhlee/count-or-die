@@ -10,6 +10,9 @@ import goalReachedFxFile from "../../assets/audio/sfx/goal-reached.mp3";
 import highScoreFxFile from "../../assets/audio/sfx/highscore.mp3";
 import gameOverFxFile from "../../assets/audio/sfx/game-over.mp3";
 
+import boostFxFile from "../../assets/audio/sfx/boost.mp3";
+import noBoostsFxFile from "../../assets/audio/sfx/error.mp3";
+
 // declare assets
 const bgMusic = new Audio(bgMusicFile);
 
@@ -21,8 +24,8 @@ const goalReachedFx = new Audio(goalReachedFxFile);
 const highScoreFx = new Audio(highScoreFxFile);
 const gameOverFx = new Audio(gameOverFxFile);
 
-const boostUsedFx = new Audio();
-const noBoostsFx = new Audio();
+const boostUsedFx = new Audio(boostFxFile);
+const noBoostsFx = new Audio(noBoostsFxFile);
 
 // audio configuration
 bgMusic.loop = true;
@@ -35,6 +38,9 @@ buttonResetFx.volume = 0.7;
 highScoreFx.volume = 0.4;
 goalReachedFx.volume = 0.4;
 gameOverFx.volume = 1;
+
+boostUsedFx.volume = 0.2;
+noBoostsFx.volume = 0.4;
 
 // store sound effects in an object
 export const sounds = {
