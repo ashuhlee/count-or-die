@@ -1,4 +1,7 @@
 
+import { splitLetters } from "../anim/animations";
+import smokeGif from "../../assets/ui/deco/smoke.gif?t=0";
+
 export function removeHeart(boostsLeft) {
 
 	let i = boostsLeft + 1;
@@ -13,6 +16,7 @@ export function removeHeart(boostsLeft) {
 
 	if (boostsLeft === 0) {
 		noBoostsText.style.display = "grid";
+		splitLetters(".no-boost-text", "shake");
 	}
 }
 
@@ -27,17 +31,21 @@ function addUseEffect(boostsLeft) {
 	const smokeWidth = 65;
 	const smokeHeight = 65;
 
-	const xPosition = rect.left; // x position of element
-	const yPosition = rect.top;  // y position of element
+	const xPos = rect.left; // x position of element
+	const yPos = rect.top;  // y position of element
 
-	console.log("X:", xPosition, "Y:", yPosition);
+	// console.log("X:", xPos, "Y:", yPos); // tests
 
-	popupElement.style.left = `${xPosition}px`;
-	popupElement.style.top = `${(yPosition) - 18}px`;
+	popupElement.style.left = `${xPos}px`;
+	popupElement.style.top = `${(yPos) - 20}px`;
+
+	popupElement.style.width = `${smokeWidth}px`;
+	popupElement.style.height = `${smokeHeight}px`;
 
 	// display smoke effect
-	popupElement.src = 'assets/ui/deco/smoke.gif?t=0';
+	popupElement.src = `${smokeGif}`;
 	popupElement.style.display = 'block';
+	popupElement.style.zIndex = `2`;
 }
 
 export function resetHearts() {
