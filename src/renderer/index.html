@@ -35,6 +35,7 @@
     </div>
     <div class="app">
 		<div class="goal-chatbox" id="goal-chatbox">
+			<span id="boost-notif-text" class="boost-notif-text">boost!</span>
 			<div class="next-goal animate__animated animate__fast" id="next-goal">
 				<span class="goal-text fade-up-text">next: 30</span>
 			</div>
@@ -70,9 +71,9 @@
 			  <rect x="0" y="0" width="100%" height="100%" clip-path="url(#shine-effect)" class="shine-rect"/>
             </svg>
         </div>
-		<img id="popupElement" src="assets/ui/deco/smoke.gif" alt="smoke">
+		<img id="popupElement" src="assets/ui/deco/smoke.gif" alt="smoke" style="filter: brightness(1.02) saturate(110%)">
 		<div class="boost-stuff">
-			<h1 class="no-boosts" id="no-boosts">no boosts left!</h1>
+			<h1 class="no-boosts" id="no-boosts"><span class="no-boost-text">no boosts left!</span></h1>
 			<div class="hearts">
 				<div class="heart-pink" id="boost-1"><img src="assets/ui/deco/px_heart_pink.png" alt="heart1" class="heart1" id="heart1"/></div>
 				<div class="heart-purple" id="boost-2"><img src="assets/ui/deco/px_heart_purple.png" alt="heart2" class="heart2" id="heart2"/></div>
