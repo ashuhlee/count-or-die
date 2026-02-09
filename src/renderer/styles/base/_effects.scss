@@ -36,6 +36,11 @@
 	animation: wavy-text 2.5s cubic-bezier(0.25,0.10,0.25,1.00) infinite var(--delay);
 }
 
+.no-boost-text span {
+	display: inline-block;
+	animation: shake 2s ease infinite var(--delay);
+}
+
 .pop {
 	animation: pop 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
 	transform-origin: center;
@@ -60,4 +65,12 @@
 	animation: no-boosts-shake 0.25s ease-out;
 	transform-box: fill-box;
 	transform-origin: center;
+}
+.no-boosts-flash {
+	animation: flash 0.5s ease;
+	transform-box: fill-box;
+	transform-origin: center;
+}
+.boost-notification {
+    animation: float-up 0.45s ease-out forwards;
 }
