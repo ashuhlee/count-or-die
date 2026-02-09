@@ -21,3 +21,10 @@
 .boost-stuff {
 	max-height: 60px;
 }
+
+#popupElement {
+	position: fixed;
+	width: 65px;
+	height: 65px;
+	display: none;
+}
