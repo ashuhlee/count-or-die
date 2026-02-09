@@ -1,19 +1,20 @@
 
 import { PowerGlitch } from "powerglitch";
 
-export function createGlitch(element, duration, iterations) {
+export function createGlitch(element, duration = 2500, iterations = 4) {
 
 	PowerGlitch.glitch(element, {
+		playMode: 'always',
 		timing: {
 			duration: duration,
 			iterations: iterations,
-			easing: 'linear'
+			easing: 'ease'
 		},
 		shake: {
-			velocity: 10,
+			velocity: 4,
 		},
 		slice: {
-			count: 3,
+			count: 2,
 			hueRotate: false
 		},
 	});
@@ -41,6 +42,7 @@ export function heartGlitch() {
 				},
 				slice: {
 					count: 2,
+					cssFilters: 'brightness(1.05)',
 					hueRotate: false
 				}
 			});
