@@ -5,7 +5,7 @@ import { toggleGameOver, youDiedConsole } from "./core/gameOver.js";
 import { keyboardControls } from "./controls/keyHandler.js";
 import { playAudio, pauseAudio, sounds } from "./controls/audioHandler.js";
 
-import { resetHeartEffect, splitLetters} from "./anim/animations.js";
+import { splitLetters } from "./anim/animations.js";
 import { heartGlitch } from "./anim/glitchEffect.js";
 
 import { setGoalDisplay, setGradientText } from "./components/goalDisplay.js";
@@ -16,7 +16,7 @@ import { soundToggle } from "./components/menuBar.js";
 import { GameState } from "./core/gameState.js";
 import { Counter } from "./components/counterDisplay.js";
 
-// localStorage.setItem("high-score", 36); // TESTS: manually reset high score
+// localStorage.setItem("high-score", 0); // TESTS: manually reset high score
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -76,23 +76,24 @@ document.addEventListener("DOMContentLoaded", () => {
 		sounds: sounds,
 	});
 
-	const handleRestart = () => {
-		actions.restartGame();
-		playAudio(sounds.reset);
-		resetHeartEffect();
-	}
 
 	// button clicks
-	document.getElementById("increase-img").addEventListener("click", actions.increase);
-	document.getElementById("decrease-img").addEventListener("click", actions.jumpToGoal);
-	document.getElementById("reset-img").addEventListener("click", handleRestart);
-	document.getElementById("game-over-btn").addEventListener("click", handleRestart);
+	document.getElementById("increase-img").addEventListener("click", (e) => {
+		actions.increase(e);
+	});
+
+	document.getElementById("decrease-img").addEventListener("click", (e) => {
+		actions.jumpToGoal(e);
+	});
+
+	document.getElementById("reset-img").addEventListener("click", actions.restartGame);
+	document.getElementById("game-over-btn").addEventListener("click", actions.restartGame);
 
 	// keyb controls
 	keyboardControls({
 		onIncrease: actions.increase,
 		onBoost: actions.jumpToGoal,
-		onRestart: handleRestart,
+		onRestart: actions.restartGame,
 		disabled: () => gameState.isGameOver
 	});
 	soundToggle();

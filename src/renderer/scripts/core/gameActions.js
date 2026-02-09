@@ -3,8 +3,9 @@ import { playAudio } from "../controls/audioHandler.js";
 
 import { resetBar } from "../components/progressBarDisplay.js";
 import { removeHeart, resetHearts } from "../components/heartDisplay.js";
+import { displayCursorCount } from "../components/cursorDisplay.js";
 
-import { animateBtn, playAnimation } from "../anim/animations.js";
+import { animateBtn, playAnimation, resetHeartEffect } from "../anim/animations.js";
 import { toggleGameOver } from "./gameOver.js";
 import { changeTheme, resetTheme } from "../controls/themeHandler.js";
 
@@ -29,7 +30,9 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 		// handle goal reached
 		if (state.isGoalReached()) {
 
-			playAudio(sounds.goalReached);
+			if (!boosted) {
+				playAudio(sounds.goalReached);
+			}
 			goal.addNewGoalEffect();
 			goalText.addNewTextEffect();
 
@@ -60,25 +63,35 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 		if (state.counter === 300) {
 			changeTheme("theme300", bar);
 		}
+
+		displayCursorCount(state.countIncrement, event, false);
 		updateScoreAndGoal("pop", false);
 	}
 
 	function jumpToGoal() {
 
 		const noBoostsText = document.getElementById("no-boosts");
-		animateBtn("decrease");
+		const boostNotif = document.getElementById("boost-notif-text");
 
 		if (state.boostsAvailable <= 0) {
-			playAnimation(noBoostsText, "no-boosts-shake");
-			// console.log('no boosts left!'); // tests
+			animateBtn("decrease", true);
+			playAnimation(noBoostsText, "no-boosts-flash");
+			playAudio(sounds.noBoosts);
 			return;
 		}
 
+		const pointsAdded = state.currentGoal - state.counter;
+
 		state.boost();
-		playAudio(sounds.highScore);
 		// console.log(`boosts left: ${state.boostsAvailable}`); // tests
 
+		animateBtn("decrease", false);
+		playAnimation(boostNotif, "boost-notification");
+		playAudio(sounds.useBoost);
+
 		removeHeart(state.boostsAvailable);
+
+		displayCursorCount(pointsAdded, event, true);
 		updateScoreAndGoal("pop-dec", true);
 	}
 
@@ -105,6 +118,9 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 		// play reset anim + audio
 		playAudio(sounds.bgMusic);
 		counter.animate("reset-shake");
+
+		playAudio(sounds.reset);
+		resetHeartEffect();
 
 	}
 
