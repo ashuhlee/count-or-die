@@ -38,11 +38,13 @@ module.exports = {
         build: [
           {
             entry: 'src/main/main.js',
-            config: 'vite.main.config.js'
+            config: 'vite.main.config.js',
+		    target: 'main'
           },
 		  {
 			entry: 'src/preload/preload.js',
-			config: 'vite.main.config.js'
+			config: 'vite.main.config.js',
+		    target: 'preload'
 		  }
         ],
         renderer: [

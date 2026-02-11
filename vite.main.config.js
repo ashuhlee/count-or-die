@@ -9,7 +9,7 @@ export default defineConfig({
 		  'electron-squirrel-startup',
 		  'bufferutil',
 		  'utf-8-validate',
-		  'discord-rich-presence'
+		  'simple-discord-rpc'
 	  ]
     }
   }
