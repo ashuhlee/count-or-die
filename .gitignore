@@ -4,6 +4,7 @@ out/
 build/
 tests/
 .idea/
+.vite/
 .DS_Store
 .editorconfig
 #src/renderer/styles/*.css
