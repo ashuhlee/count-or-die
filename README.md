@@ -8,7 +8,6 @@ Project Tracker: [Count or Die](https://ashuhlee.notion.site/Count-or-Die-2f5a30
 
 [![GitHub Repo stars](https://img.shields.io/github/stars/ashuhlee/count-or-die?style=for-the-badge&logo=starship&logoColor=%23D7E0ED&labelColor=%232F2D42&color=%23FFBDF2)](https://github.com/ashuhlee/count-or-die/stargazers)
 [![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/ashuhlee/count-or-die?style=for-the-badge&logo=gitbook&logoColor=%23D9E0EE&labelColor=%232F2D42&color=FFD0CF)](https://github.com/ashuhlee/count-or-die/issues)
-[![GitHub last commit](https://img.shields.io/github/last-commit/ashuhlee/count-or-die?style=for-the-badge&logo=githubsponsors&logoColor=%23D7E0ED&labelColor=2F2D42&color=BBC0FF)](https://github.com/ashuhlee/count-or-die/commits/main/)
 [![GitHub repo size](https://img.shields.io/github/repo-size/ashuhlee/count-or-die?style=for-the-badge&logo=removedotbg&logoColor=%23D9E0EE&labelColor=%232F2D42&color=AEE5FF)](https://github.com/ashuhlee/count-or-die)
 
 ## Previews
@@ -23,12 +22,12 @@ Project Tracker: [Count or Die](https://ashuhlee.notion.site/Count-or-Die-2f5a30
 - Can't click fast enough? Boosts can jump you to the goal (up to 4 times per game)
 
 ## Controls
-| Input               | Action              |
-|---------------------|---------------------|
-| `↑` `→` `W` `D` `+` | Increase counter    |
-| `↓` `←` `S` `A` `-` | Use boost           |
-| `Escape`            | Restart game        |
-| Mouse click         | Button interactions |
+| Input               | Action           |
+|---------------------|------------------|
+| `↑` `→` `W` `D` `+` | Increase counter |
+| `Spacebar`          | Use boost        |
+| `Escape`            | Restart game     |
+| Mouse click         | App interactions |
 
 ## Game Modes
 - **Regular Mode:** Classic sequential counting with regular numbers only
