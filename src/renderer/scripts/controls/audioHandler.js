@@ -29,7 +29,7 @@ const noBoostsFx = new Audio(noBoostsFxFile);
 
 // audio configuration
 bgMusic.loop = true;
-bgMusic.volume = 0.3;
+bgMusic.volume = 0.2;
 
 buttonIncFx.volume = 1;
 buttonDecFx.volume = 0.4;
