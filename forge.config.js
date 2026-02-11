@@ -4,13 +4,14 @@ const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 module.exports = {
   packagerConfig: {
     asar: true,
+    icon: './src/renderer/assets/icons/mac/icon'
   },
   rebuildConfig: {},
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
       config: {
-          icon: './src/renderer/assets/icons/mac/icon.icns'
+          icon: './src/renderer/assets/icons/mac/icon'
       },
     },
     {
