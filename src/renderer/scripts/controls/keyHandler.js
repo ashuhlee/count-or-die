@@ -24,12 +24,7 @@ export function keyboardControls(handlers) {
                 handlers.onIncrease();
                 break;
 
-            case "ArrowDown":
-            case "ArrowLeft":
-            case "S":
-            case "s":
-            case "A":
-            case "a":
+            case " ":
                 handlers.onBoost();
                 break;
         }
