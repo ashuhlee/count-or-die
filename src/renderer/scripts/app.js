@@ -102,6 +102,10 @@ document.addEventListener("DOMContentLoaded", () => {
 	document.addEventListener("progressBarExp", () => {
 		if (!gameState.isGoalReached() && !gameState.isGameOver) {
 
+		if (window.electron) {
+			window.electron.setDiscordStatus({ gameStatusRPC: "game-over" });
+		}
+
 			gameState.setGameOver(true);
 			toggleGameOver(true);
 

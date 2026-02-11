@@ -49,6 +49,10 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 
 	function increase() {
 
+		if (window.electron) {
+			window.electron.setDiscordStatus({ gameStatusRPC: "in-game" });
+		}
+
 		state.increment();
 		animateBtn("increase");
 		playAudio(sounds.buttonInc);
@@ -96,6 +100,10 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 	}
 
 	function restartGame() {
+
+		if (window.electron) {
+			window.electron.setDiscordStatus({ gameStatusRPC: "in-game" });
+		}
 		// reset ui
 		state.reset();
 

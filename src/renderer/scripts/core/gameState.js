@@ -63,7 +63,12 @@ export class GameState {
 		if (this.counter > this.highScore) {
 
 			this.highScore = this.counter;
+
 			localStorage.setItem("high-score", this.highScore);
+
+			if (window.electron) {
+				window.electron.setDiscordStatus({ highScoreRPC: this.highScore });
+			}
 			return true;
 		}
 		return false;
