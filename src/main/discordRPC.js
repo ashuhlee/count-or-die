@@ -1,12 +1,29 @@
-import DiscordRPC from 'discord-rich-presence';
+
+import { Client, ActivityType } from 'simple-discord-rpc';
 
 const CLIENT_ID = '1471053459905052694';
-const client = DiscordRPC(CLIENT_ID);
+
+const client = new Client({
+ clientId: CLIENT_ID,
+});
 
 const playTime = Date.now();
 const displayRank = true;
 
 let currentPresence = { highScoreRPC: 0, gameStatusRPC: 'in-game' };
+
+client.on('ready', () => {
+	console.log('RPC connected');
+	updateActivity();
+});
+
+client.on('close', (reason) => {
+	console.log('RPC disconnected', reason);
+});
+
+client.login().catch(err => {
+	console.warn('Discord not detected:', err.message);
+});
 
 function getTierInfo(highScore) {
 	if (highScore >= 300) {
@@ -30,33 +47,39 @@ function getGameStatus(status) {
 	return 'Locked in';
 }
 
-export function setDiscordStatus(updates = {}) {
+function updateActivity() {
+
+	const score = currentPresence.highScoreRPC;
+	const status = currentPresence.gameStatusRPC;
+
+	const tier = getTierInfo(score);
+	const statusInfo = getGameStatus(status);
+
 	try {
-		currentPresence = {...currentPresence, ...updates};
-	
-		const score = currentPresence.highScoreRPC;
-		const status = currentPresence.gameStatusRPC;
-	
-		const tier = getTierInfo(score);
-		const statusInfo = getGameStatus(status);
-	
-		client.updatePresence({
-	
+		client.setActivity({
+			type: ActivityType.Playing,
 			details: `Nerd Out Mode · ${statusInfo}`,
-			startTimestamp: playTime,
-	
-			largeImageKey: 'main_icon',
-			largeImageText: 'Count or Die',
-	
-			smallImageKey: displayRank ? tier.badge : undefined,
-			smallImageText: displayRank ? tier.label : undefined,
-	
-			instance: true,
+			state: undefined,
+
+			timestamps: {
+				start: playTime,
+			},
+			assets: {
+				large_image: 'main_icon',
+				large_text: 'Count or Die',
+				small_image: displayRank ? tier.badge : undefined,
+				small_text: displayRank ? tier.label : undefined,
+			},
 			buttons: [
 				{ label: 'Play Count or Die', url: 'https://www.countordie.gg' }
 			]
-		});		
+		});
 	} catch (error) {
-		console.warn('Discord not detected');
+		console.warn('Failed to update Discord presence:', error.message);
 	}
+}
+
+export function setDiscordStatus(updates = {}) {
+	currentPresence = {...currentPresence, ...updates};
+	updateActivity();
 }
