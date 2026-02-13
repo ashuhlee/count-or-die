@@ -1,9 +1,8 @@
 
 <div align="center">
-<img width="80" alt="mac-icon" src="https://github.com/user-attachments/assets/76287ee2-f7d1-454d-ab64-e59e637ee1ee" />
-
-# Count or Die 
-A cutesy arcade clicker game where speed meets strategy
+  <img width="80" alt="mac-icon" src="https://github.com/user-attachments/assets/76287ee2-f7d1-454d-ab64-e59e637ee1ee" />
+  <h1 style="margin-top: 5px;">Count or Die</h1>
+  <p>A cutesy arcade clicker game where speed meets strategy</p>
 
 [![GitHub Repo stars](https://img.shields.io/github/stars/ashuhlee/count-or-die?style=for-the-badge&logo=starship&logoColor=%23D7E0ED&labelColor=%232F2D42&color=%23FFBDF2)](https://github.com/ashuhlee/count-or-die/stargazers)
 [![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/ashuhlee/count-or-die?style=for-the-badge&logo=gitbook&logoColor=%23D9E0EE&labelColor=%232F2D42&color=FFD0CF)](https://github.com/ashuhlee/count-or-die/issues)
@@ -51,9 +50,9 @@ Count or Die has support for Discord Rich Presence, allowing friends to see your
 ### Available Ranks
 | Badge                                                                                                     | Tier           |
 |-----------------------------------------------------------------------------------------------------------|----------------|
-| <img width="100" src="https://github.com/user-attachments/assets/e87985a4-9e9a-4aae-b80c-76df72130d57" /> | Slow Fingers   |
-| <img width="100" src="https://github.com/user-attachments/assets/b1eeff7a-9dbd-428c-83bc-2897faf7cfc4" /> | Finger Breaker |
-| <img width="100" src="https://github.com/user-attachments/assets/e87985a4-9e9a-4aae-b80c-76df72130d57" /> | Speed Demon    |
+| <img align="center" width="50" src="https://github.com/user-attachments/assets/e87985a4-9e9a-4aae-b80c-76df72130d57" /> | Slow Fingers (Score: 100+)   |
+| <img align="center" width="50" src="https://github.com/user-attachments/assets/b1eeff7a-9dbd-428c-83bc-2897faf7cfc4" /> | Finger Breaker (Score: 200+) |
+| <img align="center" width="50" src="https://github.com/user-attachments/assets/9d9ee416-1912-4259-a0df-ad60a0f85dd8" /> | Speed Demon (Score: 300+)    |
 
 
 ## Build from Source
@@ -79,7 +78,7 @@ npm start
 ```
 The app will launch with hot-reload enabled for faster development
 
-### Testing Production
+### Testing for Production
 1. Package the app and build distributable:
 ```bash
 npm run package
@@ -97,7 +96,8 @@ npm run make
 - Keyboard and mouse controls
 
 ### In Development
-- Additional game mode
+- Additional game mode for the math enjoyers
+- Power-up system integration
 - Improved high score management system
 
 ## Tech Stack
@@ -117,6 +117,6 @@ This is a personal project, but suggestions and contributions are welcome!
 
 Feel free to check out the [Project Tracker](https://ashuhlee.notion.site/Count-or-Die-2f5a30a56798803383e7dd6b54a77d4e?source=copy_link) to see what's currently in progress.
 
-⭐ If you like this concept, please consider giving this repo a star!
+⭐ If you like this concept, please consider giving this repo a star
 
 🎮 Made for gamers, pixel art lovers, and anyone with a slow reaction time
