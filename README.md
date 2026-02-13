@@ -17,7 +17,7 @@
 **Platforms:** Windows, MacOS, Browser <br>
 **Status:** In Development
 
-Count or Die is a fast-paced arcade counting game built with Electron that challenges your reaction time and strategic thinking. Game mechanics include randomized power-ups, multiple game modes, and progressive difficulty as you level up!
+Count or Die is an arcade counting game with progressive difficulty, randomized power-ups, multiple game modes, and a timer that gets faster as you level up!
 
 ## Previews
 <div align="center">
