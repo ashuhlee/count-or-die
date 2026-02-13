@@ -33,6 +33,7 @@ export function changeTheme(level, progressBar) {
 			break;
 
 		case 'theme300':
+
 			document.body.style.backgroundImage = `url("${tile4}")`;
 			break;
 	}
