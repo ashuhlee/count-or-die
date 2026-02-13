@@ -38,15 +38,7 @@ export function displayCursorCount(value, event, isBoosted = false) {
 
 	cursorText.style.color = textColor;
 
-	if (textColor === '#E8E3F8') {
-		cursorText.style.textShadow = '0 2px 0 var(--shadow-pink-020)';
-	}
-	else if (isBoosted) {
-		cursorText.style.textShadow = '0 2px 0 rgba(255, 255, 255, 0.7)';
-	}
-	else {
-		cursorText.style.textShadow = '0 2px 0 var(--shadow-pink-005)';
-	}
+	cursorText.style.textShadow = '0 2px 0 var(--shadow-pink-020)';
 
 	document.body.appendChild(cursorText);
 
@@ -67,7 +59,7 @@ export function displayCursorCount(value, event, isBoosted = false) {
 			color: textColor
 		}
 	], {
-		duration: isBoosted ? 700 : 900,
+		duration: 700,
 		easing: 'ease-out'
 	})
 

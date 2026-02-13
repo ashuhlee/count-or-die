@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap");
 @import url("https://fonts.cdnfonts.com/css/alien-cyborg");
 @import url("https://fonts.cdnfonts.com/css/serious");
+@import url("https://fonts.cdnfonts.com/css/smw-text-nc");
 :root {
   --shadow-pink-005: rgba(206,42,133,0.05);
   --shadow-pink-015: rgba(206,42,133,0.15);
@@ -416,7 +417,7 @@ svg {
 
 .count-cursor {
   position: fixed;
-  font-family: "serious1", sans-serif;
+  font-family: "SMW Text NC", sans-serif;
   font-size: 24px;
   pointer-events: none;
   z-index: 5;
