@@ -1,4 +1,6 @@
 
+import { green, red } from 'console-log-colors';
+
 import { Client, ActivityType } from 'simple-discord-rpc';
 
 const CLIENT_ID = '1471053459905052694';
@@ -13,12 +15,12 @@ const displayRank = true;
 let currentPresence = { highScoreRPC: 0, gameStatusRPC: 'in-game' };
 
 client.on('ready', () => {
-	console.log('RPC connected');
+	console.log(green.bold('✔'), 'RPC connected');
 	updateActivity();
 });
 
 client.on('close', (reason) => {
-	console.log('RPC disconnected', reason);
+	console.log(red.bold('✘'), 'RPC disconnected', reason);
 });
 
 client.login().catch(err => {
