@@ -1,10 +1,87 @@
 
-const { app, BrowserWindow, nativeImage } = require("electron");
+import { setDiscordStatus } from './discordRPC.js';
+const { app, BrowserWindow, nativeImage } = require('electron');
+const { shell } = require('electron/common');
+const { Menu } = require('electron/main');
+const { ipcMain } = require('electron');
 
-const { ipcMain } = require("electron");
-import { setDiscordStatus } from "./discordRPC.js";
+const path = require('path');
+const isMac = process.platform === 'darwin'
 
-const path = require("path");
+const template = [
+  // { role: 'appMenu' }
+  ...(isMac
+    ? [{
+        label: app.name,
+        submenu: [
+          { role: 'about' },
+          { type: 'separator' },
+          { role: 'services' },
+          { type: 'separator' },
+          { role: 'hide' },
+          { role: 'hideOthers' },
+          { role: 'unhide' },
+          { type: 'separator' },
+          { role: 'quit' }
+        ]
+      }]
+    : []),
+  // { role: 'fileMenu' }
+  {
+    label: 'File',
+    submenu: [
+      isMac ? { role: 'close' } : { role: 'quit' }
+    ]
+  },
+  // { role: 'viewMenu' }
+  {
+    label: 'View',
+    submenu: [
+      { role: 'reload' },
+      { role: 'forceReload' },
+      { role: 'toggleDevTools' },
+      { type: 'separator' },
+      { role: 'resetZoom' },
+      { role: 'zoomIn' },
+      { role: 'zoomOut' },
+      { type: 'separator' },
+      { role: 'togglefullscreen' }
+    ]
+  },
+  // { role: 'windowMenu' }
+  {
+    label: 'Window',
+    submenu: [
+      { role: 'minimize' },
+      { role: 'zoom' },
+      ...(isMac
+        ? [
+            { type: 'separator' },
+            { role: 'front' },
+            { type: 'separator' },
+            { role: 'window' }
+          ]
+        : [
+            { role: 'close' }
+          ])
+    ]
+  },
+  {
+    role: 'help',
+    submenu: [
+      {
+        label: 'Learn More',
+        click: async () => {
+          const { shell } = require('electron');
+          await shell.openExternal('https://countordie.gg');
+        },
+      }
+    ]
+  }
+]
+
+const menu = Menu.buildFromTemplate(template)
+Menu.setApplicationMenu(menu)
 
 ipcMain.on('discord:update', (event, data) => {
 	setDiscordStatus(data);
@@ -28,7 +105,7 @@ function createWindow() {
         }
     });
 
-    if (process.platform === "darwin") {
+    if (isMac) {
         const dockIcon = nativeImage.createFromPath(iconPath);
         app.dock.setIcon(dockIcon);
     }
@@ -54,19 +131,19 @@ function createWindow() {
 app.whenReady().then(() => {
 	createWindow();
 
-	app.on("activate", () => {
+	app.on('activate', () => {
     	if (BrowserWindow.getAllWindows().length === 0) {
     		createWindow()
     	}
   	})
 })
 
-app.on("window-all-closed", () => {
-	if (process.platform !== "darwin") {
+app.on('window-all-closed', () => {
+	if (!isMac) {
 		app.quit()
   	}
 })
 
-ipcMain.on("close", () => {
+ipcMain.on('close', () => {
   app.quit()
 })
