@@ -14,17 +14,23 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 
 	function updateScoreAndGoal(animationType, boosted) {
 
+		let counterAnimation = animationType;
+		let goalAnimation = animationType;
+
 		// handle high score
 		if (state.updateHighScore()) {
 			highScore.update(state.highScore);
 			highScore.addNewScoreEffect();
 
+			if (!boosted) {
+				counterAnimation = "pop-right";
+				goalAnimation = "pop-right";
+			}
+
 			if (!state.highScoreFxPlayed) {
 				playAudio(sounds.highScore);
 				state.highScoreFxPlayed = true;
 			}
-		} else {
-			counter.removeNewScoreEffect();
 		}
 
 		// handle goal reached
@@ -43,7 +49,7 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 			resetBar(bar, state.barSpeed());
 		}
 
-		counter.animate(animationType);
+		counter.animate(counterAnimation);
 		counter.update(state.counter);
 	}
 
@@ -57,8 +63,8 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 		animateBtn("increase");
 		playAudio(sounds.buttonInc);
 
-		if (state.counter === state.highScore + 1) {
-			counter.addNewScoreEffect();
+		if (state.counter === state.highScore + 1 && !state.gradientFxPlayed) {
+			state.gradientFxPlayed = true;
 		}
 
 		if (state.counter === 200) {
@@ -111,7 +117,6 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 		resetHearts();
 
 		// remove vfx from last game
-		counter.removeNewScoreEffect();
 		highScore.removeNewScoreEffect();
 		goal.removeNewGoalEffect();
 

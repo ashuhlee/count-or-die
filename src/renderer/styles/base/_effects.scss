@@ -51,6 +51,11 @@
 	transform-origin: center;
 }
 
+.pop-right {
+	animation: pop-right 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
+	transform-origin: center;
+}
+
 .pop-gradient {
 	animation: fade-gradient 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
 	transform-origin: center;

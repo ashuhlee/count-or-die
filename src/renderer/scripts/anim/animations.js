@@ -10,6 +10,7 @@ let i = 0;
 const animClasses = [
 	"pop",
 	"pop-dec",
+	"pop-right",
 	"reset-shake",
 	"no-boosts-shake",
 	"no-boosts-flash",

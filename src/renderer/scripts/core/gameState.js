@@ -17,6 +17,8 @@ export class GameState {
 		this.goalIncRandomizer = [10, 15, 20, 25, 30];
 
 		this.highScoreFxPlayed = false;
+		this.gradientFxPlayed = false;
+
 		this.highScore = Number(localStorage.getItem("high-score")) || 0;
 	}
 
@@ -49,6 +51,7 @@ export class GameState {
 		this.trueGoalsReached = 0;
 
 		this.highScoreFxPlayed = false;
+		this.gradientFxPlayed = false;
 		this.isGameOver = false;
 	}
 
