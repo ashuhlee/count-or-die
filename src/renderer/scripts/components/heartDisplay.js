@@ -28,8 +28,8 @@ function addUseEffect(boostsLeft) {
 
 	const rect = target.getBoundingClientRect();
 
-	const smokeWidth = 65;
-	const smokeHeight = 65;
+	const smokeWidth = 68;
+	const smokeHeight = 68;
 
 	const xPos = rect.left; // x position of element
 	const yPos = rect.top;  // y position of element
@@ -37,7 +37,7 @@ function addUseEffect(boostsLeft) {
 	// console.log("X:", xPos, "Y:", yPos); // tests
 
 	popupElement.style.left = `${xPos}px`;
-	popupElement.style.top = `${(yPos) - 20}px`;
+	popupElement.style.top = `${yPos}px`;
 
 	popupElement.style.width = `${smokeWidth}px`;
 	popupElement.style.height = `${smokeHeight}px`;
