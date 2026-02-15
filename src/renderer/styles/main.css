@@ -203,6 +203,20 @@ svg {
     filter: none;
   }
 }
+@keyframes pop-right {
+  0% {
+    transform: scale(1) rotate(0);
+    filter: none;
+  }
+  40% {
+    transform: scale(1.18) rotate(1.5deg);
+    filter: brightness(1.2) saturate(72%);
+  }
+  100% {
+    transform: scale(1) rotate(0);
+    filter: none;
+  }
+}
 @keyframes fade-gradient {
   0% {
     transform: scale(1);
@@ -480,6 +494,14 @@ svg {
   opacity: 0.1;
 }
 
+.flame {
+  width: 165px;
+  transform: translate(0px, -40px);
+  image-rendering: pixelated;
+  position: absolute;
+  filter: brightness(1.05);
+}
+
 .goal-chatbox {
   display: flex;
   flex-direction: column;
@@ -520,7 +542,7 @@ svg {
 .hearts {
   display: flex;
   gap: 15px;
-  height: 60px;
+  height: 64px;
   justify-content: center;
   flex-direction: row;
   align-items: center;
@@ -529,7 +551,7 @@ svg {
   transform: rotate(-3deg);
 }
 .hearts img {
-  width: 60px;
+  width: 64px;
 }
 
 .heart-use {
@@ -538,12 +560,13 @@ svg {
 }
 
 .boost-stuff {
-  max-height: 60px;
+  max-height: 64px;
 }
 
 #popupElement {
   position: fixed;
   display: none;
+  pointer-events: none;
 }
 
 #counter.new-score-counter {
@@ -600,6 +623,11 @@ svg {
 
 .pop-dec {
   animation: pop-dec 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
+  transform-origin: center;
+}
+
+.pop-right {
+  animation: pop-right 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
   transform-origin: center;
 }
 

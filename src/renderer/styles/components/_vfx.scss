@@ -34,3 +34,11 @@
 	background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, #fff 100%);
 	opacity: 0.1;
 }
+.flame {
+	width: 165px;
+	transform: translate(0px, -40px);
+	image-rendering: pixelated;
+	position: absolute;
+	filter: brightness(1.05);
+	//z-index: 999;
+}
