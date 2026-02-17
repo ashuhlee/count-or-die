@@ -19,8 +19,9 @@ jobs:
             -   name: Install dependencies
                 run: npm install
 
-            -   name: Delete old out/ directory
-                run: "rm -rf out"
+            -   name: Clean out directory
+                run: Remove-Item -Recurse -Force out -ErrorAction SilentlyContinue
+                shell: powershell
 
             -   name: Package app
                 run: npm run package
