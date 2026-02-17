@@ -20,7 +20,7 @@ client.on('ready', () => {
 });
 
 client.on('close', (reason) => {
-	console.log(red.bold('✘'), 'RPC disconnected', reason);
+	console.log(red.bold('✘'), 'RPC not connected', reason);
 });
 
 client.login().catch(err => {
