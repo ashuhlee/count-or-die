@@ -6,7 +6,7 @@ module.exports = {
 		asar: true,
 		name: 'Count or Die',
 		executableName: 'CountOrDie',
-		icon: './src/renderer/assets/icons/icon'
+		icon: './resources/icons/icon'
 	},
 	rebuildConfig: {},
 	makers: [
@@ -14,8 +14,8 @@ module.exports = {
 			name: '@electron-forge/maker-zip',
 			platforms: ['win32'],
 			config: {
-				icon: './src/renderer/assets/icons/win/icon@256.ico',
-				setupIcon: './src/renderer/assets/icons/win/icon@256.ico',
+				icon: './resources/icons/win/icon@256.ico',
+				setupIcon: './resources/icons/win/icon@256.ico',
 				name: 'CountOrDie',
 				authors: 'ashuhlee',
 				description: 'Counter Game',
@@ -30,9 +30,19 @@ module.exports = {
 			name: '@electron-forge/maker-dmg',
 			platforms: ['darwin'],
 			config: {
-				icon: './src/renderer/assets/icons/mac/icon.icns',
 				name: 'Count or Die',
-				background: undefined
+				icon: './resources/icons/mac/icon.icns',
+				iconSize: 130,
+				background: './resources/dmg/dmg-bg.png',
+				format: 'ULFO',
+				window:
+					{ size:
+						{ width: 640, height: 480 }
+					},
+				contents: [
+					{ x: 175, y: 202, type: 'file', path: './out/Count or Die-darwin-arm64/Count or Die.app' },
+					{ x: 460, y: 200, type: 'link', path: '/Applications' }
+			  ]
 			},
 		},
 		{

@@ -16,7 +16,7 @@ ipcMain.on('discord:update', (event, data) => {
 
 function createWindow() {
 
-	const iconPath = path.join(__dirname, '../../src/renderer/assets/icons/mac/icon.icns');
+	const iconPath = path.join(__dirname, '../../resources/icons/mac/icon.icns');
 
 	const mainWindow = new BrowserWindow({
 		width: 475,
