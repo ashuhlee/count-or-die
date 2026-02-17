@@ -7,7 +7,7 @@
 [![GitHub Repo stars](https://img.shields.io/github/stars/ashuhlee/count-or-die?style=for-the-badge&logo=starship&logoColor=%23D7E0ED&labelColor=%232F2D42&color=%23FFBDF2)](https://github.com/ashuhlee/count-or-die/stargazers)
 [![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/ashuhlee/count-or-die?style=for-the-badge&logo=gitbook&logoColor=%23D9E0EE&labelColor=%232F2D42&color=C1B5FF)](https://github.com/ashuhlee/count-or-die/issues)
 [![GitHub repo size](https://img.shields.io/github/repo-size/ashuhlee/count-or-die?style=for-the-badge&logo=removedotbg&logoColor=%23D9E0EE&labelColor=%232F2D42&color=AEE5FF)](https://github.com/ashuhlee/count-or-die)
-![Static Badge](https://img.shields.io/badge/version-beta-A5A2B7?style=for-the-badge&logo=artifacthub&logoColor=%23D9E0EE&labelColor=2F2D42)
+![Static Badge](https://img.shields.io/badge/version-beta-A5A2B7?style=for-the-badge&logoColor=%23D9E0EE&labelColor=2F2D42)
 
 <a href="https://www.youtube.com/watch?v=l_mUEsx0na8"><img width="170" alt="demo link" src="https://github.com/user-attachments/assets/dbb3d7da-7247-433b-8e1d-a31b979113f5" style="margin-right: 10px;" /></a><a href="https://ashuhlee.notion.site/Count-or-Die-2f5a30a56798803383e7dd6b54a77d4e?source=copy_link"><img width="170" alt="tracker link" src="https://github.com/user-attachments/assets/a3df7a77-42dc-4c1b-93cc-cd844d3f12d7" /></a>
 
@@ -41,7 +41,7 @@ Count or Die is an arcade counting game with progressive difficulty, randomized 
 ## Controls
 | Input               | Action                   |
 |---------------------|--------------------------|
-| `↑` `→` `W` `D` `+` | Increase counter (+1)    |
+| `↑` `→`  `W` `D`  `+` | Increase counter (+1)    |
 | `Spacebar`          | Use boost (jump to goal) |
 | `Escape`            | Restart game             |
 | Mouse click         | Button interactions      |
@@ -52,19 +52,19 @@ Count or Die has support for Discord Rich Presence, allowing friends to see your
 ### Available Ranks
 | Badge                                                                                                     | Tier           |
 |-----------------------------------------------------------------------------------------------------------|----------------|
-| <img align="center" width="50" src="https://github.com/user-attachments/assets/e87985a4-9e9a-4aae-b80c-76df72130d57" /> | Slow Fingers (Score: 100+)   |
-| <img align="center" width="50" src="https://github.com/user-attachments/assets/b1eeff7a-9dbd-428c-83bc-2897faf7cfc4" /> | Finger Breaker (Score: 200+) |
-| <img align="center" width="50" src="https://github.com/user-attachments/assets/9d9ee416-1912-4259-a0df-ad60a0f85dd8" /> | Speed Demon (Score: 300+)    |
+| <img align="center" width="40" src="https://github.com/user-attachments/assets/e87985a4-9e9a-4aae-b80c-76df72130d57" /> | Slow Fingers (Score: 100+)   |
+| <img align="center" width="40" src="https://github.com/user-attachments/assets/b1eeff7a-9dbd-428c-83bc-2897faf7cfc4" /> | Finger Breaker (Score: 200+) |
+| <img align="center" width="40" src="https://github.com/user-attachments/assets/9d9ee416-1912-4259-a0df-ad60a0f85dd8" /> | Speed Demon (Score: 300+)    |
+| <img align="center" width="40" src="https://github.com/user-attachments/assets/0d0a0278-56fb-481e-a9e6-569cf537a11d" /> | Legend (Score: 400+)    |
 
-
-## Build from Source
-For local development or contributing
+## Installation
+Downloadable installers (`.exe`, `.dmg`) are not yet available in the beta. For play testing, local development or contributing, run the app locally using the steps below.
 
 ### Requirements
 - Node.js (v16 or higher recommended)
 - npm (comes with Node.js)
 
-### Installation
+### Build from Source
 1. Clone this repository:
 ```zsh
 git clone https://github.com/ashuhlee/count-or-die.git
@@ -101,10 +101,10 @@ npm run make
 - Improved high score management system
 
 ## Tech Stack
-- **Framework:** Electron for cross-platform desktop application development
-- **Build Tool:** Vite for fast development and bundling
+- **Electron:** Framework for cross-platform desktop application development
+- **Vite:** Build tool for fast development and bundling
 - **Discord Integration:** Discord Rich Presence support [(simple-discord-rpc)](https://www.npmjs.com/package/simple-discord-rpc)
-- **Packager:** Electron Forge for packaging and distributing Electron apps
+- **Electron Forge:** For packaging and distributing Electron apps
 
    
 ## Contributing
