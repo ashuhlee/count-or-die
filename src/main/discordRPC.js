@@ -28,6 +28,9 @@ client.login().catch(err => {
 });
 
 function getTierInfo(highScore) {
+	if (highScore >= 400) {
+		return { badge: 'tier_four', label: 'Legend' };
+	}
 	if (highScore >= 300) {
 		return { badge: 'tier_three', label: 'Speed Demon' };
 	}
