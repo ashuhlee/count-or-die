@@ -22,7 +22,6 @@
     "@electron-forge/plugin-vite": "^7.11.1",
     "@electron/fuses": "^1.8.0",
     "@eslint/js": "^9.39.2",
-    "appdmg": "^0.6.6",
     "console-log-colors": "^0.5.0",
     "electron": "^40.1.0",
     "electron-reload": "^2.0.0-alpha.1",
@@ -30,6 +29,9 @@
     "globals": "^17.3.0",
     "prettier": "^3.8.1",
     "sass": "^1.97.3"
+  },
+  "optionalDependencies": {
+    "appdmg": "^0.6.6"
   },
   "dependencies": {
     "animate.css": "^4.1.1",
