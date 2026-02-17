@@ -1,11 +1,7 @@
 name: (macOS) Electron Forge App Packaging
 on:
     push:
-        branches:
-            - *
     pull_request:
-        branches:
-            - *
 jobs:
     package:
         runs-on: macos-latest
