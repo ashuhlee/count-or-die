@@ -23,8 +23,8 @@ jobs:
                 run: Remove-Item -Recurse -Force out -ErrorAction SilentlyContinue
                 shell: powershell
 
-            -   name: Package app
-                run: npm run package
-
             -   name: Make distributables
-                run: npm run make -- --arch=x64
+                run: |
+                    Remove-Item -Recurse -Force out -ErrorAction SilentlyContinue
+                    npm run make -- --arch=x64
+                shell: powershell
