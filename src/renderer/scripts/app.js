@@ -16,7 +16,7 @@ import { soundToggle } from "./components/menuBar.js";
 import { GameState } from "./core/gameState.js";
 import { Counter } from "./components/counterDisplay.js";
 
-// localStorage.setItem("high-score", 0); // TESTS: manually reset high score
+// localStorage.setItem("high-score", 5); // TESTS: manually reset high score
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -30,20 +30,11 @@ document.addEventListener("DOMContentLoaded", () => {
 	setInterval(heartGlitch, 6000);
 	heartGlitch();
 
-	// track progress bar
-	function animate() {
-		updateBarColor(progressBar);
-		requestAnimationFrame(animate);
-	}
-
-	animate();
-
 	let countText = document.getElementById("counter");
 	let countOuter = document.getElementById("counter-outer");
 	let countShine = document.getElementById("counter-shine");
 
 	let highScoreText = document.getElementById("high-score");
-	let finalScore = document.getElementById("final-score");
 	let goalBox = document.getElementById("next-goal");
 	let goalText = document.querySelector(".goal-text");
 
@@ -55,6 +46,21 @@ document.addEventListener("DOMContentLoaded", () => {
 		outerElement: countOuter,
 		textShine: countShine
 	});
+
+	// track progress bar
+	let isGameOver = false;
+
+	function animate() {
+		if (!isGameOver) {
+			if (gameState.updateHighScore()) {
+				gameState.isHighScore = true;
+			}
+			updateBarColor(progressBar, gameState.isHighScore);
+		}
+		requestAnimationFrame(animate);
+	}
+
+	animate();
 
 	const highScoreDisplay = setHighScoreDisplay(highScoreText);
 	const goalDisplay = setGoalDisplay(goalBox);
@@ -79,15 +85,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// button clicks
 	document.getElementById("increase-img").addEventListener("click", (e) => {
-		actions.increase(e);
+		if (!gameState.isGameOver) {
+			actions.increase(e);
+		}
 	});
 
 	document.getElementById("decrease-img").addEventListener("click", (e) => {
-		actions.jumpToGoal(e);
+		if (!gameState.isGameOver) {
+			actions.jumpToGoal(e);
+		}
 	});
 
-	document.getElementById("reset-img").addEventListener("click", actions.restartGame);
-	document.getElementById("game-over-btn").addEventListener("click", actions.restartGame);
+	document.getElementById("reset-img").addEventListener("click", () => {
+		actions.restartGame();
+		isGameOver = false;
+	});
+	document.getElementById("game-over-btn").addEventListener("click", () => {
+		actions.restartGame();
+		isGameOver = false;
+	});
 
 	// keyb controls
 	keyboardControls({
@@ -105,12 +121,16 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (window.electron) {
 			window.electron.setDiscordStatus({ gameStatusRPC: "game-over" });
 		}
+			isGameOver = true;
+			progressBar.style.animation = "none";
 
 			gameState.setGameOver(true);
-			toggleGameOver(true);
+			toggleGameOver(true, gameState.isHighScore);
 
 			youDiedConsole(countText.textContent);
-			finalScore.textContent = `Score: ${countText.textContent}`;
+
+			const scoreText = document.querySelector(".score-text");
+			scoreText.textContent = `Score: ${countText.textContent}`;
 
 			playAudio(sounds.gameOver);
 			pauseAudio(sounds.bgMusic);
