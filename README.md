@@ -21,9 +21,16 @@
 Count or Die is an arcade counting game with progressive difficulty, randomized power-ups, multiple game modes, and a timer that gets faster as you level up!
 
 ## Previews
+### In-Game
 <div align="center">
   <img width="400" alt="Game Screenshot" src="https://github.com/user-attachments/assets/12f9a0af-2b04-462c-81fb-c3d288edbfdd" />
   <img width="400" alt="Gameplay Demo" src="https://github.com/user-attachments/assets/8a767794-210f-400b-a7fa-fc31586e4f77" />
+</div>
+
+### Game Over
+<div align="center">
+  <br>
+  <img width="800" alt="Game over screen" src="https://github.com/user-attachments/assets/f1d9ef09-3660-43d9-85a9-76de282b9488" />
 </div>
 
 ## Gameplay
@@ -47,21 +54,29 @@ Count or Die is an arcade counting game with progressive difficulty, randomized 
 | Mouse click         | Button interactions      |
 
 ## Discord Rich Presence
-Count or Die has support for Discord Rich Presence, allowing friends to see your game status and rank. Brag about how fast you can click to your friends!
+<div>
+    <img width="300" align="right"
+    src="https://github.com/user-attachments/assets/76b878b1-1305-4037-8d1c-5bf0a25dbdf8"/>
 
-### Available Ranks
+  Count or Die has support for Discord Rich Presence, allowing friends to see your game status, current mode and rank.<br>  
+  Brag about how fast you can click to your friends!
+
+</div>
+
+#### Available Ranks
+
 | Badge                                                                                                     | Tier           |
 |-----------------------------------------------------------------------------------------------------------|----------------|
-| <img align="center" width="40" src="https://github.com/user-attachments/assets/e87985a4-9e9a-4aae-b80c-76df72130d57" /> | Slow Fingers (Score: 100+)   |
-| <img align="center" width="40" src="https://github.com/user-attachments/assets/b1eeff7a-9dbd-428c-83bc-2897faf7cfc4" /> | Finger Breaker (Score: 200+) |
-| <img align="center" width="40" src="https://github.com/user-attachments/assets/9d9ee416-1912-4259-a0df-ad60a0f85dd8" /> | Speed Demon (Score: 300+)    |
-| <img align="center" width="40" src="https://github.com/user-attachments/assets/0d0a0278-56fb-481e-a9e6-569cf537a11d" /> | Legend (Score: 400+)    |
+| <img align="center" width="40" src="https://github.com/user-attachments/assets/e87985a4-9e9a-4aae-b80c-76df72130d57" /> | Slow Fingers (High score of 100+)   |
+| <img align="center" width="40" src="https://github.com/user-attachments/assets/b1eeff7a-9dbd-428c-83bc-2897faf7cfc4" /> | Finger Breaker (High score of 200+) |
+| <img align="center" width="40" src="https://github.com/user-attachments/assets/9d9ee416-1912-4259-a0df-ad60a0f85dd8" /> | Speed Demon (High score of 300+)    |
+| <img align="center" width="40" src="https://github.com/user-attachments/assets/0d0a0278-56fb-481e-a9e6-569cf537a11d" /> | Legend 😮‍💨 (High score of 400+)    |
 
 ## Installation
-Downloadable installers (`.exe`, `.dmg`) are not yet available in the beta. For play testing, local development or contributing, run the app locally using the steps below.
+Downloadable installers (`.exe`, `.dmg`) are not yet available in the beta. For play testing, local development, or contributing, run the app locally using the steps below.
 
 ### Requirements
-- Node.js (v16 or higher recommended)
+- Node.js (version 20 or higher recommended)
 - npm (comes with Node.js)
 
 ### Build from Source
