@@ -16,7 +16,10 @@ export class GameState {
 		this.goalIncrement = 25; // starting increment
 		this.goalIncRandomizer = [10, 15, 20, 25, 30];
 
+		this.isHighScore = false;
 		this.highScoreFxPlayed = false;
+
+		this.confettiPlayed = false;
 		this.gradientFxPlayed = false;
 
 		this.highScore = Number(localStorage.getItem("high-score")) || 0;
@@ -50,8 +53,12 @@ export class GameState {
 		this.goalsReached = 0;
 		this.trueGoalsReached = 0;
 
+		this.isHighScore = false;
 		this.highScoreFxPlayed = false;
+
 		this.gradientFxPlayed = false;
+		this.confettiPlayed = false;
+
 		this.isGameOver = false;
 	}
 
@@ -64,8 +71,8 @@ export class GameState {
 	updateHighScore() {
 		// TODO: implement better high score storing
 		if (this.counter > this.highScore) {
-
 			this.highScore = this.counter;
+			this.isHighScore = true;
 
 			localStorage.setItem("high-score", this.highScore);
 
