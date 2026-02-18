@@ -35,7 +35,7 @@ buttonIncFx.volume = 1;
 buttonDecFx.volume = 0.4;
 buttonResetFx.volume = 0.7;
 
-highScoreFx.volume = 0.4;
+highScoreFx.volume = 0.7;
 goalReachedFx.volume = 0.4;
 gameOverFx.volume = 1;
 
