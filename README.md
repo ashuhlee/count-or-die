@@ -27,12 +27,6 @@ Count or Die is an arcade counting game with progressive difficulty, randomized 
   <img width="400" alt="Gameplay Demo" src="https://github.com/user-attachments/assets/8a767794-210f-400b-a7fa-fc31586e4f77" />
 </div>
 
-### Game Over
-<div align="center">
-  <br>
-  <img width="800" alt="Game over screen" src="https://github.com/user-attachments/assets/f1d9ef09-3660-43d9-85a9-76de282b9488" />
-</div>
-
 ## Gameplay
 
 ### Core Mechanics
