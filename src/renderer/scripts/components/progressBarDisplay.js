@@ -1,5 +1,6 @@
 
 export const barColors = {
+	highScore: "var(--rainbow-gradient-bar)",
     primary: "#B4A6FF",
     warning: "#ffb199",
     critical: "#f7628b"
@@ -27,7 +28,10 @@ export function initProgressBar() {
     return progressBar;
 }
 
-export function updateBarColor(progressBar) {
+export function updateBarColor(progressBar, highScoreReached = false) {
+
+	let progressAnim = `progress-anim ${currAnimDuration}s linear infinite`;
+
     if (!progressBar || !animStartTime) {
         return;
     }
@@ -36,8 +40,6 @@ export function updateBarColor(progressBar) {
     let elapsed = (Date.now() - animStartTime) / 1000; // ms to seconds
     let cycle = (elapsed % currAnimDuration) / currAnimDuration;
     const percentage = Math.round((1 - cycle) * 100);
-
-    let progressAnim = `progress-anim ${currAnimDuration}s linear infinite`;
 
     const blinkSlow = `blink 0.8s linear infinite`;
     const blinkFast = `blink 0.5s linear infinite`;
@@ -59,7 +61,7 @@ export function updateBarColor(progressBar) {
         progressBar.style.animation = progressAnim;
     }
     else {
-        progressBar.style.background = barColors.primary;
+        progressBar.style.background = highScoreReached ? barColors.highScore : barColors.primary;
         progressBar.style.animation = progressAnim;
     }
     // console.log(`Progress bar: ${percentage}%`); // tests
