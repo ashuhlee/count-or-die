@@ -49,7 +49,7 @@ Count or Die is an arcade counting game with progressive difficulty, randomized 
 
 ## Discord Rich Presence
 <div>
-    <img width="300" align="right"
+    <img width="330" align="right"
     src="https://github.com/user-attachments/assets/76b878b1-1305-4037-8d1c-5bf0a25dbdf8"/>
 
   Count or Die has support for Discord Rich Presence, allowing friends to see your game status, current mode and rank.<br>  
@@ -61,10 +61,10 @@ Count or Die is an arcade counting game with progressive difficulty, randomized 
 
 | Badge                                                                                                     | Tier           |
 |-----------------------------------------------------------------------------------------------------------|----------------|
-| <img align="center" width="40" src="https://github.com/user-attachments/assets/e87985a4-9e9a-4aae-b80c-76df72130d57" /> | Slow Fingers (High score of 100+)   |
-| <img align="center" width="40" src="https://github.com/user-attachments/assets/b1eeff7a-9dbd-428c-83bc-2897faf7cfc4" /> | Finger Breaker (High score of 200+) |
-| <img align="center" width="40" src="https://github.com/user-attachments/assets/9d9ee416-1912-4259-a0df-ad60a0f85dd8" /> | Speed Demon (High score of 300+)    |
-| <img align="center" width="40" src="https://github.com/user-attachments/assets/0d0a0278-56fb-481e-a9e6-569cf537a11d" /> | Legend 😮‍💨 (High score of 400+)    |
+| <img align="center" width="40" src="https://github.com/user-attachments/assets/e87985a4-9e9a-4aae-b80c-76df72130d57" /> | Slow Fingers (High score - 100+)   |
+| <img align="center" width="40" src="https://github.com/user-attachments/assets/b1eeff7a-9dbd-428c-83bc-2897faf7cfc4" /> | Finger Breaker (High score - 200+) |
+| <img align="center" width="40" src="https://github.com/user-attachments/assets/9d9ee416-1912-4259-a0df-ad60a0f85dd8" /> | Speed Demon (High score - 300+)    |
+| <img align="center" width="40" src="https://github.com/user-attachments/assets/0d0a0278-56fb-481e-a9e6-569cf537a11d" /> | Legend 😮‍💨 (High score - 400+)    |
 
 ## Installation
 Downloadable installers (`.exe`, `.dmg`) are not yet available in the beta. For play testing, local development, or contributing, run the app locally using the steps below.
