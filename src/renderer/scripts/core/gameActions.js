@@ -1,13 +1,15 @@
 
 import { playAudio } from "../controls/audioHandler.js";
+import { changeTheme, resetTheme } from "../controls/themeHandler.js";
 
 import { resetBar } from "../components/progressBarDisplay.js";
 import { removeHeart, resetHearts } from "../components/heartDisplay.js";
 import { displayCursorCount } from "../components/cursorDisplay.js";
 
 import { animateBtn, playAnimation, resetHeartEffect } from "../anim/animations.js";
+import { playConfetti } from "../anim/confetti.js";
+
 import { toggleGameOver } from "./gameOver.js";
-import { changeTheme, resetTheme } from "../controls/themeHandler.js";
 
 
 export function setGameActions({ state, counter, highScore, goal, goalText, bar, sounds }) {
@@ -15,21 +17,24 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 	function updateScoreAndGoal(animationType, boosted) {
 
 		let counterAnimation = animationType;
-		let goalAnimation = animationType;
 
 		// handle high score
 		if (state.updateHighScore()) {
 			highScore.update(state.highScore);
 			highScore.addNewScoreEffect();
 
-			if (!boosted) {
-				counterAnimation = "pop-right";
-				goalAnimation = "pop-right";
-			}
+			counterAnimation = boosted ? animationType : "pop-right";
 
 			if (!state.highScoreFxPlayed) {
 				playAudio(sounds.highScore);
 				state.highScoreFxPlayed = true;
+			}
+			if (!state.confettiPlayed) {
+				playConfetti();
+				state.confettiPlayed = true;
+			}
+			if (!state.gradientFxPlayed) {
+				state.gradientFxPlayed = true;
 			}
 		}
 
