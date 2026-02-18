@@ -487,10 +487,10 @@ svg {
 
 #high-score {
   position: absolute;
-  font-size: 18px;
+  font-size: 24px;
   color: white;
-  text-shadow: 0 5px 0 var(--shadow-pink-015);
-  font-family: "Silkscreen", sans-serif;
+  text-shadow: 0 4px 0 var(--shadow-pink-015);
+  font-family: "serious1", sans-serif;
   font-weight: bold;
   bottom: -10px;
   right: 0;
