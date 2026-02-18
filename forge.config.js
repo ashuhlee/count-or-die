@@ -16,7 +16,6 @@ module.exports = {
 			config: {
 				icon: './resources/icons/win/icon@256.ico',
 				setupIcon: './resources/icons/win/icon@256.ico',
-				name: 'CountOrDie',
 				authors: 'ashuhlee',
 				description: 'Counter Game',
 				noMsi: true
@@ -30,9 +29,9 @@ module.exports = {
 			name: '@electron-forge/maker-dmg',
 			platforms: ['darwin'],
 			config: {
-				name: 'Count or Die',
 				icon: './resources/icons/mac/icon.icns',
 				iconSize: 130,
+				authors: 'ashuhlee',
 				background: './resources/dmg/dmg-bg.png',
 				format: 'ULFO',
 				window:
