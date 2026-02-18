@@ -5,16 +5,23 @@
 
 :root {
 	--shadow-pink-005: rgba(206,42,133,0.05);
+	--shadow-pink-010: rgba(206,42,133,0.10);
 	--shadow-pink-015: rgba(206,42,133,0.15);
 	--shadow-pink-020: rgba(206,42,133,0.2);
 
 	--shadow-purple-005: rgba(181, 121, 255, 0.15);
 	--shadow-purple-015: rgba(181, 121, 255, 0.25);
 	--shadow-purple-020: rgba(181, 121, 255, 0.3);
+
+    --rainbow-gradient-bar: linear-gradient(
+    to right, #ffd5a5, #FFB2EE, #C0C3FF, #A7EAFF
+  );
 }
 
 $assets: "../assets";
 $body-bg-image: "#{$assets}/ui/textures/tile-2.png";
+$game-over-bg: "#{$assets}/ui/textures/tile-go.png";
+$floor: "#{$assets}/ui/deco/floor.png";
 $cursor: "#{$assets}/ui/hand.png";
 $scanline: "#{$assets}/ui/textures/scanlines-2.png";
 $delay-step: 0.3s;

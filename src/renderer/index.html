@@ -22,17 +22,28 @@
 		<img id="soundBtn" alt="sound icon" src="assets/ui/svg/sound-button-reg.svg"/>
 		<img id="optionsBtn" alt="options icon" src="assets/ui/svg/options-button.svg"/>
 	</div>
+	<div id="red-flash"></div>
     <div id="game-over">
-		<h2 class="you-died">you died :(</h2>
-		<img src="assets/ui/deco/skull.png" class="skull" alt="skull icon"/>
-        <img src="assets/ui/deco/game_over.png" alt="game over text" class="go-title"/>
-		<h2 class="final-score" id="final-score">score: 0</h2>
-		<h2 class="play-again">play again?</h2>
-		<button id="game-over-btn">restart game</button>
-		<div class="bg">
-			<div class="stop-1"></div><div class="stop-2"></div><div class="stop-3"></div><div class="stop-4"></div><div class="stop-5"></div>
-			<div class="stop-6"></div><div class="stop-7"></div>
+		<div class="go-content">
+			<h2 class="you-died" id="dead-text"><span class="go-text-random">you died lolz</span></h2>
+			<div class="deco-icons">
+				<img src="assets/ui/deco/question.png" alt="question mark" class="question"/>
+				<img src="assets/ui/deco/exclamation.png" alt="exclamation mark" class="excl"/>
+			</div>
+			<img src="assets/ui/deco/game_over.gif" alt="game over text" class="go-title"/>
+			<h2 class="final-score" id="final-score"><span class="score-text">score: 0</span></h2>
+			<h2 class="play-again"><span class="try-again">try again ?</span></h2>
+			<div class="reset play-again-btn">
+				<img src="assets/ui/buttons/reset-btn.png" id="game-over-btn" alt="increase-reg"/>
+			</div>
+			<div class="bg"></div>
 		</div>
+		<div class="tombstone-area">
+			<img src="assets/ui/deco/ghost.png" alt="ghost" class="ghost"/>
+			<img src="assets/ui/deco/tombstone.png" alt="tombstone" class="tombstone"/>
+		</div>
+<!--		<div class="floor"></div>-->
+
     </div>
     <div class="app" id="app">
 		<div class="goal-chatbox" id="goal-chatbox">

@@ -4,11 +4,15 @@
 @import url("https://fonts.cdnfonts.com/css/smw-text-nc");
 :root {
   --shadow-pink-005: rgba(206,42,133,0.05);
+  --shadow-pink-010: rgba(206,42,133,0.10);
   --shadow-pink-015: rgba(206,42,133,0.15);
   --shadow-pink-020: rgba(206,42,133,0.2);
   --shadow-purple-005: rgba(181, 121, 255, 0.15);
   --shadow-purple-015: rgba(181, 121, 255, 0.25);
   --shadow-purple-020: rgba(181, 121, 255, 0.3);
+  --rainbow-gradient-bar: linear-gradient(
+    to right, #ffd5a5, #FFB2EE, #C0C3FF, #A7EAFF
+  );
 }
 
 * {
@@ -209,7 +213,7 @@ svg {
     filter: none;
   }
   40% {
-    transform: scale(1.18) rotate(1.5deg);
+    transform: scale(1.18) rotate(1.25deg);
     filter: brightness(1.2) saturate(72%);
   }
   100% {
@@ -305,6 +309,50 @@ svg {
     transform: translateY(-30px);
   }
 }
+@keyframes flash-custom {
+  0% {
+    opacity: 0.8;
+    visibility: visible;
+  }
+  16% {
+    opacity: 0;
+  }
+  33% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0;
+  }
+  66% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+@keyframes pop-thingie {
+  0% {
+    transform: scale(0.9) rotate(-6deg);
+  }
+  50% {
+    transform: scale(1) rotate(-6deg);
+  }
+  100% {
+    transform: scale(0.9) rotate(-6deg);
+  }
+}
+@keyframes pop-thingie-2 {
+  0% {
+    transform: scale(1) rotate(6deg);
+  }
+  50% {
+    transform: scale(0.9) rotate(6deg);
+  }
+  100% {
+    transform: scale(1) rotate(6deg);
+  }
+}
 .buttons {
   display: flex;
   gap: 22px;
@@ -326,7 +374,7 @@ svg {
 }
 
 .reset img {
-  width: 170px;
+  width: 190px;
   filter: drop-shadow(0px 7px 0px var(--shadow-pink-020));
 }
 .reset {
@@ -464,7 +512,7 @@ svg {
 .scanlines {
   opacity: 0.4;
   mix-blend-mode: soft-light;
-  z-index: 10;
+  z-index: 12;
 }
 
 .scanlines-bg {
@@ -611,11 +659,6 @@ svg {
   animation: wavy-text 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--delay);
 }
 
-.no-boost-text span {
-  display: inline-block;
-  animation: shake 2s ease infinite var(--delay);
-}
-
 .pop {
   animation: pop 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
   transform-origin: center;
@@ -642,6 +685,11 @@ svg {
   transform-origin: center;
 }
 
+.no-boost-text span {
+  display: inline-block;
+  animation: shake 2s ease infinite var(--delay);
+}
+
 .no-boosts-shake {
   animation: no-boosts-shake 0.25s ease-out;
   transform-box: fill-box;
@@ -658,8 +706,16 @@ svg {
   animation: float-up 0.45s ease-out forwards;
 }
 
+.bounce-in {
+  animation: bounce-in 0.02s ease-out;
+}
+
 #game-over {
-  display: none;
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity 0.4s ease, transform 0.3s ease;
+  pointer-events: none;
+  display: grid;
   position: fixed;
   top: 0;
   left: 0;
@@ -667,99 +723,171 @@ svg {
   height: 100%;
   place-items: center;
   font-family: "Silkscreen", sans-serif;
+  background: #FF4D88 url("../assets/ui/textures/tile-go.png") repeat 0 center;
+  background-size: 128px auto;
+  animation: slide 4s linear infinite reverse;
   z-index: 10;
+}
+#game-over.visible {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+#game-over.visible .go-title {
+  animation: bounceIn 0.5s ease 0.3s forwards;
+}
+#game-over.visible .final-score {
+  animation: bounceIn 0.5s ease 0.6s forwards;
+}
+#game-over.visible .play-again {
+  animation: bounceIn 0.5s ease 1s forwards;
+}
+#game-over.visible .play-again-btn {
+  animation: fadeInUp 0.5s ease 1.15s forwards;
+}
+#game-over.visible .tombstone {
+  animation: swing 1s ease forwards;
+  transform-origin: bottom;
+  opacity: 1;
+  bottom: 0;
+}
+#game-over.visible .question {
+  opacity: 1;
+  animation: pop-thingie 3s ease infinite;
+}
+#game-over.visible .excl {
+  opacity: 1;
+  animation: pop-thingie-2 3s ease infinite;
+}
+#game-over.visible .ghost {
+  opacity: 0.85;
+  transition: opacity 0.5s ease 1.4s;
+  animation: hover 3s infinite ease-in-out;
+}
+#game-over .go-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+#game-over .deco-icons {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+#game-over .deco-icons img {
+  height: 55px;
+  image-rendering: pixelated;
+  filter: drop-shadow(5px 5px 0px var(--shadow-pink-010));
 }
 #game-over h2 {
   font-family: "Silkscreen", serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 22px;
+  font-size: 28px;
   text-align: center;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: #F2EDFF;
+  color: #ffffff;
+  text-shadow: 0 5px 0 var(--shadow-pink-015);
 }
 #game-over .final-score {
-  color: #ABE6FF;
+  color: #fff;
+  font-weight: bold;
+  font-family: "serious1", sans-serif;
+}
+#game-over .you-died {
+  font-size: 28px;
+  top: 50px;
+  font-weight: bold;
+  font-family: "serious1", sans-serif;
+  max-width: 250px;
+}
+@media screen and (min-height: 950px) {
+  #game-over .you-died {
+    position: absolute;
+  }
 }
 #game-over .play-again {
   font-size: 30px;
-  background: linear-gradient(to bottom, #FFABE5 60%, #FF83D9 50%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-fill-color: transparent;
-}
-#game-over .skull {
-  z-index: 5;
-  width: 50px;
-  height: 50px;
+  -webkit-text-stroke: 10px #696491;
+  filter: drop-shadow(4px 4px 0px var(--shadow-pink-015));
+  paint-order: stroke fill;
 }
 #game-over .go-title {
-  width: 55vw;
-  max-width: 300px;
+  width: 80vw;
+  max-width: 380px;
+  filter: drop-shadow(5px 5px 0px var(--shadow-pink-005));
 }
 #game-over img {
   image-rendering: pixelated;
 }
+#game-over .tombstone-area {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+@media screen and (max-height: 950px) {
+  #game-over .tombstone-area {
+    left: 25vw;
+  }
+}
+@media screen and (max-height: 950px) and (max-width: 900px) {
+  #game-over .tombstone-area {
+    display: none;
+  }
+}
+#game-over .tombstone {
+  position: absolute;
+  transition: bottom 0.5s ease, opacity 0.5s ease;
+  bottom: -50px;
+  width: 130px;
+  left: calc(50% - 62px);
+}
+#game-over .ghost {
+  position: absolute;
+  width: 100px;
+  bottom: 80px;
+  left: calc(50% + 70px);
+  z-index: 2;
+  image-rendering: auto;
+}
+#game-over .floor {
+  height: 70px;
+  width: 100%;
+  position: absolute;
+  bottom: -25px;
+  background: url("../assets/ui/deco/floor.png") repeat-x 0 0;
+  background-size: auto 100%;
+}
+#game-over .go-title,
+#game-over .final-score,
+#game-over .play-again,
+#game-over .play-again-btn,
+#game-over .tombstone,
+#game-over .ghost,
+#game-over .question,
+#game-over .excl {
+  opacity: 0;
+}
 #game-over .bg {
   z-index: -1;
 }
-#game-over .stop-1 {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 57.18%;
-  bottom: 28.56%;
-  background: #3A2573;
-}
-#game-over .stop-2 {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 42.87%;
-  bottom: 42.82%;
-  background: #3F297B;
-}
-#game-over .stop-3 {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 85.74%;
-  bottom: 0;
-  background: #311E64;
-}
-#game-over .stop-4 {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 71.44%;
-  bottom: 14.26%;
-  background: #36216F;
-}
-#game-over .stop-5 {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 28.52%;
-  bottom: 57.13%;
-  background: #482F8A;
-}
-#game-over .stop-6 {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 14.26%;
-  bottom: 71.48%;
-  background: #503599;
-}
-#game-over .stop-7 {
-  position: absolute;
-  left: 0;
-  right: 0;
+
+#red-flash {
+  position: fixed;
+  width: 100%;
+  height: 100%;
   top: 0;
-  bottom: 85.74%;
-  background: #5B3EAB;
+  left: 0;
+  background: #ff4388;
+  z-index: 15;
+  opacity: 0;
+  pointer-events: none;
+}
+#red-flash.flash {
+  animation: flash-custom 0.7s ease forwards;
 }
 
 /*# sourceMappingURL=main.css.map */
