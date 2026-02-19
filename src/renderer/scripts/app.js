@@ -1,4 +1,7 @@
 
+import { renderGame } from "./containers/gameContainer.js";
+import { renderMain } from "./containers/mainContainer.js";
+
 import { setGameActions } from "./core/gameActions.js";
 import { toggleGameOver, youDiedConsole } from "./core/gameOver.js";
 
@@ -19,6 +22,10 @@ import { Counter } from "./components/counterDisplay.js";
 // localStorage.setItem("high-score", 5); // TESTS: manually reset high score
 
 document.addEventListener("DOMContentLoaded", () => {
+
+	// render elements
+	renderMain();
+	renderGame();
 
 	// initialize game (start audio and progress bar)
 	playAudio(sounds.bgMusic);
