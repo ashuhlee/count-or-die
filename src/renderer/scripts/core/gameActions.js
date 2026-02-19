@@ -144,7 +144,7 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 		playAudio(sounds.bgMusic);
 		counter.animate("reset-shake");
 
-		playAudio(sounds.reset);
+		// playAudio(sounds.reset);
 		resetHeartEffect();
 
 	}
