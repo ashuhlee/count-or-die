@@ -14,7 +14,7 @@ export function soundToggle() {
 	}
 
 	toggleSoundBtn.addEventListener("click", () => {
-		console.log(`is sound playing: ${sounds.bgMusic.muted.toString()}`);
+		// console.log(`is sound playing: ${sounds.bgMusic.muted.toString()}`);
 		toggleMusic(sounds.bgMusic);
 		toggleSoundBtn.src = sounds.bgMusic.muted ? soundBtnMuted : soundBtnUnmuted;
 
