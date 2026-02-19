@@ -1,6 +1,10 @@
 @use "../base/globals";
 
-* { box-sizing: border-box; cursor:url("#{globals.$cursor}"), auto !important; }
+* {
+	box-sizing: border-box;
+	cursor:url("#{globals.$cursor}"), auto !important;
+}
+
 ::-webkit-scrollbar { display: none; }
 
 .app {
@@ -33,21 +37,18 @@ body {
     user-select: none;
     -webkit-user-select: none;
     -webkit-app-region: no-drag;
-    cursor: url("#{globals.$cursor}"), auto !important;
 }
 
 button,
 input,
 textarea,
-select, {
+select {
     -webkit-app-region: no-drag;}
 
 img {
     -webkit-user-drag: none; user-drag: none;
     :not(#closeApp) {
-    pointer-events: none;
-    image-rendering: pixelated;
+		pointer-events: none;
+		image-rendering: pixelated;
     }
 }
-
-svg { transition-duration: 0.2s; }

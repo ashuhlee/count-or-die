@@ -142,13 +142,7 @@
 		z-index: 2;
 		image-rendering: auto;
 	}
-	.floor {
-		height: 70px; width: 100%;
-		position: absolute;
-		bottom: -25px;
-		background: url("#{globals.$floor}") repeat-x 0 0;
-		background-size: auto 100%;
-	}
+
 	.go-title,
 	.final-score,
 	.play-again,
