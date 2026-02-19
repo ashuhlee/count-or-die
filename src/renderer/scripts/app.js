@@ -11,6 +11,8 @@ import { playAudio, pauseAudio, sounds } from "./controls/audioHandler.js";
 import { splitLetters } from "./anim/animations.js";
 import { heartGlitch } from "./anim/glitchEffect.js";
 
+import { hideLoadingScreen, showLoadingScreen } from "./components/loadingScreen.js";
+
 import { setGoalDisplay, setGradientText } from "./components/goalDisplay.js";
 import { setHighScoreDisplay } from "./components/highScoreDisplay.js";
 import { initProgressBar, updateBarColor } from "./components/progressBarDisplay.js";
@@ -90,6 +92,23 @@ document.addEventListener("DOMContentLoaded", () => {
 		sounds: sounds,
 	});
 
+	// TODO: clean up this function
+	async function restartGameOver() {
+
+		showLoadingScreen();
+		await new Promise(resolve => setTimeout(resolve, 800));
+
+		// restart game while covered
+		setTimeout(() => {
+			actions.restartGame();
+		}, 500)
+
+		isGameOver = false;
+
+		hideLoadingScreen();
+		await new Promise(resolve => setTimeout(resolve, 0));
+	}
+
 
 	// button clicks
 	document.getElementById("increase-img").addEventListener("click", (e) => {
@@ -106,11 +125,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	document.getElementById("reset-img").addEventListener("click", () => {
 		actions.restartGame();
+		playAudio(sounds.reset);
 		isGameOver = false;
 	});
 	document.getElementById("game-over-btn").addEventListener("click", () => {
-		actions.restartGame();
-		isGameOver = false;
+		restartGameOver();
 	});
 
 	// keyb controls
