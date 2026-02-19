@@ -2,7 +2,7 @@ node_modules/
 dist/
 out/
 build/
-tests/
+old_code/
 .idea/
 .vite/
 .DS_Store
