@@ -1,6 +1,5 @@
 
 import { setDiscordStatus } from './discordRPC.js';
-import {shell} from "electron";
 
 const { app, BrowserWindow, nativeImage } = require('electron');
 const { Menu } = require('electron/main');

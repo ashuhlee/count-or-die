@@ -41,7 +41,7 @@ function getTierInfo(highScore) {
 		return { badge: 'tier_one', label: 'Slow Fingers' };
 	}
 	else {
-		return { badge: 'tier_one', label: 'Rookie' };
+		return { badge: undefined, label: 'Rookie' };
 	}
 }
 
