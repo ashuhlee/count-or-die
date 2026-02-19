@@ -23,12 +23,13 @@ import { Counter } from "./components/counterDisplay.js";
 
 document.addEventListener("DOMContentLoaded", () => {
 
+	playAudio(sounds.bgMusic);
+
 	// render elements
 	renderMain();
 	renderGame();
 
-	// initialize game (start audio and progress bar)
-	playAudio(sounds.bgMusic);
+	// initialize game (start progress bar)
 	const progressBar = initProgressBar();
 
 	// animations
