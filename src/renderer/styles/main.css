@@ -487,7 +487,7 @@ svg {
 
 #high-score {
   position: absolute;
-  font-size: 24px;
+  font-size: 22px;
   color: white;
   text-shadow: 0 4px 0 var(--shadow-pink-015);
   font-family: "serious1", sans-serif;
@@ -761,7 +761,7 @@ svg {
 }
 #game-over.visible .ghost {
   opacity: 0.85;
-  transition: opacity 0.5s ease 1.4s;
+  transition: opacity 0.5s ease 1.1s;
   animation: hover 3s infinite ease-in-out;
 }
 #game-over .go-content {
@@ -887,7 +887,7 @@ svg {
   pointer-events: none;
 }
 #red-flash.flash {
-  animation: flash-custom 0.7s ease forwards;
+  animation: flash-custom 0.5s ease forwards;
 }
 
 /*# sourceMappingURL=main.css.map */

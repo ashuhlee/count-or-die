@@ -50,7 +50,7 @@
         }
 		.ghost {
 			opacity: 0.85;
-			transition: opacity 0.5s ease 1.4s;
+			transition: opacity 0.5s ease 1.1s;
 			animation: hover 3s infinite ease-in-out;
 		}
 	}
@@ -172,6 +172,6 @@
 	opacity: 0;
 	pointer-events: none;
 	&.flash {
-		animation: flash-custom 0.7s ease forwards;
+		animation: flash-custom 0.5s ease forwards;
 	}
 }
