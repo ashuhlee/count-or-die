@@ -1,7 +1,11 @@
 name: (Windows) App Build
 on:
     push:
+        paths-ignore:
+            - '**.md'
     pull_request:
+        paths-ignore:
+            - '**.md'
 jobs:
     package:
         runs-on: windows-latest
