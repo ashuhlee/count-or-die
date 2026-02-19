@@ -23,8 +23,8 @@ Count or Die is an arcade counting game with progressive difficulty, randomized 
 ## Previews
 ### In-Game
 <div align="center">
-  <img width="400" alt="Game Screenshot" src="https://github.com/user-attachments/assets/12f9a0af-2b04-462c-81fb-c3d288edbfdd" />
-  <img width="400" alt="Gameplay Demo" src="https://github.com/user-attachments/assets/8a767794-210f-400b-a7fa-fc31586e4f77" />
+  <img width="400" alt="Game Screenshot" src="https://github.com/user-attachments/assets/cb9b833d-b84e-4e32-908d-bf13be76dba9" />
+  <img width="400" alt="Gameplay Demo" src="https://github.com/user-attachments/assets/786be283-b800-4b73-867a-8acaa1c3ee5c" />
 </div>
 
 ## Gameplay
@@ -49,11 +49,10 @@ Count or Die is an arcade counting game with progressive difficulty, randomized 
 
 ## Discord Rich Presence
 <div>
-    <img width="330" align="right"
+    <img width="280" align="right"
     src="https://github.com/user-attachments/assets/76b878b1-1305-4037-8d1c-5bf0a25dbdf8"/>
 
-  Count or Die has support for Discord Rich Presence, allowing friends to see your game status, current mode and rank.<br>  
-  Brag about how fast you can click to your friends!
+  Count or Die has support for Discord Rich Presence, allowing friends to see your game status, current mode and rank. Brag about how fast you can click to your friends!
 
 </div>
 
@@ -127,5 +126,5 @@ This is a personal project, but suggestions and contributions are welcome!
 Feel free to check out the [Project Tracker](https://ashuhlee.notion.site/Count-or-Die-2f5a30a56798803383e7dd6b54a77d4e?source=copy_link) to see what's currently in progress.
 
 <br>
-⭐ If you like this concept, please consider giving this repo a star <br>
-🎮 Made for gamers, pixel art lovers, and anyone with a slow reaction time
+⭐ If you like this project, please consider giving this repo a star!
+<!-- 🎮 Made for gamers, pixel art lovers, and anyone with a slow reaction time -->
