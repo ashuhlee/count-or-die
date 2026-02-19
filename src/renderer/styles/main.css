@@ -348,6 +348,99 @@ img :not(#closeApp) {
     transform: scale(1) rotate(6deg);
   }
 }
+#counter.new-score-counter {
+  fill: url(#gradient-counter);
+}
+
+.hearts .heart-pink, .heart-purple, .heart-blue, .heart-white {
+  animation: heart-scale 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+}
+.hearts .heart-pink:nth-child(1), .heart-purple:nth-child(1), .heart-blue:nth-child(1), .heart-white:nth-child(1) {
+  animation-delay: 0s;
+}
+.hearts .heart-pink:nth-child(2), .heart-purple:nth-child(2), .heart-blue:nth-child(2), .heart-white:nth-child(2) {
+  animation-delay: 0.3s;
+}
+.hearts .heart-pink:nth-child(3), .heart-purple:nth-child(3), .heart-blue:nth-child(3), .heart-white:nth-child(3) {
+  animation-delay: 0.6s;
+}
+.hearts .heart-pink:nth-child(4), .heart-purple:nth-child(4), .heart-blue:nth-child(4), .heart-white:nth-child(4) {
+  animation-delay: 0.9s;
+}
+
+#high-score.new-score {
+  animation: bounce 0.6s, gradient 2s ease;
+  transform-origin: center;
+}
+
+.new-goal {
+  animation: swing ease;
+  transform-origin: bottom;
+}
+
+.fade-up-text span {
+  opacity: 0;
+  transform: translateY(20px);
+  display: inline-block;
+  animation: fade-in-up 0.2s ease-out forwards var(--delay);
+}
+
+.game-name span {
+  display: inline-block;
+  animation: wavy-text 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--delay);
+}
+
+.pop {
+  animation: pop 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
+  transform-origin: center;
+}
+
+.pop-dec {
+  animation: pop-dec 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
+  transform-origin: center;
+}
+
+.pop-right {
+  animation: pop-right 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
+  transform-origin: center;
+}
+
+.pop-gradient {
+  animation: fade-gradient 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
+  transform-origin: center;
+}
+
+.reset-shake {
+  animation: reset-shake 0.25s ease-out;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.no-boost-text span {
+  display: inline-block;
+  animation: shake 2s ease infinite var(--delay);
+}
+
+.no-boosts-shake {
+  animation: no-boosts-shake 0.25s ease-out;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.no-boosts-flash {
+  animation: flash 0.5s ease;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.boost-notification {
+  animation: float-up 0.45s ease-out forwards;
+}
+
+.bounce-in {
+  animation: bounce-in 0.02s ease-out;
+}
+
 .buttons {
   display: flex;
   gap: 22px;
@@ -526,6 +619,20 @@ img :not(#closeApp) {
   opacity: 0.1;
 }
 
+.left-deco {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 30px;
+  height: 180px;
+  opacity: 0.7;
+}
+@media screen and (max-height: 950px) and (max-width: 900px) {
+  .left-deco {
+    display: none;
+  }
+}
+
 .goal-chatbox {
   display: flex;
   flex-direction: column;
@@ -591,99 +698,6 @@ img :not(#closeApp) {
   position: fixed;
   display: none;
   pointer-events: none;
-}
-
-#counter.new-score-counter {
-  fill: url(#gradient-counter);
-}
-
-.hearts .heart-pink, .heart-purple, .heart-blue, .heart-white {
-  animation: heart-scale 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
-}
-.hearts .heart-pink:nth-child(1), .heart-purple:nth-child(1), .heart-blue:nth-child(1), .heart-white:nth-child(1) {
-  animation-delay: 0s;
-}
-.hearts .heart-pink:nth-child(2), .heart-purple:nth-child(2), .heart-blue:nth-child(2), .heart-white:nth-child(2) {
-  animation-delay: 0.3s;
-}
-.hearts .heart-pink:nth-child(3), .heart-purple:nth-child(3), .heart-blue:nth-child(3), .heart-white:nth-child(3) {
-  animation-delay: 0.6s;
-}
-.hearts .heart-pink:nth-child(4), .heart-purple:nth-child(4), .heart-blue:nth-child(4), .heart-white:nth-child(4) {
-  animation-delay: 0.9s;
-}
-
-#high-score.new-score {
-  animation: bounce 0.6s, gradient 2s ease;
-  transform-origin: center;
-}
-
-.new-goal {
-  animation: swing ease;
-  transform-origin: bottom;
-}
-
-.fade-up-text span {
-  opacity: 0;
-  transform: translateY(20px);
-  display: inline-block;
-  animation: fade-in-up 0.2s ease-out forwards var(--delay);
-}
-
-.game-name span {
-  display: inline-block;
-  animation: wavy-text 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--delay);
-}
-
-.pop {
-  animation: pop 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
-  transform-origin: center;
-}
-
-.pop-dec {
-  animation: pop-dec 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
-  transform-origin: center;
-}
-
-.pop-right {
-  animation: pop-right 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
-  transform-origin: center;
-}
-
-.pop-gradient {
-  animation: fade-gradient 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
-  transform-origin: center;
-}
-
-.reset-shake {
-  animation: reset-shake 0.25s ease-out;
-  transform-box: fill-box;
-  transform-origin: center;
-}
-
-.no-boost-text span {
-  display: inline-block;
-  animation: shake 2s ease infinite var(--delay);
-}
-
-.no-boosts-shake {
-  animation: no-boosts-shake 0.25s ease-out;
-  transform-box: fill-box;
-  transform-origin: center;
-}
-
-.no-boosts-flash {
-  animation: flash 0.5s ease;
-  transform-box: fill-box;
-  transform-origin: center;
-}
-
-.boost-notification {
-  animation: float-up 0.45s ease-out forwards;
-}
-
-.bounce-in {
-  animation: bounce-in 0.02s ease-out;
 }
 
 #game-over {
@@ -856,6 +870,66 @@ img :not(#closeApp) {
 }
 #red-flash.flash {
   animation: flash-custom 0.5s ease forwards;
+}
+
+.loading-screen {
+  position: fixed;
+  display: grid;
+  place-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  z-index: 100;
+  pointer-events: all;
+}
+.loading-screen .diamond-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: 10000px;
+  height: 10000px;
+  clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
+  animation: expand-clip 1s ease-in forwards;
+  pointer-events: none;
+}
+.loading-screen .diamond {
+  position: absolute;
+  width: 10000px;
+  height: 10000px;
+  background: #B9ACFF;
+  transform: rotate(45deg);
+}
+.loading-screen .loading-skull {
+  position: relative;
+  z-index: 1;
+  width: 80px;
+  height: 80px;
+  animation: bounceInUp 1s ease -0.35s;
+}
+.loading-screen.hiding .diamond-wrapper {
+  animation: shrink-clip 1s ease-out forwards;
+}
+
+@keyframes expand-clip {
+  0% {
+    clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
+  }
+  100% {
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  }
+}
+@keyframes shrink-clip {
+  0% {
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  }
+  100% {
+    clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
+  }
 }
 
 /*# sourceMappingURL=main.css.map */

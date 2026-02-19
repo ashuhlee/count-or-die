@@ -1,6 +1,7 @@
 @use "base/app";
 @use "base/globals";
 @use "base/animations";
+@use "base/effects";
 
 @use "components/buttons";
 @use "components/counter";
@@ -10,5 +11,5 @@
 @use "components/goal";
 @use "components/hearts";
 
-@use "base/effects";
 @use "states/game-over";
+@use "states/loading";
