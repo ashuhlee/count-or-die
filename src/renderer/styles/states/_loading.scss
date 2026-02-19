@@ -1,0 +1,59 @@
+
+.loading-screen {
+    position: fixed;
+    display: grid;
+    place-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 100;
+    pointer-events: all;
+
+    .diamond-wrapper {
+       position: absolute;
+       top: 50%;
+       left: 50%;
+       transform: translate(-50%, -50%);
+       display: grid;
+       place-items: center;
+       width: 10000px;
+       height: 10000px;
+       clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
+       animation: expand-clip 1s ease-in forwards;
+       pointer-events: none;
+    }
+
+    .diamond {
+       position: absolute;
+       width: 10000px;
+       height: 10000px;
+       background: #B9ACFF;
+       transform: rotate(45deg);
+    }
+
+    .loading-skull {
+       position: relative;
+       z-index: 1;
+       width: 80px;
+       height: 80px;
+       animation: bounceInUp 1s ease -0.35s;
+    }
+
+    &.hiding {
+       .diamond-wrapper {
+          animation: shrink-clip 1s ease-out forwards;
+       }
+    }
+}
+
+@keyframes expand-clip {
+    0% { clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%); }
+    100% { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+}
+
+@keyframes shrink-clip {
+    0% { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+    100% { clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%); }
+}
