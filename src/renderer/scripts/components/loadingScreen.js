@@ -1,5 +1,5 @@
 
-import skullImg from '../../assets/ui/deco/skull.png';
+import skullImg from '../../assets/ui/deco/skull_pink.png';
 
 export function showLoadingScreen() {
 
@@ -9,6 +9,7 @@ export function showLoadingScreen() {
 
 	loading.innerHTML = `
 		<div class="loading-content">
+			<div class="diamond-outline"></div>
 			<div class="diamond-wrapper">
 				<div class="diamond"></div>
 				<img src="${skullImg}" class="loading-skull" alt="skull"/>			
