@@ -1,10 +1,13 @@
-import { defineConfig } from 'vite'
-import path from 'path'
+import { defineConfig } from 'vite';
+import path from 'path';
+import pkg from './package.json';
 
 export default defineConfig({
   base: './',
   root: path.resolve(__dirname, 'src/renderer'),
-  // publicDir: path.resolve(__dirname, 'src/renderer/assets'),
+  define: {
+	  __APP_VERSION__: JSON.stringify(pkg.version)
+  },
   build: {
     outDir: path.resolve(__dirname, '.vite/renderer/main_window'),
     emptyOutDir: true,
