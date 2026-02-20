@@ -18,6 +18,7 @@ export function renderGame() {
 	app.innerHTML = `
 		<div class="goal-chatbox" id="goal-chatbox">
 			<span id="boost-notif-text" class="boost-notif-text">boost!</span>
+			<span id="theme-switch-notif-text" class="theme-switch-notif-text">new rank!</span>
 			<div class="next-goal animate__animated animate__fast" id="next-goal">
 				<span class="goal-text fade-up-text">next: 30</span>
 			</div>

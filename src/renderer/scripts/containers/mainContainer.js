@@ -68,5 +68,7 @@ export function renderMain() {
     	<div class="app" id="app"></div>
     	<!-- high score text -->
     	<h1 id="high-score" class="animate__animated">high score: 0</h1>
+    	<!-- app version -->
+    	<p id="app-ver" class="app-ver">${__APP_VERSION__}</p>
 	`
 }

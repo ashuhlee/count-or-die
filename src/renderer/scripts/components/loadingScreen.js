@@ -9,9 +9,9 @@ export function showLoadingScreen() {
 
 	loading.innerHTML = `
 		<div class="loading-content">
-			<div class="diamond-outline"></div>
-			<div class="diamond-wrapper">
-				<div class="diamond"></div>
+			<div class="diamond-outline" id="diamond-outline"></div>
+			<div class="diamond-wrapper" id="diamond-wrapper">
+				<div class="diamond" id="diamond"></div>
 				<img src="${skullImg}" class="loading-skull" alt="skull"/>			
 			</div>
 		</div>`
@@ -29,8 +29,8 @@ export function hideLoadingScreen() {
 	if (!loading) return;
 
 	loading.classList.add('hiding');
-
 	setTimeout(() => {
+		loading.style.willChange = 'auto';
 		loading.remove();
-	}, 1000)
+	}, 600)
 }
