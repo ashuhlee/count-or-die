@@ -909,16 +909,16 @@ img :not(#closeApp) {
   transform: translate(-50%, -50%);
   display: grid;
   place-items: center;
-  width: 10000px;
-  height: 10000px;
+  width: 300vw;
+  height: 300vw;
   clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
   animation: expand-clip 0.7s ease-in forwards;
   pointer-events: none;
 }
 .loading-screen .diamond {
   position: absolute;
-  width: 10000px;
-  height: 10000px;
+  width: 300vw;
+  height: 300vw;
   background: #B9ACFF;
 }
 .loading-screen .diamond-outline {
