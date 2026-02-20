@@ -701,9 +701,7 @@ img :not(#closeApp) {
 }
 
 #game-over {
-  opacity: 0;
-  transform: translateY(-100%);
-  transition: opacity 0.4s ease, transform 0.3s ease;
+  --mask-size: 100% 200%;
   pointer-events: none;
   display: grid;
   position: fixed;
@@ -717,11 +715,22 @@ img :not(#closeApp) {
   background-size: 128px auto;
   animation: slide 4s linear infinite reverse;
   z-index: 10;
+  mask: url("../assets/ui/masks/drip-mask.png") no-repeat 0% 200%/var(--mask-size);
+  -webkit-mask: url("../assets/ui/masks/drip-mask.png") no-repeat 0% 200%/var(--mask-size);
+}
+@media (max-width: 900px) {
+  #game-over {
+    --mask-size: 200% 200%;
+  }
 }
 #game-over.visible {
-  opacity: 1;
+  transition: mask-position 1s ease, -webkit-mask-position 1s ease;
+  mask-position: 0 0;
+  -webkit-mask-position: 0 0;
   pointer-events: all;
-  transform: translateY(0);
+}
+#game-over.visible #red-overlay {
+  opacity: 0;
 }
 #game-over.visible .go-title {
   animation: bounceIn 0.5s ease 0.3s forwards;
@@ -733,10 +742,10 @@ img :not(#closeApp) {
   animation: bounceIn 0.5s ease 1s forwards;
 }
 #game-over.visible .play-again-btn {
-  animation: fadeInUp 0.5s ease 1.15s forwards;
+  animation: fadeInUp 0.3s ease 1s forwards;
 }
 #game-over.visible .tombstone {
-  animation: swing 1s ease forwards;
+  animation: swing 1s ease forwards 0.1s;
   transform-origin: bottom;
   opacity: 1;
   bottom: 0;
@@ -751,7 +760,7 @@ img :not(#closeApp) {
 }
 #game-over.visible .ghost {
   opacity: 0.85;
-  transition: opacity 0.5s ease 1.1s;
+  transition: opacity 0.3s ease 1s;
   animation: hover 3s infinite ease-in-out;
 }
 #game-over .go-content {
@@ -759,6 +768,17 @@ img :not(#closeApp) {
   flex-direction: column;
   align-items: center;
   gap: 10px;
+}
+#game-over #red-overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: #ff3282;
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 0.4s ease 0.1s;
 }
 #game-over .deco-icons {
   display: flex;
@@ -853,9 +873,6 @@ img :not(#closeApp) {
 #game-over .excl {
   opacity: 0;
 }
-#game-over .bg {
-  z-index: -1;
-}
 
 #red-flash {
   position: fixed;
@@ -863,7 +880,7 @@ img :not(#closeApp) {
   height: 100%;
   top: 0;
   left: 0;
-  background: #ff4388;
+  background: #ff3282;
   z-index: 15;
   opacity: 0;
   pointer-events: none;
@@ -894,7 +911,7 @@ img :not(#closeApp) {
   width: 10000px;
   height: 10000px;
   clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
-  animation: expand-clip 1s ease-in forwards;
+  animation: expand-clip 0.7s ease-in forwards;
   pointer-events: none;
 }
 .loading-screen .diamond {
@@ -904,15 +921,23 @@ img :not(#closeApp) {
   background: #B9ACFF;
   transform: rotate(45deg);
 }
+.loading-screen .diamond::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("../assets/ui/textures/tile-loading.png") repeat 0 center;
+  animation: slide 4s linear infinite reverse;
+  transform: rotate(-45deg);
+}
 .loading-screen .loading-skull {
   position: relative;
   z-index: 1;
   width: 80px;
   height: 80px;
-  animation: bounceInUp 1s ease -0.35s;
+  animation: bounceInUp 1s ease-out -0.35s forwards;
 }
 .loading-screen.hiding .diamond-wrapper {
-  animation: shrink-clip 1s ease-out forwards;
+  animation: shrink-clip 0.7s ease-out forwards;
 }
 
 @keyframes expand-clip {

@@ -21,6 +21,8 @@
 $assets: "../assets";
 $body-bg-image: "#{$assets}/ui/textures/tile-2.png";
 $game-over-bg: "#{$assets}/ui/textures/tile-go.png";
+$loading-bg: "#{$assets}/ui/textures/tile-loading.png";
+$melt-mask: "#{$assets}/ui/masks/drip-mask.png";
 $cursor: "#{$assets}/ui/hand.png";
 $scanline: "#{$assets}/ui/textures/scanlines-2.png";
 $delay-step: 0.3s;

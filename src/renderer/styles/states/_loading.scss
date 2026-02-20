@@ -1,3 +1,4 @@
+@use "../base/globals";
 
 .loading-screen {
     position: fixed;
@@ -12,38 +13,46 @@
     pointer-events: all;
 
     .diamond-wrapper {
-       position: absolute;
-       top: 50%;
-       left: 50%;
-       transform: translate(-50%, -50%);
-       display: grid;
-       place-items: center;
-       width: 10000px;
-       height: 10000px;
-       clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
-       animation: expand-clip 1s ease-in forwards;
-       pointer-events: none;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		display: grid;
+		place-items: center;
+		width: 10000px;
+		height: 10000px;
+		clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
+		animation: expand-clip 0.7s ease-in forwards;
+		pointer-events: none;
     }
 
     .diamond {
-       position: absolute;
-       width: 10000px;
-       height: 10000px;
-       background: #B9ACFF;
-       transform: rotate(45deg);
+		position: absolute;
+		width: 10000px;
+		height: 10000px;
+		background: #B9ACFF;
+		transform: rotate(45deg);
     }
+	.diamond::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: url("#{globals.$loading-bg}") repeat 0 center;
+		animation: slide 4s linear infinite reverse;
+		transform: rotate(-45deg);
+	}
 
     .loading-skull {
-       position: relative;
-       z-index: 1;
-       width: 80px;
-       height: 80px;
-       animation: bounceInUp 1s ease -0.35s;
+		position: relative;
+		z-index: 1;
+		width: 80px;
+		height: 80px;
+		animation: bounceInUp 1s ease-out -0.35s forwards;
     }
 
     &.hiding {
        .diamond-wrapper {
-          animation: shrink-clip 1s ease-out forwards;
+          animation: shrink-clip 0.7s ease-out forwards;
        }
     }
 }
