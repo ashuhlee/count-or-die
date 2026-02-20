@@ -39,6 +39,7 @@ export function renderMain() {
     	<!-- game over div -->
     	<div id="game-over">
 			<div class="go-content">
+				<div id="red-overlay"></div>
 				<h2 class="you-died" id="dead-text"><span class="go-text-random">you died lolz</span></h2>
 				
 				<div class="deco-icons">

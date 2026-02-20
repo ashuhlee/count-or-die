@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		// restart game while covered
 		setTimeout(() => {
 			actions.restartGame();
-		}, 500)
+		}, 300)
 
 		isGameOver = false;
 

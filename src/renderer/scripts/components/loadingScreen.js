@@ -1,5 +1,5 @@
 
-import skullImg from '../../assets/ui/deco/skull_purple.png';
+import skullImg from '../../assets/ui/deco/skull.png';
 
 export function showLoadingScreen() {
 
