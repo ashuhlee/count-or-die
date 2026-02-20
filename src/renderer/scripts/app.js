@@ -92,21 +92,16 @@ document.addEventListener("DOMContentLoaded", () => {
 		sounds: sounds,
 	});
 
-	// TODO: clean up this function
 	async function restartGameOver() {
 
 		showLoadingScreen();
-		await new Promise(resolve => setTimeout(resolve, 800));
+		await new Promise(resolve => setTimeout(resolve, 500));
 
-		// restart game while covered
-		setTimeout(() => {
-			actions.restartGame();
-		}, 300)
+		await new Promise(resolve => setTimeout(resolve, 150));
 
 		isGameOver = false;
-
+		actions.restartGame();
 		hideLoadingScreen();
-		await new Promise(resolve => setTimeout(resolve, 0));
 	}
 
 
@@ -145,9 +140,13 @@ document.addEventListener("DOMContentLoaded", () => {
 	document.addEventListener("progressBarExp", () => {
 		if (!gameState.isGoalReached() && !gameState.isGameOver) {
 
-		if (window.electron) {
-			window.electron.setDiscordStatus({ gameStatusRPC: "game-over" });
-		}
+			playAudio(sounds.gameOver);
+			pauseAudio(sounds.bgMusic);
+
+			if (window.electron) {
+				window.electron.setDiscordStatus({ gameStatusRPC: "game-over" });
+			}
+
 			isGameOver = true;
 			progressBar.style.animation = "none";
 
@@ -158,9 +157,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 			const scoreText = document.querySelector(".score-text");
 			scoreText.textContent = `Score: ${countText.textContent}`;
-
-			playAudio(sounds.gameOver);
-			pauseAudio(sounds.bgMusic);
 
 		}
 	});
