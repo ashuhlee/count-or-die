@@ -79,6 +79,12 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 			changeTheme("theme300", bar);
 		}
 
+		const themeNotif = document.getElementById("theme-switch-notif-text");
+
+		if (state.counter === 200 || state.counter === 300) {
+			playAnimation(themeNotif, "boost-notification");
+		}
+
 		displayCursorCount(state.countIncrement, event, false);
 		updateScoreAndGoal("pop", false);
 	}
@@ -105,6 +111,12 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 		}
 		if (state.counter >= 300) {
 			changeTheme("theme300", bar);
+		}
+
+		const themeNotif = document.getElementById("theme-switch-notif-text");
+
+		if (state.counter === 200 || state.counter === 300) {
+			playAnimation(themeNotif, "boost-notification");
 		}
 
 		animateBtn("decrease", false);
