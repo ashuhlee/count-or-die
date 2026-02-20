@@ -12,7 +12,7 @@
     z-index: 100;
     pointer-events: all;
 
-    .diamond-wrapper {
+    .diamond-wrapper, .diamond-outline {
 		position: absolute;
 		top: 50%;
 		left: 50%;
@@ -31,15 +31,18 @@
 		width: 10000px;
 		height: 10000px;
 		background: #B9ACFF;
-		transform: rotate(45deg);
     }
+	.diamond-outline {
+		background: #FF9DE9;
+		zoom: 1.2;
+		animation: expand-clip 0.7s ease-in forwards -0.06s;
+	}
 	.diamond::before {
 		content: '';
 		position: absolute;
 		inset: 0;
 		background: url("#{globals.$loading-bg}") repeat 0 center;
 		animation: slide 4s linear infinite reverse;
-		transform: rotate(-45deg);
 	}
 
     .loading-skull {
@@ -47,13 +50,17 @@
 		z-index: 1;
 		width: 80px;
 		height: 80px;
-		animation: bounceInUp 1s ease-out -0.35s forwards;
+		animation: jackInTheBox 1.2s ease -0.3s forwards;
     }
 
     &.hiding {
-       .diamond-wrapper {
+       .diamond-wrapper, {
           animation: shrink-clip 0.7s ease-out forwards;
        }
+		.diamond-outline {
+			animation: shrink-clip 0.7s ease-out forwards 0.05s;
+			background: url("#{globals.$loading-bg-2}") repeat 0 center;
+		}
     }
 }
 

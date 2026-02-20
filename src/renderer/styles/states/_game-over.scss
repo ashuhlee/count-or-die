@@ -37,13 +37,13 @@
             animation: bounceIn 0.5s ease 0.3s forwards;
         }
         .final-score {
-            animation: bounceIn 0.5s ease 0.6s forwards;
+            animation: jackInTheBox 0.5s ease 0.7s forwards;
         }
         .play-again {
-            animation: bounceIn 0.5s ease 1s forwards;
+            animation: bounceIn 0.7s ease 0.9s forwards;
         }
         .play-again-btn {
-            animation: fadeInUp 0.3s ease 1s forwards;
+            animation: jackInTheBox 0.3s ease 1s forwards;
         }
 		.tombstone {
 			animation: swing 1s ease forwards 0.1s;
@@ -87,6 +87,7 @@
 		display: flex;
 		gap: 14px;
 		margin-bottom: 20px;
+		z-index: -3;
 		img {
 			height: 55px;
 			image-rendering: pixelated;
@@ -106,12 +107,12 @@
 		text-shadow: 0 5px 0 var(--shadow-pink-015);
 	}
 	.final-score {
-		color: #fff;
+		color: #DFF3FF;
 		font-weight: bold;
 		font-family: 'serious1', sans-serif;
 	}
 	.you-died {
-		font-size: 28px;
+		font-size: 26px;
 		top: 50px;
 		font-weight: bold;
 		font-family: 'serious1', sans-serif;

@@ -625,7 +625,7 @@ img :not(#closeApp) {
   left: 0;
   padding: 30px;
   height: 180px;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 @media screen and (max-height: 950px) and (max-width: 900px) {
   .left-deco {
@@ -736,13 +736,13 @@ img :not(#closeApp) {
   animation: bounceIn 0.5s ease 0.3s forwards;
 }
 #game-over.visible .final-score {
-  animation: bounceIn 0.5s ease 0.6s forwards;
+  animation: jackInTheBox 0.5s ease 0.7s forwards;
 }
 #game-over.visible .play-again {
-  animation: bounceIn 0.5s ease 1s forwards;
+  animation: bounceIn 0.7s ease 0.9s forwards;
 }
 #game-over.visible .play-again-btn {
-  animation: fadeInUp 0.3s ease 1s forwards;
+  animation: jackInTheBox 0.3s ease 1s forwards;
 }
 #game-over.visible .tombstone {
   animation: swing 1s ease forwards 0.1s;
@@ -784,6 +784,7 @@ img :not(#closeApp) {
   display: flex;
   gap: 14px;
   margin-bottom: 20px;
+  z-index: -3;
 }
 #game-over .deco-icons img {
   height: 55px;
@@ -802,12 +803,12 @@ img :not(#closeApp) {
   text-shadow: 0 5px 0 var(--shadow-pink-015);
 }
 #game-over .final-score {
-  color: #fff;
+  color: #DFF3FF;
   font-weight: bold;
   font-family: "serious1", sans-serif;
 }
 #game-over .you-died {
-  font-size: 28px;
+  font-size: 26px;
   top: 50px;
   font-weight: bold;
   font-family: "serious1", sans-serif;
@@ -901,7 +902,7 @@ img :not(#closeApp) {
   z-index: 100;
   pointer-events: all;
 }
-.loading-screen .diamond-wrapper {
+.loading-screen .diamond-wrapper, .loading-screen .diamond-outline {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -919,25 +920,32 @@ img :not(#closeApp) {
   width: 10000px;
   height: 10000px;
   background: #B9ACFF;
-  transform: rotate(45deg);
+}
+.loading-screen .diamond-outline {
+  background: #FF9DE9;
+  zoom: 1.2;
+  animation: expand-clip 0.7s ease-in forwards -0.06s;
 }
 .loading-screen .diamond::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: url("../assets/ui/textures/tile-loading.png") repeat 0 center;
+  background: url("../assets/ui/textures/tile-loading-2.png") repeat 0 center;
   animation: slide 4s linear infinite reverse;
-  transform: rotate(-45deg);
 }
 .loading-screen .loading-skull {
   position: relative;
   z-index: 1;
   width: 80px;
   height: 80px;
-  animation: bounceInUp 1s ease-out -0.35s forwards;
+  animation: jackInTheBox 1.2s ease -0.3s forwards;
 }
 .loading-screen.hiding .diamond-wrapper {
   animation: shrink-clip 0.7s ease-out forwards;
+}
+.loading-screen.hiding .diamond-outline {
+  animation: shrink-clip 0.7s ease-out forwards 0.05s;
+  background: url("../assets/ui/textures/tile-loading-3.png") repeat 0 center;
 }
 
 @keyframes expand-clip {
