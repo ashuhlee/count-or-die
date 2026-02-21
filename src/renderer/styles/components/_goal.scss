@@ -30,10 +30,17 @@
 		z-index: -1;
 		animation: point 2s infinite ease-in-out;
 	}
-	.boost-notif-text, .theme-switch-notif-text {
-	color: white;
-	font-family: 'serious1', sans-serif;
-	font-size: 20px;
-	opacity: 0;
+	.notifications {
+		position: relative;
+		display: flex;
+		justify-content: center;
+	}
+	.boost-notif-text, .theme-switch-notif-text, .score-notif-text {
+		position: absolute;
+		white-space: nowrap;
+		color: white;
+		font-family: 'serious1', sans-serif;
+		font-size: 20px;
+		opacity: 0;
 	}
 }

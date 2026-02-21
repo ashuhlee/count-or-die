@@ -299,9 +299,12 @@ img :not(#closeApp) {
     opacity: 1;
     transform: translateY(5px);
   }
+  40% {
+    opacity: 1;
+  }
   100% {
     opacity: 0;
-    transform: translateY(-30px);
+    transform: translateY(-45px);
   }
 }
 @keyframes flash-custom {
@@ -434,7 +437,7 @@ img :not(#closeApp) {
 }
 
 .boost-notification {
-  animation: float-up 0.45s ease-out forwards;
+  animation: float-up 0.4s ease-out forwards;
 }
 
 .bounce-in {
@@ -592,9 +595,9 @@ img :not(#closeApp) {
   color: white;
   opacity: 0.6;
   font-family: "serious1", sans-serif;
-  bottom: -22px;
+  top: -10px;
   left: 0;
-  padding: 30px;
+  padding: 10px;
 }
 
 .scanlines, .scanlines-bg {
@@ -632,7 +635,7 @@ img :not(#closeApp) {
 
 .left-deco {
   position: fixed;
-  bottom: 30px;
+  bottom: 0;
   left: 0;
   padding: 30px;
   height: 180px;
@@ -674,7 +677,14 @@ img :not(#closeApp) {
   z-index: -1;
   animation: point 2s infinite ease-in-out;
 }
-.goal-chatbox .boost-notif-text, .goal-chatbox .theme-switch-notif-text {
+.goal-chatbox .notifications {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+.goal-chatbox .boost-notif-text, .goal-chatbox .theme-switch-notif-text, .goal-chatbox .score-notif-text {
+  position: absolute;
+  white-space: nowrap;
   color: white;
   font-family: "serious1", sans-serif;
   font-size: 20px;
@@ -814,7 +824,7 @@ img :not(#closeApp) {
   text-shadow: 0 5px 0 var(--shadow-pink-015);
 }
 #game-over .final-score {
-  color: #e8f7ff;
+  color: #ffffff;
   font-weight: bold;
   font-family: "serious1", sans-serif;
 }

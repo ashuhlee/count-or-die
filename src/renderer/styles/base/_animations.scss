@@ -180,9 +180,12 @@
         opacity: 1;
         transform: translateY(5px);
     }
+	40% {
+		opacity: 1;
+	}
     100% {
         opacity: 0;
-        transform: translateY(-30px);
+        transform: translateY(-45px);
     }
 }
 @keyframes flash-custom {
