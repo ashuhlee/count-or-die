@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"paths": {
-			"@assets/*": ["src/renderer/assets/*"]
+			"@assets/*": ["./src/renderer/assets/*"]
 		}
 	}
 }
