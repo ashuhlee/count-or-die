@@ -1,9 +1,9 @@
 
 import { barColors } from "../components/progressBarDisplay.js";
 
-import tile4 from "../../assets/ui/textures/tile-4.png";
-import resetBtnPink from "../../assets/ui/buttons/reset-btn-pink.png";
-import resetBtnDefault from "../../assets/ui/buttons/reset-btn.png";
+import tile4 from "@assets/ui/textures/tile-4.png";
+import resetBtnPink from "@assets/ui/buttons/reset-btn-pink.png";
+import resetBtnDefault from "@assets/ui/buttons/reset-btn.png";
 
 export function changeTheme(level, progressBar) {
 

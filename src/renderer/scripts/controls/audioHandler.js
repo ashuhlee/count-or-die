@@ -1,17 +1,17 @@
 
 // import files
-import bgMusicFile from "../../assets/audio/music/the-return-of-the-8-bit-era.mp3";
+import bgMusicFile from "@assets/audio/music/the-return-of-the-8-bit-era.mp3";
 
-import btnIncFxFile from "../../assets/audio/sfx/button-press-1.mp3";
-import btnDecFxFile from "../../assets/audio/sfx/button-press-2.mp3";
-import btnResetFxFile from "../../assets/audio/sfx/reset-press.mp3";
+import btnIncFxFile from "@assets/audio/sfx/button-press-1.mp3";
+import btnDecFxFile from "@assets/audio/sfx/button-press-2.mp3";
+import btnResetFxFile from "@assets/audio/sfx/reset-press.mp3";
 
-import goalReachedFxFile from "../../assets/audio/sfx/goal-reached.mp3";
-import highScoreFxFile from "../../assets/audio/sfx/highscore.mp3";
-import gameOverFxFile from "../../assets/audio/sfx/game-over.mp3";
+import goalReachedFxFile from "@assets/audio/sfx/goal-reached.mp3";
+import highScoreFxFile from "@assets/audio/sfx/highscore.mp3";
+import gameOverFxFile from "@assets/audio/sfx/game-over.mp3";
 
-import boostFxFile from "../../assets/audio/sfx/boost.mp3";
-import noBoostsFxFile from "../../assets/audio/sfx/error.mp3";
+import boostFxFile from "@assets/audio/sfx/boost.mp3";
+import noBoostsFxFile from "@assets/audio/sfx/error.mp3";
 
 // declare assets
 const bgMusic = new Audio(bgMusicFile);

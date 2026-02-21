@@ -1,9 +1,9 @@
 
-import increaseBtn from "../../assets/ui/buttons/increase.png";
-import increaseBtnPress from "../../assets/ui/buttons/increase-press.png";
+import increaseBtn from "@assets/ui/buttons/increase.png";
+import increaseBtnPress from "@assets/ui/buttons/increase-press.png";
 
-import powerBtn from "../../assets/ui/buttons/decrease.png";
-import powerBtnPress from "../../assets/ui/buttons/decrease-press.png";
+import powerBtn from "@assets/ui/buttons/decrease.png";
+import powerBtnPress from "@assets/ui/buttons/decrease-press.png";
 
 let i = 0;
 

@@ -1,14 +1,14 @@
 
-import chatTip from '../../assets/ui/svg/chat-tip.svg';
+import chatTip from '@assets/ui/svg/chat-tip.svg';
 
-import decreaseBtn from '../../assets/ui/buttons/decrease.png';
-import increaseBtn from '../../assets/ui/buttons/increase.png';
-import resetBtn from '../../assets/ui/buttons/reset-btn.png';
+import decreaseBtn from '@assets/ui/buttons/decrease.png';
+import increaseBtn from '@assets/ui/buttons/increase.png';
+import resetBtn from '@assets/ui/buttons/reset-btn.png';
 
-import heartPink from '../../assets/ui/deco/px_heart_pink.png';
-import heartPurple from '../../assets/ui/deco/px_heart_purple.png';
-import heartBlue from '../../assets/ui/deco/px_heart_blue.png';
-import heartWhite from '../../assets/ui/deco/px_heart_white.png';
+import heartPink from '@assets/ui/deco/px_heart_pink.png';
+import heartPurple from '@assets/ui/deco/px_heart_purple.png';
+import heartBlue from '@assets/ui/deco/px_heart_blue.png';
+import heartWhite from '@assets/ui/deco/px_heart_white.png';
 
 
 export function renderGame() {

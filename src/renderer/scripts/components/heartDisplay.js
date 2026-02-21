@@ -1,6 +1,6 @@
 
 import { splitLetters } from "../anim/animations";
-import smokeGif from "../../assets/ui/deco/smoke.gif?t=0";
+import smokeGif from "@assets/ui/deco/smoke.gif?t=0";
 
 export function removeHeart(boostsLeft) {
 

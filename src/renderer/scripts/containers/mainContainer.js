@@ -1,18 +1,18 @@
 
-import smokeGif from '../../assets/ui/deco/smoke.gif';
-import gameOverGif from '../../assets/ui/deco/game_over.gif';
+import smokeGif from '@assets/ui/deco/smoke.gif';
+import gameOverGif from '@assets/ui/deco/game_over.gif';
 
-import soundBtnSvg from '../../assets/ui/svg/sound-button-reg.svg';
-import optionsBtnSvg from '../../assets/ui/svg/options-button.svg';
-import leftDecoPng from '../../assets/ui/deco/lines.png';
+import soundBtnSvg from '@assets/ui/svg/sound-button-reg.svg';
+import optionsBtnSvg from '@assets/ui/svg/options-button.svg';
+import leftDecoPng from '@assets/ui/deco/lines.png';
 
-import questionPng from '../../assets/ui/deco/question.png';
-import exclamationPng from '../../assets/ui/deco/exclamation.png';
+import questionPng from '@assets/ui/deco/question.png';
+import exclamationPng from '@assets/ui/deco/exclamation.png';
 
-import ghostPng from '../../assets/ui/deco/ghost.png';
-import tombstonePng from '../../assets/ui/deco/tombstone.png';
+import ghostPng from '@assets/ui/deco/ghost.png';
+import tombstonePng from '@assets/ui/deco/tombstone.png';
 
-import resetBtnPng from '../../assets/ui/buttons/reset-btn.png';
+import resetBtnPng from '@assets/ui/buttons/reset-btn.png';
 
 export function renderMain() {
 
