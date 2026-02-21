@@ -31,9 +31,25 @@ export function toggleGameOver(isGameOver = false, highScoreReached = false) {
 	const gameOverScreen = document.getElementById("game-over");
 
 	const displayText = document.querySelector(".go-text-random");
+	const scoreText = document.querySelector(".score-text");
 
 	if (highScoreReached) {
 		displayText.textContent = setRandomText(phrasesNewScore);
+
+		displayText.style.color = `rgba(255, 255, 255, 0.7)`;
+		displayText.style.backgroundImage = `var(--rainbow-gradient-bar)`;
+
+		displayText.style.backgroundClip = `text`;
+		displayText.style.backgroundSize = `100% auto`;
+		displayText.style.backgroundPosition = `0% center`;
+
+		scoreText.style.color = `rgba(255, 255, 255, 0.8)`;
+		scoreText.style.backgroundImage = `var(--rainbow-gradient-bar)`;
+
+		scoreText.style.backgroundClip = `text`;
+		scoreText.style.backgroundSize = `100% auto`;
+		scoreText.style.backgroundPosition = `0% center`;
+
 	}
 	else {
 		displayText.textContent = setRandomText(phrasesRegular);
@@ -52,6 +68,18 @@ export function toggleGameOver(isGameOver = false, highScoreReached = false) {
 		}, {once: true})
 	} else {
 		gameOverScreen.classList.remove("visible");
+
+		displayText.style.color = '';
+		displayText.style.backgroundImage = '';
+		displayText.style.backgroundClip = '';
+		displayText.style.backgroundSize = '';
+		displayText.style.backgroundPosition = '';
+
+		scoreText.style.color = '';
+		scoreText.style.backgroundImage = '';
+		scoreText.style.backgroundClip = '';
+		scoreText.style.backgroundSize = '';
+		scoreText.style.backgroundPosition = '';
 	}
 }
 
