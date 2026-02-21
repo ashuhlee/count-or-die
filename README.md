@@ -95,6 +95,13 @@ npm run package
 npm run make
 ```
 
+### Updating
+To update your local installation to the latest version:
+```zsh
+git pull origin main
+npm install
+```
+
 ## Features
 
 ### Current Features
