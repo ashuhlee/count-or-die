@@ -1,11 +1,14 @@
 
+import { resetBar, currAnimDuration } from '../components/progressBarDisplay.js';
+import { playAnimation } from '../anim/animations.js';
+
 export function setPowerUps({ state, bar}) {
 
-	const POWERUPS = [
+	const POWER_UPS = [
 	{
 		type: 'double_click',
 		icon: '🧋',
-		duration: 10000,
+		duration: 5000,
 		weight: 30
 	},
 	{
@@ -17,13 +20,13 @@ export function setPowerUps({ state, bar}) {
 	{
 		type: 'four_click',
 		icon: '🍡',
-		duration: 8000,
+		duration: 4000,
 		weight: 15
 	},
 	{
 		type: 'slow_timer',
 		icon: '⏱️',
-		duration: 10000,
+		duration: 5000,
 		weight: 10
 	},
 	{
@@ -69,8 +72,14 @@ export function setPowerUps({ state, bar}) {
 		// timed effects
 		if (powerUp.type === 'double_click') {
 			addTimedEffect(
-				() => state.countIncrement = 2,
-				() => state.countIncrement = 1, powerUp.duration
+				() => {
+					state.countIncrement = 2;
+					state.goalIncRandomizer = [30, 30];
+				},
+				() => {
+					state.countIncrement = 1;
+					state.goalIncRandomizer = [10, 15, 20, 25, 30];
+				}, powerUp.duration
     		);
 		}
 		if (powerUp.type === 'four_click') {
@@ -80,20 +89,66 @@ export function setPowerUps({ state, bar}) {
     		);
 		}
 		if (powerUp.type === 'slow_timer') {
-			console.log('idk bruh')
+			const prevSpeed = currAnimDuration; // save last bar speed
+
+			addTimedEffect(
+				() => resetBar(bar, currAnimDuration * 2),
+				() => resetBar(bar, prevSpeed), powerUp.duration
+    		);
 		}
 	}
 
-	// generates element in DOM and handles click event listener
+	// creates element in DOM and handles click event listener
 	function spawnPowerUp() {
+
+		const powerUp = choosePowerUp(POWER_UPS);
+
+		const spawnArea = document.createElement('div');
+		spawnArea.id = 'spawn-area';
+		spawnArea.className = 'spawn-area';
+
+		const placeholder = document.createElement('span'); // switch to images later
+		placeholder.id = 'power-up-img';
+		placeholder.className = 'power-up-img';
+
+		placeholder.textContent = powerUp.icon;
+
+		document.getElementById('main').appendChild(spawnArea);
+		spawnArea.appendChild(placeholder);
+
+		placeholder.addEventListener('click', () => {
+			console.log(powerUp.type, powerUp.icon);
+			applyPowerUp(powerUp);
+			playAnimation(placeholder, 'disappear');
+			console.log(document.contains(placeholder));
+		})
+
+		placeholder.addEventListener('animationend', () => {
+			spawnArea.remove();
+			placeholder.remove();
+		})
+
 	}
 
 	// applies cooldown timer after each power-up spawn
-	function scheduleNextSpawn() {
+	function spawnCooldown() {
+
+		const minInterval = 6000;
+		const maxInterval = 12000;
+
+		const setInterval = Math.random() * (maxInterval - minInterval) + minInterval;
+
+		setTimeout(() => {
+			if (!state.isGameOver) {
+				spawnPowerUp();
+				spawnCooldown();
+			}
+		}, setInterval);
 	}
 
-	const powerUpPick = choosePowerUp(POWERUPS);
-	console.log(powerUpPick.type, powerUpPick.icon);
-}
+	function clearPowerUps() {
+		document.querySelectorAll('.power-up-img').forEach(el => el.remove());
+	}
 
-setPowerUps('');
+	return { spawnCooldown, clearPowerUps };
+}

@@ -3,6 +3,7 @@ import { renderGame } from "./containers/gameContainer.js";
 import { renderMain } from "./containers/mainContainer.js";
 
 import { setGameActions } from "./core/gameActions.js";
+import { setPowerUps } from "./core/powerUps.js";
 import { toggleGameOver, youDiedConsole } from "./core/gameOver.js";
 
 import { keyboardControls } from "./controls/keyHandler.js";
@@ -15,6 +16,7 @@ import { hideLoadingScreen, showLoadingScreen } from "./components/loadingScreen
 
 import { setGoalDisplay, setGradientText } from "./components/goalDisplay.js";
 import { setHighScoreDisplay } from "./components/highScoreDisplay.js";
+
 import { initProgressBar, updateBarColor } from "./components/progressBarDisplay.js";
 import { soundToggle } from "./components/menuBar.js";
 
@@ -50,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// create class instances
 	const gameState = new GameState();
+	const powerUpSystem = setPowerUps({ state: gameState, bar: progressBar });
 
 	const counterDisplay = new Counter({
 		textElement: countText,
@@ -71,6 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	animate();
+	powerUpSystem.spawnCooldown();
 
 	const highScoreDisplay = setHighScoreDisplay(highScoreText);
 	const goalDisplay = setGoalDisplay(goalBox);
@@ -95,13 +99,15 @@ document.addEventListener("DOMContentLoaded", () => {
 	async function restartGameOver() {
 
 		showLoadingScreen();
-		await new Promise(resolve => setTimeout(resolve, 500));
-
-		await new Promise(resolve => setTimeout(resolve, 30));
+		await new Promise(resolve => setTimeout(resolve, 530));
 
 		isGameOver = false;
 		actions.restartGame();
+
 		hideLoadingScreen();
+
+		powerUpSystem.clearPowerUps();
+		powerUpSystem.spawnCooldown();
 	}
 
 
@@ -122,6 +128,9 @@ document.addEventListener("DOMContentLoaded", () => {
 		actions.restartGame();
 		playAudio(sounds.reset);
 		isGameOver = false;
+
+		powerUpSystem.clearPowerUps();
+		powerUpSystem.spawnCooldown();
 	});
 	document.getElementById("game-over-btn").addEventListener("click", () => {
 		restartGameOver();

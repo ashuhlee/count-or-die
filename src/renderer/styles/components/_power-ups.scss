@@ -1,0 +1,35 @@
+
+.spawn-area {
+    border: 5px dashed white;
+    width: 50%;
+    height: 100%;
+    position: fixed;
+	left: 50%;
+    transform: translateX(-50%);
+	z-index: 2;
+	pointer-events: none;
+}
+
+.power-up-img {
+	position: absolute;
+	pointer-events: visible;
+	font-size: 60px;
+	top: -60px;
+	left: 20%;
+	transform: rotate(0);
+	animation: falling 3.2s linear forwards;
+	background: green;
+	padding: 10px; // so it's a little easier
+}
+
+@keyframes falling {
+	to { top: 100%; transform: rotate(360deg) }
+}
+@keyframes disappear {
+	0% { transform: scale(1); opacity: 1 }
+	100% { transform: scale(0); opacity: 0 }
+}
+
+.disappear {
+	animation: disappear 1s ease forwards;
+}
