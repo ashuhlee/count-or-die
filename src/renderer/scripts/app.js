@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		showLoadingScreen();
 		await new Promise(resolve => setTimeout(resolve, 500));
 
-		await new Promise(resolve => setTimeout(resolve, 150));
+		await new Promise(resolve => setTimeout(resolve, 30));
 
 		isGameOver = false;
 		actions.restartGame();
