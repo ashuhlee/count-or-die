@@ -3,7 +3,7 @@ import { renderGame } from "./containers/gameContainer.js";
 import { renderMain } from "./containers/mainContainer.js";
 
 import { setGameActions } from "./core/gameActions.js";
-import { setPowerUps } from "./core/powerUps.js";
+import { setPowerUps } from "./core/powerUps.ts";
 import { toggleGameOver, youDiedConsole } from "./core/gameOver.js";
 
 import { keyboardControls } from "./controls/keyHandler.js";

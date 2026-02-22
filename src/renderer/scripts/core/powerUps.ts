@@ -53,7 +53,7 @@ export function setPowerUps({ state, bar }: { state: GameState, bar: HTMLElement
 	function choosePowerUp(items: PowerUp[]): PowerUp {
 
 		const totalWeight = items.reduce((sum, item) => sum + item.weight, 0); // calculate total weight sum
-		let pick = Math.random() * totalWeight; // choose random number
+		let pick = Math.random() * totalWeight; // chooses random number
 
 		// iterate and find selected item
 		for (let i = 0; i < items.length; i++) {
