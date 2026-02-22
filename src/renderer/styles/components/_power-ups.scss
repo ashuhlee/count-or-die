@@ -1,6 +1,6 @@
 
 .spawn-area {
-    border: 5px dashed white;
+    //border: 5px dashed white;
     width: 50%;
     height: 100%;
     position: fixed;
@@ -18,7 +18,7 @@
 	left: 20%;
 	transform: rotate(0);
 	animation: falling 3.2s linear forwards;
-	background: green;
+	//background: green;
 	padding: 10px; // so it's a little easier
 }
 
@@ -26,8 +26,8 @@
 	to { top: 100%; transform: rotate(360deg) }
 }
 @keyframes disappear {
-	0% { transform: scale(1); opacity: 1 }
-	100% { transform: scale(0); opacity: 0 }
+	0% { opacity: 1 }
+	100% { opacity: 0 }
 }
 
 .disappear {
