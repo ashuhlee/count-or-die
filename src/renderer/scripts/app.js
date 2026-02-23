@@ -7,7 +7,7 @@ import { setPowerUps } from "./core/powerUps.ts";
 import { toggleGameOver, youDiedConsole } from "./core/gameOver.js";
 
 import { keyboardControls } from "./controls/keyHandler.js";
-import { playAudio, pauseAudio, sounds } from "./controls/audioHandler.js";
+import { playAudio, pauseAudio, audioConfig } from "./controls/audioHandler.js";
 
 import { splitLetters } from "./anim/animations.js";
 import { heartGlitch } from "./anim/glitchEffect.js";
@@ -27,7 +27,7 @@ import { Counter } from "./components/counterDisplay.js";
 
 document.addEventListener("DOMContentLoaded", () => {
 
-	playAudio(sounds.bgMusic);
+	playAudio(audioConfig.bgMusic.audio);
 
 	// render elements
 	renderMain();
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		goal: goalDisplay,
 		goalText: goalTextDisplay,
 		bar: progressBar,
-		sounds: sounds,
+		sounds: audioConfig,
 	});
 
 	async function restartGameOver() {
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	document.getElementById("reset-img").addEventListener("click", () => {
 		actions.restartGame();
-		playAudio(sounds.reset);
+		playAudio(audioConfig.buttonReset.audio);
 		isGameOver = false;
 
 		powerUpSystem.clearPowerUps();
@@ -149,8 +149,8 @@ document.addEventListener("DOMContentLoaded", () => {
 	document.addEventListener("progressBarExp", () => {
 		if (!gameState.isGoalReached() && !gameState.isGameOver) {
 
-			playAudio(sounds.gameOver);
-			pauseAudio(sounds.bgMusic);
+			playAudio(audioConfig.gameOver.audio);
+			pauseAudio(audioConfig.bgMusic.audio);
 
 			if (window.electron) {
 				window.electron.setDiscordStatus({ gameStatusRPC: "game-over" });
@@ -162,7 +162,9 @@ document.addEventListener("DOMContentLoaded", () => {
 			gameState.setGameOver(true);
 			toggleGameOver(true, gameState.isHighScore);
 
-			youDiedConsole(countText.textContent);
+			if (!window.electron) {
+				youDiedConsole(countText.textContent);
+			}
 
 			const scoreText = document.querySelector(".score-text");
 			scoreText.textContent = `Score: ${countText.textContent}`;
