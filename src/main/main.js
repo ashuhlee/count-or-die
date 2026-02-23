@@ -24,6 +24,7 @@ function createWindow() {
 		resizable: true,
 		maximizable: true,
 		fullscreenable: true,
+		backgroundColor: '#FFBDEF',
 		icon: iconPath,
 		webPreferences: {
 			preload: path.join(__dirname, 'preload.js'),
