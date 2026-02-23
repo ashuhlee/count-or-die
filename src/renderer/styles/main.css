@@ -261,6 +261,20 @@ img :not(#closeApp) {
     opacity: 0.7;
   }
 }
+@keyframes heart-appear {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 @keyframes blink {
   0% {
     opacity: 1;
@@ -355,19 +369,19 @@ img :not(#closeApp) {
   fill: url(#gradient-counter);
 }
 
-.hearts .heart-pink, .heart-purple, .heart-blue, .heart-white {
+.heart-pink, .heart-purple, .heart-blue, .heart-white {
   animation: heart-scale 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
 }
-.hearts .heart-pink:nth-child(1), .heart-purple:nth-child(1), .heart-blue:nth-child(1), .heart-white:nth-child(1) {
+.heart-pink:nth-child(1), .heart-purple:nth-child(1), .heart-blue:nth-child(1), .heart-white:nth-child(1) {
   animation-delay: 0s;
 }
-.hearts .heart-pink:nth-child(2), .heart-purple:nth-child(2), .heart-blue:nth-child(2), .heart-white:nth-child(2) {
+.heart-pink:nth-child(2), .heart-purple:nth-child(2), .heart-blue:nth-child(2), .heart-white:nth-child(2) {
   animation-delay: 0.3s;
 }
-.hearts .heart-pink:nth-child(3), .heart-purple:nth-child(3), .heart-blue:nth-child(3), .heart-white:nth-child(3) {
+.heart-pink:nth-child(3), .heart-purple:nth-child(3), .heart-blue:nth-child(3), .heart-white:nth-child(3) {
   animation-delay: 0.6s;
 }
-.hearts .heart-pink:nth-child(4), .heart-purple:nth-child(4), .heart-blue:nth-child(4), .heart-white:nth-child(4) {
+.heart-pink:nth-child(4), .heart-purple:nth-child(4), .heart-blue:nth-child(4), .heart-white:nth-child(4) {
   animation-delay: 0.9s;
 }
 
@@ -709,6 +723,11 @@ img :not(#closeApp) {
 .heart-use {
   visibility: hidden;
   opacity: 0;
+}
+
+.heart-restore {
+  visibility: visible;
+  animation: heart-appear 0.3s ease-out forwards;
 }
 
 .boost-stuff {

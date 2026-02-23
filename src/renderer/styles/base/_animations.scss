@@ -153,6 +153,12 @@
 	75% { transform: translate(-3px, 0); opacity: 0.7}
 }
 
+@keyframes heart-appear {
+    0%   { transform: scale(0); opacity: 0; }
+    70%  { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
 @keyframes blink {
 	0% {opacity: 1} 50% {opacity: 0} 100% {opacity: 1}
 }
