@@ -26,7 +26,7 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 			counterAnimation = boosted ? animationType : "pop-right";
 
 			if (!state.highScoreFxPlayed) {
-				playAudio(sounds.highScore);
+				playAudio(sounds.highScore.audio);
 				state.highScoreFxPlayed = true;
 			}
 			if (!state.confettiPlayed) {
@@ -42,7 +42,7 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 		if (state.isGoalReached()) {
 
 			if (!boosted) {
-				playAudio(sounds.goalReached);
+				playAudio(sounds.goalReached.audio);
 			}
 			goal.addNewGoalEffect();
 			goalText.addNewTextEffect();
@@ -66,24 +66,24 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 
 		state.increment();
 		animateBtn("increase");
-		playAudio(sounds.buttonInc);
+		playAudio(sounds.buttonInc.audio);
 
 		if (state.counter === state.highScore + 1 && !state.gradientFxPlayed) {
 			state.gradientFxPlayed = true;
 		}
 
-		if (state.counter >= 200) {
-			changeTheme("theme200", bar);
-		}
-		if (state.counter >= 300) {
-			changeTheme("theme300", bar);
-		}
-
-		const themeNotif = document.getElementById("theme-switch-notif-text");
-
-		if (state.counter === 200 || state.counter === 300) {
-			playAnimation(themeNotif, "boost-notification");
-		}
+		// if (state.counter >= 200) {
+		// 	changeTheme("theme200", bar);
+		// }
+		// if (state.counter >= 300) {
+		// 	changeTheme("theme300", bar);
+		// }
+		//
+		// const themeNotif = document.getElementById("theme-switch-notif-text");
+		//
+		// if (state.counter === 200 || state.counter === 300) {
+		// 	playAnimation(themeNotif, "boost-notification");
+		// }
 
 		displayCursorCount(state.countIncrement, event, false);
 		updateScoreAndGoal("pop", false);
@@ -97,31 +97,31 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 		if (state.boostsAvailable <= 0) {
 			animateBtn("decrease", true);
 			playAnimation(noBoostsText, "no-boosts-flash");
-			playAudio(sounds.noBoosts);
+			playAudio(sounds.noBoosts.audio);
 			return;
 		}
 
 		const pointsAdded = state.currentGoal - state.counter;
 
 		state.boost();
-		// console.log(`boosts left: ${state.boostsAvailable}`); // tests
+		// console.log(`boost use! boosts left: ${state.boostsAvailable}`); // tests
 
-		if (state.counter >= 200) {
-			changeTheme("theme200", bar);
-		}
-		if (state.counter >= 300) {
-			changeTheme("theme300", bar);
-		}
-
-		const themeNotif = document.getElementById("theme-switch-notif-text");
-
-		if (state.counter === 200 || state.counter === 300) {
-			playAnimation(themeNotif, "boost-notification");
-		}
+		// if (state.counter >= 200) {
+		// 	changeTheme("theme200", bar);
+		// }
+		// if (state.counter >= 300) {
+		// 	changeTheme("theme300", bar);
+		// }
+		//
+		// const themeNotif = document.getElementById("theme-switch-notif-text");
+		//
+		// if (state.counter === 200 || state.counter === 300) {
+		// 	playAnimation(themeNotif, "boost-notification");
+		// }
 
 		animateBtn("decrease", false);
 		playAnimation(boostNotif, "boost-notification");
-		playAudio(sounds.useBoost);
+		playAudio(sounds.useBoost.audio);
 
 		removeHeart(state.boostsAvailable);
 
@@ -153,7 +153,7 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 		resetBar(bar, 20);
 
 		// play reset anim + audio
-		playAudio(sounds.bgMusic);
+		playAudio(sounds.bgMusic.audio);
 		counter.animate("reset-shake");
 
 		// playAudio(sounds.reset);
