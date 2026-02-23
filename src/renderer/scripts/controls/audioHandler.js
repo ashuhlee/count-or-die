@@ -4,7 +4,6 @@ import bgMusicFile from "@assets/audio/music/the-return-of-the-8-bit-era.mp3";
 
 import btnIncFxFile from "@assets/audio/sfx/button-press-1.mp3";
 import btnDecFxFile from "@assets/audio/sfx/button-press-2.mp3";
-import btnResetFxFile from "@assets/audio/sfx/reset-press.mp3";
 
 import goalReachedFxFile from "@assets/audio/sfx/goal-reached.mp3";
 import highScoreFxFile from "@assets/audio/sfx/highscore.mp3";
@@ -13,52 +12,49 @@ import gameOverFxFile from "@assets/audio/sfx/game-over.mp3";
 import boostFxFile from "@assets/audio/sfx/boost.mp3";
 import noBoostsFxFile from "@assets/audio/sfx/error.mp3";
 
-// declare assets
-const bgMusic = new Audio(bgMusicFile);
 
-const buttonIncFx = new Audio(btnIncFxFile);
-const buttonDecFx = new Audio(btnDecFxFile);
-const buttonResetFx = new Audio(btnResetFxFile);
-
-const goalReachedFx = new Audio(goalReachedFxFile);
-const highScoreFx = new Audio(highScoreFxFile);
-const gameOverFx = new Audio(gameOverFxFile);
-
-const boostUsedFx = new Audio(boostFxFile);
-const noBoostsFx = new Audio(noBoostsFxFile);
-
-// audio configuration
-bgMusic.loop = true;
-bgMusic.volume = 0.2;
-
-buttonIncFx.volume = 1;
-buttonDecFx.volume = 0.4;
-buttonResetFx.volume = 0.7;
-
-highScoreFx.volume = 0.7;
-goalReachedFx.volume = 0.4;
-gameOverFx.volume = 1;
-
-boostUsedFx.volume = 0.2;
-noBoostsFx.volume = 0.4;
-
-// store sound effects in an object
-export const sounds = {
-	bgMusic: bgMusic,
-
-	buttonInc: buttonIncFx,
-	buttonDec: buttonDecFx,
-
-	highScore: highScoreFx,
-	goalReached: goalReachedFx,
-	gameOver: gameOverFx,
-
-	useBoost: boostUsedFx,
-	noBoosts: noBoostsFx,
-
-	reset: buttonResetFx
+export const audioConfig = {
+    bgMusic: {
+		audio: new Audio(bgMusicFile),
+		volume: 0.2,
+		loop: true
+	},
+    buttonInc: {
+		audio: new Audio(btnIncFxFile),
+		volume: 1
+	},
+    buttonReset: {
+		audio: new Audio(btnDecFxFile),
+		volume: 0.2
+	},
+    useBoost: {
+		audio: new Audio(boostFxFile),
+		volume: 0.2
+	},
+    noBoosts: {
+		audio: new Audio(noBoostsFxFile),
+		volume: 0.4
+	},
+    highScore: {
+		audio: new Audio(highScoreFxFile),
+		volume: 0.7
+	},
+    goalReached: {
+		audio: new Audio(goalReachedFxFile),
+		volume: 0.4
+	},
+    gameOver: {
+		audio: new Audio(gameOverFxFile),
+		volume: 1
+	}
 };
 
+for (const config of Object.values(audioConfig)) {
+	config.audio.volume = config.volume;
+	if (config.loop) {
+		config.audio.loop = true;
+	}
+}
 
 // audio controls
 export function playAudio(audio, fromStart = true) {
