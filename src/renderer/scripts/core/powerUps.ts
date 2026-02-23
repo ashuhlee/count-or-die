@@ -1,11 +1,16 @@
 
 import { resetBar, currAnimDuration } from '../components/progressBarDisplay.js';
+import { replenishHearts } from '../components/heartDisplay.js';
 import { GameState } from './gameState.js';
 
 /*
-Known Bugs
-- slow down timer does not function correctly
-- when a boost is replenished, it doesn't reappear on screen -> refactor heartDisplay.js
+TO-DO
+- [TASK] sound + visual sparkle effect when boost replenishes
+- [TASK] power up use sound + visual effect
+- [BUG] slow down timer does not function correctly
+- [BUG] heart glitch effect is glitchy again
+- [FIXED] when a boost is replenished, it doesn't reappear on screen -> refactor heartDisplay.js
+- [FIXED] multiple power ups are spawning at the same time
 */
 
 interface PowerUp {
@@ -15,23 +20,33 @@ interface PowerUp {
 	weight: number;
 }
 
-export function setPowerUps({ state, bar }: { state: GameState, bar: HTMLElement }) {
+type PowerUpSystem = {
+	spawnCooldown: () => void,
+	clearPowerUps: () => void
+}
+
+type PowerUpArgs = {
+	state: GameState,
+	bar: HTMLElement
+}
+
+export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
 
 	const POWER_UPS: PowerUp[] = [{
 		type: 'double_click',
 		icon: '🧋',
-		duration: 5000,
+		duration: 3000,
 		weight: 40
+	}, {
+		type: 'four_click',
+		icon: '🍡',
+		duration: 2000,
+		weight: 20
 	}, {
 		type: 'extra_boost',
 		icon: '⭐',
 		duration: null,
-		weight: 25
-	}, {
-		type: 'four_click',
-		icon: '🍡',
-		duration: 4000,
-		weight: 20
+		weight: 50
 	}, {
 		type: 'slow_timer',
 		icon: '⏱️',
@@ -41,11 +56,11 @@ export function setPowerUps({ state, bar }: { state: GameState, bar: HTMLElement
 		type: 'replenish_boosts',
 		icon: '🌟',
 		duration: null,
-		weight: 5
+		weight: 50
 	}]
 
 	// applies and resets power-ups
-	function addTimedEffect(apply: () => void, reverse: () => void, duration: number) {
+	function addTimedEffect(apply: () => void, reverse: () => void, duration: number): void {
 		apply();
 		setTimeout(reverse, duration);
 	}
@@ -63,18 +78,20 @@ export function setPowerUps({ state, bar }: { state: GameState, bar: HTMLElement
 				return items[i];
 			}
 		}
-		return items[1]; // fallback: extra boost
+		return items[0]; // fallback: double_click
 	}
 
 	// applies selected power-up effect to GameState
-	function applyPowerUp(powerUp: PowerUp) {
+	function applyPowerUp(powerUp: PowerUp): void {
 
 		// instant effects
 		if (powerUp.type === 'extra_boost') {
 			state.boostsAvailable = Math.min(state.boostsAvailable + 1, 4);
+			replenishHearts(state.boostsAvailable, 'extra_boost');
 		}
 		if (powerUp.type === 'replenish_boosts') {
 			state.boostsAvailable = 4;
+			replenishHearts(state.boostsAvailable, 'replenish_boosts');
 		}
 
 		// timed effects
@@ -82,7 +99,7 @@ export function setPowerUps({ state, bar }: { state: GameState, bar: HTMLElement
 			addTimedEffect(
 				() => {
 					state.countIncrement = 2;
-					state.goalIncRandomizer = [30, 30];
+					state.goalIncRandomizer = [15, 20, 25, 30];
 				},
 				() => {
 					state.countIncrement = 1;
@@ -92,22 +109,27 @@ export function setPowerUps({ state, bar }: { state: GameState, bar: HTMLElement
 		}
 		else if (powerUp.type === 'four_click') {
 			addTimedEffect(
-				() => state.countIncrement = 4,
-				() => state.countIncrement = 1, powerUp.duration!
+				() => {
+					state.countIncrement = 4;
+					state.goalIncRandomizer = [20, 25, 30];
+				},
+				() => {
+					state.countIncrement = 1;
+					state.goalIncRandomizer = [10, 15, 20, 25, 30];
+				}, powerUp.duration!
     		);
 		}
 		else if (powerUp.type === 'slow_timer') {
-			const prevSpeed = currAnimDuration; // save last bar speed
 
 			addTimedEffect(
 				() => resetBar(bar, currAnimDuration * 2),
-				() => resetBar(bar, prevSpeed), powerUp.duration!
+				() => resetBar(bar, state.barSpeed()), powerUp.duration!
     		);
 		}
 	}
 
 	// creates element in DOM and handles click event listener
-	function spawnPowerUp() {
+	function spawnPowerUp(): void {
 
 		const powerUp: PowerUp = choosePowerUp(POWER_UPS);
 
@@ -128,15 +150,20 @@ export function setPowerUps({ state, bar }: { state: GameState, bar: HTMLElement
 
 		placeholder.addEventListener('click', () => {
 
-			console.log(powerUp.type, powerUp.icon);
+			console.log(powerUp.icon, powerUp.type + `${powerUp.duration === null? '' : ': ' + powerUp.duration / 1000 + 's'}`);
 			applyPowerUp(powerUp);
+			spawnArea.remove();
 			placeholder.remove();
+
+			if (!state.isGameOver) spawnCooldown();
 			// playAnimation(placeholder, 'disappear');
 		})
 
 		placeholder.addEventListener('animationend', () => {
 			spawnArea.remove();
 			placeholder.remove();
+
+			if (!state.isGameOver) spawnCooldown();
 		})
 	}
 
@@ -144,20 +171,19 @@ export function setPowerUps({ state, bar }: { state: GameState, bar: HTMLElement
 	function spawnCooldown(): void {
 
 		const minInterval: number = 6000;
-		const maxInterval: number = 12000;
+		const maxInterval: number = 10000;
 
 		const randomInterval: number = Math.random() * (maxInterval - minInterval) + minInterval;
 
 		setTimeout(() => {
 			if (!state.isGameOver) {
 				spawnPowerUp();
-				spawnCooldown();
 			}
 		}, randomInterval);
 	}
 
-	function clearPowerUps() {
-		document.querySelectorAll('.power-up-img').forEach(el => el.remove());
+	function clearPowerUps(): void {
+		document.querySelectorAll('.spawn-area').forEach(el => el.remove());
 	}
 
 	return { spawnCooldown, clearPowerUps };
