@@ -43,10 +43,13 @@
             animation: bounceIn 0.7s ease 0.9s forwards;
         }
         .play-again-btn {
-            animation: jackInTheBox 0.3s ease 1s forwards;
+            animation: jackInTheBox 0.4s 1s forwards;
+        }
+        .play-again-btn-2 {
+            animation: jackInTheBox 0.4s 1.25s forwards;
         }
 		.tombstone {
-			animation: swing 1s ease forwards 0.1s;
+			animation: swing 1s ease forwards 0.2s;
 			transform-origin: bottom;
 			opacity: 1;
 			bottom: 0;
@@ -60,9 +63,12 @@
             animation: pop-thingie-2 3s ease infinite;
         }
 		.ghost {
-			opacity: 0.85;
-			transition: opacity 0.3s ease 1s;
-			animation: hover 3s infinite ease-in-out;
+			opacity: 1;
+			transition: opacity 0.3s ease 0.6s;
+			animation: hover-ghost 3s infinite ease-in-out;
+		}
+		.skull-floor {
+			animation: bounceInDown-rotated 1s forwards;
 		}
 	}
 
@@ -111,7 +117,7 @@
 		font-weight: bold;
 		font-family: 'serious1', sans-serif;
 	}
-	.you-died {
+	.you-died, .death-tracker {
 		font-size: 26px;
 		top: 50px;
 		font-weight: bold;
@@ -121,6 +127,14 @@
 		@media screen and (min-height: 950px) {
 			position: absolute;
 		}
+	}
+	.death-tracker {
+		position: absolute;
+		top: 0; right: 0;
+		font-size: 20px;
+		margin: 30px;
+		text-shadow: 0 3px 0 var(--shadow-pink-015);
+		color: #def3ff;
 	}
 
 	.play-again {
@@ -154,22 +168,63 @@
 		position: absolute;
 		transition: bottom 0.5s ease, opacity 0.5s ease;
 		bottom: -50px;
-		width: 130px;
+		width: 140px;
 		left: calc(50% - 62px);
 	}
 	.ghost {
 		position: absolute;
-		width: 100px;
-		bottom: 80px;
-		left: calc(50% + 70px);
+		width: 115px;
+		bottom: 120px;
+		left: calc(50% + 90px);
 		z-index: 2;
 		image-rendering: auto;
+	}
+	.skull-floor {
+		transform: rotate(-8deg);
+		position: fixed;
+		width: 76px; height: 76px;
+		bottom: -5px;
+		left: 300px;
+		z-index: 2;
+		image-rendering: auto;
+	}
+	//
+	//.underline::after {
+	//	content: '';
+	//	position: absolute;
+	//	width: 100%;
+	//	transform: scaleX(1);
+	//	height: 3px;
+	//	bottom: -6px;
+	//	left: 0;
+	//	opacity: 0.8;
+	//	background-color: #B0E2FF;
+	//}
+	.game-over-btns {
+		display: flex;
+		gap: 18px;
+		img {
+			width: 190px;
+			transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+			&:hover {
+			  filter: brightness(0.95) saturate(120%);
+			}
+		}
+		filter: drop-shadow(0px 7px 0px var(--shadow-pink-020));
+
+		.play-again-btn, .play-again-btn-2 {
+			&:active {
+				scale: 0.75;
+			}
+		}
 	}
 
 	.go-title,
 	.final-score,
 	.play-again,
 	.play-again-btn,
+	.play-again-btn-2,
 	.tombstone,
 	.ghost,
 	.question,

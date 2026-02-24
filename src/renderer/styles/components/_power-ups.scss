@@ -1,6 +1,6 @@
 
 .spawn-area {
-    border: 5px solid red;
+    //border: 5px solid red; // debugging
     width: 70%;
     height: 100%;
     position: fixed;
@@ -34,11 +34,11 @@
 @keyframes falling {
 	to { top: 100%; transform: rotate(360deg) }
 }
+
 @keyframes disappear {
 	0% { opacity: 1 }
 	100% { opacity: 0 }
 }
-
 .disappear {
 	animation: disappear 1s ease forwards;
 }
