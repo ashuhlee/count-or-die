@@ -40,12 +40,12 @@ Count or Die is an arcade counting game with progressive difficulty, randomized 
 - **Nerd-Out Mode:** A random mix of numbers and math equations (e.g., 25, 4 × 10, 100 ÷ 2)
 
 ## Controls
-| Input               | Action                   |
-|---------------------|--------------------------|
-| `↑` `→`  `W` `D`  `+` | Increase counter (+1)    |
-| `Spacebar`          | Use boost (jump to goal) |
-| `Escape`            | Restart game             |
-| Mouse click         | Button interactions      |
+| Input                | Action                     |
+|----------------------|----------------------------|
+| `↑` `→`  `W` `D`  `+`| Increase counter           |
+| `Spacebar`           | Use a boost (jump to goal) |
+| `Escape`             | Restart game               |
+| Mouse click          | Button interactions        |
 
 ## Discord Rich Presence
 <div>
