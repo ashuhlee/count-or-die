@@ -132,9 +132,14 @@ document.addEventListener("DOMContentLoaded", () => {
 		powerUpSystem.clearPowerUps();
 		powerUpSystem.spawnCooldown();
 	});
+
 	document.getElementById("game-over-btn").addEventListener("click", () => {
 		restartGameOver();
 	});
+
+	document.getElementById("quit-btn").addEventListener('click', () => {
+		window.electron.quitApp();
+	})
 
 	// keyb controls
 	keyboardControls({

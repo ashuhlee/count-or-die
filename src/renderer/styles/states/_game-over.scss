@@ -64,7 +64,7 @@
         }
 		.ghost {
 			opacity: 1;
-			transition: opacity 0.3s ease 0.6s;
+			transition: opacity 0.3s ease 0.9s;
 			animation: hover-ghost 3s infinite ease-in-out;
 		}
 		.skull-floor {
@@ -86,7 +86,7 @@
 		background: #ff3282;
 		opacity: 1;
 		pointer-events: none;
-		transition: opacity 0.4s ease 0.1s;
+		transition: opacity 0.4s ease 0.15s;
 	}
 
 	.deco-icons {
@@ -129,6 +129,7 @@
 		}
 	}
 	.death-tracker {
+		z-index: -3;
 		position: absolute;
 		top: 0; right: 0;
 		font-size: 20px;
@@ -173,7 +174,7 @@
 	}
 	.ghost {
 		position: absolute;
-		width: 115px;
+		width: 120px;
 		bottom: 120px;
 		left: calc(50% + 90px);
 		z-index: 2;
