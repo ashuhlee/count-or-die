@@ -10,7 +10,8 @@ const phrasesRegular = [
 	"nice try!",
 	"you didn't deserve that..",
 	"let's aim a bit higher..",
-	"sooo close!"
+	"sooo close!",
+	"you are dead"
 ]
 
 const phrasesNewScore = [

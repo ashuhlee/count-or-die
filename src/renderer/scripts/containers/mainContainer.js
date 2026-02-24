@@ -9,10 +9,12 @@ import leftDecoPng from '@assets/ui/deco/lines.png';
 import questionPng from '@assets/ui/deco/question.png';
 import exclamationPng from '@assets/ui/deco/exclamation.png';
 
-import ghostPng from '@assets/ui/deco/ghost.png';
+import ghostPng from '@assets/ui/deco/ghost.gif';
+import skullFloor from '@assets/ui/deco/skull_floor.png';
 import tombstonePng from '@assets/ui/deco/tombstone.png';
 
 import resetBtnPng from '@assets/ui/buttons/reset-btn.png';
+import quitBtnPng from '@assets/ui/buttons/quit-btn.png';
 
 export function renderMain() {
 
@@ -41,6 +43,7 @@ export function renderMain() {
 			<div class="go-content">
 				<div id="red-overlay"></div>
 				<h2 class="you-died" id="dead-text"><span class="go-text-random">you died lolz</span></h2>
+				<h2 class="death-tracker underline" id="death-tracker">deaths: 0</h2>
 				
 				<div class="deco-icons">
 					<img src="${questionPng}" alt="question mark" class="question"/>
@@ -53,11 +56,15 @@ export function renderMain() {
 				
 				<h2 class="play-again"><span class="try-again">try again ?</span></h2>
 				
-				<div class="reset play-again-btn">
-					<img src="${resetBtnPng}" id="game-over-btn" alt="game over reset button"/>
+				<div class="game-over-btns">
+					<img src="${resetBtnPng}" id="game-over-btn" class="play-again-btn" alt="game over reset button"/>
+					<img src="${quitBtnPng}" id="quit-btn" class="play-again-btn-2" alt="rage quit button"/>
 				</div>
 				<div class="bg"></div>
 			</div>
+			<div class="skull-area">
+				<img src="${skullFloor}" alt="skull" class="skull-floor"/>	
+			</div>	
 			<div class="tombstone-area">
 				<img src="${ghostPng}" alt="ghost" class="ghost"/>
 				<img src="${tombstonePng}" alt="tombstone" class="tombstone"/>

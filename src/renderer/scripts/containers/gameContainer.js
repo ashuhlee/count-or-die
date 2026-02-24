@@ -104,3 +104,9 @@ export function renderGame() {
     </div>
 	`
 }
+
+export function clearGame() {
+	const app = document.getElementById('app');
+	if (!app) return;
+	app.innerHTML = '';
+}
