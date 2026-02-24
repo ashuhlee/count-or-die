@@ -741,7 +741,8 @@ img :not(#closeApp) {
 }
 
 .spawn-area {
-  width: 50%;
+  border: 5px solid red;
+  width: 70%;
   height: 100%;
   position: fixed;
   left: 50%;
@@ -749,13 +750,25 @@ img :not(#closeApp) {
   z-index: 2;
   pointer-events: none;
 }
+@media (max-width: 700px) {
+  .spawn-area {
+    width: 100%;
+  }
+}
+
+.spawn-area--left {
+  left: 0;
+}
+
+.spawn-area--right {
+  right: 0;
+}
 
 .power-up-img {
   position: absolute;
   pointer-events: visible;
-  font-size: 60px;
+  font-size: 70px;
   top: -60px;
-  left: 20%;
   transform: rotate(0);
   animation: falling 3.2s linear forwards;
   padding: 10px;

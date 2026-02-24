@@ -8,9 +8,6 @@ TO-DO
 - [TASK] sound + visual sparkle effect when boost replenishes
 - [TASK] power up use sound + visual effect
 - [BUG] slow down timer does not function correctly
-- [BUG] heart glitch effect is glitchy again
-- [FIXED] when a boost is replenished, it doesn't reappear on screen -> refactor heartDisplay.js
-- [FIXED] multiple power ups are spawning at the same time
 */
 
 interface PowerUp {
@@ -46,7 +43,7 @@ export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
 		type: 'extra_boost',
 		icon: '⭐',
 		duration: null,
-		weight: 50
+		weight: 15
 	}, {
 		type: 'slow_timer',
 		icon: '⏱️',
@@ -56,7 +53,7 @@ export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
 		type: 'replenish_boosts',
 		icon: '🌟',
 		duration: null,
-		weight: 50
+		weight: 5
 	}]
 
 	// applies and resets power-ups
@@ -134,19 +131,27 @@ export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
 		const powerUp: PowerUp = choosePowerUp(POWER_UPS);
 
 		const spawnArea: HTMLElement = document.createElement('div');
-		spawnArea.id = 'spawn-area';
 		spawnArea.className = 'spawn-area';
 
 		const placeholder: HTMLElement = document.createElement('span'); // switch to images later
-		placeholder.id = 'power-up-img';
 		placeholder.className = 'power-up-img';
-
 		placeholder.textContent = powerUp.icon;
 
-		const mainDiv: HTMLElement | null = document.getElementById('main');
+		const side = Math.random() < 0.5 ? 'left' : 'right';
+		placeholder.classList.add(`spawn-area--${side}`);
 
+		const mainDiv: HTMLElement | null = document.getElementById('main');
 		mainDiv?.appendChild(spawnArea);
 		spawnArea.appendChild(placeholder);
+
+		const spawnAreaWidth: number = spawnArea.offsetWidth;
+
+		const xPos = Math.floor(Math.random() * (Math.min(spawnAreaWidth / 3, 150) + 1))
+		console.log([powerUp.type, xPos, spawnAreaWidth, spawnAreaWidth > 600].join('-')); // tests?
+
+		if (spawnAreaWidth > 600) {
+			placeholder.style[side] = `${xPos}px`
+		}
 
 		placeholder.addEventListener('click', () => {
 
