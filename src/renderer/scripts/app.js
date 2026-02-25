@@ -138,7 +138,12 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 
 	document.getElementById("quit-btn").addEventListener('click', () => {
-		window.electron.quitApp();
+		if (window.electron) {
+			window.electron.quitApp();
+		}
+		else {
+			alert('you suck lol!')
+		}
 	})
 
 	// keyb controls

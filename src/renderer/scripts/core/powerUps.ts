@@ -116,6 +116,7 @@ export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
 				}, powerUp.duration!
     		);
 		}
+		// not fully functional
 		else if (powerUp.type === 'slow_timer') {
 
 			addTimedEffect(
@@ -155,7 +156,7 @@ export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
 
 		placeholder.addEventListener('click', () => {
 
-			console.log(powerUp.icon, powerUp.type + `${powerUp.duration === null? '' : ': ' + powerUp.duration / 1000 + 's'}`);
+			console.log(powerUp.icon, powerUp.type);
 			applyPowerUp(powerUp);
 			spawnArea.remove();
 			placeholder.remove();
