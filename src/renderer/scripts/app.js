@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	document.getElementById("quit-btn").addEventListener('click', () => {
 		if (window.electron) {
-			window.electron.quitApp();
+			setTimeout(window.electron.quitApp, 300);
 		}
 		else {
 			alert('you suck lol!')
