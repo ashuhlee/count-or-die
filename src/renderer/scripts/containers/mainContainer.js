@@ -43,7 +43,7 @@ export function renderMain() {
 			<div class="go-content">
 				<div id="red-overlay"></div>
 				<h2 class="you-died" id="dead-text"><span class="go-text-random">you died lolz</span></h2>
-				<h2 class="death-tracker underline" id="death-tracker">deaths: 0</h2>
+				<h2 class="death-tracker" id="death-tracker">deaths: 0</h2>
 				
 				<div class="deco-icons">
 					<img src="${questionPng}" alt="question mark" class="question"/>
@@ -55,11 +55,16 @@ export function renderMain() {
 				<h2 class="final-score" id="final-score"><span class="score-text">score: 0</span></h2>
 				
 				<h2 class="play-again"><span class="try-again">try again ?</span></h2>
-				
-				<div class="game-over-btns">
-					<img src="${resetBtnPng}" id="game-over-btn" class="play-again-btn" alt="game over reset button"/>
-					<img src="${quitBtnPng}" id="quit-btn" class="play-again-btn-2" alt="rage quit button"/>
+				<div class="bottom-section">
+					<div class="game-over-btns">
+						<img src="${resetBtnPng}" id="game-over-btn" class="play-again-btn" alt="game over reset button"/>
+						<img src="${quitBtnPng}" id="quit-btn" class="play-again-btn-2" alt="rage quit button"/>
+					</div>
+					<div class="menu-anim">
+						<h2 class="back-to-menu underline left" id="menu-btn">back to menu</h2>		
+					</div>	
 				</div>
+
 				<div class="bg"></div>
 			</div>
 			<div class="skull-area">
