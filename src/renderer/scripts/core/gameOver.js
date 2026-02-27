@@ -11,7 +11,8 @@ const phrasesRegular = [
 	"let's aim a bit higher..",
 	'sooo close!',
 	'you are dead',
-	'another try maybe?'
+	'another try maybe?',
+	'give it another go!'
 ]
 
 const phrasesNewScore = [
