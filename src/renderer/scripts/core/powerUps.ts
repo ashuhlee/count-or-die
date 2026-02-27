@@ -1,12 +1,15 @@
 
 import { resetBar, currAnimDuration } from '../components/progressBarDisplay.js';
 import { replenishHearts } from '../components/heartDisplay.js';
+import { playAudio, audioConfig } from '../controls/audioHandler.js';
 import { GameState } from './gameState.js';
+
+// @ts-ignore
+import smokeGif from '@assets/ui/deco/smoke.gif';
 
 /*
 TO-DO
 - [TASK] sound + visual sparkle effect when boost replenishes
-- [TASK] power up use sound + visual effect
 - [BUG] slow down timer does not function correctly
 */
 
@@ -15,6 +18,7 @@ interface PowerUp {
 	icon: string;
 	duration: number | null;
 	weight: number;
+	sfx: HTMLAudioElement
 }
 
 type PowerUpSystem = {
@@ -33,27 +37,34 @@ export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
 		type: 'double_click',
 		icon: '🧋',
 		duration: 3000,
-		weight: 40
+		weight: 40,
+		sfx: audioConfig.powerUp.audio
 	}, {
 		type: 'four_click',
 		icon: '🍡',
-		duration: 2000,
-		weight: 20
+		duration: 3000,
+		weight: 20,
+		sfx: audioConfig.powerUp.audio
 	}, {
 		type: 'extra_boost',
 		icon: '⭐',
 		duration: null,
-		weight: 15
-	}, {
-		type: 'slow_timer',
-		icon: '⏱️',
-		duration: 5000,
-		weight: 10
-	}, {
+		weight: 80,
+		sfx: audioConfig.boostPowerUp.audio
+	},
+	// {
+	// 	type: 'slow_timer',
+	// 	icon: '⏱️',
+	// 	duration: 5000,
+	// 	weight: 10,
+	// 	sfx: audioConfig.powerUp.audio
+	// },
+		{
 		type: 'replenish_boosts',
 		icon: '🌟',
 		duration: null,
-		weight: 5
+		weight: 80,
+		sfx: audioConfig.boostPowerUp.audio
 	}]
 
 	// applies and resets power-ups
@@ -129,52 +140,64 @@ export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
 	// creates element in DOM and handles click event listener
 	function spawnPowerUp(): void {
 
-		const powerUp: PowerUp = choosePowerUp(POWER_UPS);
+		const spawnFiltered = POWER_UPS.filter(p => {
+
+			if (state.boostsAvailable >= 4 && (p.type === 'extra_boost' || p.type === 'replenish_boosts')) {
+				return false;
+			}
+			return true;
+		})
+
+		const powerUp: PowerUp = choosePowerUp(spawnFiltered.length > 0 ? spawnFiltered : POWER_UPS);
 
 		const spawnArea: HTMLElement = document.createElement('div');
 		spawnArea.className = 'spawn-area';
 
-		const placeholder: HTMLElement = document.createElement('span'); // switch to images later
-		placeholder.className = 'power-up-img';
-		placeholder.textContent = powerUp.icon;
+		const icon: HTMLElement = document.createElement('span'); // switch to images later
+		icon.className = 'power-up-img';
+		icon.id = 'power-up-img';
+		icon.textContent = powerUp.icon;
+
+		icon.style.animation = Math.random() < 0.5 ?
+			'falling 3.2s linear forwards' : 'falling-reverse 3.2s linear forwards';
+
 
 		const side = Math.random() < 0.5 ? 'left' : 'right';
-		placeholder.classList.add(`spawn-area--${side}`);
+		icon.classList.add(`spawn-area--${side}`);
 
 		const mainDiv: HTMLElement | null = document.getElementById('main');
 		mainDiv?.appendChild(spawnArea);
-		spawnArea.appendChild(placeholder);
+		spawnArea.appendChild(icon);
 
 		const spawnAreaWidth: number = spawnArea.offsetWidth;
-
 		const xPos = Math.floor(Math.random() * (Math.min(spawnAreaWidth / 3, 150) + 1))
-		console.log([powerUp.type, xPos, spawnAreaWidth, spawnAreaWidth > 600].join('-')); // tests?
 
 		if (spawnAreaWidth > 600) {
-			placeholder.style[side] = `${xPos}px`
+			icon.style[side] = `${xPos}px`
 		}
 
-		placeholder.addEventListener('click', () => {
+		icon.addEventListener('click', () => {
 
-			console.log(powerUp.icon, powerUp.type);
 			applyPowerUp(powerUp);
+			playAudio(powerUp.sfx);
+
+			addUseEffect(icon, smokeGif);
+			setTimeout(icon.remove, 500);
 			spawnArea.remove();
-			placeholder.remove();
 
 			if (!state.isGameOver) spawnCooldown();
-			// playAnimation(placeholder, 'disappear');
 		})
 
-		placeholder.addEventListener('animationend', () => {
+		icon.addEventListener('animationend', () => {
 			spawnArea.remove();
-			placeholder.remove();
+			icon.remove();
 
 			if (!state.isGameOver) spawnCooldown();
 		})
 	}
 
 	// applies cooldown timer after each power-up spawn
-	function spawnCooldown(): void {
+	function spawnCooldown(enabled: boolean = true): void {
 
 		const minInterval: number = 6000;
 		const maxInterval: number = 10000;
@@ -182,7 +205,7 @@ export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
 		const randomInterval: number = Math.random() * (maxInterval - minInterval) + minInterval;
 
 		setTimeout(() => {
-			if (!state.isGameOver) {
+			if (!state.isGameOver && enabled) {
 				spawnPowerUp();
 			}
 		}, randomInterval);
@@ -190,6 +213,31 @@ export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
 
 	function clearPowerUps(): void {
 		document.querySelectorAll('.spawn-area').forEach(el => el.remove());
+	}
+
+	function addUseEffect(icon: HTMLElement, imgType: string): void {
+
+		const popupElement = document.getElementById('powerUpUsedElement') as HTMLImageElement;
+		if (!popupElement) return;
+
+		const rect: DOMRect = icon.getBoundingClientRect()!;
+
+		const effectWidth: number = 70;
+		const effectHeight: number = 70;
+
+		const xPos: number = rect.left + 30; // x position of element
+		const yPos: number = rect.top + 36;  // y position of element
+
+		popupElement.style.left = `${xPos}px`;
+		popupElement.style.top = `${yPos}px`;
+
+		popupElement.style.width = `${effectWidth}px`;
+		popupElement.style.height = `${effectHeight}px`;
+
+		// display smoke effect
+		popupElement.src = imgType;
+		popupElement.style.display = 'block';
+		popupElement.style.zIndex = `2`;
 	}
 
 	return { spawnCooldown, clearPowerUps };

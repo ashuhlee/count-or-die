@@ -29,6 +29,7 @@ export function renderMain() {
 		<img class="left-deco" alt="left deco" src="${leftDecoPng}"/>
 		
 		<img id="popupElement" src="${smokeGif}" alt="smoke" style="filter: brightness(1.03) saturate(110%)">
+		<img id="powerUpUsedElement" src="${smokeGif}" alt="smoke" style="filter: brightness(1.03) saturate(110%)">
 		
 		<!-- menu bar -->
 		<div class="controls">
