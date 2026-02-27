@@ -116,3 +116,10 @@ export function toggleMusic(audio) {
 		audio.play();
 	}
 }
+
+export function toggleAudio(mute) {
+
+	for (const config of Object.values(audioConfig)) {
+		config.audio.volume = mute ? 0 : config.volume;
+	}
+}
