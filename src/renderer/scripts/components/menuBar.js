@@ -1,4 +1,4 @@
-import { audioConfig, toggleMusic } from "../controls/audioHandler.js";
+import { audioConfig, playAudio, toggleMusic } from "../controls/audioHandler.js";
 
 import soundBtnMuted from "@assets/ui/svg/sound-button-muted.svg";
 import soundBtnUnmuted from "@assets/ui/svg/sound-button-reg.svg";
@@ -15,6 +15,7 @@ export function soundToggle() {
 
 	toggleSoundBtn.addEventListener("click", () => {
 		// console.log(`is sound playing: ${sounds.bgMusic.muted.toString()}`);
+		playAudio(audioConfig.mouseClick.audio);
 		toggleMusic(audioConfig.bgMusic.audio);
 		toggleSoundBtn.src = audioConfig.bgMusic.audio.muted ? soundBtnMuted : soundBtnUnmuted;
 

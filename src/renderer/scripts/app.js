@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	document.getElementById("reset-img").addEventListener("click", () => {
 		actions.restartGame();
-		playAudio(audioConfig.buttonReset.audio);
+		playAudio(audioConfig.mouseClick.audio);
 		isGameOver = false;
 
 		powerUpSystem.clearPowerUps();
@@ -134,12 +134,19 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 
 	document.getElementById("game-over-btn").addEventListener("click", () => {
+		playAudio(audioConfig.buttonClick.audio);
+		pauseAudio(audioConfig.gameOverMusic.audio);
 		restartGameOver();
 	});
 
+	document.getElementById("menu-btn").addEventListener("click", () => {
+		playAudio(audioConfig.buttonClick.audio);
+	});
+
 	document.getElementById("quit-btn").addEventListener('click', () => {
+		playAudio(audioConfig.buttonClick.audio);
 		if (window.electron) {
-			setTimeout(window.electron.quitApp, 300);
+			setTimeout(window.electron.quitApp, 400);
 		}
 		else {
 			alert('you suck lol!')
@@ -161,6 +168,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 			playAudio(audioConfig.gameOver.audio);
 			pauseAudio(audioConfig.bgMusic.audio);
+
+			setTimeout(() => {
+				playAudio(audioConfig.gameOverMusic.audio);
+			}, 1000);
 
 			if (window.electron) {
 				window.electron.setDiscordStatus({ gameStatusRPC: "game-over" });
