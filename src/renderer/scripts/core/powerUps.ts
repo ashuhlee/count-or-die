@@ -182,7 +182,7 @@ export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
 			playAudio(powerUp.sfx);
 
 			addUseEffect(icon, smokeGif);
-			setTimeout(icon.remove, 500);
+			icon.remove();
 			spawnArea.remove();
 
 			if (!state.isGameOver) spawnCooldown();
@@ -235,9 +235,15 @@ export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
 		popupElement.style.height = `${effectHeight}px`;
 
 		// display smoke effect
-		popupElement.src = imgType;
+		popupElement.src = '';
+		popupElement.src = `${imgType}?t=${Date.now()}`;
+
 		popupElement.style.display = 'block';
 		popupElement.style.zIndex = `2`;
+
+		setTimeout(() => {
+			popupElement.style.display = 'none';
+		}, 3000)
 	}
 
 	return { spawnCooldown, clearPowerUps };

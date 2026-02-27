@@ -1,6 +1,6 @@
 
 import { splitLetters } from '../anim/animations';
-import smokeGif from '@assets/ui/deco/smoke.gif?t=0';
+import smokeGif from '@assets/ui/deco/smoke.gif';
 
 export function removeHeart(boostsLeft) {
 
@@ -45,9 +45,15 @@ function addUseEffect(boostsLeft, imgType, powerUp = false) {
 	popupElement.style.height = `${smokeHeight}px`;
 
 	// display smoke effect
-	popupElement.src = `${imgType}`;
+	popupElement.src = '';
+	popupElement.src = `${imgType}?t=${Date.now()}`;
+
 	popupElement.style.display = 'block';
 	popupElement.style.zIndex = `2`;
+
+	setTimeout(() => {
+		popupElement.style.display = 'none';
+	}, 3000)
 }
 
 export function replenishHearts(boostsLeft, powerUpType) {
