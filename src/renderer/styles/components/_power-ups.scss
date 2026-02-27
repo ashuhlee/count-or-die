@@ -27,18 +27,12 @@
 	font-size: 70px;
 	top: -60px;
     transform: rotate(0);
-	animation: falling 3.2s linear forwards;
 	padding: 10px;
 }
 
 @keyframes falling {
 	to { top: 100%; transform: rotate(360deg) }
 }
-
-@keyframes disappear {
-	0% { opacity: 1 }
-	100% { opacity: 0 }
-}
-.disappear {
-	animation: disappear 1s ease forwards;
+@keyframes falling-reverse {
+	to { top: 100%; transform: rotate(-360deg) }
 }

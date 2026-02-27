@@ -28,7 +28,7 @@
 	max-height: 64px;
 }
 
-#popupElement {
+#popupElement, #powerUpUsedElement {
 	position: fixed;
 	display: none;
 	pointer-events: none;
