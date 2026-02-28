@@ -48,13 +48,13 @@ export function renderGame() {
 						<stop offset="100%" style="stop-color:#ffb7fe" />
 					</linearGradient>
 					<linearGradient id="default-color" x1="0%" x2="0%" y1="0%" y2="100%">
-						<stop offset="5%" stop-color="#ffe6f9" />
-						<stop offset="30%" stop-color="#DF7FC7" />
-						<stop offset="100%" stop-color="#cc5cb0" />
+						<stop offset="5%" stop-color="#FFE3F9" />
+						<stop offset="30%" stop-color="#F69DE2" />
+						<stop offset="100%" stop-color="#DD77C6" />
 					</linearGradient>
 		  		</defs>
 				<!-- outer stroke -->
-				<text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle"  stroke="#39232B" stroke-width="12" stroke-linejoin="round"
+				<text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle"  stroke="#6a376b" stroke-width="12.5" stroke-linejoin="round"
 						stroke-linecap="round" fill="none" paint-order="stroke" id="counter-outer">00
 				</text>
 				<!-- inner stroke -->

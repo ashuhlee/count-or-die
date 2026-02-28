@@ -1,6 +1,6 @@
 
 import { playAudio } from "../controls/audioHandler.js";
-import { changeTheme, resetTheme } from "../controls/themeHandler.js";
+import { resetTheme } from "../controls/themeHandler.js";
 
 import { resetBar } from "../components/progressBarDisplay.js";
 import { removeHeart, resetHearts } from "../components/heartDisplay.js";
@@ -72,19 +72,6 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 			state.gradientFxPlayed = true;
 		}
 
-		// if (state.counter >= 200) {
-		// 	changeTheme("theme200", bar);
-		// }
-		// if (state.counter >= 300) {
-		// 	changeTheme("theme300", bar);
-		// }
-		//
-		// const themeNotif = document.getElementById("theme-switch-notif-text");
-		//
-		// if (state.counter === 200 || state.counter === 300) {
-		// 	playAnimation(themeNotif, "boost-notification");
-		// }
-
 		displayCursorCount(state.countIncrement, event, false);
 		updateScoreAndGoal("pop", false);
 	}
@@ -104,20 +91,6 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 		const pointsAdded = state.currentGoal - state.counter;
 
 		state.boost();
-		// console.log(`boost use! boosts left: ${state.boostsAvailable}`); // tests
-
-		// if (state.counter >= 200) {
-		// 	changeTheme("theme200", bar);
-		// }
-		// if (state.counter >= 300) {
-		// 	changeTheme("theme300", bar);
-		// }
-		//
-		// const themeNotif = document.getElementById("theme-switch-notif-text");
-		//
-		// if (state.counter === 200 || state.counter === 300) {
-		// 	playAnimation(themeNotif, "boost-notification");
-		// }
 
 		animateBtn("decrease", false);
 		playAnimation(boostNotif, "boost-notification");
