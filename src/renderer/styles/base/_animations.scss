@@ -88,7 +88,7 @@
 	}
 	40% {
 		transform: scale(1.125) rotate(0);
-		filter: brightness(1.2) saturate(72%);
+		filter: brightness(1.2) saturate(69%);
 	}
 	100% {
 		transform: scale(1) rotate(0);
@@ -222,6 +222,13 @@
         transform: translateY(-45px);
     }
 }
+
+@keyframes clouds-min {
+	0% { transform: translateX(0) }
+	50% { transform: translateX(-10px) }
+	100% { transform: translateX(0) }
+}
+
 @keyframes flash-custom {
     0%   { opacity: 0.8; visibility: visible}
     16%  { opacity: 0; }

@@ -1,6 +1,6 @@
 #counter {
   fill: url(#default-color);
-  text-shadow: 0px 12px 0px var(--shadow-pink-015);
+  //text-shadow: 0px 12px 0px var(--shadow-pink-015);
   transition: fill 0.3s ease !important;
 }
 
@@ -17,6 +17,11 @@
     font-family: 'Alien Cyborg', sans-serif;
     letter-spacing: 10px;
     transform: scale(1.72);
+	filter: drop-shadow(2px 0 0 transparent)
+		drop-shadow(-2px 0 0 transparent)
+		drop-shadow(0 4px 0 #FFA2E6)
+		drop-shadow(0 -2px 0 transparent);
+
     padding: 30px;
   }
 	.shine-rect {
@@ -26,16 +31,3 @@
 		opacity: 0.3;
 	}
 }
-//
-//.table {
-//	background: #e2e1ff;
-//	outline: 8px solid #38344A;
-//	width: 100vw;
-//	height: 230px;
-//    position: absolute;
-//    top: 90%;
-//    left: 50%;
-//    transform: translate(-50%, -50%);
-//	image-rendering: pixelated;
-//	z-index: -10;
-//}

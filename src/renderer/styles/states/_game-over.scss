@@ -118,28 +118,65 @@
 	.final-score {
 		color: #ffffff;
 		font-weight: bold;
+		margin: 18px;
 		font-family: 'serious1', sans-serif;
 	}
-	.you-died, .death-tracker {
+	.you-died {
 		font-size: 24px;
+		padding-top: 20px;
 		top: 50px;
 		font-weight: bold;
 		font-family: 'serious1', sans-serif;
 		max-width: 250px;
-
-		//@media screen and (min-height: 1100px) {
-		//	position: absolute;
-		//}
 	}
-	.death-tracker {
+	.top-right-info {
 		z-index: -3;
 		position: absolute;
 		top: 0; right: 0;
-		font-size: 20px;
 		margin: 30px;
-		text-shadow: 0 3px 0 var(--shadow-pink-015);
-		color: #def3ff;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 8px;
+		transform: perspective(200px) rotateY(-13deg);
 	}
+	.tracker-container, .leaderboard-container {
+		height: 30px;
+		width: fit-content;
+		display: flex;
+		gap: 8px;
+		align-items: center;
+		justify-content: center;
+		padding: 6px 8px;
+		background: white;
+		border-radius: 5px;
+		transition: transform 1s ease;
+
+		&:hover {
+			transform: perspective(200px) rotateY(0deg);
+		}
+		&:hover {
+			.skull-tracker,
+			.death-tracker {
+				animation: flash 0.6s;
+				}
+		}
+		.skull-tracker {
+			width: 17px;
+			height: 17px;
+			will-change: transform;
+			transform: translateZ(0);
+		}
+
+		.death-tracker, .leaderboard {
+			font-weight: bold;
+			font-family: 'serious1', sans-serif;
+			font-size: 23px;
+			text-shadow: none;
+			color: #4B4D5A;
+		}
+	}
+
 
 	.play-again {
 		font-size: 30px;
