@@ -1,5 +1,4 @@
 
-import smokeGif from '@assets/ui/deco/smoke.gif';
 import gameOverGif from '@assets/ui/deco/game_over.gif';
 
 import soundBtnSvg from '@assets/ui/svg/sound-button-reg.svg';
@@ -9,10 +8,19 @@ import leftDecoPng from '@assets/ui/deco/lines.png';
 import questionPng from '@assets/ui/deco/question.png';
 import exclamationPng from '@assets/ui/deco/exclamation.png';
 
-import ghostPng from '@assets/ui/deco/ghost.png';
+import ghostPng from '@assets/ui/deco/ghost.gif';
+import skullFloor from '@assets/ui/deco/skull_floor.png';
+import skullTracker from '@assets/ui/deco/skull_grey.png';
 import tombstonePng from '@assets/ui/deco/tombstone.png';
 
 import resetBtnPng from '@assets/ui/buttons/reset-btn.png';
+import quitBtnPng from '@assets/ui/buttons/quit-btn.png';
+
+import cloudTopLeft from '@assets/ui/deco/clouds/cloud_1.png';
+import cloudBottomLeft from '@assets/ui/deco/clouds/cloud_2.png';
+import cloudTopRight from '@assets/ui/deco/clouds/cloud_3.png';
+import cloudBottomRight from '@assets/ui/deco/clouds/cloud_4.png';
+import cloudMini from '@assets/ui/deco/clouds/cloud_5.png';
 
 export function renderMain() {
 
@@ -24,9 +32,19 @@ export function renderMain() {
 		<div class="scanlines-bg"></div>
 		<div class="top-gradient"></div>
 		
-		<img class="left-deco" alt="left deco" src="${leftDecoPng}"/>
+<!--		<img class="left-deco" alt="left deco" src="${leftDecoPng}"/>-->
 		
-		<img id="popupElement" src="${smokeGif}" alt="smoke" style="filter: brightness(1.03) saturate(110%)">
+		<!-- clouds -->
+		<div class="clouds">
+			<img class="cloud-t-left" alt="cloud" src="${cloudTopLeft}"/>
+			<img class="cloud-b-left" alt="cloud" src="${cloudBottomLeft}"/>
+			<img class="cloud-mini" alt="cloud" src="${cloudMini}"/>
+			<img class="cloud-t-right" alt="cloud" src="${cloudTopRight}"/>
+			<img class="cloud-b-right" alt="cloud" src="${cloudBottomRight}"/>
+		</div>
+		
+		<img id="popupElement" alt="smoke" style="filter: brightness(1.03) saturate(110%)">
+		<img id="powerUpUsedElement" alt="smoke" style="filter: brightness(1.03) saturate(110%)">
 		
 		<!-- menu bar -->
 		<div class="controls">
@@ -41,7 +59,16 @@ export function renderMain() {
 			<div class="go-content">
 				<div id="red-overlay"></div>
 				<h2 class="you-died" id="dead-text"><span class="go-text-random">you died lolz</span></h2>
-				
+				<div class="top-right-info">
+					<div class="tracker-container">
+						<img src="${skullTracker}" alt="skull" class="skull-tracker"/>	
+						<h2 class="death-tracker" id="death-tracker">14</h2>
+					</div>
+<!--					<div class="leaderboard-container">-->
+<!--						<img src="${skullTracker}" alt="skull" class="skull-tracker"/>	-->
+<!--						<h2 class="leaderboard">scores</h2>-->
+<!--					</div>-->
+				</div>
 				<div class="deco-icons">
 					<img src="${questionPng}" alt="question mark" class="question"/>
 					<img src="${exclamationPng}" alt="exclamation mark" class="excl"/>
@@ -52,12 +79,21 @@ export function renderMain() {
 				<h2 class="final-score" id="final-score"><span class="score-text">score: 0</span></h2>
 				
 				<h2 class="play-again"><span class="try-again">try again ?</span></h2>
-				
-				<div class="reset play-again-btn">
-					<img src="${resetBtnPng}" id="game-over-btn" alt="game over reset button"/>
+				<div class="bottom-section">
+					<div class="game-over-btns">
+						<img src="${resetBtnPng}" id="game-over-btn" class="play-again-btn" alt="game over reset button"/>
+						<img src="${quitBtnPng}" id="quit-btn" class="play-again-btn-2" alt="rage quit button"/>
+					</div>
+					<div class="menu-anim">
+						<h2 class="back-to-menu underline left" id="menu-btn">back to menu</h2>		
+					</div>	
 				</div>
+
 				<div class="bg"></div>
 			</div>
+			<div class="skull-area">
+				<img src="${skullFloor}" alt="skull" class="skull-floor"/>	
+			</div>	
 			<div class="tombstone-area">
 				<img src="${ghostPng}" alt="ghost" class="ghost"/>
 				<img src="${tombstonePng}" alt="tombstone" class="tombstone"/>

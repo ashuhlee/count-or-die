@@ -19,11 +19,13 @@ function createWindow() {
 
 	const mainWindow = new BrowserWindow({
 		width: 475,
-		height: 900,
-		minWidth: 400,
+		height: 1100,
+		minWidth: 420,
+		minHeight: 800,
 		resizable: true,
 		maximizable: true,
 		fullscreenable: true,
+		backgroundColor: '#FFBDEF',
 		icon: iconPath,
 		webPreferences: {
 			preload: path.join(__dirname, 'preload.js'),

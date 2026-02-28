@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"target": "ES2022",
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"lib": ["ES2022", "DOM", "DOM.Iterable"],
+		"allowJs": true,
+		"checkJs": false,
+		"strict": true,
+		"noEmit": true,
+		"isolatedModules": true,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"baseUrl": ".",
+		"paths": {
+			"@assets/*": ["./src/renderer/assets/*"]
+		},
+		"types": ["vitest/globals", "node"]
+	},
+	"include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.js", "tests/**/*.ts", "tests/**/*.js"],
+	"exclude": ["node_modules", "out", ".vite"]
+}

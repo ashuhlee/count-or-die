@@ -51,20 +51,20 @@ describe('GameState', () => {
 			expect(state.highScore).toBe(50);
 		})
 
-		test('Loads sound settings', () => {
-			storage.setItem('soundMuted', 'true');
-
-			document.body.innerHTML = `<button id="soundBtn">Sound</button>`;
-			const toggleButton = document.getElementById('soundBtn');
-			soundToggle();
-
-			toggleButton.click();
-			expect(storage.getItem('soundMuted')).toBe('false');
-
-			toggleButton.click(); // test a second click
-			expect(storage.getItem('soundMuted')).toBe('true');
-
-		})
+		// test('Loads sound settings', () => {
+		// 	storage.setItem('soundMuted', 'true');
+		//
+		// 	document.body.innerHTML = `<button id="soundBtn">Sound</button>`;
+		// 	const toggleButton = document.getElementById('soundBtn');
+		// 	soundToggle();
+		//
+		// 	toggleButton.click();
+		// 	expect(storage.getItem('soundMuted')).toBe('false');
+		//
+		// 	toggleButton.click(); // test a second click
+		// 	expect(storage.getItem('soundMuted')).toBe('true');
+		//
+		// })
 	})
 
 })

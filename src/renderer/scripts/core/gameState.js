@@ -86,7 +86,7 @@ export class GameState {
 
 	// goal logic
 	isGoalReached() {
-		return this.counter === this.currentGoal;
+		return this.counter >= this.currentGoal;
 	}
 	incrementGoal(boosted = false) {
 		this.goalIncrement = this.getRandomGoal();

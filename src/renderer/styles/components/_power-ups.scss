@@ -1,0 +1,38 @@
+
+.spawn-area {
+    //border: 5px solid red; // debugging
+    width: 70%;
+    height: 100%;
+    position: fixed;
+	left: 50%;
+    transform: translateX(-50%);
+	z-index: 2;
+	pointer-events: none;
+
+	@media (max-width: 700px) {
+		width: 100%
+	}
+}
+
+.spawn-area--left {
+	left: 0;
+}
+.spawn-area--right {
+	right: 0;
+}
+
+.power-up-img {
+	position: absolute;
+	pointer-events: visible;
+	height: 84px;
+	top: -60px;
+    transform: rotate(0);
+	padding: 10px;
+}
+
+@keyframes falling {
+	to { top: 100%; transform: rotate(360deg) }
+}
+@keyframes falling-reverse {
+	to { top: 100%; transform: rotate(-360deg) }
+}

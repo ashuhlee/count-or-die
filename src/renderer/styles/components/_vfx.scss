@@ -9,13 +9,13 @@
 }
 
 .scanlines {
-  opacity: 0.3;
+  opacity: 0.2;
   mix-blend-mode: soft-light;
   z-index: 12;
 }
 
 .scanlines-bg {
-  opacity: 0.8;
+  opacity: 0.6;
   mix-blend-mode: soft-light;
   z-index: -2;
 }
@@ -35,5 +35,32 @@
 
 	@media screen and (max-height: 950px) and (max-width: 900px) {
 		display: none;
+	}
+}
+.clouds {
+	opacity: 0.85;
+	transition: opacity 0.2s ease;
+
+	img { image-rendering: pixelated; }
+
+	@media screen and (max-width: 950px) {
+		opacity: 0;
+	}
+
+	.cloud-t-left {
+		position: fixed; top: 100px; left: 0;
+	}
+	.cloud-b-left {
+		position: fixed; bottom: 190px; left: -50px;
+	}
+	.cloud-mini {
+		position: fixed; bottom: 310px; left: 300px;
+		animation: clouds-min 4s ease-in-out infinite;
+	}
+	.cloud-t-right {
+		position: fixed; top: 200px; right: -155px;
+	}
+	.cloud-b-right {
+		position: fixed; bottom: 140px; right: 0;
 	}
 }

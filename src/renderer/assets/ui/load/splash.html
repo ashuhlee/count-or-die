@@ -1,0 +1,80 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.cdnfonts.com/css/serious" rel="stylesheet">
+</head>
+<style>
+	body::-webkit-scrollbar {
+    	display: none;
+	}
+    .loading-section {
+        width: 500px;
+        height: 375px;
+        background: #FFC9F5;
+        background: linear-gradient(180deg,#FFD1F7 0%, #FFB0F0 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .gif {
+        width: 300px;
+    }
+    .loader-section {
+        position: relative;
+        width: 180px;
+        height: 13px;
+        background: #8B6081;
+    }
+    .loader {
+        position: absolute;
+        width: 180px;
+        height: 13px;
+        background: #FFF2FC;
+        animation: loader 5s linear forwards;
+        transform-origin: left;
+    }
+    h3 {
+        font-family: 'serious1', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 28px;
+        color: #FFF2FB;
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+    @keyframes loader {
+        0% {
+            transform: scaleX(0);
+            background: #FFF2FC;
+        }
+        99% {
+            transform: scaleX(1);
+            background: #FFF2FC;
+        }
+        100% {
+            background: #bce1f5;
+        }
+    }
+</style>
+<body>
+<div class="loading-section">
+    <img src="loading_splash.gif" alt="load" class="gif">
+    <h3><span class="loader-percent"></span></h3>
+    <div class="loader-section">
+        <div class="loader"></div>
+    </div>
+</div>
+</body>
+<script>
+    let n = 0;
+    const loaderElement = document.querySelector('.loader-percent');
+    loaderElement.textContent = '0%';
+    const interval = setInterval(() => {
+        n += 15;
+        loaderElement.textContent = n > 100 ? '100%' : n + '%';
+        if (n >= 100) clearInterval(interval);
+    }, 714);
+</script>
+</html>

@@ -7,7 +7,7 @@ export const barColors = {
 }
 
 let animStartTime = null;
-let currAnimDuration = 20;
+export let currAnimDuration = 20;
 
 export function initProgressBar() {
 

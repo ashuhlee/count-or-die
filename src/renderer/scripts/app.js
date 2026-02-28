@@ -3,10 +3,11 @@ import { renderGame } from "./containers/gameContainer.js";
 import { renderMain } from "./containers/mainContainer.js";
 
 import { setGameActions } from "./core/gameActions.js";
+import { setPowerUps } from "./core/powerUps.ts";
 import { toggleGameOver, youDiedConsole } from "./core/gameOver.js";
 
 import { keyboardControls } from "./controls/keyHandler.js";
-import { playAudio, pauseAudio, sounds } from "./controls/audioHandler.js";
+import { playAudio, pauseAudio, audioConfig } from "./controls/audioHandler.js";
 
 import { splitLetters } from "./anim/animations.js";
 import { heartGlitch } from "./anim/glitchEffect.js";
@@ -15,6 +16,7 @@ import { hideLoadingScreen, showLoadingScreen } from "./components/loadingScreen
 
 import { setGoalDisplay, setGradientText } from "./components/goalDisplay.js";
 import { setHighScoreDisplay } from "./components/highScoreDisplay.js";
+
 import { initProgressBar, updateBarColor } from "./components/progressBarDisplay.js";
 import { soundToggle } from "./components/menuBar.js";
 
@@ -25,7 +27,7 @@ import { Counter } from "./components/counterDisplay.js";
 
 document.addEventListener("DOMContentLoaded", () => {
 
-	playAudio(sounds.bgMusic);
+	playAudio(audioConfig.bgMusic.audio);
 
 	// render elements
 	renderMain();
@@ -50,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// create class instances
 	const gameState = new GameState();
+	const powerUpSystem = setPowerUps({ state: gameState, bar: progressBar });
 
 	const counterDisplay = new Counter({
 		textElement: countText,
@@ -71,6 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	animate();
+	powerUpSystem.spawnCooldown();
 
 	const highScoreDisplay = setHighScoreDisplay(highScoreText);
 	const goalDisplay = setGoalDisplay(goalBox);
@@ -89,19 +93,21 @@ document.addEventListener("DOMContentLoaded", () => {
 		goal: goalDisplay,
 		goalText: goalTextDisplay,
 		bar: progressBar,
-		sounds: sounds,
+		sounds: audioConfig,
 	});
 
 	async function restartGameOver() {
 
 		showLoadingScreen();
-		await new Promise(resolve => setTimeout(resolve, 500));
-
-		await new Promise(resolve => setTimeout(resolve, 30));
+		await new Promise(resolve => setTimeout(resolve, 530));
 
 		isGameOver = false;
 		actions.restartGame();
+
 		hideLoadingScreen();
+
+		powerUpSystem.clearPowerUps();
+		powerUpSystem.spawnCooldown();
 	}
 
 
@@ -120,12 +126,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	document.getElementById("reset-img").addEventListener("click", () => {
 		actions.restartGame();
-		playAudio(sounds.reset);
+		playAudio(audioConfig.mouseClick.audio);
 		isGameOver = false;
+
+		powerUpSystem.clearPowerUps();
+		powerUpSystem.spawnCooldown();
 	});
+
 	document.getElementById("game-over-btn").addEventListener("click", () => {
+		playAudio(audioConfig.buttonClick.audio);
+		pauseAudio(audioConfig.gameOverMusic.audio);
 		restartGameOver();
 	});
+
+	document.getElementById("menu-btn").addEventListener("click", () => {
+		playAudio(audioConfig.buttonClick.audio);
+	});
+
+	document.getElementById("quit-btn").addEventListener('click', () => {
+		playAudio(audioConfig.buttonClick.audio);
+		if (window.electron) {
+			setTimeout(window.electron.quitApp, 400);
+		}
+		else {
+			alert('you suck lol!')
+		}
+	})
 
 	// keyb controls
 	keyboardControls({
@@ -140,8 +166,12 @@ document.addEventListener("DOMContentLoaded", () => {
 	document.addEventListener("progressBarExp", () => {
 		if (!gameState.isGoalReached() && !gameState.isGameOver) {
 
-			playAudio(sounds.gameOver);
-			pauseAudio(sounds.bgMusic);
+			playAudio(audioConfig.gameOver.audio);
+			pauseAudio(audioConfig.bgMusic.audio);
+
+			setTimeout(() => {
+				playAudio(audioConfig.gameOverMusic.audio);
+			}, 1000);
 
 			if (window.electron) {
 				window.electron.setDiscordStatus({ gameStatusRPC: "game-over" });
@@ -153,7 +183,9 @@ document.addEventListener("DOMContentLoaded", () => {
 			gameState.setGameOver(true);
 			toggleGameOver(true, gameState.isHighScore);
 
-			youDiedConsole(countText.textContent);
+			if (!window.electron) {
+				youDiedConsole(countText.textContent);
+			}
 
 			const scoreText = document.querySelector(".score-text");
 			scoreText.textContent = `Score: ${countText.textContent}`;

@@ -1,16 +1,18 @@
 
-import { resetTheme } from "../controls/themeHandler.js";
+import { resetTheme } from '../controls/themeHandler.js';
 
 const phrasesRegular = [
-	"you died lolz",
-	"lol loser",
-	"aw, you died",
-	"you died :(",
-	"better luck next life..",
-	"nice try!",
-	"you didn't deserve that..",
+	'you died lolz',
+	'lol loser',
+	'aw, you died',
+	'you died :(',
+	'better luck next life..',
+	'nice try!',
 	"let's aim a bit higher..",
-	"sooo close!"
+	'sooo close!',
+	'you are dead',
+	'another try maybe?',
+	'give it another go!'
 ]
 
 const phrasesNewScore = [
@@ -27,11 +29,27 @@ function setRandomText(arr) {
 
 export function toggleGameOver(isGameOver = false, highScoreReached = false) {
 
-	const flash = document.getElementById("red-flash");
-	const gameOverScreen = document.getElementById("game-over");
+	let isNegative = true;
+	const backToMenu = document.getElementById('menu-btn');
 
-	const displayText = document.querySelector(".go-text-random");
-	const scoreText = document.querySelector(".score-text");
+	backToMenu.addEventListener('mouseenter', () => {
+		backToMenu.style.transform = `scale(1.15) 
+			rotate(${isNegative ? '-4deg' : '4deg'})`;
+
+		backToMenu.style.setProperty('--arr-color', isNegative ? '#FBB6FF' : '#FFDEB6');
+	})
+
+	backToMenu.addEventListener('mouseleave', () => {
+		backToMenu.style.transform = '';
+		backToMenu.style.removeProperty('--arr-color');
+		if (backToMenu) isNegative = !isNegative;
+	})
+
+	const flash = document.getElementById('red-flash');
+	const gameOverScreen = document.getElementById('game-over');
+
+	const displayText = document.querySelector('.go-text-random');
+	const scoreText = document.querySelector('.score-text');
 
 	if (highScoreReached) {
 		displayText.textContent = setRandomText(phrasesNewScore);
@@ -56,10 +74,10 @@ export function toggleGameOver(isGameOver = false, highScoreReached = false) {
 	}
 
     if (isGameOver) {
-		flash.classList.add("flash");
-		flash.addEventListener("animationend", () => {
-			flash.classList.remove("flash");
-			gameOverScreen.classList.add("visible");
+		flash.classList.add('flash');
+		flash.addEventListener('animationend', () => {
+			flash.classList.remove('flash');
+			gameOverScreen.classList.add('visible');
 
 			setTimeout(() => {
 				resetTheme()
@@ -67,7 +85,7 @@ export function toggleGameOver(isGameOver = false, highScoreReached = false) {
 
 		}, {once: true})
 	} else {
-		gameOverScreen.classList.remove("visible");
+		gameOverScreen.classList.remove('visible');
 
 		displayText.style.color = '';
 		displayText.style.backgroundImage = '';
@@ -85,15 +103,15 @@ export function toggleGameOver(isGameOver = false, highScoreReached = false) {
 
 export function youDiedConsole(finalScore) {
 	console.log(
-	"%c▓██   ██▓ ▒█████   █    ██    ▓█████▄  ██▓▓█████ ▓█████▄ \n" +
-	" ▒██  ██▒▒██▒  ██▒ ██  ▓██▒   ▒██▀ ██▌▓██▒▓█   ▀ ▒██▀ ██▌\n" +
-	"  ▒██ ██░▒██░  ██▒▓██  ▒██░   ░██   █▌▒██▒▒███   ░██   █▌\n" +
-	"  ░ ▐██▓░▒██   ██░▓▓█  ░██░   ░▓█▄   ▌░██░▒▓█  ▄ ░▓█▄   ▌\n" +
-	"  ░ ██▒▓░░ ████▓▒░▒▒█████▓    ░▒████▓ ░██░░▒████▒░▒████▓ \n" +
-	"   ██▒▒▒ ░ ▒░▒░▒░ ░▒▓▒ ▒ ▒     ▒▒▓  ▒ ░▓  ░░ ▒░ ░ ▒▒▓  ▒ \n" +
-	" ▓██ ░▒░   ░ ▒ ▒░ ░░▒░ ░ ░     ░ ▒  ▒  ▒ ░ ░ ░  ░ ░ ▒  ▒ \n" +
-	" ▒ ▒ ░░  ░ ░ ░ ▒   ░░░ ░ ░     ░ ░  ░  ▒ ░   ░    ░ ░  ░ \n" +
-	" ░ ░         ░ ░     ░           ░     ░     ░  ░   ░    \n" +
-	" ░ ░                           ░                  ░      \n\n" +
+	'%c▓██   ██▓ ▒█████   █    ██    ▓█████▄  ██▓▓█████ ▓█████▄ \n' +
+	' ▒██  ██▒▒██▒  ██▒ ██  ▓██▒   ▒██▀ ██▌▓██▒▓█   ▀ ▒██▀ ██▌\n' +
+	'  ▒██ ██░▒██░  ██▒▓██  ▒██░   ░██   █▌▒██▒▒███   ░██   █▌\n' +
+	'  ░ ▐██▓░▒██   ██░▓▓█  ░██░   ░▓█▄   ▌░██░▒▓█  ▄ ░▓█▄   ▌\n' +
+	'  ░ ██▒▓░░ ████▓▒░▒▒█████▓    ░▒████▓ ░██░░▒████▒░▒████▓ \n' +
+	'   ██▒▒▒ ░ ▒░▒░▒░ ░▒▓▒ ▒ ▒     ▒▒▓  ▒ ░▓  ░░ ▒░ ░ ▒▒▓  ▒ \n' +
+	' ▓██ ░▒░   ░ ▒ ▒░ ░░▒░ ░ ░     ░ ▒  ▒  ▒ ░ ░ ░  ░ ░ ▒  ▒ \n' +
+	' ▒ ▒ ░░  ░ ░ ░ ▒   ░░░ ░ ░     ░ ░  ░  ▒ ░   ░    ░ ░  ░ \n' +
+	' ░ ░         ░ ░     ░           ░     ░     ░  ░   ░    \n' +
+	' ░ ░                           ░                  ░      \n\n' +
 	`Final score: ${finalScore}`, 'color: #FF2659')
 }
