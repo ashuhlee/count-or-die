@@ -62,7 +62,7 @@ export const audioConfig = {
 	},
 	buttonClick: {
 		audio: new Audio(buttonClickFxFile),
-		volume: 0.5
+		volume: 0.2
 	},
 	mouseClick: {
 		audio: new Audio(mouseClickFxFile),
@@ -71,11 +71,11 @@ export const audioConfig = {
 	// power ups
 	powerUp: {
 		audio: new Audio(powerUpFxFile),
-		volume: 0.3
+		volume: 0.4
 	},
 	boostPowerUp: {
 		audio: new Audio(boostPowerUpFxFile),
-		volume: 0.9
+		volume: 0.7
 	}
 };
 
