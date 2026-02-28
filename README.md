@@ -16,30 +16,39 @@
 ## About the Game
 
 **Platforms:** Windows, MacOS, Browser <br>
-**Status:** In Development
+**Status:** In Development - Beta
 
 Count or Die is an arcade counting game with progressive difficulty, randomized power-ups, multiple game modes, and a timer that gets faster as you level up!
 
 ## Previews
 ### In-Game
 <div align="center">
-  <img width="400" alt="Game Screenshot" src="https://github.com/user-attachments/assets/cb9b833d-b84e-4e32-908d-bf13be76dba9" />
-  <img width="400" alt="Gameplay Demo" src="https://github.com/user-attachments/assets/786be283-b800-4b73-867a-8acaa1c3ee5c" />
+  
+https://github.com/user-attachments/assets/360110b0-87f0-45f2-beba-8323e9b40289
+
 </div>
 
 ## Gameplay
 
 ### Core Mechanics
 - **Beat the Clock:** Reach your counting goal before the timer runs out
-- **Progressive Difficulty:** Timer speed increases by 1.2x after each goal (exponentially!)
+- **Progressive Difficulty:** Timer speed increases by 1.2x after each goal
 - **Strategic Boosts:** Can't click fast enough? Use a boost to instantly reach the goal (up to 4 boosts per game)
-- **High Score Tracking:** Compete against your personal best with persistent score storage
+- **High Score Tracking:** Compete against your personal best with high score storage
 
 ### Game Modes
 - **Regular Mode:** Classic sequential counting with regular numbers only
-- **Nerd-Out Mode:** A random mix of numbers and math equations (e.g., 25, 4 × 10, 100 ÷ 2)
+- **Nerd-Out Mode:** A random mix of numbers and math equations (e.g., 25, 4 × 10, 100 ÷ 2) (Coming soon)
 
-## Controls
+### Power-Up System
+| Type | Effect | Chance of Spawning |
+|------|--------|--------------------|
+| <img height="40" alt="candy" src="https://github.com/user-attachments/assets/aff7a350-c06e-4e74-8612-f2e313e364df"/>   | 2x counter       |  40%   |
+| <img height="40" alt="candy" src="https://github.com/user-attachments/assets/bcc83aa0-7ebb-4d22-a9b5-5b86ae725106"/>   | 4x counter       |  20%   |
+| <img height="40" alt="candy" src="https://github.com/user-attachments/assets/f52dbe04-cbde-4de5-af6d-f8ca8b51cb09"/>   | Extra boost      |  10%   |
+| <img height="40" alt="candy" src="https://github.com/user-attachments/assets/5b54f551-8a58-4822-b929-9ab59617f6d2"/>   | Replenish boosts |  8%    |
+
+### Controls
 | Input                | Action                     |
 |----------------------|----------------------------|
 | `↑` `→`  `W` `D`  `+`| Increase counter           |
@@ -112,7 +121,6 @@ npm install
 
 ### In Development
 - Additional game mode for the math enjoyers
-- Power-up system integration
 - Improved high score management system
 
 ## Tech Stack
