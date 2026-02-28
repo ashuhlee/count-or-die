@@ -20,8 +20,7 @@
 
 Count or Die is an arcade counting game with progressive difficulty, randomized power-ups, multiple game modes, and a timer that gets faster as you level up!
 
-## Previews
-### In-Game
+### Gameplay Demo
 <div align="center">
   
 https://github.com/user-attachments/assets/360110b0-87f0-45f2-beba-8323e9b40289
