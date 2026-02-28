@@ -5,6 +5,14 @@ import { playAudio, audioConfig } from '../controls/audioHandler.js';
 import { GameState } from './gameState.js';
 
 // @ts-ignore
+import candy from '@assets/ui/power-ups/candy.png';
+// @ts-ignore
+import donut from '@assets/ui/power-ups/donut.png';
+// @ts-ignore
+import star from '@assets/ui/power-ups/star.png';
+// @ts-ignore
+import superstar from '@assets/ui/power-ups/superstar.png';
+// @ts-ignore
 import smokeGif from '@assets/ui/deco/smoke.gif';
 
 /*
@@ -35,21 +43,21 @@ export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
 
 	const POWER_UPS: PowerUp[] = [{
 		type: 'double_click',
-		icon: '🧋',
+		icon: candy,
 		duration: 3000,
 		weight: 40,
 		sfx: audioConfig.powerUp.audio
 	}, {
 		type: 'four_click',
-		icon: '🍡',
+		icon: donut,
 		duration: 3000,
 		weight: 20,
 		sfx: audioConfig.powerUp.audio
 	}, {
 		type: 'extra_boost',
-		icon: '⭐',
+		icon: star,
 		duration: null,
-		weight: 80,
+		weight: 10,
 		sfx: audioConfig.boostPowerUp.audio
 	},
 	// {
@@ -61,9 +69,9 @@ export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
 	// },
 		{
 		type: 'replenish_boosts',
-		icon: '🌟',
+		icon: superstar,
 		duration: null,
-		weight: 80,
+		weight: 8,
 		sfx: audioConfig.boostPowerUp.audio
 	}]
 
@@ -153,10 +161,10 @@ export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
 		const spawnArea: HTMLElement = document.createElement('div');
 		spawnArea.className = 'spawn-area';
 
-		const icon: HTMLElement = document.createElement('span'); // switch to images later
+		const icon: HTMLImageElement = document.createElement('img'); // switch to images later
 		icon.className = 'power-up-img';
 		icon.id = 'power-up-img';
-		icon.textContent = powerUp.icon;
+		icon.src = powerUp.icon;
 
 		icon.style.animation = Math.random() < 0.5 ?
 			'falling 3.2s linear forwards' : 'falling-reverse 3.2s linear forwards';
@@ -200,7 +208,7 @@ export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
 	function spawnCooldown(enabled: boolean = true): void {
 
 		const minInterval: number = 6000;
-		const maxInterval: number = 10000;
+		const maxInterval: number = 12000;
 
 		const randomInterval: number = Math.random() * (maxInterval - minInterval) + minInterval;
 
@@ -225,8 +233,8 @@ export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
 		const effectWidth: number = 70;
 		const effectHeight: number = 70;
 
-		const xPos: number = rect.left + 30; // x position of element
-		const yPos: number = rect.top + 36;  // y position of element
+		const xPos: number = rect.left + 20; // x position of element
+		const yPos: number = rect.top + 30;  // y position of element
 
 		popupElement.style.left = `${xPos}px`;
 		popupElement.style.top = `${yPos}px`;
