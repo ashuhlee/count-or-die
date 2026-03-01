@@ -23,9 +23,230 @@ import { soundToggle } from './components/menuBar.js';
 import { GameState } from './core/gameState.js';
 import { Counter } from './components/counterDisplay.js';
 
-// localStorage.setItem('highScore', 5); // TESTS: manually reset high score
 
 const DEATH_COUNT_KEY = 'deathCount';
+
+const GLITCH_INTERVAL = 6000;
+const GAME_OVER_MUSIC_DELAY = 1000;
+const RESTART_LOAD_DELAY = 530;
+const QUIT_DELAY = 400;
+
+document.addEventListener('DOMContentLoaded', createGame);
+
+function createGame() {
+
+	playAudio(audioConfig.bgMusic.audio);
+
+	renderContent();
+	const ui = createDomRefs();
+	const ctx = createGameCtx(ui);
+
+	initUserInterface(ctx, ui);
+	bindUIEvents(ctx, ui);
+	startGameLoops(ctx);
+}
+
+function renderContent() {
+	renderMain();
+	renderGame();
+}
+
+function createDomRefs() {
+
+	return {
+		counterText: document.getElementById('counter'),
+		counterOuter: document.getElementById('counter-outer'),
+		counterShine: document.getElementById('counter-shine'),
+
+		highScoreText: document.getElementById('high-score'),
+		goalBox: document.getElementById('next-goal'),
+		goalText: document.querySelector('.goal-text'),
+
+		increaseBtn: document.getElementById('increase-img'),
+		boostBtn: document.getElementById('decrease-img'),
+		resetBtn: document.getElementById('reset-img'),
+
+		gameOverBtn: document.getElementById('game-over-btn'),
+		menuBtn: document.getElementById('menu-btn'),
+		quitBtn: document.getElementById('quit-btn'),
+
+		deathTracker: document.getElementById('death-tracker'),
+		scoreText: document.querySelector('.score-text')
+	};
+}
+
+function createGameCtx(ui) {
+
+	const progressBar = initProgressBar();
+	const state = new GameState();
+
+	const counter = new Counter({
+		textElement: ui.counterText,
+		outerElement: ui.counterOuter,
+		textShine: ui.counterShine
+	})
+
+	const highScore = setHighScoreDisplay(ui.highScoreText);
+	const goal = setGoalDisplay(ui.goalBox);
+	const goalText = setGradientText(ui.goalText);
+
+	const actions = setGameActions({
+		state,
+		counter,
+		highScore,
+		goal,
+		goalText,
+		bar: progressBar,
+		sounds: audioConfig
+	})
+
+	const powerUps = setPowerUps({ counter, state });
+
+	return { state, actions, counter, highScore, goal, goalText, progressBar, powerUps }
+}
+
+function initUserInterface(ctx) {
+	splitLetters('.game-name', 'wavy');
+	heartGlitch();
+
+	ctx.highScore.update(ctx.state.highScore);
+	ctx.counter.update(ctx.state.counter);
+	ctx.goal.update(ctx.state.currentGoal, false);
+}
+
+function bindUIEvents(ctx, ui) {
+
+	ui.increaseBtn.addEventListener('click', (e) => onIncrease(ctx, e));
+	ui.boostBtn.addEventListener('click', (e) => onBoost(ctx, e));
+	ui.resetBtn.addEventListener('click', () => onReset(ctx));
+
+	ui.gameOverBtn.addEventListener('click', () => onGameOverRestart(ctx));
+	ui.menuBtn.addEventListener('click', onMenuClick);
+	ui.quitBtn.addEventListener('click', onQuitClick);
+
+	keyboardControls({
+		onIncrease: ctx.actions.increase,
+		onBoost: ctx.actions.jumpToGoal,
+		disabled: () => ctx.state.isGameOver
+	});
+
+	soundToggle();
+
+	document.addEventListener('progressBarExp', () => {
+		onTimerExpired(ctx, ui);
+	})
+}
+
+function startGameLoops(ctx) {
+	startGlitchEffectLoop();
+	startFrameLoop(ctx);
+	ctx.powerUps.spawnCooldown();
+}
+
+function startGlitchEffectLoop() {
+	setInterval(heartGlitch, GLITCH_INTERVAL);
+}
+
+function startFrameLoop(ctx) {
+	function frame() {
+		if (!ctx.state.isGameOver) {
+			if (ctx.state.updateHighScore()) {
+				ctx.state.isHighScore = true;
+			}
+			updateBarColor(ctx.progressBar, ctx.state.isHighScore);
+		}
+		requestAnimationFrame(frame);
+	}
+	frame();
+}
+
+function onIncrease(ctx, event) {
+	if (ctx.state.isGameOver) return;
+	ctx.actions.increase(event);
+}
+
+function onBoost(ctx, event) {
+	if (ctx.state.isGameOver) return;
+	ctx.actions.jumpToGoal(event);
+}
+
+function onReset(ctx) {
+	ctx.actions.restartGame();
+	playAudio(audioConfig.mouseClick.audio);
+	resetPowerUps(ctx);
+}
+
+async function onGameOverRestart(ctx) {
+
+	playAudio(audioConfig.mouseClick.audio);
+	pauseAudio(audioConfig.gameOverMusic.audio);
+
+	showLoadingScreen();
+	await delay(RESTART_LOAD_DELAY);
+
+	ctx.actions.restartGame();
+
+	hideLoadingScreen();
+	resetPowerUps(ctx);
+}
+
+function onMenuClick() {
+	playAudio(audioConfig.buttonClick.audio);
+	setTimeout(() => {
+		alert('Oops! The menu is not available in the beta.');
+	}, 500)
+}
+
+function onQuitClick() {
+	playAudio(audioConfig.mouseClick.audio);
+
+	if (window.electron) {
+		setTimeout(window.electron.quitApp, QUIT_DELAY);
+	}
+	else {
+		alert('Thank you for playing!');
+	}
+}
+
+function onTimerExpired(ctx, ui) {
+	if (ctx.state.isGoalReached() || ctx.state.isGameOver) return;
+
+	playAudio(audioConfig.gameOver.audio);
+	pauseAudio(audioConfig.bgMusic.audio);
+
+	setTimeout(() => {
+		playAudio(audioConfig.gameOverMusic.audio);
+	}, GAME_OVER_MUSIC_DELAY);
+
+	if (window.electron) {
+		window.electron.setDiscordStatus({ gameStatusRPC: 'game-over' });
+	}
+
+	ctx.state.setGameOver(true);
+	ctx.progressBar.style.animation = 'none';
+	toggleGameOver(true, ctx.state.isHighScore);
+
+	const nextDeathCount = getDeathCount() + 1;
+	setDeathCount(nextDeathCount);
+
+	if (ui.deathTracker) {
+		ui.deathTracker.textContent = String(nextDeathCount);
+	}
+
+	const currentScore = ui.counterText?.textContent ?? '0';
+
+	if (ui.scoreText) {
+		ui.scoreText.textContent = `Score: ${currentScore}`;
+	}
+	if (!window.electron) {
+		youDiedConsole(currentScore);
+	}
+}
+
+function resetPowerUps(ctx) {
+	ctx.powerUps.clearPowerUps();
+	ctx.powerUps.spawnCooldown();
+}
 
 function getDeathCount() {
 	const stored = localStorage.getItem(DEATH_COUNT_KEY);
@@ -34,179 +255,10 @@ function getDeathCount() {
 	return Number.isNaN(parsed) ? 0 : parsed;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function setDeathCount(value) {
+	localStorage.setItem(DEATH_COUNT_KEY, String(value));
+}
 
-	playAudio(audioConfig.bgMusic.audio);
-
-	// render elements
-	renderMain();
-	renderGame();
-
-	// initialize game (start progress bar)
-	const progressBar = initProgressBar();
-
-	// animations
-	splitLetters('.game-name', 'wavy');
-
-	setInterval(heartGlitch, 6000);
-	heartGlitch();
-
-	let countText = document.getElementById('counter');
-	let countOuter = document.getElementById('counter-outer');
-	let countShine = document.getElementById('counter-shine');
-
-	let highScoreText = document.getElementById('high-score');
-	let goalBox = document.getElementById('next-goal');
-	let goalText = document.querySelector('.goal-text');
-
-	// create class instances
-	const gameState = new GameState();
-
-	const counterDisplay = new Counter({
-		textElement: countText,
-		outerElement: countOuter,
-		textShine: countShine
-	});
-	const powerUpSystem = setPowerUps({ counter: counterDisplay, state: gameState });
-
-	let isGameOver = false;
-
-	function animate() {
-		if (!isGameOver) {
-			if (gameState.updateHighScore()) {
-				gameState.isHighScore = true;
-			}
-			updateBarColor(progressBar, gameState.isHighScore);
-		}
-		requestAnimationFrame(animate);
-	}
-
-	animate();
-	powerUpSystem.spawnCooldown();
-
-	const highScoreDisplay = setHighScoreDisplay(highScoreText);
-	const goalDisplay = setGoalDisplay(goalBox);
-	const goalTextDisplay = setGradientText(goalText);
-
-	// set initial displays
-	highScoreDisplay.update(gameState.highScore);
-	counterDisplay.update(gameState.counter);
-	goalDisplay.update(gameState.currentGoal, false);
-
-	// create game actions
-	const actions = setGameActions({
-		state: gameState,
-		counter: counterDisplay,
-		highScore: highScoreDisplay,
-		goal: goalDisplay,
-		goalText: goalTextDisplay,
-		bar: progressBar,
-		sounds: audioConfig,
-	});
-
-	async function restartGameOver() {
-
-		showLoadingScreen();
-		await new Promise(resolve => setTimeout(resolve, 530));
-
-		isGameOver = false;
-		actions.restartGame();
-
-		hideLoadingScreen();
-
-		powerUpSystem.clearPowerUps();
-		powerUpSystem.spawnCooldown();
-	}
-
-
-	// button clicks
-	document.getElementById('increase-img').addEventListener('click', (e) => {
-		if (!gameState.isGameOver) {
-			actions.increase(e);
-		}
-	});
-
-	document.getElementById('decrease-img').addEventListener('click', (e) => {
-		if (!gameState.isGameOver) {
-			actions.jumpToGoal(e);
-		}
-	});
-
-	document.getElementById('reset-img').addEventListener('click', () => {
-		actions.restartGame();
-		playAudio(audioConfig.mouseClick.audio);
-		isGameOver = false;
-
-		powerUpSystem.clearPowerUps();
-		powerUpSystem.spawnCooldown();
-	});
-
-	document.getElementById('game-over-btn').addEventListener('click', () => {
-		playAudio(audioConfig.buttonClick.audio);
-		pauseAudio(audioConfig.gameOverMusic.audio);
-		restartGameOver();
-	});
-
-	document.getElementById('menu-btn').addEventListener('click', () => {
-		playAudio(audioConfig.buttonClick.audio);
-	});
-
-	document.getElementById('quit-btn').addEventListener('click', () => {
-		playAudio(audioConfig.buttonClick.audio);
-		if (window.electron) {
-			setTimeout(window.electron.quitApp, 400);
-		}
-		else {
-			alert('you suck lol!')
-		}
-	})
-
-	// keyb controls
-	keyboardControls({
-		onIncrease: actions.increase,
-		onBoost: actions.jumpToGoal,
-		onRestart: actions.restartGame,
-		disabled: () => gameState.isGameOver
-	});
-	soundToggle();
-
-	// game over
-	document.addEventListener('progressBarExp', () => {
-		if (!gameState.isGoalReached() && !gameState.isGameOver) {
-
-			playAudio(audioConfig.gameOver.audio);
-			pauseAudio(audioConfig.bgMusic.audio);
-
-			setTimeout(() => {
-				playAudio(audioConfig.gameOverMusic.audio);
-			}, 1000);
-
-			if (window.electron) {
-				window.electron.setDiscordStatus({ gameStatusRPC: 'game-over' });
-			}
-
-			isGameOver = true;
-			progressBar.style.animation = 'none';
-
-			gameState.setGameOver(true);
-			toggleGameOver(true, gameState.isHighScore);
-
-			const nextDeathCount = getDeathCount() + 1;
-			localStorage.setItem(DEATH_COUNT_KEY, String(nextDeathCount));
-			
-			const deathTracker = document.getElementById('death-tracker');
-			if (deathTracker) {
-				deathTracker.textContent = String(nextDeathCount);
-			}
-
-			if (!window.electron) {
-				youDiedConsole(countText.textContent);
-			}
-
-			const scoreText = document.querySelector('.score-text');
-			scoreText.textContent = `Score: ${countText.textContent}`;
-
-		}
-	});
-
-});
+function delay(ms) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
