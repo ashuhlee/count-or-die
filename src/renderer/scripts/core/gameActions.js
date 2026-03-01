@@ -1,6 +1,5 @@
 
 import { playAudio } from "../controls/audioHandler.js";
-import { resetTheme } from "../controls/themeHandler.js";
 
 import { resetBar } from "../components/progressBarDisplay.js";
 import { removeHeart, resetHearts } from "../components/heartDisplay.js";
@@ -110,7 +109,7 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 		// reset ui
 		state.reset();
 
-		resetTheme();
+		// resetTheme();
 		resetHearts();
 
 		// remove vfx from last game
