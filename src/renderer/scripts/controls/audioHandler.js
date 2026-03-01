@@ -20,6 +20,7 @@ import buttonClickFxFile from "@assets/audio/sfx/button-click.mp3";
 
 import powerUpFxFile from "@assets/audio/sfx/power-up.mp3";
 import boostPowerUpFxFile from "@assets/audio/sfx/powerup-boost.mp3";
+import penaltyFxFile from "@assets/audio/sfx/penalty.mp3";
 
 
 export const audioConfig = {
@@ -66,7 +67,7 @@ export const audioConfig = {
 	},
 	mouseClick: {
 		audio: new Audio(mouseClickFxFile),
-		volume: 0.5
+		volume: 0.4
 	},
 	// power ups
 	powerUp: {
@@ -75,7 +76,11 @@ export const audioConfig = {
 	},
 	boostPowerUp: {
 		audio: new Audio(boostPowerUpFxFile),
-		volume: 0.7
+		volume: 0.9
+	},
+	penalty: {
+		audio: new Audio(penaltyFxFile),
+		volume: 0.25
 	}
 };
 

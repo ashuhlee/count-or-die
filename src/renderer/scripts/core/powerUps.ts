@@ -55,8 +55,8 @@ export function setPowerUps({ counter, state }: PowerUpArgs): PowerUpSystem {
 		type: 'minus_25',
 		icon: badDonut,
 		duration: null,
-		weight: 15,
-		sfx: audioConfig.noBoosts.audio,
+		weight: 20,
+		sfx: audioConfig.penalty.audio,
 		desc: '-25 penalty!',
 		effect: 'bad'
 	}, {
@@ -173,7 +173,7 @@ export function setPowerUps({ counter, state }: PowerUpArgs): PowerUpSystem {
 		icon.dataset.powerUpType = powerUp.type;
 
 		icon.style.animation = Math.random() < 0.5 ?
-			'falling 3.2s linear forwards' : 'falling-reverse 3.2s linear forwards';
+			'falling 2.8s linear forwards' : 'falling-reverse 2.8s linear forwards';
 
 
 		const side = Math.random() < 0.5 ? 'left' : 'right';
