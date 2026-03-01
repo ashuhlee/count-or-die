@@ -1,4 +1,4 @@
-import { splitLetters } from "../anim/animations.js";
+import { splitLetters } from '../anim/animations.js';
 
 export function setGoalDisplay(element) {
 
@@ -18,12 +18,12 @@ export function setGoalDisplay(element) {
 		},
 
 		addNewGoalEffect() {
-			element.classList.remove("new-goal");
+			element.classList.remove('new-goal');
 			element.offsetHeight;
-			element.classList.add("new-goal");
+			element.classList.add('new-goal');
 		},
 		removeNewGoalEffect() {
-			element.classList.remove("new-goal");
+			element.classList.remove('new-goal');
 		}
 	};
 }
@@ -32,12 +32,12 @@ export function setGradientText(element) {
 
 	return {
 		addNewTextEffect() {
-			element.classList.remove("new-goal-text");
+			element.classList.remove('new-goal-text');
 			element.offsetHeight;
-			element.classList.add("new-goal-text");
+			element.classList.add('new-goal-text');
 		},
 		removeNewTextEffect() {
-			element.classList.remove("new-goal-text");
+			element.classList.remove('new-goal-text');
 		}
 	};
 }

@@ -3,7 +3,6 @@ import gameOverGif from '@assets/ui/deco/game_over.gif';
 
 import soundBtnSvg from '@assets/ui/svg/sound-button-reg.svg';
 import optionsBtnSvg from '@assets/ui/svg/options-button.svg';
-import leftDecoPng from '@assets/ui/deco/lines.png';
 
 import questionPng from '@assets/ui/deco/question.png';
 import exclamationPng from '@assets/ui/deco/exclamation.png';
@@ -32,8 +31,6 @@ export function renderMain() {
 		<div class="scanlines"></div>
 		<div class="scanlines-bg"></div>
 		<div class="top-gradient"></div>
-		
-<!--		<img class="left-deco" alt="left deco" src="${leftDecoPng}"/>-->
 		
 		<!-- clouds -->
 		<div class="clouds">

@@ -100,9 +100,6 @@ export class GameState {
 	// 1.2x speed increase each round
 	barSpeed() {
 		let multiplier = Math.pow(1.2, this.trueGoalsReached);
-		let speedIncrease = 20 / multiplier;
-
-		// console.log(`${multiplier.toFixed(2)}x faster`); // tests
-		return speedIncrease;
+		return 20 / multiplier;
 	}
 }

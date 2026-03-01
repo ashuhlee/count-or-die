@@ -14,10 +14,10 @@ const phrasesRegular = [
 ]
 
 const phrasesNewScore = [
-	"new high score!",
-	"you beat your best score!",
+	'new high score!',
+	'you beat your best score!',
 	"you're getting better!",
-	"oooh, a new record!"
+	'oooh, a new record!'
 ]
 
 function setRandomText(arr) {

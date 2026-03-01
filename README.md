@@ -55,7 +55,6 @@ As you play, power-ups randomly spawn on the screen, but you have to click them 
 |----------------------|----------------------------|
 | `↑` `→`  `W` `D`  `+`| Increase counter           |
 | `Spacebar`           | Use a boost (jump to goal) |
-| `Escape`             | Restart game               |
 | Mouse click          | Button interactions        |
 
 ## Discord Rich Presence

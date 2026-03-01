@@ -1,9 +1,9 @@
 
 export const barColors = {
-	highScore: "var(--rainbow-gradient-bar)",
-    primary: "#B4A6FF",
-    warning: "#ffb199",
-    critical: "#f7628b"
+	highScore: 'var(--rainbow-gradient-bar)',
+    primary: '#B4A6FF',
+    warning: '#ffb199',
+    critical: '#f7628b'
 }
 
 let animStartTime = null;
@@ -11,14 +11,14 @@ export let currAnimDuration = 20;
 
 export function initProgressBar() {
 
-    const progressBar = document.getElementById("progress-bar");
+    const progressBar = document.getElementById('progress-bar');
     currAnimDuration = 20;
 
     Object.assign(progressBar.style, {
-		height: "13px",
-		gridArea: "1 / 1",
+		height: '13px',
+		gridArea: '1 / 1',
 		animation: `progress-anim ${currAnimDuration}s linear infinite`,
-		transformOrigin: "left",
+		transformOrigin: 'left',
 		width: `140px`,
 		background: barColors.primary,
     });
@@ -45,7 +45,7 @@ export function updateBarColor(progressBar, highScoreReached = false) {
     const blinkFast = `blink 0.5s linear infinite`;
 
     if (percentage < 0.1) {
-        const barExpired = new CustomEvent("progressBarExp");
+        const barExpired = new CustomEvent('progressBarExp');
         document.dispatchEvent(barExpired);
     }
     else if (percentage <= 15) {
@@ -64,14 +64,13 @@ export function updateBarColor(progressBar, highScoreReached = false) {
         progressBar.style.background = highScoreReached ? barColors.highScore : barColors.primary;
         progressBar.style.animation = progressAnim;
     }
-    // console.log(`Progress bar: ${percentage}%`); // tests
 }
 
 export function resetBar(progressBar, speed) {
     if (progressBar) {
 
         // reset animations
-        progressBar.style.animation = "none";
+        progressBar.style.animation = 'none';
         progressBar.getBoundingClientRect();
 
         // restore original width
