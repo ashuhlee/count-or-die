@@ -1,13 +1,13 @@
 
 export function keyboardControls(handlers) {
-    document.addEventListener("keydown", (event) => {
+    document.addEventListener('keydown', (event) => {
 
-		if (event.key === "Escape") {
-			handlers.onRestart();
+		if (event.key === 'Escape') {
+			alert('Oops! The settings menu is not available in the beta.');
 			return;
 		}
 
-		// dont trigger if disabled or modifier keys are pressed
+		// don't trigger if disabled or modifier keys are pressed
 		if (handlers.disabled && handlers.disabled()) {
 			return;
 		}
@@ -15,16 +15,16 @@ export function keyboardControls(handlers) {
             return;
         }
         switch(event.key) {
-            case "ArrowUp":
-            case "ArrowRight":
-            case "W":
-            case "w":
-            case "D":
-            case "d":
+            case 'ArrowUp':
+            case 'ArrowRight':
+            case 'W':
+            case 'w':
+            case 'D':
+            case 'd':
                 handlers.onIncrease();
                 break;
 
-            case " ":
+            case ' ':
                 handlers.onBoost();
                 break;
         }
