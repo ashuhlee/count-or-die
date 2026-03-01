@@ -30,16 +30,19 @@ https://github.com/user-attachments/assets/360110b0-87f0-45f2-beba-8323e9b40289
 ## Gameplay
 
 ### Core Mechanics
-- **Beat the Clock:** Reach your counting goal before the timer runs out
-- **Progressive Difficulty:** Timer speed increases by 1.2x after each goal
-- **Strategic Boosts:** Can't click fast enough? Use a boost to instantly reach the goal (up to 4 boosts per game)
-- **High Score Tracking:** Compete against your personal best with high score storage
+The main objective of the game is straightforward: reach the counting goal before the timer runs out. The game however, will do its best to stop you.
+
+- **Progressive Difficulty:** Each completed goal makes the timer 1.2x quicker. Don't get too comfortable!
+- **Strategic Boosts:** 4 boosts per game let you skip straight to the goal. Use them early and you'll regret it. Use them too late and you'll also regret it.
+  
+Compete against your personal best high score. In future versions, compare your scores with others via the global leaderboard!
 
 ### Game Modes
 - **Regular Mode:** Classic sequential counting with regular numbers only
 - **Nerd-Out Mode:** A random mix of numbers and math equations (e.g., 25, 4 × 10, 100 ÷ 2) (Coming soon)
 
 ### Power-Up System
+As you play, power-ups randomly spawn on the screen, but you have to click them before they vanish. And try not to click _certain_ ones.
 | Type | Effect | Chance of Spawning |
 |------|--------|--------------------|
 | <img height="36" alt="candy" src="https://github.com/user-attachments/assets/aff7a350-c06e-4e74-8612-f2e313e364df"/>     | 2x counter       |  40%   |
@@ -110,15 +113,7 @@ git pull origin main
 npm install
 ```
 
-## Features
-
-### Current Features
-1. Progressive difficulty per round (1.2x speed multiplier)
-2. Randomized goal increments (10-30 range)
-3. Boost system with 4 uses per game
-4. Keyboard and mouse controls
-
-### In Development
+## Features Currently in Development
 - Additional game mode for the math enjoyers
 - Improved high score management system
 
