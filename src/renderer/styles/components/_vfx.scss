@@ -55,10 +55,11 @@
 	}
 	.cloud-mini {
 		position: fixed; bottom: 310px; left: 300px;
-		animation: clouds-min 4s ease-in-out infinite;
+		animation: clouds-min 3s ease-in-out infinite;
 	}
 	.cloud-t-right {
 		position: fixed; top: 200px; right: -155px;
+		animation: clouds-min 4s ease-in-out infinite reverse;
 	}
 	.cloud-b-right {
 		position: fixed; bottom: 140px; right: 0;
