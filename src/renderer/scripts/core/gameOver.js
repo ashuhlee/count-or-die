@@ -77,10 +77,6 @@ export function toggleGameOver(isGameOver = false, highScoreReached = false) {
 			flash.classList.remove('flash');
 			gameOverScreen.classList.add('visible');
 
-			// setTimeout(() => {
-			// 	resetTheme()
-			// }, 500);
-
 		}, {once: true})
 	} else {
 		gameOverScreen.classList.remove('visible');
