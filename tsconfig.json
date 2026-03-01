@@ -17,6 +17,6 @@
 		},
 		"types": ["vitest/globals", "node", "vite/client"]
 	},
-	"include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.js", "tests/**/*.ts", "tests/**/*.js"],
+	"include": ["src","src/**/*.ts", "src/**/*.tsx", "src/**/*.js", "tests/**/*.ts", "tests/**/*.js", "vite-env.d.ts"],
 	"exclude": ["node_modules", "out", ".vite"]
 }
