@@ -1,3 +1,4 @@
+
 import { audioConfig, toggleAudio } from '../controls/audioHandler.js';
 
 import soundBtnMuted from '@assets/ui/svg/sound-button-muted.svg';

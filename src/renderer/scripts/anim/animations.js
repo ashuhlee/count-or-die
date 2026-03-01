@@ -1,21 +1,21 @@
 
-import increaseBtn from "@assets/ui/buttons/increase.png";
-import increaseBtnPress from "@assets/ui/buttons/increase-press.png";
+import increaseBtn from '@assets/ui/buttons/increase.png';
+import increaseBtnPress from '@assets/ui/buttons/increase-press.png';
 
-import powerBtn from "@assets/ui/buttons/decrease.png";
-import powerBtnPress from "@assets/ui/buttons/decrease-press.png";
+import powerBtn from '@assets/ui/buttons/decrease.png';
+import powerBtnPress from '@assets/ui/buttons/decrease-press.png';
 
 let i = 0;
 
 const animClasses = [
-	"pop",
-	"pop-dec",
-	"pop-right",
-	"reset-shake",
-	"no-boosts-shake",
-	"no-boosts-flash",
-	"new-goal",
-	"boost-notification"
+	'pop',
+	'pop-dec',
+	'pop-right',
+	'reset-shake',
+	'no-boosts-shake',
+	'no-boosts-flash',
+	'new-goal',
+	'boost-notification'
 ];
 
 export const btnImages = {
@@ -41,7 +41,7 @@ function updateColor() {
 // match goal box colors with the letters
 function applyColorTheme(color) {
 
-	const goalBox = document.querySelector(".next-goal");
+	const goalBox = document.querySelector('.next-goal');
 	goalBox.style.borderTop = `3px solid ${color}`;
 }
 
@@ -49,9 +49,9 @@ function applyColorTheme(color) {
 export function playAnimation(element, className) {
 
 	// reset animations
-	element.style.animation = "none	";
+	element.style.animation = 'none	';
 	element.getBoundingClientRect();
-	element.style.animation = "";
+	element.style.animation = '';
 
 	// remove old anim classes -> add new anim
 	element.classList.remove(...animClasses);
@@ -72,7 +72,7 @@ export function animateBtn(btnType, disabled = false) {
     img.src = btnImages[btnType].pressed;
 
 	if (disabled) {
-		playAnimation(img, "no-boosts-shake");
+		playAnimation(img, 'no-boosts-shake');
 		img.animate([
 			{ filter: 'opacity(0.4) drop-shadow(0 0 0 red) drop-shadow(0 0 0 red) brightness(0.8) saturate(120%)' },
 			{ filter: 'none' }
@@ -88,7 +88,7 @@ export function animateBtn(btnType, disabled = false) {
 }
 
 // show text by letter
-export function splitLetters(className, animationType = "fade") {
+export function splitLetters(className, animationType = 'fade') {
 
 	let newColor = updateColor();
 	applyColorTheme(newColor);
@@ -96,20 +96,20 @@ export function splitLetters(className, animationType = "fade") {
 	const elements = document.querySelectorAll(className);
 	elements.forEach(element => {
 		const text = element.textContent;
-		element.textContent = "";
+		element.textContent = '';
 
-		text.split("").forEach((char, index) => {
-			const span = document.createElement("span");
-			span.textContent = char === " " ? "\u00A0" : char;
+		text.split('').forEach((char, index) => {
+			const span = document.createElement('span');
+			span.textContent = char === ' ' ? '\u00A0' : char;
 
-			if (animationType === "wavy") {
+			if (animationType === 'wavy') {
 				span.style.setProperty('--delay', `${index * 0.1}s`);
 
-			} else if (animationType === "shake") {
+			} else if (animationType === 'shake') {
 				span.style.setProperty('--delay', `${index * 0.2}s`);
 			} else {
 				span.style.setProperty('--delay', `${index * 0.05}s`);
-				span.style.setProperty("color", newColor);
+				span.style.setProperty('color', newColor);
 			}
 
 			element.appendChild(span);
@@ -124,9 +124,9 @@ export function resetHeartEffect() {
     heartIds.forEach(id => {
         const heart = document.getElementById(id);
         if (heart) {
-            heart.style.visibility = "hidden";
+            heart.style.visibility = 'hidden';
 			heart.getBoundingClientRect();
-			heart.style.visibility = "visible";
+			heart.style.visibility = 'visible';
         }
     });
 }

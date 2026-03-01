@@ -1,14 +1,14 @@
 
-import { playAudio } from "../controls/audioHandler.js";
+import { playAudio } from '../controls/audioHandler.js';
 
-import { resetBar } from "../components/progressBarDisplay.js";
-import { removeHeart, resetHearts } from "../components/heartDisplay.js";
-import { displayCursorCount } from "../components/cursorDisplay.js";
+import { resetBar } from '../components/progressBarDisplay.js';
+import { removeHeart, resetHearts } from '../components/heartDisplay.js';
+import { displayCursorCount } from '../components/cursorDisplay.js';
 
-import { animateBtn, playAnimation, resetHeartEffect } from "../anim/animations.js";
-import { playConfetti } from "../anim/confetti.js";
+import { animateBtn, playAnimation, resetHeartEffect } from '../anim/animations.js';
+import { playConfetti } from '../anim/confetti.js';
 
-import { toggleGameOver } from "./gameOver.js";
+import { toggleGameOver } from './gameOver.js';
 
 
 export function setGameActions({ state, counter, highScore, goal, goalText, bar, sounds }) {
@@ -22,7 +22,7 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 			highScore.update(state.highScore);
 			highScore.addNewScoreEffect();
 
-			counterAnimation = boosted ? animationType : "pop-right";
+			counterAnimation = boosted ? animationType : 'pop-right';
 
 			if (!state.highScoreFxPlayed) {
 				playAudio(sounds.highScore.audio);
@@ -60,11 +60,11 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 	function increase() {
 
 		if (window.electron) {
-			window.electron.setDiscordStatus({ gameStatusRPC: "in-game" });
+			window.electron.setDiscordStatus({ gameStatusRPC: 'in-game' });
 		}
 
 		state.increment();
-		animateBtn("increase");
+		animateBtn('increase');
 		playAudio(sounds.buttonInc.audio);
 
 		if (state.counter === state.highScore + 1 && !state.gradientFxPlayed) {
@@ -72,17 +72,17 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 		}
 
 		displayCursorCount(state.countIncrement, event, false);
-		updateScoreAndGoal("pop", false);
+		updateScoreAndGoal('pop', false);
 	}
 
 	function jumpToGoal() {
 
-		const noBoostsText = document.getElementById("no-boosts");
-		const boostNotif = document.getElementById("boost-notif-text");
+		const noBoostsText = document.getElementById('no-boosts');
+		const boostNotif = document.getElementById('boost-notif-text');
 
 		if (state.boostsAvailable <= 0) {
-			animateBtn("decrease", true);
-			playAnimation(noBoostsText, "no-boosts-flash");
+			animateBtn('decrease', true);
+			playAnimation(noBoostsText, 'no-boosts-flash');
 			playAudio(sounds.noBoosts.audio);
 			return;
 		}
@@ -91,26 +91,23 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 
 		state.boost();
 
-		animateBtn("decrease", false);
-		playAnimation(boostNotif, "boost-notification");
+		animateBtn('decrease', false);
+		playAnimation(boostNotif, 'boost-notification');
 		playAudio(sounds.useBoost.audio);
 
 		removeHeart(state.boostsAvailable);
 
 		displayCursorCount(pointsAdded, event, true);
-		updateScoreAndGoal("pop-dec", true);
+		updateScoreAndGoal('pop-dec', true);
 	}
 
 	function restartGame() {
 
 		if (window.electron) {
-			window.electron.setDiscordStatus({ gameStatusRPC: "in-game" });
+			window.electron.setDiscordStatus({ gameStatusRPC: 'in-game' });
 		}
 		// reset ui
 		state.reset();
-
-		// resetTheme();
-		resetHearts();
 
 		// remove vfx from last game
 		highScore.removeNewScoreEffect();
@@ -126,9 +123,9 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 
 		// play reset anim + audio
 		playAudio(sounds.bgMusic.audio);
-		counter.animate("reset-shake");
+		counter.animate('reset-shake');
 
-		// playAudio(sounds.reset);
+		resetHearts();
 		resetHeartEffect();
 
 	}
