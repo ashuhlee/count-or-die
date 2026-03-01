@@ -1,6 +1,4 @@
 
-import { resetTheme } from '../controls/themeHandler.js';
-
 const phrasesRegular = [
 	'you died lolz',
 	'lol loser',
@@ -79,9 +77,9 @@ export function toggleGameOver(isGameOver = false, highScoreReached = false) {
 			flash.classList.remove('flash');
 			gameOverScreen.classList.add('visible');
 
-			setTimeout(() => {
-				resetTheme()
-			}, 500);
+			// setTimeout(() => {
+			// 	resetTheme()
+			// }, 500);
 
 		}, {once: true})
 	} else {
