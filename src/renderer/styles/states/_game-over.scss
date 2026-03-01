@@ -326,6 +326,9 @@
 	}
 }
 #red-flash {
+	--flash-opacity: 0.8;
+	--flash-duration: 0.5s;
+
 	position: fixed;
 	width: 100%; height: 100%;
 	top: 0; left: 0;
@@ -334,6 +337,11 @@
 	opacity: 0;
 	pointer-events: none;
 	&.flash {
-		animation: flash-custom 0.5s ease forwards;
+		animation: flash-overlay var(--flash-duration) ease forwards;
+	}
+	&.flash-penalty {
+		--flash-opacity: 0.4;
+    	--flash-duration: 0.4s;
+		animation: flash-overlay var(--flash-duration) ease forwards;
 	}
 }

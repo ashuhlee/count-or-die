@@ -229,12 +229,12 @@
 	100% { transform: translateX(0) }
 }
 
-@keyframes flash-custom {
-    0%   { opacity: 0.8; visibility: visible}
+@keyframes flash-overlay {
+    0%   { opacity: var(--flash-opacity, 0.8); visibility: visible}
     16%  { opacity: 0; }
-    33%  { opacity: 0.8; }
+    33%  { opacity: var(--flash-opacity, 0.8); }
     50%  { opacity: 0; }
-    66%  { opacity: 0.8; }
+    66%  { opacity: var(--flash-opacity, 0.8); }
     100% { opacity: 0; visibility: hidden}
 }
 
