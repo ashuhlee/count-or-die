@@ -1,5 +1,5 @@
 
-import { playAnimation } from "../anim/animations.js";
+import { playAnimation } from '../anim/animations.js';
 
 export class Counter {
 
@@ -10,7 +10,9 @@ export class Counter {
 	}
 
 	update(counter) {
-		let displayValue = counter.toString().padStart(2, "0");
+		const isNegative = counter < 0;
+		const absValue = Math.abs(counter).toString().padStart(2, '0');
+		const displayValue = isNegative ? `-${absValue}` : absValue;
 
 		this.textElement.textContent = displayValue;
 		this.outerElement.textContent = displayValue;
@@ -24,14 +26,14 @@ export class Counter {
 	}
 
 	addNewScoreEffect() {
-		this.textElement.classList.add("new-score-counter");
+		this.textElement.classList.add('new-score-counter');
 
 		setTimeout(() => {
-			this.textElement.classList.remove("new-score-counter");
+			this.textElement.classList.remove('new-score-counter');
 		}, 200);
 	}
 
 	removeNewScoreEffect() {
-		this.textElement.classList.remove("new-score-counter");
+		this.textElement.classList.remove('new-score-counter');
 	}
 }
