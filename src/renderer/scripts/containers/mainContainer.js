@@ -25,6 +25,7 @@ import cloudMini from '@assets/ui/deco/clouds/cloud_5.png';
 export function renderMain() {
 
 	const main = document.getElementById('main');
+	const totalDeaths = localStorage.getItem('deathCount') ?? '0';
 	
 	main.innerHTML = `
 		<!-- vfx -->
@@ -62,7 +63,7 @@ export function renderMain() {
 				<div class="top-right-info">
 					<div class="tracker-container">
 						<img src="${skullTracker}" alt="skull" class="skull-tracker"/>	
-						<h2 class="death-tracker" id="death-tracker">14</h2>
+						<h2 class="death-tracker" id="death-tracker">${totalDeaths}</h2>
 					</div>
 <!--					<div class="leaderboard-container">-->
 <!--						<img src="${skullTracker}" alt="skull" class="skull-tracker"/>	-->

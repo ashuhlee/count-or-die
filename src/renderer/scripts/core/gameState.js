@@ -22,7 +22,7 @@ export class GameState {
 		this.confettiPlayed = false;
 		this.gradientFxPlayed = false;
 
-		this.highScore = Number(localStorage.getItem("high-score")) || 0;
+		this.highScore = Number(localStorage.getItem("highScore")) || 0;
 	}
 
 	// buttons logic
@@ -30,7 +30,6 @@ export class GameState {
 		this.counter += this.countIncrement;
 	}
 	boost() {
-		// TODO: update this with the boost button + other files
 		if (this.boostsAvailable <= 0) {
 			return false;
 		}
@@ -74,7 +73,7 @@ export class GameState {
 			this.highScore = this.counter;
 			this.isHighScore = true;
 
-			localStorage.setItem("high-score", this.highScore);
+			localStorage.setItem("highScore", this.highScore);
 
 			if (window.electron) {
 				window.electron.setDiscordStatus({ highScoreRPC: this.highScore });

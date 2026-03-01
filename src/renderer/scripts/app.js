@@ -1,31 +1,40 @@
 
-import { renderGame } from "./containers/gameContainer.js";
-import { renderMain } from "./containers/mainContainer.js";
+import { renderGame } from './containers/gameContainer.js';
+import { renderMain } from './containers/mainContainer.js';
 
-import { setGameActions } from "./core/gameActions.js";
-import { setPowerUps } from "./core/powerUps.ts";
-import { toggleGameOver, youDiedConsole } from "./core/gameOver.js";
+import { setGameActions } from './core/gameActions.js';
+import { setPowerUps } from './core/powerUps.ts';
+import { toggleGameOver, youDiedConsole } from './core/gameOver.js';
 
-import { keyboardControls } from "./controls/keyHandler.js";
-import { playAudio, pauseAudio, audioConfig } from "./controls/audioHandler.js";
+import { keyboardControls } from './controls/keyHandler.js';
+import { playAudio, pauseAudio, audioConfig } from './controls/audioHandler.js';
 
-import { splitLetters } from "./anim/animations.js";
-import { heartGlitch } from "./anim/glitchEffect.js";
+import { splitLetters } from './anim/animations.js';
+import { heartGlitch } from './anim/glitchEffect.js';
 
-import { hideLoadingScreen, showLoadingScreen } from "./components/loadingScreen.js";
+import { hideLoadingScreen, showLoadingScreen } from './components/loadingScreen.js';
 
-import { setGoalDisplay, setGradientText } from "./components/goalDisplay.js";
-import { setHighScoreDisplay } from "./components/highScoreDisplay.js";
+import { setGoalDisplay, setGradientText } from './components/goalDisplay.js';
+import { setHighScoreDisplay } from './components/highScoreDisplay.js';
 
-import { initProgressBar, updateBarColor } from "./components/progressBarDisplay.js";
-import { soundToggle } from "./components/menuBar.js";
+import { initProgressBar, updateBarColor } from './components/progressBarDisplay.js';
+import { soundToggle } from './components/menuBar.js';
 
-import { GameState } from "./core/gameState.js";
-import { Counter } from "./components/counterDisplay.js";
+import { GameState } from './core/gameState.js';
+import { Counter } from './components/counterDisplay.js';
 
-// localStorage.setItem("high-score", 5); // TESTS: manually reset high score
+// localStorage.setItem('highScore', 5); // TESTS: manually reset high score
 
-document.addEventListener("DOMContentLoaded", () => {
+const DEATH_COUNT_KEY = 'deathCount';
+
+function getDeathCount() {
+	const stored = localStorage.getItem(DEATH_COUNT_KEY);
+	const parsed = Number.parseInt(stored ?? '', 10);
+
+	return Number.isNaN(parsed) ? 0 : parsed;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
 
 	playAudio(audioConfig.bgMusic.audio);
 
@@ -37,30 +46,29 @@ document.addEventListener("DOMContentLoaded", () => {
 	const progressBar = initProgressBar();
 
 	// animations
-	splitLetters(".game-name", "wavy");
+	splitLetters('.game-name', 'wavy');
 
 	setInterval(heartGlitch, 6000);
 	heartGlitch();
 
-	let countText = document.getElementById("counter");
-	let countOuter = document.getElementById("counter-outer");
-	let countShine = document.getElementById("counter-shine");
+	let countText = document.getElementById('counter');
+	let countOuter = document.getElementById('counter-outer');
+	let countShine = document.getElementById('counter-shine');
 
-	let highScoreText = document.getElementById("high-score");
-	let goalBox = document.getElementById("next-goal");
-	let goalText = document.querySelector(".goal-text");
+	let highScoreText = document.getElementById('high-score');
+	let goalBox = document.getElementById('next-goal');
+	let goalText = document.querySelector('.goal-text');
 
 	// create class instances
 	const gameState = new GameState();
-	const powerUpSystem = setPowerUps({ state: gameState, bar: progressBar });
 
 	const counterDisplay = new Counter({
 		textElement: countText,
 		outerElement: countOuter,
 		textShine: countShine
 	});
+	const powerUpSystem = setPowerUps({ counter: counterDisplay, state: gameState });
 
-	// track progress bar
 	let isGameOver = false;
 
 	function animate() {
@@ -112,19 +120,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 	// button clicks
-	document.getElementById("increase-img").addEventListener("click", (e) => {
+	document.getElementById('increase-img').addEventListener('click', (e) => {
 		if (!gameState.isGameOver) {
 			actions.increase(e);
 		}
 	});
 
-	document.getElementById("decrease-img").addEventListener("click", (e) => {
+	document.getElementById('decrease-img').addEventListener('click', (e) => {
 		if (!gameState.isGameOver) {
 			actions.jumpToGoal(e);
 		}
 	});
 
-	document.getElementById("reset-img").addEventListener("click", () => {
+	document.getElementById('reset-img').addEventListener('click', () => {
 		actions.restartGame();
 		playAudio(audioConfig.mouseClick.audio);
 		isGameOver = false;
@@ -133,17 +141,17 @@ document.addEventListener("DOMContentLoaded", () => {
 		powerUpSystem.spawnCooldown();
 	});
 
-	document.getElementById("game-over-btn").addEventListener("click", () => {
+	document.getElementById('game-over-btn').addEventListener('click', () => {
 		playAudio(audioConfig.buttonClick.audio);
 		pauseAudio(audioConfig.gameOverMusic.audio);
 		restartGameOver();
 	});
 
-	document.getElementById("menu-btn").addEventListener("click", () => {
+	document.getElementById('menu-btn').addEventListener('click', () => {
 		playAudio(audioConfig.buttonClick.audio);
 	});
 
-	document.getElementById("quit-btn").addEventListener('click', () => {
+	document.getElementById('quit-btn').addEventListener('click', () => {
 		playAudio(audioConfig.buttonClick.audio);
 		if (window.electron) {
 			setTimeout(window.electron.quitApp, 400);
@@ -163,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	soundToggle();
 
 	// game over
-	document.addEventListener("progressBarExp", () => {
+	document.addEventListener('progressBarExp', () => {
 		if (!gameState.isGoalReached() && !gameState.isGameOver) {
 
 			playAudio(audioConfig.gameOver.audio);
@@ -174,20 +182,28 @@ document.addEventListener("DOMContentLoaded", () => {
 			}, 1000);
 
 			if (window.electron) {
-				window.electron.setDiscordStatus({ gameStatusRPC: "game-over" });
+				window.electron.setDiscordStatus({ gameStatusRPC: 'game-over' });
 			}
 
 			isGameOver = true;
-			progressBar.style.animation = "none";
+			progressBar.style.animation = 'none';
 
 			gameState.setGameOver(true);
 			toggleGameOver(true, gameState.isHighScore);
+
+			const nextDeathCount = getDeathCount() + 1;
+			localStorage.setItem(DEATH_COUNT_KEY, String(nextDeathCount));
+			
+			const deathTracker = document.getElementById('death-tracker');
+			if (deathTracker) {
+				deathTracker.textContent = String(nextDeathCount);
+			}
 
 			if (!window.electron) {
 				youDiedConsole(countText.textContent);
 			}
 
-			const scoreText = document.querySelector(".score-text");
+			const scoreText = document.querySelector('.score-text');
 			scoreText.textContent = `Score: ${countText.textContent}`;
 
 		}
