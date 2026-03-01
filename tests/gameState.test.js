@@ -45,7 +45,7 @@ describe('GameState', () => {
 	describe('Local Storage', () => {
 
 		test('Loads high score', () => {
-			storage.setItem('high-score', '50');
+			storage.setItem('highScore', '50');
 
 			const state = new GameState();
 			expect(state.highScore).toBe(50);

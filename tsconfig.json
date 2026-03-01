@@ -15,7 +15,7 @@
 		"paths": {
 			"@assets/*": ["./src/renderer/assets/*"]
 		},
-		"types": ["vitest/globals", "node"]
+		"types": ["vitest/globals", "node", "vite/client"]
 	},
 	"include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.js", "tests/**/*.ts", "tests/**/*.js"],
 	"exclude": ["node_modules", "out", ".vite"]

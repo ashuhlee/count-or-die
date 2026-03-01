@@ -1,32 +1,26 @@
 
-import { resetBar, currAnimDuration } from '../components/progressBarDisplay.js';
 import { replenishHearts } from '../components/heartDisplay.js';
 import { playAudio, audioConfig } from '../controls/audioHandler.js';
-import { GameState } from './gameState.js';
 
-// @ts-ignore
+import { GameState } from './gameState.js';
+import { Counter } from '../components/counterDisplay.js';
+
 import candy from '@assets/ui/power-ups/candy.png';
-// @ts-ignore
 import donut from '@assets/ui/power-ups/donut.png';
-// @ts-ignore
+import badDonut from '@assets/ui/power-ups/bad_donut.png';
 import star from '@assets/ui/power-ups/star.png';
-// @ts-ignore
 import superstar from '@assets/ui/power-ups/superstar.png';
-// @ts-ignore
 import smokeGif from '@assets/ui/deco/smoke.gif';
 
-/*
-TO-DO
-- [TASK] sound + visual sparkle effect when boost replenishes
-- [BUG] slow down timer does not function correctly
-*/
 
 interface PowerUp {
 	type: string;
 	icon: string;
 	duration: number | null;
 	weight: number;
-	sfx: HTMLAudioElement
+	sfx: HTMLAudioElement;
+	desc: string,
+	effect: 'good' | 'bad'
 }
 
 type PowerUpSystem = {
@@ -35,45 +29,55 @@ type PowerUpSystem = {
 }
 
 type PowerUpArgs = {
+	counter: Counter,
 	state: GameState,
-	bar: HTMLElement
 }
 
-export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
+export function setPowerUps({ counter, state }: PowerUpArgs): PowerUpSystem {
 
 	const POWER_UPS: PowerUp[] = [{
 		type: 'double_click',
 		icon: candy,
 		duration: 3000,
 		weight: 40,
-		sfx: audioConfig.powerUp.audio
+		sfx: audioConfig.powerUp.audio,
+		desc: '2x counter!',
+		effect: 'good'
 	}, {
 		type: 'four_click',
 		icon: donut,
 		duration: 3000,
 		weight: 20,
-		sfx: audioConfig.powerUp.audio
+		sfx: audioConfig.powerUp.audio,
+		desc: '4x counter!',
+		effect: 'good'
+	}, {
+		type: 'minus_25',
+		icon: badDonut,
+		duration: null,
+		weight: 15,
+		sfx: audioConfig.noBoosts.audio,
+		desc: '-25 penalty!',
+		effect: 'bad'
 	}, {
 		type: 'extra_boost',
 		icon: star,
 		duration: null,
 		weight: 10,
-		sfx: audioConfig.boostPowerUp.audio
-	},
-	// {
-	// 	type: 'slow_timer',
-	// 	icon: '⏱️',
-	// 	duration: 5000,
-	// 	weight: 10,
-	// 	sfx: audioConfig.powerUp.audio
-	// },
-		{
+		sfx: audioConfig.boostPowerUp.audio,
+		desc: 'extra boost!',
+		effect: 'good'
+	}, {
 		type: 'replenish_boosts',
 		icon: superstar,
 		duration: null,
 		weight: 8,
-		sfx: audioConfig.boostPowerUp.audio
+		sfx: audioConfig.boostPowerUp.audio,
+		desc: 'superstar!',
+		effect: 'good'
 	}]
+
+	let spawnTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
 	// applies and resets power-ups
 	function addTimedEffect(apply: () => void, reverse: () => void, duration: number): void {
@@ -100,48 +104,49 @@ export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
 	// applies selected power-up effect to GameState
 	function applyPowerUp(powerUp: PowerUp): void {
 
-		// instant effects
-		if (powerUp.type === 'extra_boost') {
-			state.boostsAvailable = Math.min(state.boostsAvailable + 1, 4);
-			replenishHearts(state.boostsAvailable, 'extra_boost');
-		}
-		if (powerUp.type === 'replenish_boosts') {
-			state.boostsAvailable = 4;
-			replenishHearts(state.boostsAvailable, 'replenish_boosts');
-		}
+		switch (powerUp.type) {
+			// instant effects
+			case 'extra_boost':
+				state.boostsAvailable = Math.min(state.boostsAvailable + 1, 4);
+				replenishHearts(state.boostsAvailable, 'extra_boost');
+				break;
 
-		// timed effects
-		if (powerUp.type === 'double_click') {
-			addTimedEffect(
-				() => {
-					state.countIncrement = 2;
-					state.goalIncRandomizer = [15, 20, 25, 30];
-				},
-				() => {
-					state.countIncrement = 1;
-					state.goalIncRandomizer = [10, 15, 20, 25, 30];
-				}, powerUp.duration!
-    		);
-		}
-		else if (powerUp.type === 'four_click') {
-			addTimedEffect(
-				() => {
-					state.countIncrement = 4;
-					state.goalIncRandomizer = [20, 25, 30];
-				},
-				() => {
-					state.countIncrement = 1;
-					state.goalIncRandomizer = [10, 15, 20, 25, 30];
-				}, powerUp.duration!
-    		);
-		}
-		// not fully functional
-		else if (powerUp.type === 'slow_timer') {
+			case 'replenish_boosts':
+				state.boostsAvailable = 4;
+				replenishHearts(state.boostsAvailable, 'replenish_boosts');
+				break;
 
-			addTimedEffect(
-				() => resetBar(bar, currAnimDuration * 2),
-				() => resetBar(bar, state.barSpeed()), powerUp.duration!
-    		);
+			case 'minus_25':
+				state.counter -= 25;
+				counter.update(state.counter);
+				counter.animate('reset-shake');
+				break;
+
+			// timed effects
+			case 'double_click':
+				addTimedEffect(
+					() => {
+						state.countIncrement = 2;
+						state.goalIncRandomizer = [15, 20, 25, 30];
+					},
+					() => {
+						state.countIncrement = 1;
+						state.goalIncRandomizer = [10, 15, 20, 25, 30];
+					}, powerUp.duration!
+				);
+				break;
+
+			case 'four_click':
+				addTimedEffect(
+					() => {
+						state.countIncrement = 4;
+						state.goalIncRandomizer = [20, 25, 30];
+					},
+					() => {
+						state.countIncrement = 1;
+						state.goalIncRandomizer = [10, 15, 20, 25, 30];
+					}, powerUp.duration!
+				);
 		}
 	}
 
@@ -157,14 +162,15 @@ export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
 		})
 
 		const powerUp: PowerUp = choosePowerUp(spawnFiltered.length > 0 ? spawnFiltered : POWER_UPS);
+		const flash: HTMLElement | null = document.getElementById('red-flash');
 
 		const spawnArea: HTMLElement = document.createElement('div');
 		spawnArea.className = 'spawn-area';
 
-		const icon: HTMLImageElement = document.createElement('img'); // switch to images later
+		const icon: HTMLImageElement = document.createElement('img');
 		icon.className = 'power-up-img';
-		icon.id = 'power-up-img';
 		icon.src = powerUp.icon;
+		icon.dataset.powerUpType = powerUp.type;
 
 		icon.style.animation = Math.random() < 0.5 ?
 			'falling 3.2s linear forwards' : 'falling-reverse 3.2s linear forwards';
@@ -193,6 +199,13 @@ export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
 			icon.remove();
 			spawnArea.remove();
 
+			if (powerUp.effect === 'bad') {
+				flash?.classList.add('flash-penalty');
+				flash?.addEventListener('animationend', () => {
+					flash.classList.remove('flash-penalty');
+				}, {once: true});
+			}
+
 			if (!state.isGameOver) spawnCooldown();
 		})
 
@@ -204,22 +217,34 @@ export function setPowerUps({ state, bar }: PowerUpArgs): PowerUpSystem {
 		})
 	}
 
+	function clearSpawnTimer(): void {
+		if (spawnTimeoutId != null) {
+			clearTimeout(spawnTimeoutId);
+			spawnTimeoutId = null;
+		}
+	}
+
 	// applies cooldown timer after each power-up spawn
 	function spawnCooldown(enabled: boolean = true): void {
+
+		clearSpawnTimer();
+		if (!enabled || state.isGameOver) return;
 
 		const minInterval: number = 6000;
 		const maxInterval: number = 12000;
 
 		const randomInterval: number = Math.random() * (maxInterval - minInterval) + minInterval;
 
-		setTimeout(() => {
-			if (!state.isGameOver && enabled) {
+		spawnTimeoutId = setTimeout(() => {
+			spawnTimeoutId = null;
+			if (!state.isGameOver) {
 				spawnPowerUp();
 			}
-		}, randomInterval);
+		}, randomInterval)
 	}
 
 	function clearPowerUps(): void {
+		clearSpawnTimer();
 		document.querySelectorAll('.spawn-area').forEach(el => el.remove());
 	}
 

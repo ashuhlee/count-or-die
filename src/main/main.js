@@ -49,7 +49,7 @@ function createWindow() {
 	mainWindow.webContents.on('did-finish-load', () => {
 
 		// TODO: change this when switching from local storage
-		mainWindow.webContents.executeJavaScript('localStorage.getItem("high-score")')
+		mainWindow.webContents.executeJavaScript('localStorage.getItem("highScore")')
 			.then(highScore => {
 				const score = Number(highScore) || 0;
 				setDiscordStatus({highScoreRPC: score});

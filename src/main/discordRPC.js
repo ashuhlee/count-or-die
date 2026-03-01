@@ -6,7 +6,7 @@ import { Client, ActivityType } from 'simple-discord-rpc';
 const CLIENT_ID = '1471053459905052694';
 
 const client = new Client({
- clientId: CLIENT_ID,
+	clientId: CLIENT_ID,
 });
 
 const playTime = Date.now();
