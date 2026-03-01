@@ -22,15 +22,15 @@ Count or Die is an arcade counting game with progressive difficulty, randomized 
 
 ### Gameplay Demo
 <div align="center">
-  
-https://github.com/user-attachments/assets/360110b0-87f0-45f2-beba-8323e9b40289
+
+https://github.com/user-attachments/assets/31746f90-5190-4f27-89c4-96ff47f62f6b
 
 </div>
 
 ## Gameplay
 
 ### Core Mechanics
-The main objective of the game is straightforward: reach the counting goal before the timer runs out. The game however, will do its best to stop you.
+The main objective is straightforward, reach the counting goal before the timer runs out. The game however, will do its best to stop you.
 
 - **Progressive Difficulty:** Each completed goal makes the timer 1.2x quicker. Don't get too comfortable!
 - **Strategic Boosts:** 4 boosts per game let you skip straight to the goal. Use them early and you'll regret it. Use them too late and you'll also regret it.
@@ -39,7 +39,7 @@ Compete against your personal best high score. In future versions, compare your 
 
 ### Game Modes
 - **Regular Mode:** Classic sequential counting with regular numbers only
-- **Nerd-Out Mode:** A random mix of numbers and math equations (e.g., 25, 4 × 10, 100 ÷ 2) (Coming soon)
+- **Nerd-Out Mode:** A random mix of numbers and math equations (e.g., 25, 4 × 10, 100 ÷ 2) _(Coming soon)_
 
 ### Power-Up System
 As you play, power-ups randomly spawn on the screen, but you have to click them before they vanish. And try not to click _certain_ ones.
@@ -131,7 +131,7 @@ This is a personal project, but suggestions and contributions are welcome!
 - Suggest features – Share your ideas for gameplay improvements
 - Playtesting – Try the game and share feedback on gameplay and user experience
 
-Feel free to check out the [Project Tracker](https://ashuhlee.notion.site/Count-or-Die-2f5a30a56798803383e7dd6b54a77d4e?source=copy_link) to see what's currently in progress.
+Feel free to check out the [project tracker](https://ashuhlee.notion.site/Count-or-Die-2f5a30a56798803383e7dd6b54a77d4e?source=copy_link) to see what's currently in progress.
 
 <br>
 ⭐ If you like this project, please consider giving this repo a star!
