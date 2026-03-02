@@ -20,13 +20,16 @@
 }
 
 .new-goal {
-	animation: swing ease;
+	animation-timing-function: cubic-bezier(0.57, 0.7, 0.55, 1.15) !important;
+	//animation-duration: 1s !important;
+	animation: swing;
 	transform-origin: bottom;
 }
 
 .fade-up-text span {
 	opacity: 0;
 	transform: translateY(20px);
+	margin-left: -6px;
 	display: inline-block;
 	animation: fade-in-up 0.2s ease-out forwards var(--delay);
 }
@@ -58,6 +61,11 @@
 	transform-box: fill-box;
 	transform-origin: center;
 }
+.penalty-shake {
+	animation: penalty-shake 0.3s ease;
+	transform-box: fill-box;
+	transform-origin: center;
+}
 
 .no-boost-text span {
 	display: inline-block;
@@ -74,7 +82,7 @@
 	transform-origin: center;
 }
 .boost-notification {
-    animation: float-up 0.4s ease-out forwards;
+    animation: float-up 1.6s cubic-bezier(0.68, -0.6, 0.32, 1.6) forwards;
 }
 .bounce-in {
 	animation: bounce-in 0.02s ease-out;
