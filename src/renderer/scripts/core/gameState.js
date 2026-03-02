@@ -68,7 +68,6 @@ export class GameState {
 
 	// update high score logic
 	updateHighScore() {
-		// TODO: implement better high score storing
 		if (this.counter > this.highScore) {
 			this.highScore = this.counter;
 			this.isHighScore = true;
@@ -99,7 +98,7 @@ export class GameState {
 
 	// 1.2x speed increase each round
 	barSpeed() {
-		let multiplier = Math.pow(1.2, this.trueGoalsReached);
+		const multiplier = Math.pow(1.2, this.trueGoalsReached);
 		return 20 / multiplier;
 	}
 }

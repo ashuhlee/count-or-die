@@ -47,7 +47,6 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 			goalText.addNewTextEffect();
 
 			state.incrementGoal(boosted);
-			// console.log(`boosted: ${boosted}`); // tests
 
 			goal.update(state.currentGoal, true);
 			resetBar(bar, state.barSpeed());

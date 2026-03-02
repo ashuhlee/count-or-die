@@ -37,8 +37,8 @@ export function updateBarColor(progressBar, highScoreReached = false) {
     }
 
     // track how much time has passed
-    let elapsed = (Date.now() - animStartTime) / 1000; // ms to seconds
-    let cycle = (elapsed % currAnimDuration) / currAnimDuration;
+    const elapsed = (Date.now() - animStartTime) / 1000; // ms to seconds
+    const cycle = (elapsed % currAnimDuration) / currAnimDuration;
     const percentage = Math.round((1 - cycle) * 100);
 
     const blinkSlow = `blink 0.8s linear infinite`;

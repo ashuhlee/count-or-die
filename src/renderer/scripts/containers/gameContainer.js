@@ -16,11 +16,10 @@ export function renderGame() {
 	const app = document.getElementById('app');
 
 	app.innerHTML = `
+	<div id="game-container">
 		<div class="goal-chatbox" id="goal-chatbox">
 			<div class="notifications">
 				<span id="boost-notif-text" class="boost-notif-text">boost!</span>
-				<span id="theme-switch-notif-text" class="theme-switch-notif-text">new rank!</span>
-				<span id="score-notif-text" class="score-notif-text">new best!</span>
 			</div>
 
 			<div class="next-goal animate__animated animate__fast" id="next-goal">
@@ -101,6 +100,7 @@ export function renderGame() {
         <div class="reset" id="reset">
             <img src="${resetBtn}" id="reset-img" alt="increase-reg"/>
         </div>
+    </div>
     </div>
 	`
 }

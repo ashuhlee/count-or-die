@@ -15,7 +15,8 @@ const animClasses = [
 	'no-boosts-shake',
 	'no-boosts-flash',
 	'new-goal',
-	'boost-notification'
+	'boost-notification',
+	'penalty-shake'
 ];
 
 export const btnImages = {
@@ -31,7 +32,7 @@ export const btnImages = {
 
 
 function updateColor() {
-	const colors = ['#e673d2', '#A193FF', '#94BEFF', '#BEB9DC'];
+	const colors = ['#ff80ea', '#A193FF', '#9ad9ff', '#BEB9DC'];
 	const color = colors[i];
 	i = (i + 1) % colors.length;
 
@@ -90,7 +91,7 @@ export function animateBtn(btnType, disabled = false) {
 // show text by letter
 export function splitLetters(className, animationType = 'fade') {
 
-	let newColor = updateColor();
+	const newColor = updateColor();
 	applyColorTheme(newColor);
 
 	const elements = document.querySelectorAll(className);
