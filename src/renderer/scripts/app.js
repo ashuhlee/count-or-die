@@ -1,4 +1,6 @@
 
+import { checkHardwareAcceleration } from './utils/hardwareAcceleration.ts';
+
 import { renderGame } from './containers/gameContainer.js';
 import { renderMain } from './containers/mainContainer.js';
 
@@ -18,11 +20,20 @@ import { setGoalDisplay, setGradientText } from './components/goalDisplay.js';
 import { setHighScoreDisplay } from './components/highScoreDisplay.js';
 
 import { initProgressBar, updateBarColor } from './components/progressBarDisplay.js';
-import { soundToggle } from './components/menuBar.js';
+import { soundToggle, menuToggle } from './components/menuBar.js';
 
 import { GameState } from './core/gameState.js';
 import { Counter } from './components/counterDisplay.js';
 
+
+if (!checkHardwareAcceleration()) {
+	if (window.electron) {
+		await window.electron.showGpuWarning();
+	}
+	else {
+		alert('Graphic hardware acceleration is disabled. The game requires it for proper performance!');
+	}
+}
 
 const DEATH_COUNT_KEY = 'deathCount';
 
@@ -131,6 +142,7 @@ function bindUIEvents(ctx, ui) {
 	});
 
 	soundToggle();
+	menuToggle();
 
 	document.addEventListener('progressBarExp', () => {
 		onTimerExpired(ctx, ui);
@@ -178,7 +190,7 @@ function onReset(ctx) {
 
 async function onGameOverRestart(ctx) {
 
-	playAudio(audioConfig.mouseClick.audio);
+	playAudio(audioConfig.buttonClick.audio);
 	pauseAudio(audioConfig.gameOverMusic.audio);
 
 	showLoadingScreen();
@@ -198,7 +210,7 @@ function onMenuClick() {
 }
 
 function onQuitClick() {
-	playAudio(audioConfig.mouseClick.audio);
+	playAudio(audioConfig.buttonClick.audio);
 
 	if (window.electron) {
 		setTimeout(window.electron.quitApp, QUIT_DELAY);

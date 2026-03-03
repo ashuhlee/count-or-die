@@ -1,13 +1,25 @@
 
 import { setDiscordStatus } from './discordRPC.js';
+import { app, nativeImage, ipcMain, dialog, Menu, BrowserWindow } from 'electron';
+import path from 'node:path';
 
-const { app, BrowserWindow, nativeImage } = require('electron');
-const { Menu } = require('electron/main');
-const { ipcMain } = require('electron');
 
-const path = require('path');
 const isMac = process.platform === 'darwin';
+const iconPath =
+	isMac ? path.join(__dirname, '../../resources/icons/icon.icns')
+	: path.join(__dirname, '../../resources/icons/icon.ico');
 
+ipcMain.handle('gpu:warning', async () => {
+	return dialog.showMessageBox({
+		icon: iconPath,
+		type: 'warning',
+		buttons: ['Okay'],
+		title: 'Uh Oh!',
+		message: 'Hardware Acceleration Required',
+		detail: 'Graphic hardware acceleration is disabled. The game requires it for proper performance!',
+		noLink: true
+	})
+})
 
 ipcMain.on('discord:update', (event, data) => {
 	setDiscordStatus(data);
@@ -15,12 +27,10 @@ ipcMain.on('discord:update', (event, data) => {
 
 function createWindow() {
 
-	const iconPath = path.join(__dirname, '../../resources/icons/mac/icon.icns');
-
 	const mainWindow = new BrowserWindow({
-		width: 475,
+		width: 1920,
 		height: 1100,
-		minWidth: 420,
+		minWidth: 450,
 		minHeight: 800,
 		resizable: true,
 		maximizable: true,
@@ -59,7 +69,6 @@ function createWindow() {
 
 app.whenReady().then(() => {
 	createWindow();
-
 	app.on('activate', () => {
 		if (BrowserWindow.getAllWindows().length === 0) {
 			createWindow()
