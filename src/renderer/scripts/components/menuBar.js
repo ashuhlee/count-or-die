@@ -46,3 +46,11 @@ export function soundToggle() {
 		applyState(state);
 	})
 }
+
+export function menuToggle() {
+	const menuBtn = document.getElementById('optionsBtn');
+
+	menuBtn.addEventListener('click', () => {
+		alert('Oops! The settings menu is not available in the beta.');
+	})
+}
