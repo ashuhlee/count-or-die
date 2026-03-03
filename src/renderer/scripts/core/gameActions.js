@@ -43,7 +43,7 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 			if (!boosted) {
 				playAudio(sounds.goalReached.audio);
 			}
-			goal.addNewGoalEffect();
+			goal.addNewGoalEffect('forward');
 			goalText.addNewTextEffect();
 
 			state.incrementGoal(boosted);
@@ -111,6 +111,7 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 		// remove vfx from last game
 		highScore.removeNewScoreEffect();
 		goal.removeNewGoalEffect();
+		goalText.removeNewTextEffect();
 
 		// remove game over div
 		toggleGameOver(false);
@@ -120,12 +121,16 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 		goal.update(state.currentGoal);
 		resetBar(bar, 20);
 
+		resetHearts();
+		resetHeartEffect();
+
 		// play reset anim + audio
 		playAudio(sounds.bgMusic.audio);
 		counter.animate('reset-shake');
 
-		resetHearts();
-		resetHeartEffect();
+		goal.addNewGoalEffect('reverse');
+		goalText.addNewTextEffect();
+		goal.update(state.currentGoal, true, 'reverse');
 
 	}
 
