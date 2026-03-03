@@ -1,7 +1,7 @@
 
 import { replenishHearts } from '../components/heartDisplay.js';
 import { playAudio, audioConfig } from '../controls/audioHandler.js';
-import { playAnimation } from "../anim/animations";
+import { playAnimation, resetHeartEffect } from '../anim/animations.js';
 
 import { GameState } from './gameState.js';
 import { Counter } from '../components/counterDisplay.js';
@@ -110,11 +110,13 @@ export function setPowerUps({ counter, state }: PowerUpArgs): PowerUpSystem {
 			case 'extra_boost':
 				state.boostsAvailable = Math.min(state.boostsAvailable + 1, 4);
 				replenishHearts(state.boostsAvailable, 'extra_boost');
+				resetHeartEffect();
 				break;
 
 			case 'replenish_boosts':
 				state.boostsAvailable = 4;
 				replenishHearts(state.boostsAvailable, 'replenish_boosts');
+				resetHeartEffect();
 				break;
 
 			case 'minus_25':
@@ -192,7 +194,8 @@ export function setPowerUps({ counter, state }: PowerUpArgs): PowerUpSystem {
 			spawnArea.remove();
 
 			if (powerUp.effect === 'bad') {
-				playAnimation(container, 'penalty-shake')
+				playAnimation(container, 'penalty-shake');
+				counter.animate('pop-min');
 
 				flash?.classList.add('flash-penalty');
 				flash?.addEventListener('animationend', () => {
