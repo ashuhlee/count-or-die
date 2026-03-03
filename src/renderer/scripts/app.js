@@ -26,15 +26,6 @@ import { GameState } from './core/gameState.js';
 import { Counter } from './components/counterDisplay.js';
 
 
-if (!checkHardwareAcceleration()) {
-	if (window.electron) {
-		await window.electron.showGpuWarning();
-	}
-	else {
-		alert('Graphic hardware acceleration is disabled. The game requires it for proper performance!');
-	}
-}
-
 const DEATH_COUNT_KEY = 'deathCount';
 
 const GLITCH_INTERVAL = 6000;
@@ -42,19 +33,35 @@ const GAME_OVER_MUSIC_DELAY = 1000;
 const RESTART_LOAD_DELAY = 530;
 const QUIT_DELAY = 400;
 
-document.addEventListener('DOMContentLoaded', createGame);
+document.addEventListener('DOMContentLoaded', () => {
+	void createGame();
+});
 
-function createGame() {
+async function createGame() {
+
+	await alertHardwareAcceleration();
 
 	playAudio(audioConfig.bgMusic.audio);
-
 	renderContent();
+
 	const ui = createDomRefs();
 	const ctx = createGameCtx(ui);
 
 	initUserInterface(ctx, ui);
 	bindUIEvents(ctx, ui);
 	startGameLoops(ctx);
+}
+
+async function alertHardwareAcceleration() {
+
+	if (!checkHardwareAcceleration()) {
+		if (window.electron) {
+			await window.electron.showGpuWarning();
+		}
+		else {
+			alert('Graphic hardware acceleration is disabled. The game requires it for proper performance!');
+		}
+	}
 }
 
 function renderContent() {
