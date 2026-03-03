@@ -11,6 +11,7 @@ const animClasses = [
 	'pop',
 	'pop-dec',
 	'pop-right',
+	'pop-min',
 	'reset-shake',
 	'no-boosts-shake',
 	'no-boosts-flash',
@@ -89,10 +90,11 @@ export function animateBtn(btnType, disabled = false) {
 }
 
 // show text by letter
-export function splitLetters(className, animationType = 'fade') {
+export function splitLetters(className, animationType = 'fade', direction = 'forward') {
 
 	const newColor = updateColor();
 	applyColorTheme(newColor);
+	const isReverse = direction === 'reverse';
 
 	const elements = document.querySelectorAll(className);
 	elements.forEach(element => {
@@ -103,13 +105,15 @@ export function splitLetters(className, animationType = 'fade') {
 			const span = document.createElement('span');
 			span.textContent = char === ' ' ? '\u00A0' : char;
 
+			const delayIndex = isReverse ? (text.length - 1) - index : index;
+
 			if (animationType === 'wavy') {
-				span.style.setProperty('--delay', `${index * 0.1}s`);
+				span.style.setProperty('--delay', `${delayIndex * 0.1}s`);
 
 			} else if (animationType === 'shake') {
-				span.style.setProperty('--delay', `${index * 0.2}s`);
+				span.style.setProperty('--delay', `${delayIndex * 0.2}s`);
 			} else {
-				span.style.setProperty('--delay', `${index * 0.05}s`);
+				span.style.setProperty('--delay', `${delayIndex * 0.05}s`);
 				span.style.setProperty('color', newColor);
 			}
 

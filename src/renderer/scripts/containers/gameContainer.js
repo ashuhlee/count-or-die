@@ -98,7 +98,7 @@ export function renderGame() {
         </div>
 
         <div class="reset" id="reset">
-            <img src="${resetBtn}" id="reset-img" alt="increase-reg"/>
+            <img src="${resetBtn}" id="reset-img" class="btn-hover" alt="increase-reg"/>
         </div>
     </div>
     </div>

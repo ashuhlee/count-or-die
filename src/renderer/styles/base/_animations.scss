@@ -111,6 +111,11 @@
 		filter: none;
 	}
 }
+@keyframes pop-min {
+	0% { transform: scale(1,1);}
+	40% { transform: scale(1.05, 0.95);}
+	100% { transform: scale(1,1);}
+}
 
 @keyframes pop-right {
 	0% {

@@ -79,8 +79,8 @@ export function renderMain() {
 				<h2 class="play-again"><span class="try-again">try again ?</span></h2>
 				<div class="bottom-section">
 					<div class="game-over-btns">
-						<img src="${resetBtnPng}" id="game-over-btn" class="play-again-btn" alt="game over reset button"/>
-						<img src="${quitBtnPng}" id="quit-btn" class="play-again-btn-2" alt="rage quit button"/>
+						<img src="${resetBtnPng}" id="game-over-btn" class="play-again-btn btn-hover" alt="game over reset button"/>
+						<img src="${quitBtnPng}" id="quit-btn" class="play-again-btn-2 btn-hover" alt="rage quit button"/>
 					</div>
 					<div class="menu-anim">
 						<h2 class="back-to-menu underline left" id="menu-btn">back to menu</h2>		
