@@ -19,14 +19,34 @@
 	transform-origin: center;
 }
 
-.new-goal {
-	animation: swing ease;
+.new-goal, .new-goal-reverse  {
+	transform-origin: 50% 100%;
+	transform-style: preserve-3d;
+	backface-visibility: hidden;
+	will-change: transform, filter;
 	transform-origin: bottom;
+}
+.new-goal {
+	animation-timing-function: cubic-bezier(0.57, 0.7, 0.55, 1.15) !important;
+	animation: swing;
+}
+.new-goal-reverse {
+	animation: goal-swing-reverse 0.4s cubic-bezier(0.57, 0.7, 0.55, 1.15);
+}
+
+@keyframes goal-swing-reverse {
+	0% {transform: perspective(800px) translateZ(18px) scale3d(0.9, 0.8, 1.04);}
+	20% { transform: rotate(-8deg);}
+	40% { transform: rotate(5deg);}
+	60% { transform: rotate(-3deg);}
+	80% { transform: rotate(1.5deg);}
+	100% { transform: rotate(0) perspective(800px) translateZ(0) rotateX(0) rotateY(0) scale3d(1, 1, 1);}
 }
 
 .fade-up-text span {
 	opacity: 0;
 	transform: translateY(20px);
+	margin-left: -6px;
 	display: inline-block;
 	animation: fade-in-up 0.2s ease-out forwards var(--delay);
 }
@@ -44,6 +64,10 @@
 	animation: pop-dec 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
 	transform-origin: center;
 }
+.pop-min {
+	animation: pop-min 0.3s ease;
+	transform-origin: center;
+}
 .pop-right {
 	animation: pop-right 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
 	transform-origin: center;
@@ -55,6 +79,11 @@
 
 .reset-shake {
 	animation: reset-shake 0.25s ease-out;
+	transform-box: fill-box;
+	transform-origin: center;
+}
+.penalty-shake {
+	animation: penalty-shake 0.3s ease;
 	transform-box: fill-box;
 	transform-origin: center;
 }
@@ -74,7 +103,7 @@
 	transform-origin: center;
 }
 .boost-notification {
-    animation: float-up 0.4s ease-out forwards;
+    animation: float-up 1.6s cubic-bezier(0.68, -0.6, 0.32, 1.6) forwards;
 }
 .bounce-in {
 	animation: bounce-in 0.02s ease-out;

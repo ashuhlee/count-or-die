@@ -7,4 +7,4 @@ old_code/
 .vite/
 .DS_Store
 .editorconfig
-eslint.config.mjs
+eslint.config.ts

@@ -139,6 +139,10 @@
 		align-items: flex-end;
 		gap: 8px;
 		transform: perspective(200px) rotateY(-13deg);
+		transition: transform 0.2s ease-in;
+		&:hover {
+			transform: perspective(200px) rotateY(0deg);
+		}
 	}
 	.tracker-container, .leaderboard-container {
 		height: 30px;
@@ -151,10 +155,6 @@
 		background: white;
 		border-radius: 5px;
 		transition: transform 1s ease;
-
-		&:hover {
-			transform: perspective(200px) rotateY(0deg);
-		}
 		&:hover {
 			.skull-tracker,
 			.death-tracker {
@@ -290,7 +290,7 @@
 
 		.game-over-btns {
 			display: flex;
-			gap: 18px;
+			gap: 22px;
 			filter: drop-shadow(0px 7px 0px var(--shadow-pink-010));
 
 			img {
@@ -298,7 +298,7 @@
 				transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 
 				&:hover {
-					filter: brightness(0.97) saturate(110%);
+					scale: 1.05;
 				}
 			}
 
@@ -306,10 +306,11 @@
 				&:active {
 					scale: 0.75;
 					rotate: 0deg !important;
+					filter: brightness(0.97) saturate(110%);
 				}
 			}
-			.play-again-btn:hover { rotate: 1deg }
-			.play-again-btn-2:hover { rotate: -1deg }
+			.play-again-btn:hover { rotate: 2deg }
+			.play-again-btn-2:hover { rotate: -2deg }
 		}
 	}
 

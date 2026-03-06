@@ -5,7 +5,6 @@
   "author": "ashuhlee",
   "description": "",
   "main": ".vite/build/main.js",
-
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
@@ -13,12 +12,10 @@
     "test": "vitest run",
     "rebuild": "rm -rf out && npm run package && npm run make"
   },
-
   "repository": {
     "type": "git",
     "url": "https://github.com/ashuhlee/count-or-die.git"
   },
-
   "devDependencies": {
     "@electron-forge/cli": "^7.11.1",
     "@electron-forge/maker-deb": "^7.11.1",
@@ -44,7 +41,6 @@
     "vitest": "^4.0.18",
     "vitest-localstorage-mock": "^0.1.2"
   },
-
   "dependencies": {
     "animate.css": "^4.1.1",
     "canvas-confetti": "^1.9.4",
@@ -52,6 +48,7 @@
     "electron-store": "^11.0.2",
     "powerglitch": "^2.5.0",
     "simple-discord-rpc": "^1.0.1",
-    "three": "^0.182.0"
+    "three": "^0.182.0",
+    "web-haptics": "^0.0.6"
   }
 }
