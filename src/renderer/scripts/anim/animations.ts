@@ -32,7 +32,7 @@ export const btnImages = {
 };
 
 
-function updateColor() {
+function updateColor(): string {
 	const colors = ['#ff80ea', '#A193FF', '#9ad9ff', '#BEB9DC'];
 	const color = colors[i];
 	i = (i + 1) % colors.length;
@@ -41,14 +41,14 @@ function updateColor() {
 }
 
 // match goal box colors with the letters
-function applyColorTheme(color) {
+function applyColorTheme(color: string) {
 
-	const goalBox = document.querySelector('.next-goal');
+	const goalBox: HTMLElement = document.querySelector('.next-goal');
 	goalBox.style.borderTop = `3px solid ${color}`;
 }
 
 // main animation function
-export function playAnimation(element, className) {
+export function playAnimation(element: HTMLElement, className: string) {
 
 	// reset animations
 	element.style.animation = 'none	';
@@ -60,17 +60,16 @@ export function playAnimation(element, className) {
 	element.classList.add(className);
 }
 
-// play animation on multiple elements at once
-export function playAnimationMulti(elements, className) {
+export function playAnimationMulti(elements: HTMLElement[], className: string) {
 	elements.forEach(element => {
 		playAnimation(element, className)
 	});
 }
 
 // clicking animation
-export function animateBtn(btnType, disabled = false) {
+export function animateBtn(btnType: string, disabled = false) {
 
-    const img = document.getElementById(`${btnType}-img`);
+    const img = document.getElementById(`${btnType}-img`) as HTMLImageElement;
     img.src = btnImages[btnType].pressed;
 
 	if (disabled) {
@@ -90,13 +89,13 @@ export function animateBtn(btnType, disabled = false) {
 }
 
 // show text by letter
-export function splitLetters(className, animationType = 'fade', direction = 'forward') {
+export function splitLetters(className: string, animationType = 'fade', direction = 'forward') {
 
-	const newColor = updateColor();
+	const newColor: string = updateColor();
 	applyColorTheme(newColor);
-	const isReverse = direction === 'reverse';
+	const isReverse: boolean = direction === 'reverse';
 
-	const elements = document.querySelectorAll(className);
+	const elements: NodeListOf<Element> = document.querySelectorAll(className);
 	elements.forEach(element => {
 		const text = element.textContent;
 		element.textContent = '';

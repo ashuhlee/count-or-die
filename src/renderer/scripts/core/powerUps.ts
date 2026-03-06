@@ -1,10 +1,10 @@
 
-import { replenishHearts } from '../components/heartDisplay.js';
-import { playAudio, audioConfig } from '../controls/audioHandler.js';
-import { playAnimation, resetHeartEffect } from '../anim/animations.js';
+import { replenishHearts } from '../components/heartDisplay.ts';
+import { playAudio, audioConfig } from '../controls/audioHandler.ts';
+import { playAnimation, resetHeartEffect } from '../anim/animations.ts';
 
-import { GameState } from './gameState.js';
-import { Counter } from '../components/counterDisplay.js';
+import { GameState }  from './gameState.ts';
+import  Counter  from '../components/counterDisplay.ts';
 
 import { candy, donut, badDonut, star, superstar } from '@assets/ui/power-ups';
 import smokeGif from '@assets/ui/deco/smoke.gif';
@@ -32,7 +32,7 @@ type PowerUpArgs = {
 	state: GameState,
 }
 
-export function setPowerUps({ counter, state }: PowerUpArgs): PowerUpSystem {
+export default function setPowerUps({ counter, state }: PowerUpArgs): PowerUpSystem {
 
 	const POWER_UPS: PowerUp[] = [{
 		type: 'double_click',

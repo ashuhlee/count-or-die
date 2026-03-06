@@ -1,13 +1,13 @@
 
-import { barColors } from "../components/progressBarDisplay.js";
+import { barColors } from "../components/progressBarDisplay.ts";
 
 import tile4 from "@assets/ui/textures/tile-4.png";
 import resetBtnPink from "@assets/ui/buttons/reset-btn-pink.png";
 import resetBtnDefault from "@assets/ui/buttons/reset-btn.png";
 
-export function changeTheme(level, progressBar) {
+export function changeTheme(level: string, progressBar: HTMLElement) {
 
-	const resetBtn = document.getElementById('reset-img');
+	const resetBtn = document.getElementById('reset-img') as HTMLImageElement;
 
 	switch (level) {
 		case 'theme200':
@@ -24,7 +24,7 @@ export function changeTheme(level, progressBar) {
 			document.documentElement.style.setProperty('--shadow-pink-015', 'var(--shadow-purple-015)');
 			document.documentElement.style.setProperty('--shadow-pink-020', 'var(--shadow-purple-020)');
 
-			const gradientStops = document.querySelectorAll('#default-color stop');
+			const gradientStops = document.querySelectorAll<SVGStopElement>('#default-color stop');
 
 			gradientStops[0].setAttribute('stop-color', '#EEE0FF');
 			gradientStops[1].setAttribute('stop-color', '#E7B4FF');
@@ -39,19 +39,19 @@ export function changeTheme(level, progressBar) {
 	}
 }
 
-export function resetTheme() {
+export function resetTheme(): void {
 
 	barColors.primary = "#B4A6FF";
 	document.body.style.backgroundImage = '';
 
-	const resetBtn = document.getElementById('reset-img');
+	const resetBtn = document.getElementById('reset-img') as HTMLImageElement;
 	resetBtn.src = resetBtnDefault;
 
 	document.documentElement.style.setProperty('--shadow-pink-005', '');
 	document.documentElement.style.setProperty('--shadow-pink-015', '');
 	document.documentElement.style.setProperty('--shadow-pink-020', '');
 
-	const gradientStops = document.querySelectorAll('#default-color stop');
+	const gradientStops = document.querySelectorAll<SVGStopElement>('#default-color stop');
 
     gradientStops[0].setAttribute('stop-color', '#FFDAF6');
     gradientStops[1].setAttribute('stop-color', '#DF7FC7');

@@ -1,8 +1,8 @@
 
 let boostIndex = 0;
 
-function cycleColor(type) {
-	let color;
+function cycleColor(type: string) {
+	let color: string;
 
 	const colors = [
 		'#E8E3F8',
@@ -21,7 +21,7 @@ function cycleColor(type) {
 	return color;
 }
 
-export function displayCursorCount(value, event, isBoosted = false) {
+export function displayCursorCount(value: number, event?: MouseEvent, isBoosted = false) {
 
 	let textColor = cycleColor(isBoosted ? 'boost' : 'reg');
 

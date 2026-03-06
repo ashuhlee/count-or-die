@@ -1,7 +1,7 @@
 
 import confetti from 'canvas-confetti';
 
-export function playConfetti() {
+export function playConfetti(): void {
 	confetti({
 		particleCount: 100,
 		spread: 400,

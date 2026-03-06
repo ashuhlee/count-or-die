@@ -1,4 +1,3 @@
-
 import { defineConfig } from 'vitest/config';
 import path from 'path';
 
@@ -7,22 +6,20 @@ export default defineConfig({
 		globals: true,
 		environment: 'jsdom',
 		include: [
-			'tests/**/*.test.js',
-			'src/**/*.test.js'
-    	],
+			'tests/**/*.test.ts',
+			'src/**/*.test.ts'
+		],
 		exclude: [
-		  'node_modules/**',
-		  'out/**',
-		  '.vite/**'
+			'node_modules/**',
+			'out/**', '.vite/**'
 		],
 		setupFiles: ['vitest-localstorage-mock'],
-    	mockReset: false,
-		// clearMocks: true,
+		mockReset: false,
 		restoreMocks: true,
 	},
 	resolve: {
 		alias: {
 			'@assets': path.resolve(__dirname, 'src/renderer/assets'),
-		}
-	}
-})
+		},
+	},
+});

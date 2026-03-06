@@ -1,9 +1,9 @@
-import { splitLetters } from '../anim/animations.js';
+import { splitLetters } from '../anim/animations.ts';
 
-export function setGoalDisplay(element) {
+export function setGoalDisplay(element: HTMLElement) {
 
 	return {
-		update(goal, animateByLetter = false, direction = 'forward') {
+		update(goal: any, animateByLetter = false, direction = 'forward') {
 			const textSpan = element.querySelector('.goal-text');
 
 			if (textSpan) {
@@ -28,7 +28,7 @@ export function setGoalDisplay(element) {
 	};
 }
 
-export function setGradientText(element) {
+export function setGradientText(element: HTMLElement) {
 
 	return {
 		addNewTextEffect() {

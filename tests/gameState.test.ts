@@ -1,11 +1,9 @@
 
 import { beforeEach, expect, describe, test } from 'vitest';
+import { GameState } from '../src/renderer/scripts/core/gameState.ts';
+import { setHighScoreDisplay } from '../src/renderer/scripts/components/highScoreDisplay.ts';
 
-import { soundToggle } from '../src/renderer/scripts/components/menuBar.js';
-import { GameState } from '../src/renderer/scripts/core/gameState.js';
-import { setHighScoreDisplay } from '../src/renderer/scripts/components/highScoreDisplay.js';
-
-window.HTMLMediaElement.prototype.play = () => {};
+window.HTMLMediaElement.prototype.play = () => Promise.resolve();
 
 describe('GameState', () => {
 
@@ -50,22 +48,6 @@ describe('GameState', () => {
 			const state = new GameState();
 			expect(state.highScore).toBe(50);
 		})
-
-		// test('Loads sound settings', () => {
-		// 	storage.setItem('soundMuted', 'true');
-		//
-		// 	document.body.innerHTML = `<button id="soundBtn">Sound</button>`;
-		// 	const toggleButton = document.getElementById('soundBtn');
-		// 	soundToggle();
-		//
-		// 	toggleButton.click();
-		// 	expect(storage.getItem('soundMuted')).toBe('false');
-		//
-		// 	toggleButton.click(); // test a second click
-		// 	expect(storage.getItem('soundMuted')).toBe('true');
-		//
-		// })
 	})
 
 })
-// TODO: simulate bar speed incremental changes

@@ -1,7 +1,11 @@
 
-import { playAnimation } from '../anim/animations.js';
+import { playAnimation } from '../anim/animations.ts';
 
-export class Counter {
+export default class Counter {
+
+	textElement: HTMLElement;
+	outerElement: HTMLElement;
+	textShine: HTMLElement;
 
 	constructor({ textElement, outerElement, textShine }) {
 		this.textElement = textElement;
@@ -9,7 +13,7 @@ export class Counter {
 		this.textShine = textShine;
 	}
 
-	update(counter) {
+	update(counter: number): void {
 		const isNegative = counter < 0;
 		const absValue = Math.abs(counter).toString().padStart(2, '0');
 		const displayValue = isNegative ? `-${absValue}` : absValue;
@@ -19,13 +23,13 @@ export class Counter {
 		this.textShine.textContent = displayValue;
 	}
 
-	animate(className) {
+	animate(className: string): void {
 		playAnimation(this.textElement, className);
 		playAnimation(this.outerElement, className);
 		playAnimation(this.textShine, className);
 	}
 
-	addNewScoreEffect() {
+	addNewScoreEffect(): void {
 		this.textElement.classList.add('new-score-counter');
 
 		setTimeout(() => {
@@ -33,7 +37,7 @@ export class Counter {
 		}, 200);
 	}
 
-	removeNewScoreEffect() {
+	removeNewScoreEffect(): void {
 		this.textElement.classList.remove('new-score-counter');
 	}
 }

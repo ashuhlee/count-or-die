@@ -1,30 +1,33 @@
 
-import { checkHardwareAcceleration } from './utils/hardwareAcceleration.ts';
+import { GameState } from './core/gameState.ts';
+import Counter from './components/counterDisplay.ts';
 
-import { renderGame } from './containers/gameContainer.js';
-import { renderMain } from './containers/mainContainer.js';
+import checkHardwareAcceleration from './utils/hardwareAcceleration.ts';
 
-import { setGameActions } from './core/gameActions.js';
-import { setPowerUps } from './core/powerUps.ts';
-import { toggleGameOver, youDiedConsole } from './core/gameOver.js';
+import renderGame from './containers/gameContainer.ts';
+import renderMain from './containers/mainContainer.ts';
 
-import { keyboardControls } from './controls/keyHandler.js';
-import { playAudio, pauseAudio, audioConfig } from './controls/audioHandler.js';
+import setGameActions from './core/gameActions.ts';
+import setPowerUps from './core/powerUps.ts';
 
-import { splitLetters } from './anim/animations.js';
-import { heartGlitch } from './anim/glitchEffect.js';
+import { toggleGameOver, youDiedConsole } from './core/gameOver.ts';
 
-import { hideLoadingScreen, showLoadingScreen } from './components/loadingScreen.js';
+import { keyboardControls } from './controls/keyHandler.ts';
+import { playAudio, pauseAudio, audioConfig } from './controls/audioHandler.ts';
 
-import { setGoalDisplay, setGradientText } from './components/goalDisplay.js';
-import { setHighScoreDisplay } from './components/highScoreDisplay.js';
+import { splitLetters } from './anim/animations.ts';
+import { heartGlitch } from './anim/glitchEffect.ts';
 
-import { initProgressBar, updateBarColor } from './components/progressBarDisplay.js';
-import { soundToggle, menuToggle } from './components/menuBar.js';
+import { setHighScoreDisplay } from './components/highScoreDisplay.ts';
+import { setGoalDisplay, setGradientText } from './components/goalDisplay.ts';
+import { initProgressBar, updateBarColor } from './components/progressBarDisplay.ts';
 
-import { GameState } from './core/gameState.js';
-import { Counter } from './components/counterDisplay.js';
+import { hideLoadingScreen, showLoadingScreen } from './components/loadingScreen.ts';
+import { soundToggle, menuToggle } from './components/menuBar.ts';
 
+
+type DomReference = ReturnType<typeof createDomRefs>;
+type GameContext = ReturnType<typeof createGameCtx>;
 
 const DEATH_COUNT_KEY = 'deathCount';
 
@@ -37,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	void createGame();
 });
 
-async function createGame() {
+async function createGame(): Promise<void> {
 
 	await alertHardwareAcceleration();
 
@@ -47,12 +50,12 @@ async function createGame() {
 	const ui = createDomRefs();
 	const ctx = createGameCtx(ui);
 
-	initUserInterface(ctx, ui);
+	initUserInterface(ctx);
 	bindUIEvents(ctx, ui);
 	startGameLoops(ctx);
 }
 
-async function alertHardwareAcceleration() {
+async function alertHardwareAcceleration(): Promise<void> {
 
 	if (!checkHardwareAcceleration()) {
 		if (window.electron) {
@@ -64,7 +67,7 @@ async function alertHardwareAcceleration() {
 	}
 }
 
-function renderContent() {
+function renderContent(): void {
 	renderMain();
 	renderGame();
 }
@@ -78,7 +81,7 @@ function createDomRefs() {
 
 		highScoreText: document.getElementById('high-score'),
 		goalBox: document.getElementById('next-goal'),
-		goalText: document.querySelector('.goal-text'),
+		goalText: document.querySelector<HTMLElement>('.goal-text'),
 
 		increaseBtn: document.getElementById('increase-img'),
 		boostBtn: document.getElementById('decrease-img'),
@@ -93,7 +96,7 @@ function createDomRefs() {
 	};
 }
 
-function createGameCtx(ui) {
+function createGameCtx(ui: DomReference) {
 
 	const progressBar = initProgressBar();
 	const state = new GameState();
@@ -123,7 +126,7 @@ function createGameCtx(ui) {
 	return { state, actions, counter, highScore, goal, goalText, progressBar, powerUps }
 }
 
-function initUserInterface(ctx) {
+function initUserInterface(ctx: GameContext) {
 	splitLetters('.game-name', 'wavy');
 	heartGlitch();
 
@@ -132,7 +135,7 @@ function initUserInterface(ctx) {
 	ctx.goal.update(ctx.state.currentGoal, false);
 }
 
-function bindUIEvents(ctx, ui) {
+function bindUIEvents(ctx: GameContext, ui: DomReference) {
 
 	ui.increaseBtn.addEventListener('click', (e) => onIncrease(ctx, e));
 	ui.boostBtn.addEventListener('click', (e) => onBoost(ctx, e));
@@ -156,7 +159,7 @@ function bindUIEvents(ctx, ui) {
 	})
 }
 
-function startGameLoops(ctx) {
+function startGameLoops(ctx: GameContext) {
 	startGlitchEffectLoop();
 	startFrameLoop(ctx);
 	ctx.powerUps.spawnCooldown();
@@ -166,7 +169,7 @@ function startGlitchEffectLoop() {
 	setInterval(heartGlitch, GLITCH_INTERVAL);
 }
 
-function startFrameLoop(ctx) {
+function startFrameLoop(ctx: GameContext) {
 	function frame() {
 		if (!ctx.state.isGameOver) {
 			if (ctx.state.updateHighScore()) {
@@ -179,23 +182,23 @@ function startFrameLoop(ctx) {
 	frame();
 }
 
-function onIncrease(ctx, event) {
+function onIncrease(ctx: GameContext, event?: MouseEvent) {
 	if (ctx.state.isGameOver) return;
 	ctx.actions.increase(event);
 }
 
-function onBoost(ctx, event) {
+function onBoost(ctx: GameContext, event?: MouseEvent) {
 	if (ctx.state.isGameOver) return;
 	ctx.actions.jumpToGoal(event);
 }
 
-function onReset(ctx) {
+function onReset(ctx: GameContext) {
 	ctx.actions.restartGame();
 	playAudio(audioConfig.mouseClick.audio);
 	resetPowerUps(ctx);
 }
 
-async function onGameOverRestart(ctx) {
+async function onGameOverRestart(ctx: GameContext): Promise<void> {
 
 	playAudio(audioConfig.buttonClick.audio);
 	pauseAudio(audioConfig.gameOverMusic.audio);
@@ -227,7 +230,7 @@ function onQuitClick() {
 	}
 }
 
-function onTimerExpired(ctx, ui) {
+function onTimerExpired(ctx: GameContext, ui: DomReference) {
 	if (ctx.state.isGoalReached() || ctx.state.isGameOver) return;
 
 	playAudio(audioConfig.gameOver.audio);
@@ -262,22 +265,22 @@ function onTimerExpired(ctx, ui) {
 	}
 }
 
-function resetPowerUps(ctx) {
+function resetPowerUps(ctx: GameContext) {
 	ctx.powerUps.clearPowerUps();
 	ctx.powerUps.spawnCooldown();
 }
 
-function getDeathCount() {
+function getDeathCount(): number {
 	const stored = localStorage.getItem(DEATH_COUNT_KEY);
 	const parsed = Number.parseInt(stored ?? '', 10);
 
 	return Number.isNaN(parsed) ? 0 : parsed;
 }
 
-function setDeathCount(value) {
+function setDeathCount(value: number) {
 	localStorage.setItem(DEATH_COUNT_KEY, String(value));
 }
 
-function delay(ms) {
+function delay(ms: number) {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 }

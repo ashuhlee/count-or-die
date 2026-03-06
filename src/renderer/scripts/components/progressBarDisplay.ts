@@ -9,7 +9,7 @@ export const barColors = {
 let animStartTime = null;
 export let currAnimDuration = 20;
 
-export function initProgressBar() {
+export function initProgressBar(): HTMLElement {
 
     const progressBar = document.getElementById('progress-bar');
     currAnimDuration = 20;
@@ -28,7 +28,7 @@ export function initProgressBar() {
     return progressBar;
 }
 
-export function updateBarColor(progressBar, highScoreReached = false) {
+export function updateBarColor(progressBar: HTMLElement, highScoreReached = false) {
 
 	let progressAnim = `progress-anim ${currAnimDuration}s linear infinite`;
 
@@ -66,7 +66,7 @@ export function updateBarColor(progressBar, highScoreReached = false) {
     }
 }
 
-export function resetBar(progressBar, speed) {
+export function resetBar(progressBar: HTMLElement, speed: number) {
     if (progressBar) {
 
         // reset animations

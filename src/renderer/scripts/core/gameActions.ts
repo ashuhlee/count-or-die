@@ -1,19 +1,54 @@
 
-import { playAudio } from '../controls/audioHandler.js';
+import { playAudio } from '../controls/audioHandler.ts';
 
-import { resetBar } from '../components/progressBarDisplay.js';
-import { removeHeart, resetHearts } from '../components/heartDisplay.js';
-import { displayCursorCount } from '../components/cursorDisplay.js';
+import { resetBar } from '../components/progressBarDisplay.ts';
+import { removeHeart, resetHearts } from '../components/heartDisplay.ts';
+import { displayCursorCount } from '../components/cursorDisplay.ts';
 
-import { animateBtn, playAnimation, resetHeartEffect } from '../anim/animations.js';
-import { playConfetti } from '../anim/confetti.js';
+import { animateBtn, playAnimation, resetHeartEffect } from '../anim/animations.ts';
+import { playConfetti } from '../anim/confetti.ts';
 
-import { toggleGameOver } from './gameOver.js';
+import { toggleGameOver } from './gameOver.ts';
+import { GameState } from './gameState.ts';
 
 
-export function setGameActions({ state, counter, highScore, goal, goalText, bar, sounds }) {
+type Sounds = typeof import('../controls/audioHandler.ts').audioConfig;
 
-	function updateScoreAndGoal(animationType, boosted) {
+interface CounterUI {
+	update: (value: number) => void;
+	animate: (type: string) => void;
+}
+
+interface HighScoreUI {
+  update: (score: number) => void;
+  addNewScoreEffect: () => void;
+  removeNewScoreEffect: () => void;
+}
+
+interface GoalUI {
+  update: (goal: number, animateByLetter?: boolean, direction?: string) => void;
+  addNewGoalEffect: (direction?: string) => void;
+  removeNewGoalEffect: () => void;
+}
+
+interface GoalTextUI {
+  addNewTextEffect: () => void;
+  removeNewTextEffect: () => void;
+}
+
+interface GameActions {
+	state: GameState;
+	counter: CounterUI;
+	highScore: HighScoreUI;
+	goal: GoalUI;
+	goalText: GoalTextUI;
+	bar: HTMLElement;
+	sounds: Sounds;
+}
+
+export default function setGameActions({ state, counter, highScore, goal, goalText, bar, sounds }: GameActions) {
+
+	function updateScoreAndGoal(animationType: string, boosted: boolean): void {
 
 		let counterAnimation = animationType;
 
@@ -56,7 +91,7 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 		counter.update(state.counter);
 	}
 
-	function increase() {
+	function increase(event?: MouseEvent): void {
 
 		if (window.electron) {
 			window.electron.setDiscordStatus({ gameStatusRPC: 'in-game' });
@@ -70,11 +105,13 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 			state.gradientFxPlayed = true;
 		}
 
-		displayCursorCount(state.countIncrement, event, false);
+		if (event) {
+			displayCursorCount(state.countIncrement, event, false);
+		}
 		updateScoreAndGoal('pop', false);
 	}
 
-	function jumpToGoal() {
+	function jumpToGoal(event?: MouseEvent): void {
 
 		const noBoostsText = document.getElementById('no-boosts');
 		const boostNotif = document.getElementById('boost-notif-text');
@@ -96,11 +133,13 @@ export function setGameActions({ state, counter, highScore, goal, goalText, bar,
 
 		removeHeart(state.boostsAvailable);
 
-		displayCursorCount(pointsAdded, event, true);
+		if (event) {
+			displayCursorCount(pointsAdded, event, true);
+		}
 		updateScoreAndGoal('pop-dec', true);
 	}
 
-	function restartGame() {
+	function restartGame(): void {
 
 		if (window.electron) {
 			window.electron.setDiscordStatus({ gameStatusRPC: 'in-game' });

@@ -1,8 +1,8 @@
 
-import { splitLetters } from '../anim/animations';
+import { splitLetters } from '../anim/animations.ts';
 import smokeGif from '@assets/ui/deco/smoke.gif';
 
-export function removeHeart(boostsLeft) {
+export function removeHeart(boostsLeft: number): void {
 
 	let i = boostsLeft + 1;
 
@@ -20,12 +20,12 @@ export function removeHeart(boostsLeft) {
 	}
 }
 
-function addUseEffect(boostsLeft, imgType, powerUp = false) {
+function addUseEffect(boostsLeft: number, imgType: string, powerUp = false) {
 
 	let i = boostsLeft + 1;
 
 	const target = document.getElementById(`boost-${i}`);
-	const popupElement = document.getElementById('popupElement');
+	const popupElement = document.getElementById('popupElement') as HTMLImageElement;
 
 	const rect = target.getBoundingClientRect();
 
@@ -56,7 +56,7 @@ function addUseEffect(boostsLeft, imgType, powerUp = false) {
 	}, 3000)
 }
 
-export function replenishHearts(boostsLeft, powerUpType) {
+export function replenishHearts(boostsLeft: number, powerUpType: string) {
 
 	let firstRestored = false;
 	let restoreCount = 0;
@@ -96,7 +96,7 @@ export function replenishHearts(boostsLeft, powerUpType) {
 	}
 }
 
-export function resetHearts() {
+export function resetHearts(): void {
 
 	for (let i = 1; i <= 4; i++) {
 		const heart = document.getElementById(`boost-${i}`);

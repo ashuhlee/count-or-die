@@ -1,5 +1,5 @@
 
-export function keyboardControls(handlers) {
+export function keyboardControls(handlers: any): void {
     document.addEventListener('keydown', (event) => {
 
 		if (event.key === 'Escape') {

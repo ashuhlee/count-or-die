@@ -1,7 +1,7 @@
 
-export function setHighScoreDisplay(element) {
+export function setHighScoreDisplay(element: HTMLElement) {
 	return {
-		update(score) {
+		update(score: number) {
 			element.textContent = 'high score: ' + score;
 		},
 		addNewScoreEffect() {

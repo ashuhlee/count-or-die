@@ -1,29 +1,36 @@
 
-// import files
-import bgMusicFile from "@assets/audio/music/the-return-of-the-8-bit-era.mp3";
-import menuMusicFile from "@assets/audio/music/mfcc-retro-arcade-game-music.mp3";
-import gameOverMusicFile from "@assets/audio/sfx/game-over-music.mp3";
+import bgMusicFile from '@assets/audio/music/the-return-of-the-8-bit-era.mp3';
+import gameOverMusicFile from '@assets/audio/sfx/game-over-music.mp3';
 
-import btnIncFxFile from "@assets/audio/sfx/button-press-1.mp3";
-import btnDecFxFile from "@assets/audio/sfx/button-press-2.mp3";
+import btnIncFxFile from '@assets/audio/sfx/button-press-1.mp3';
+import btnDecFxFile from '@assets/audio/sfx/button-press-2.mp3';
 
-import goalReachedFxFile from "@assets/audio/sfx/goal-reached.mp3";
-import highScoreFxFile from "@assets/audio/sfx/highscore.mp3";
+import goalReachedFxFile from '@assets/audio/sfx/goal-reached.mp3';
+import highScoreFxFile from '@assets/audio/sfx/highscore.mp3';
 
-import gameOverFxFile from "@assets/audio/sfx/game-over.mp3";
+import gameOverFxFile from '@assets/audio/sfx/game-over.mp3';
 
-import boostFxFile from "@assets/audio/sfx/boost.mp3";
-import noBoostsFxFile from "@assets/audio/sfx/error.mp3";
+import boostFxFile from '@assets/audio/sfx/boost.mp3';
+import noBoostsFxFile from '@assets/audio/sfx/error.mp3';
 
-import mouseClickFxFile from "@assets/audio/sfx/mouse-click.mp3";
-import buttonClickFxFile from "@assets/audio/sfx/button-click.mp3";
+import mouseClickFxFile from '@assets/audio/sfx/mouse-click.mp3';
+import buttonClickFxFile from '@assets/audio/sfx/button-click.mp3';
 
-import powerUpFxFile from "@assets/audio/sfx/power-up.mp3";
-import boostPowerUpFxFile from "@assets/audio/sfx/powerup-boost.mp3";
-import penaltyFxFile from "@assets/audio/sfx/penalty.mp3";
+import powerUpFxFile from '@assets/audio/sfx/power-up.mp3';
+import boostPowerUpFxFile from '@assets/audio/sfx/powerup-boost.mp3';
+import penaltyFxFile from '@assets/audio/sfx/penalty.mp3';
 
 
-export const audioConfig = {
+type AudioTrack = {
+	audio: HTMLAudioElement;
+	volume: number;
+	loop?: boolean;
+}
+type AudioConfig = {
+	[key: string]: AudioTrack;
+}
+
+export const audioConfig: AudioConfig = {
     bgMusic: {
 		audio: new Audio(bgMusicFile),
 		volume: 0.2,
@@ -92,7 +99,7 @@ for (const config of Object.values(audioConfig)) {
 }
 
 // audio controls
-export function playAudio(audio, fromStart = true) {
+export function playAudio(audio: HTMLAudioElement, fromStart = true) {
     if (fromStart) {
         audio.currentTime = 0;
     }
@@ -105,24 +112,24 @@ export function playAudio(audio, fromStart = true) {
     });
 }
 
-export function pauseAudio(audio) {
+export function pauseAudio(audio: HTMLAudioElement): void {
     audio.pause();
 }
 
-export function lowerVolume(audio, targetVolume) {
+export function lowerVolume(audio: HTMLAudioElement, targetVolume: number): void {
 	if (audio && !audio.paused) {
 		audio.volume = targetVolume;
 	}
 }
 
-export function toggleMusic(audio) {
+export function toggleMusic(audio: HTMLAudioElement): void {
 	audio.muted = !audio.muted;
 	if (!audio.muted) {
-		audio.play();
+		void audio.play();
 	}
 }
 
-export function toggleAudio(mute) {
+export function toggleAudio(mute: boolean): void {
 
 	for (const config of Object.values(audioConfig)) {
 		config.audio.volume = mute ? 0 : config.volume;

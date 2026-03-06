@@ -1,6 +1,26 @@
 
 export class GameState {
 
+	counter: number;
+	boostsAvailable: number;
+	countIncrement: number;
+
+	currentGoal: number;
+	goalsReached: number;
+	trueGoalsReached: number;
+
+	highScore: number;
+
+	goalIncrement: number;
+	goalIncRandomizer: number[];
+
+	isGameOver: boolean;
+	isHighScore: boolean;
+
+	highScoreFxPlayed: boolean;
+	confettiPlayed: boolean;
+	gradientFxPlayed: boolean;
+
 	constructor() {
 
 		this.isGameOver = false;
@@ -41,7 +61,7 @@ export class GameState {
 		return true;
 	}
 
-	setGameOver(value) {
+	setGameOver(value: boolean) {
 		this.isGameOver = value;
 	}
 	reset() {
@@ -72,7 +92,7 @@ export class GameState {
 			this.highScore = this.counter;
 			this.isHighScore = true;
 
-			localStorage.setItem("highScore", this.highScore);
+			localStorage.setItem('highScore', String(this.highScore));
 
 			if (window.electron) {
 				window.electron.setDiscordStatus({ highScoreRPC: this.highScore });

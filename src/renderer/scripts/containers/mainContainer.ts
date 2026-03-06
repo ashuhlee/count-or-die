@@ -21,11 +21,11 @@ import cloudTopRight from '@assets/ui/deco/clouds/cloud_3.png';
 import cloudBottomRight from '@assets/ui/deco/clouds/cloud_4.png';
 import cloudMini from '@assets/ui/deco/clouds/cloud_5.png';
 
-export function renderMain() {
+export default function renderMain() {
 
-	const main = document.getElementById('main');
+	const main = document.getElementById('main') as HTMLDivElement;
 	const totalDeaths = localStorage.getItem('deathCount') ?? '0';
-	
+
 	main.innerHTML = `
 		<!-- vfx -->
 		<div class="scanlines"></div>

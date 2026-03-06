@@ -11,9 +11,9 @@ import heartBlue from '@assets/ui/deco/px_heart_blue.png';
 import heartWhite from '@assets/ui/deco/px_heart_white.png';
 
 
-export function renderGame() {
+export default function renderGame() {
 
-	const app = document.getElementById('app');
+	const app = document.getElementById('app') as HTMLDivElement;
 
 	app.innerHTML = `
 	<div id="game-container">
@@ -103,10 +103,4 @@ export function renderGame() {
     </div>
     </div>
 	`
-}
-
-export function clearGame() {
-	const app = document.getElementById('app');
-	if (!app) return;
-	app.innerHTML = '';
 }

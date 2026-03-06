@@ -1,7 +1,17 @@
 
+import { Client, ActivityType } from 'simple-discord-rpc';
 import { green, red } from 'console-log-colors';
 
-import { Client, ActivityType } from 'simple-discord-rpc';
+
+type BadgeInfo = {
+	badge: string | undefined;
+	label: string;
+}
+
+type Presence = {
+	highScoreRPC: number,
+	gameStatusRPC: 'in-game' | 'game-over'
+}
 
 const CLIENT_ID = '1471053459905052694';
 
@@ -12,11 +22,11 @@ const client = new Client({
 const playTime = Date.now();
 const displayRank = true;
 
-let currentPresence = { highScoreRPC: 0, gameStatusRPC: 'in-game' };
+let currentPresence: Presence = { highScoreRPC: 0, gameStatusRPC: 'in-game' };
 
 client.on('ready', () => {
 	console.log(green.bold('✔'), 'RPC connected');
-	updateActivity();
+	void updateActivity();
 });
 
 client.on('close', (reason) => {
@@ -27,7 +37,7 @@ client.login().catch(err => {
 	console.warn('Discord not detected:', err.message);
 });
 
-function getTierInfo(highScore) {
+function getTierInfo(highScore: number): BadgeInfo {
 	if (highScore >= 400) {
 		return { badge: 'tier_four', label: 'Legend' };
 	}
@@ -45,14 +55,14 @@ function getTierInfo(highScore) {
 	}
 }
 
-function getGameStatus(status) {
+function getGameStatus(status: string): string {
 	if (status === 'game-over') {
 		return 'Deceased';
 	}
 	return 'Locked in';
 }
 
-function updateActivity() {
+async function updateActivity(): Promise<void> {
 
 	const score = currentPresence.highScoreRPC;
 	const status = currentPresence.gameStatusRPC;
@@ -61,7 +71,7 @@ function updateActivity() {
 	const statusInfo = getGameStatus(status);
 
 	try {
-		client.setActivity({
+		await client.setActivity({
 			type: ActivityType.Playing,
 			details: `Nerd Out Mode · ${statusInfo}`,
 			state: undefined,
@@ -79,12 +89,13 @@ function updateActivity() {
 				{ label: 'Play Count or Die', url: 'https://www.countordie.gg' }
 			]
 		});
-	} catch (error) {
-		console.warn('Failed to update Discord presence:', error.message);
+	} catch (error: unknown) {
+		const msg = error instanceof Error ? error.message : String(error)
+		console.warn('Failed to update Discord presence:', msg);
 	}
 }
 
-export function setDiscordStatus(updates = {}) {
+export async function setDiscordStatus(updates = {}): Promise<void> {
 	currentPresence = {...currentPresence, ...updates};
-	updateActivity();
+	await updateActivity();
 }

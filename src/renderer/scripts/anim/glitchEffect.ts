@@ -1,7 +1,7 @@
 
-import { PowerGlitch } from "powerglitch";
+import { PowerGlitch } from 'powerglitch';
 
-export function createGlitch(element, duration = 2500, iterations = 4) {
+export function createGlitch(element: HTMLElement, duration = 2500, iterations = 4): void {
 
 	PowerGlitch.glitch(element, {
 		playMode: 'always',
@@ -20,7 +20,7 @@ export function createGlitch(element, duration = 2500, iterations = 4) {
 	});
 }
 
-export function heartGlitch() {
+export function heartGlitch(): void {
 	const hearts = ['.heart4', '.heart2', '.heart1', '.heart3'];
 	const delay = 400;
 

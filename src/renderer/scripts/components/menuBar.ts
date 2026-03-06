@@ -1,18 +1,18 @@
 
-import { audioConfig, toggleAudio } from '../controls/audioHandler.js';
+import { audioConfig, toggleAudio } from '../controls/audioHandler.ts';
 
 import soundBtnMuted from '@assets/ui/svg/sound-button-muted.svg';
 import soundBtnNoMusic from '@assets/ui/svg/sound-button-no_music.svg';
 import soundBtnUnmuted from '@assets/ui/svg/sound-button-reg.svg';
 
-export function soundToggle() {
+export function soundToggle(): void {
 
-	const toggleSoundBtn = document.getElementById('soundBtn');
+	const toggleSoundBtn = document.getElementById('soundBtn') as HTMLImageElement;
 	if (!toggleSoundBtn) return;
 
 	let state = 0;
 
-	function applyState(state) {
+	function applyState(state: number) {
 		if (state === 0) {
 			// sfx + music
 			audioConfig.bgMusic.audio.muted = false;
@@ -47,8 +47,8 @@ export function soundToggle() {
 	})
 }
 
-export function menuToggle() {
-	const menuBtn = document.getElementById('optionsBtn');
+export function menuToggle(): void {
+	const menuBtn = document.getElementById('optionsBtn') as HTMLImageElement;
 
 	menuBtn.addEventListener('click', () => {
 		alert('Oops! The settings menu is not available in the beta.');

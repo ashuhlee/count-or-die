@@ -20,7 +20,7 @@ const phrasesNewScore = [
 	'oooh, a new record!'
 ]
 
-function setRandomText(arr) {
+function setRandomText(arr: string[]) {
 	const i = Math.floor(Math.random() * arr.length);
 	return arr[i];
 }
@@ -28,7 +28,7 @@ function setRandomText(arr) {
 export function toggleGameOver(isGameOver = false, highScoreReached = false) {
 
 	let isNegative = true;
-	const backToMenu = document.getElementById('menu-btn');
+	const backToMenu = document.getElementById('menu-btn') as HTMLElement;
 
 	backToMenu.addEventListener('mouseenter', () => {
 		backToMenu.style.transform = `scale(1.15) 
@@ -46,8 +46,8 @@ export function toggleGameOver(isGameOver = false, highScoreReached = false) {
 	const flash = document.getElementById('red-flash');
 	const gameOverScreen = document.getElementById('game-over');
 
-	const displayText = document.querySelector('.go-text-random');
-	const scoreText = document.querySelector('.score-text');
+	const displayText = document.querySelector('.go-text-random') as HTMLTextAreaElement;
+	const scoreText = document.querySelector('.score-text') as HTMLTextAreaElement;
 
 	if (highScoreReached) {
 		displayText.textContent = setRandomText(phrasesNewScore);
@@ -95,7 +95,7 @@ export function toggleGameOver(isGameOver = false, highScoreReached = false) {
 	}
 }
 
-export function youDiedConsole(finalScore) {
+export function youDiedConsole(finalScore: string | number) {
 	console.log(
 	'%c▓██   ██▓ ▒█████   █    ██    ▓█████▄  ██▓▓█████ ▓█████▄ \n' +
 	' ▒██  ██▒▒██▒  ██▒ ██  ▓██▒   ▒██▀ ██▌▓██▒▓█   ▀ ▒██▀ ██▌\n' +
