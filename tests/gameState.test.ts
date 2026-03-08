@@ -1,7 +1,7 @@
 
 import { beforeEach, expect, describe, test } from 'vitest';
-import { GameState } from '../src/renderer/scripts/core/gameState.ts';
 import { setHighScoreDisplay } from '../src/renderer/scripts/components/highScoreDisplay.ts';
+import GameState from '../src/renderer/scripts/core/gameState.ts';
 
 window.HTMLMediaElement.prototype.play = () => Promise.resolve();
 

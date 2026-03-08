@@ -1,20 +1,17 @@
 
 import { contextBridge, ipcRenderer } from 'electron';
 import type { MessageBoxReturnValue } from 'electron';
+import type { Presence } from '../main/discordRPC.ts'
 
-export type DiscordStatus = {
-	highScoreRPC? : number;
-	gameStatusRPC?: 'in-game' | 'game-over'
-}
 
 export interface ElectronAPI {
-	setDiscordStatus: (data: DiscordStatus) => void;
+	setDiscordStatus: (data: Presence) => Promise<void>;
 	quitApp: () => void;
 	showGpuWarning: () => Promise<MessageBoxReturnValue>
 }
 
 contextBridge.exposeInMainWorld('electron', {
-	setDiscordStatus: (data) => ipcRenderer.send('discord:update', data),
+	setDiscordStatus: async (data: Presence) => ipcRenderer.send('discord:update', data),
 	quitApp: () => ipcRenderer.send('close'),
 	showGpuWarning: () => ipcRenderer.invoke('gpu:warning')
 } satisfies ElectronAPI);

@@ -1,5 +1,5 @@
 
-import { GameState } from './core/gameState.ts';
+import GameState from './core/gameState.ts';
 import Counter from './components/counterDisplay.ts';
 
 import checkHardwareAcceleration from './utils/hardwareAcceleration.ts';
@@ -92,7 +92,7 @@ function createDomRefs() {
 		quitBtn: document.getElementById('quit-btn'),
 
 		deathTracker: document.getElementById('death-tracker'),
-		scoreText: document.querySelector('.score-text')
+		scoreText: document.querySelector<HTMLElement>('.score-text')
 	};
 }
 
@@ -126,7 +126,7 @@ function createGameCtx(ui: DomReference) {
 	return { state, actions, counter, highScore, goal, goalText, progressBar, powerUps }
 }
 
-function initUserInterface(ctx: GameContext) {
+function initUserInterface(ctx: GameContext): void {
 	splitLetters('.game-name', 'wavy');
 	heartGlitch();
 
@@ -135,7 +135,7 @@ function initUserInterface(ctx: GameContext) {
 	ctx.goal.update(ctx.state.currentGoal, false);
 }
 
-function bindUIEvents(ctx: GameContext, ui: DomReference) {
+function bindUIEvents(ctx: GameContext, ui: DomReference): void {
 
 	ui.increaseBtn.addEventListener('click', (e) => onIncrease(ctx, e));
 	ui.boostBtn.addEventListener('click', (e) => onBoost(ctx, e));
@@ -159,17 +159,17 @@ function bindUIEvents(ctx: GameContext, ui: DomReference) {
 	})
 }
 
-function startGameLoops(ctx: GameContext) {
+function startGameLoops(ctx: GameContext): void {
 	startGlitchEffectLoop();
 	startFrameLoop(ctx);
 	ctx.powerUps.spawnCooldown();
 }
 
-function startGlitchEffectLoop() {
+function startGlitchEffectLoop(): void {
 	setInterval(heartGlitch, GLITCH_INTERVAL);
 }
 
-function startFrameLoop(ctx: GameContext) {
+function startFrameLoop(ctx: GameContext): void {
 	function frame() {
 		if (!ctx.state.isGameOver) {
 			if (ctx.state.updateHighScore()) {
@@ -182,17 +182,17 @@ function startFrameLoop(ctx: GameContext) {
 	frame();
 }
 
-function onIncrease(ctx: GameContext, event?: MouseEvent) {
+function onIncrease(ctx: GameContext, event?: MouseEvent): void {
 	if (ctx.state.isGameOver) return;
 	ctx.actions.increase(event);
 }
 
-function onBoost(ctx: GameContext, event?: MouseEvent) {
+function onBoost(ctx: GameContext, event?: MouseEvent): void {
 	if (ctx.state.isGameOver) return;
 	ctx.actions.jumpToGoal(event);
 }
 
-function onReset(ctx: GameContext) {
+function onReset(ctx: GameContext): void {
 	ctx.actions.restartGame();
 	playAudio(audioConfig.mouseClick.audio);
 	resetPowerUps(ctx);
@@ -212,14 +212,14 @@ async function onGameOverRestart(ctx: GameContext): Promise<void> {
 	resetPowerUps(ctx);
 }
 
-function onMenuClick() {
+function onMenuClick(): void {
 	playAudio(audioConfig.buttonClick.audio);
 	setTimeout(() => {
 		alert('Oops! The menu is not available in the beta.');
 	}, 500)
 }
 
-function onQuitClick() {
+function onQuitClick(): void {
 	playAudio(audioConfig.buttonClick.audio);
 
 	if (window.electron) {
@@ -230,7 +230,7 @@ function onQuitClick() {
 	}
 }
 
-function onTimerExpired(ctx: GameContext, ui: DomReference) {
+function onTimerExpired(ctx: GameContext, ui: DomReference): void {
 	if (ctx.state.isGoalReached() || ctx.state.isGameOver) return;
 
 	playAudio(audioConfig.gameOver.audio);
@@ -241,7 +241,7 @@ function onTimerExpired(ctx: GameContext, ui: DomReference) {
 	}, GAME_OVER_MUSIC_DELAY);
 
 	if (window.electron) {
-		window.electron.setDiscordStatus({ gameStatusRPC: 'game-over' });
+		void window.electron.setDiscordStatus({ gameStatusRPC: 'game-over' });
 	}
 
 	ctx.state.setGameOver(true);
@@ -265,7 +265,7 @@ function onTimerExpired(ctx: GameContext, ui: DomReference) {
 	}
 }
 
-function resetPowerUps(ctx: GameContext) {
+function resetPowerUps(ctx: GameContext): void {
 	ctx.powerUps.clearPowerUps();
 	ctx.powerUps.spawnCooldown();
 }
@@ -277,10 +277,10 @@ function getDeathCount(): number {
 	return Number.isNaN(parsed) ? 0 : parsed;
 }
 
-function setDeathCount(value: number) {
+function setDeathCount(value: number): void {
 	localStorage.setItem(DEATH_COUNT_KEY, String(value));
 }
 
-function delay(ms: number) {
+function delay(ms: number): Promise<void> {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 }

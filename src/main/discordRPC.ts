@@ -8,9 +8,11 @@ type BadgeInfo = {
 	label: string;
 }
 
-type Presence = {
-	highScoreRPC: number,
-	gameStatusRPC: 'in-game' | 'game-over'
+type GameStatus = 'Locked in' | 'Deceased';
+
+export type Presence = {
+	highScoreRPC?: number,
+	gameStatusRPC?: 'in-game' | 'game-over'
 }
 
 const CLIENT_ID = '1471053459905052694';
@@ -44,18 +46,17 @@ function getTierInfo(highScore: number): BadgeInfo {
 	if (highScore >= 300) {
 		return { badge: 'tier_three', label: 'Speed Demon' };
 	}
-	else if (highScore >= 200) {
+	if (highScore >= 200) {
 		return { badge: 'tier_two', label: 'Finger Breaker' };
 	}
-	else if (highScore >= 100) {
+	if (highScore >= 100) {
 		return { badge: 'tier_one', label: 'Slow Fingers' };
 	}
-	else {
-		return { badge: undefined, label: 'Rookie' };
-	}
+	return { badge: undefined, label: 'Rookie' };
+
 }
 
-function getGameStatus(status: string): string {
+function getGameStatus(status: Presence['gameStatusRPC']): GameStatus {
 	if (status === 'game-over') {
 		return 'Deceased';
 	}
@@ -95,7 +96,7 @@ async function updateActivity(): Promise<void> {
 	}
 }
 
-export async function setDiscordStatus(updates = {}): Promise<void> {
+export async function setDiscordStatus(updates: Partial<Presence> = {}): Promise<void> {
 	currentPresence = {...currentPresence, ...updates};
 	await updateActivity();
 }

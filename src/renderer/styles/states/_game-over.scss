@@ -313,6 +313,13 @@
 			.play-again-btn-2:hover { rotate: -2deg }
 		}
 	}
+	.rainbow-txt {
+		color: rgba(255, 255, 255, 0.7);
+		background-image: var(--rainbow-gradient-bar);
+		background-clip: text;
+		background-size: 100% auto;
+		background-position: 0 center;
+	}
 
 	.go-title,
 	.final-score,

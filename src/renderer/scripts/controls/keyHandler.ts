@@ -1,13 +1,17 @@
 
-export function keyboardControls(handlers: any): void {
+type KeyBinds = {
+	onIncrease: (event?: MouseEvent) => void;
+	onBoost: (event?: MouseEvent) => void;
+	disabled?: () => boolean;
+}
+
+export function keyboardControls(handlers: KeyBinds): void {
     document.addEventListener('keydown', (event) => {
 
 		if (event.key === 'Escape') {
 			alert('Oops! The settings menu is not available in the beta.');
 			return;
 		}
-
-		// don't trigger if disabled or modifier keys are pressed
 		if (handlers.disabled && handlers.disabled()) {
 			return;
 		}
