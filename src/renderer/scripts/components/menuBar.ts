@@ -13,25 +13,25 @@ export function soundToggle(): void {
 	let state = 0;
 
 	function applyState(state: number) {
-		if (state === 0) {
+		switch (state) {
 			// sfx + music
-			audioConfig.bgMusic.audio.muted = false;
-			toggleAudio(false);
-			toggleSoundBtn.src = soundBtnUnmuted;
-		}
-		else if (state === 1) {
+			case 0:
+				audioConfig.bgMusic.audio.muted = false;
+				toggleAudio(false);
+				toggleSoundBtn.src = soundBtnUnmuted;
+				break;
 			// sfx + no music
-			audioConfig.bgMusic.audio.muted = true;
-			toggleAudio(false);
-			toggleSoundBtn.src = soundBtnNoMusic;
-		}
-		else {
+			case 1:
+				audioConfig.bgMusic.audio.muted = true;
+				toggleAudio(false);
+				toggleSoundBtn.src = soundBtnNoMusic;
+				break;
 			// no sfx + no music
-			audioConfig.bgMusic.audio.muted = true;
-			toggleAudio(true);
-			toggleSoundBtn.src = soundBtnMuted;
+			default:
+				audioConfig.bgMusic.audio.muted = true;
+				toggleAudio(true);
+				toggleSoundBtn.src = soundBtnMuted;
 		}
-
 		localStorage.setItem('soundState', state.toString());
 	}
 	// restored saved audio settings

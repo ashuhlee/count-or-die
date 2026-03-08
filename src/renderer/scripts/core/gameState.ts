@@ -1,5 +1,5 @@
 
-export class GameState {
+export default class GameState {
 
 	counter: number;
 	boostsAvailable: number;
@@ -95,7 +95,7 @@ export class GameState {
 			localStorage.setItem('highScore', String(this.highScore));
 
 			if (window.electron) {
-				window.electron.setDiscordStatus({ highScoreRPC: this.highScore });
+				void window.electron.setDiscordStatus({ highScoreRPC: this.highScore });
 			}
 			return true;
 		}
@@ -115,7 +115,6 @@ export class GameState {
 			this.trueGoalsReached++;
 		}
 	}
-
 	// 1.2x speed increase each round
 	barSpeed() {
 		const multiplier = Math.pow(1.2, this.trueGoalsReached);

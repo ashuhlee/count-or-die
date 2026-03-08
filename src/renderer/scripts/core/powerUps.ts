@@ -3,7 +3,7 @@ import { replenishHearts } from '../components/heartDisplay.ts';
 import { playAudio, audioConfig } from '../controls/audioHandler.ts';
 import { playAnimation, resetHeartEffect } from '../anim/animations.ts';
 
-import { GameState }  from './gameState.ts';
+import GameState  from './gameState.ts';
 import  Counter  from '../components/counterDisplay.ts';
 
 import { candy, donut, badDonut, star, superstar } from '@assets/ui/power-ups';

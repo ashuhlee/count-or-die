@@ -1,13 +1,28 @@
 
+import path from 'node:path';
 import { setDiscordStatus } from './discordRPC.ts';
 import { app, nativeImage, ipcMain, dialog, shell, Menu, BrowserWindow } from 'electron';
-import path from 'node:path';
 
 import type { IpcMainEvent, MenuItemConstructorOptions } from 'electron';
 
 
-ipcMain.on('discord:update', (_event: IpcMainEvent, data) => {
-	setDiscordStatus(data);
+const isMac = process.platform === 'darwin';
+const iconPath =
+	isMac ? path.join(__dirname, '../../resources/icons/icon.icns')
+	: path.join(__dirname, '../../resources/icons/icon.ico');
+
+if (isMac) {
+	const dockIcon = nativeImage.createFromPath(iconPath);
+	app.dock?.setIcon(dockIcon);
+}
+
+
+ipcMain.on('discord:update', async (_event: IpcMainEvent, data) => {
+	await setDiscordStatus(data);
+})
+
+ipcMain.on('close', () => {
+	app.quit()
 })
 
 ipcMain.handle('gpu:warning', async () => {
@@ -22,15 +37,6 @@ ipcMain.handle('gpu:warning', async () => {
 	})
 })
 
-const isMac = process.platform === 'darwin';
-const iconPath =
-	isMac ? path.join(__dirname, '../../resources/icons/icon.icns')
-	: path.join(__dirname, '../../resources/icons/icon.ico');
-
-if (isMac) {
-	const dockIcon = nativeImage.createFromPath(iconPath);
-	app.dock?.setIcon(dockIcon);
-}
 
 function createWindow() {
 
@@ -58,7 +64,6 @@ function createWindow() {
 			console.warn(error);
 		});
 	}
-
 	// get high score after renderer loads
 	mainWindow.webContents.on('did-finish-load', async () => {
 		try {
@@ -86,9 +91,6 @@ app.on('window-all-closed', () => {
 	}
 })
 
-ipcMain.on('close', () => {
-	app.quit()
-})
 
 const macAppMenu: MenuItemConstructorOptions = {
 	label: app.name,

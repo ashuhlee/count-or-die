@@ -9,7 +9,7 @@ import { animateBtn, playAnimation, resetHeartEffect } from '../anim/animations.
 import { playConfetti } from '../anim/confetti.ts';
 
 import { toggleGameOver } from './gameOver.ts';
-import { GameState } from './gameState.ts';
+import GameState from './gameState.ts';
 
 
 type Sounds = typeof import('../controls/audioHandler.ts').audioConfig;
@@ -94,7 +94,7 @@ export default function setGameActions({ state, counter, highScore, goal, goalTe
 	function increase(event?: MouseEvent): void {
 
 		if (window.electron) {
-			window.electron.setDiscordStatus({ gameStatusRPC: 'in-game' });
+			void window.electron.setDiscordStatus({ gameStatusRPC: 'in-game' });
 		}
 
 		state.increment();
@@ -142,7 +142,7 @@ export default function setGameActions({ state, counter, highScore, goal, goalTe
 	function restartGame(): void {
 
 		if (window.electron) {
-			window.electron.setDiscordStatus({ gameStatusRPC: 'in-game' });
+			void window.electron.setDiscordStatus({ gameStatusRPC: 'in-game' });
 		}
 		// reset ui
 		state.reset();
