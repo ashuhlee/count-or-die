@@ -1,110 +1,130 @@
 @use "globals";
 
 #counter.new-score-counter {
-	fill: url(#gradient-counter);
+  fill: url(#gradient-counter);
 }
 
-.heart-pink, .heart-purple, .heart-blue, .heart-white {
-	animation: heart-scale 2.5s cubic-bezier(0.25,0.10,0.25,1.00) infinite;
+.heart-pink,
+.heart-purple,
+.heart-blue,
+.heart-white {
+  animation: heart-scale 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
 
-	@for $i from 1 through 4 {
-		&:nth-child(#{$i}) {
-			animation-delay: (globals.$delay-step * ($i - 1));
-		}
-	}
+  @for $i from 1 through 4 {
+    &:nth-child(#{$i}) {
+      animation-delay: (globals.$delay-step * ($i - 1));
+    }
+  }
 }
 
 #high-score.new-score {
-	animation: bounce 0.6s, gradient 2s ease;
-	transform-origin: center;
+  animation:
+    bounce 0.6s,
+    gradient 2s ease;
+  transform-origin: center;
 }
 
-.new-goal, .new-goal-reverse  {
-	transform-origin: 50% 100%;
-	transform-style: preserve-3d;
-	backface-visibility: hidden;
-	will-change: transform, filter;
-	transform-origin: bottom;
+.new-goal,
+.new-goal-reverse {
+  transform-origin: 50% 100%;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform, filter;
+  transform-origin: bottom;
 }
 .new-goal {
-	animation-timing-function: cubic-bezier(0.57, 0.7, 0.55, 1.15) !important;
-	animation: swing;
+  animation-timing-function: cubic-bezier(0.57, 0.7, 0.55, 1.15) !important;
+  animation: swing;
 }
 .new-goal-reverse {
-	animation: goal-swing-reverse 0.4s cubic-bezier(0.57, 0.7, 0.55, 1.15);
+  animation: goal-swing-reverse 0.4s cubic-bezier(0.57, 0.7, 0.55, 1.15);
 }
 
 @keyframes goal-swing-reverse {
-	0% {transform: perspective(800px) translateZ(18px) scale3d(0.9, 0.8, 1.04);}
-	20% { transform: rotate(-8deg);}
-	40% { transform: rotate(5deg);}
-	60% { transform: rotate(-3deg);}
-	80% { transform: rotate(1.5deg);}
-	100% { transform: rotate(0) perspective(800px) translateZ(0) rotateX(0) rotateY(0) scale3d(1, 1, 1);}
+  0% {
+    transform: perspective(800px) translateZ(18px) scale3d(0.9, 0.8, 1.04);
+  }
+  20% {
+    transform: rotate(-8deg);
+  }
+  40% {
+    transform: rotate(5deg);
+  }
+  60% {
+    transform: rotate(-3deg);
+  }
+  80% {
+    transform: rotate(1.5deg);
+  }
+  100% {
+    transform: rotate(0) perspective(800px) translateZ(0) rotateX(0) rotateY(0)
+      scale3d(1, 1, 1);
+  }
 }
 
 .fade-up-text span {
-	opacity: 0;
-	transform: translateY(20px);
-	margin-left: -6px;
-	display: inline-block;
-	animation: fade-in-up 0.2s ease-out forwards var(--delay);
+  opacity: 0;
+  transform: translateY(20px);
+  margin-left: -6px;
+  display: inline-block;
+  animation: fade-in-up 0.2s ease-out forwards var(--delay);
 }
 
 .game-name span {
-	display: inline-block;
-	animation: wavy-text 2.5s cubic-bezier(0.25,0.10,0.25,1.00) infinite var(--delay);
+  display: inline-block;
+  animation: wavy-text 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) infinite
+    var(--delay);
 }
 
 .pop {
-	animation: pop 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
-	transform-origin: center;
+  animation: pop 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
+  transform-origin: center;
 }
 .pop-dec {
-	animation: pop-dec 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
-	transform-origin: center;
+  animation: pop-dec 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
+  transform-origin: center;
 }
 .pop-min {
-	animation: pop-min 0.3s ease;
-	transform-origin: center;
+  animation: pop-min 0.3s ease;
+  transform-origin: center;
 }
 .pop-right {
-	animation: pop-right 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
-	transform-origin: center;
+  animation: pop-right 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
+  transform-origin: center;
 }
 .pop-gradient {
-	animation: fade-gradient 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
-	transform-origin: center;
+  animation: fade-gradient 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
+  transform-origin: center;
 }
 
 .reset-shake {
-	animation: reset-shake 0.25s ease-out;
-	transform-box: fill-box;
-	transform-origin: center;
+  animation: reset-shake 0.25s ease-out;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 .penalty-shake {
-	animation: penalty-shake 0.3s ease;
-	transform-box: fill-box;
-	transform-origin: center;
+  animation: penalty-shake 0.3s ease;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
 .no-boost-text span {
-	display: inline-block;
-	animation: shake 2s ease infinite var(--delay);
+  display: inline-block;
+  animation: shake 2s ease infinite var(--delay);
 }
 .no-boosts-shake {
-	animation: no-boosts-shake 0.25s ease-out;
-	transform-box: fill-box;
-	transform-origin: center;
+  animation: no-boosts-shake 0.25s ease-out;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 .no-boosts-flash {
-	animation: flash 0.5s ease;
-	transform-box: fill-box;
-	transform-origin: center;
+  animation: flash 0.5s ease;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 .boost-notification {
-    animation: float-up 1.6s cubic-bezier(0.68, -0.6, 0.32, 1.6) forwards;
+  animation: float-up 1.6s cubic-bezier(0.68, -0.6, 0.32, 1.6) forwards;
 }
 .bounce-in {
-	animation: bounce-in 0.02s ease-out;
+  animation: bounce-in 0.02s ease-out;
 }

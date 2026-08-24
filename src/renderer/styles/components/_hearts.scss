@@ -1,35 +1,38 @@
-
 .hearts {
-    display: flex;
-    gap: 15px;
-	height: 64px;
-    justify-content: center;
-	flex-direction: row;
-    align-items: center;
+  display: flex;
+  gap: 15px;
+  height: 64px;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
 
-	.heart-pink, .heart-purple, .heart-blue, .heart-white {
-		transform:rotate(-3deg);
-	}
-    img {
-      width: 64px;
-    }
+  .heart-pink,
+  .heart-purple,
+  .heart-blue,
+  .heart-white {
+    transform: rotate(-3deg);
+  }
+  img {
+    width: 64px;
+  }
 }
 .heart-use {
-	visibility: hidden;
-	opacity: 0;
+  visibility: hidden;
+  opacity: 0;
 }
 
 .heart-restore {
-	visibility: visible;
-	animation: heart-appear 0.3s ease-out forwards;
+  visibility: visible;
+  animation: heart-appear 0.3s ease-out forwards;
 }
 
 .boost-stuff {
-	max-height: 64px;
+  max-height: 64px;
 }
 
-#popupElement, #powerUpUsedElement {
-	position: fixed;
-	display: none;
-	pointer-events: none;
+#popupElement,
+#powerUpUsedElement {
+  position: fixed;
+  display: none;
+  pointer-events: none;
 }

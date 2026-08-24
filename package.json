@@ -10,7 +10,9 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "test": "vitest run",
-    "rebuild": "rm -rf out && npm run package && npm run make"
+    "rebuild": "rm -rf out && npm run package && npm run make",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,scss,css,json}\" \"tests/**/*.{ts,tsx,js,jsx}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,scss,css,json}\" \"tests/**/*.{ts,tsx,js,jsx}\""
   },
   "repository": {
     "type": "git",

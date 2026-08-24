@@ -1,71 +1,81 @@
 @use "../base/globals";
 
 .loading-screen {
-    position: fixed;
-    inset: 0;
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 20;
+
+  .diamond-wrapper,
+  .diamond-outline {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: grid;
     place-items: center;
-    z-index: 20;
+    width: 200vw;
+    height: 200vw;
+    animation: expand-clip 0.5s ease-in forwards;
+    pointer-events: none;
 
-    .diamond-wrapper, .diamond-outline {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		display: grid;
-		place-items: center;
-		width: 200vw;
-		height: 200vw;
-		animation: expand-clip 0.5s ease-in forwards;
-		pointer-events: none;
-
-		@media (max-width: 900px) {
-			width: 300vw; height: 300vw;
-		}
+    @media (max-width: 900px) {
+      width: 300vw;
+      height: 300vw;
     }
+  }
 
-    .diamond {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-    }
-	.diamond-outline {
-		background: #FF9DE9;
-		zoom: 1.2;
-		animation: expand-clip 0.5s ease-in forwards -0.06s;
-	}
-	.diamond::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background: url("#{globals.$loading-bg}") repeat 0 center;
-		animation: slide 4s linear infinite reverse;
-	}
+  .diamond {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+  .diamond-outline {
+    background: #ff9de9;
+    zoom: 1.2;
+    animation: expand-clip 0.5s ease-in forwards -0.06s;
+  }
+  .diamond::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("#{globals.$loading-bg}") repeat 0 center;
+    animation: slide 4s linear infinite reverse;
+  }
 
-    .loading-skull {
-		position: relative;
-		z-index: 10;
-		width: 80px;
-		height: 80px;
-		animation: jackInTheBox 1.2s ease -0.2s forwards;
-    }
+  .loading-skull {
+    position: relative;
+    z-index: 10;
+    width: 80px;
+    height: 80px;
+    animation: jackInTheBox 1.2s ease -0.2s forwards;
+  }
 
-    &.hiding {
-       .diamond-wrapper, {
-          animation: shrink-clip 0.5s ease-out forwards;
-       }
-		.diamond-outline {
-			animation: shrink-clip 0.5s ease-out forwards 0.05s;
-			background: url("#{globals.$loading-bg-2}") repeat 0 center;
-		}
+  &.hiding {
+    .diamond-wrapper {
+      animation: shrink-clip 0.5s ease-out forwards;
     }
+    .diamond-outline {
+      animation: shrink-clip 0.5s ease-out forwards 0.05s;
+      background: url("#{globals.$loading-bg-2}") repeat 0 center;
+    }
+  }
 }
 
 @keyframes expand-clip {
-    0% { clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%); }
-    100% { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+  0% {
+    clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
+  }
+  100% {
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  }
 }
 @keyframes shrink-clip {
-    0% { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
-    100% { clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%); }
+  0% {
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  }
+  100% {
+    clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
+  }
 }

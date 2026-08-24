@@ -1,59 +1,60 @@
 .goal-chatbox {
-	display: flex;
-    flex-direction: column;
-    align-items: center;
-	animation: hover 2s infinite ease-in-out;
-	position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: hover 2s infinite ease-in-out;
+  position: relative;
 
-	.next-goal {
-		background: white;
-		padding: 8px 12px;
-		filter: drop-shadow(0px 6px 0px rgba(255, 163, 231, 0.5));
-		border-radius: 2px;
-		text-align: center;
-		image-rendering: pixelated;
-		white-space: nowrap;
-		display: inline-block;
-		position: relative;
+  .next-goal {
+    background: white;
+    padding: 8px 12px;
+    filter: drop-shadow(0px 6px 0px rgba(255, 163, 231, 0.5));
+    border-radius: 2px;
+    text-align: center;
+    image-rendering: pixelated;
+    white-space: nowrap;
+    display: inline-block;
+    position: relative;
 
-		.goal-text {
-			color: #4B4D5A;
-			font-family: "Silkscreen", monospace;
-			font-size: 18px;
-			font-weight: bold;
-		}
-	}
+    .goal-text {
+      color: #4b4d5a;
+      font-family: "Silkscreen", monospace;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
 
-	.chat-tip {
-		width: 32px;
-		height: 16px;
-		margin-top: -6px;
-		z-index: 1;
-		animation: point 2s infinite ease-in-out;
-		filter: drop-shadow(0px 6px 0px rgba(255, 163, 231, 0.4));
-	}
-	.notifications {
-		position: relative;
-		display: flex;
-		justify-content: center;
-
-	}
-	.boost-notif-text, .theme-switch-notif-text, .score-notif-text {
-		position: absolute;
-		white-space: nowrap;
-		color: white;
-		font-family: 'serious1', sans-serif;
-		font-size: 20px;
-		opacity: 0;
-	}
-	.boost-notif-text {
-		font-weight: bold;
-		font-size: 22px;
-		filter: drop-shadow(0px 1.8px 0px #ababff);
-		text-shadow:
-        2px 2px 0 #ffa2e2,
-        -2px -2px 0 #ffa2e2,
-        2px -2px 0 #ffa2e2,
-        -2px 2px 0 #ffa2e2;
-	}
+  .chat-tip {
+    width: 32px;
+    height: 16px;
+    margin-top: -6px;
+    z-index: 1;
+    animation: point 2s infinite ease-in-out;
+    filter: drop-shadow(0px 6px 0px rgba(255, 163, 231, 0.4));
+  }
+  .notifications {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+  .boost-notif-text,
+  .theme-switch-notif-text,
+  .score-notif-text {
+    position: absolute;
+    white-space: nowrap;
+    color: white;
+    font-family: "serious1", sans-serif;
+    font-size: 20px;
+    opacity: 0;
+  }
+  .boost-notif-text {
+    font-weight: bold;
+    font-size: 22px;
+    filter: drop-shadow(0px 1.8px 0px #ababff);
+    text-shadow:
+      2px 2px 0 #ffa2e2,
+      -2px -2px 0 #ffa2e2,
+      2px -2px 0 #ffa2e2,
+      -2px 2px 0 #ffa2e2;
+  }
 }

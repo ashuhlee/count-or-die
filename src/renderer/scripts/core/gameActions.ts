@@ -1,22 +1,24 @@
+import { playAudio } from "../controls/audioHandler.ts";
 
-import { playAudio } from '../controls/audioHandler.ts';
+import { resetBar } from "../components/progressBarDisplay.ts";
+import { removeHeart, resetHearts } from "../components/heartDisplay.ts";
+import { displayCursorCount } from "../components/cursorDisplay.ts";
 
-import { resetBar } from '../components/progressBarDisplay.ts';
-import { removeHeart, resetHearts } from '../components/heartDisplay.ts';
-import { displayCursorCount } from '../components/cursorDisplay.ts';
+import {
+  animateBtn,
+  playAnimation,
+  resetHeartEffect,
+} from "../anim/animations.ts";
+import { playConfetti } from "../anim/confetti.ts";
 
-import { animateBtn, playAnimation, resetHeartEffect } from '../anim/animations.ts';
-import { playConfetti } from '../anim/confetti.ts';
+import { toggleGameOver } from "./gameOver.ts";
+import GameState from "./gameState.ts";
 
-import { toggleGameOver } from './gameOver.ts';
-import GameState from './gameState.ts';
-
-
-type Sounds = typeof import('../controls/audioHandler.ts').audioConfig;
+type Sounds = typeof import("../controls/audioHandler.ts").audioConfig;
 
 interface CounterUI {
-	update: (value: number) => void;
-	animate: (type: string) => void;
+  update: (value: number) => void;
+  animate: (type: string) => void;
 }
 
 interface HighScoreUI {
@@ -37,142 +39,142 @@ interface GoalTextUI {
 }
 
 interface GameActions {
-	state: GameState;
-	counter: CounterUI;
-	highScore: HighScoreUI;
-	goal: GoalUI;
-	goalText: GoalTextUI;
-	bar: HTMLElement;
-	sounds: Sounds;
+  state: GameState;
+  counter: CounterUI;
+  highScore: HighScoreUI;
+  goal: GoalUI;
+  goalText: GoalTextUI;
+  bar: HTMLElement;
+  sounds: Sounds;
 }
 
-export default function setGameActions({ state, counter, highScore, goal, goalText, bar, sounds }: GameActions) {
+export default function setGameActions({
+  state,
+  counter,
+  highScore,
+  goal,
+  goalText,
+  bar,
+  sounds,
+}: GameActions) {
+  function updateScoreAndGoal(animationType: string, boosted: boolean): void {
+    let counterAnimation = animationType;
 
-	function updateScoreAndGoal(animationType: string, boosted: boolean): void {
+    // handle high score
+    if (state.updateHighScore()) {
+      highScore.update(state.highScore);
+      highScore.addNewScoreEffect();
 
-		let counterAnimation = animationType;
+      counterAnimation = boosted ? animationType : "pop-right";
 
-		// handle high score
-		if (state.updateHighScore()) {
-			highScore.update(state.highScore);
-			highScore.addNewScoreEffect();
+      if (!state.highScoreFxPlayed) {
+        playAudio(sounds.highScore.audio);
+        state.highScoreFxPlayed = true;
+      }
+      if (!state.confettiPlayed) {
+        playConfetti();
+        state.confettiPlayed = true;
+      }
+      if (!state.gradientFxPlayed) {
+        state.gradientFxPlayed = true;
+      }
+    }
 
-			counterAnimation = boosted ? animationType : 'pop-right';
+    // handle goal reached
+    if (state.isGoalReached()) {
+      if (!boosted) {
+        playAudio(sounds.goalReached.audio);
+      }
+      goal.addNewGoalEffect("forward");
+      goalText.addNewTextEffect();
 
-			if (!state.highScoreFxPlayed) {
-				playAudio(sounds.highScore.audio);
-				state.highScoreFxPlayed = true;
-			}
-			if (!state.confettiPlayed) {
-				playConfetti();
-				state.confettiPlayed = true;
-			}
-			if (!state.gradientFxPlayed) {
-				state.gradientFxPlayed = true;
-			}
-		}
+      state.incrementGoal(boosted);
 
-		// handle goal reached
-		if (state.isGoalReached()) {
+      goal.update(state.currentGoal, true);
+      resetBar(bar, state.barSpeed());
+    }
 
-			if (!boosted) {
-				playAudio(sounds.goalReached.audio);
-			}
-			goal.addNewGoalEffect('forward');
-			goalText.addNewTextEffect();
+    counter.animate(counterAnimation);
+    counter.update(state.counter);
+  }
 
-			state.incrementGoal(boosted);
+  function increase(event?: MouseEvent): void {
+    if (window.electron) {
+      void window.electron.setDiscordStatus({ gameStatusRPC: "in-game" });
+    }
 
-			goal.update(state.currentGoal, true);
-			resetBar(bar, state.barSpeed());
-		}
+    state.increment();
+    animateBtn("increase");
+    playAudio(sounds.buttonInc.audio);
 
-		counter.animate(counterAnimation);
-		counter.update(state.counter);
-	}
+    if (state.counter === state.highScore + 1 && !state.gradientFxPlayed) {
+      state.gradientFxPlayed = true;
+    }
 
-	function increase(event?: MouseEvent): void {
+    if (event) {
+      displayCursorCount(state.countIncrement, event, false);
+    }
+    updateScoreAndGoal("pop", false);
+  }
 
-		if (window.electron) {
-			void window.electron.setDiscordStatus({ gameStatusRPC: 'in-game' });
-		}
+  function jumpToGoal(event?: MouseEvent): void {
+    const noBoostsText = document.getElementById("no-boosts");
+    const boostNotif = document.getElementById("boost-notif-text");
 
-		state.increment();
-		animateBtn('increase');
-		playAudio(sounds.buttonInc.audio);
+    if (state.boostsAvailable <= 0) {
+      animateBtn("decrease", true);
+      playAnimation(noBoostsText, "no-boosts-flash");
+      playAudio(sounds.noBoosts.audio);
+      return;
+    }
 
-		if (state.counter === state.highScore + 1 && !state.gradientFxPlayed) {
-			state.gradientFxPlayed = true;
-		}
+    const pointsAdded = state.currentGoal - state.counter;
 
-		if (event) {
-			displayCursorCount(state.countIncrement, event, false);
-		}
-		updateScoreAndGoal('pop', false);
-	}
+    state.boost();
 
-	function jumpToGoal(event?: MouseEvent): void {
+    animateBtn("decrease", false);
+    playAnimation(boostNotif, "boost-notification");
+    playAudio(sounds.useBoost.audio);
 
-		const noBoostsText = document.getElementById('no-boosts');
-		const boostNotif = document.getElementById('boost-notif-text');
+    removeHeart(state.boostsAvailable);
 
-		if (state.boostsAvailable <= 0) {
-			animateBtn('decrease', true);
-			playAnimation(noBoostsText, 'no-boosts-flash');
-			playAudio(sounds.noBoosts.audio);
-			return;
-		}
+    if (event) {
+      displayCursorCount(pointsAdded, event, true);
+    }
+    updateScoreAndGoal("pop-dec", true);
+  }
 
-		const pointsAdded = state.currentGoal - state.counter;
+  function restartGame(): void {
+    if (window.electron) {
+      void window.electron.setDiscordStatus({ gameStatusRPC: "in-game" });
+    }
+    // reset ui
+    state.reset();
 
-		state.boost();
+    // remove vfx from last game
+    highScore.removeNewScoreEffect();
+    goal.removeNewGoalEffect();
+    goalText.removeNewTextEffect();
 
-		animateBtn('decrease', false);
-		playAnimation(boostNotif, 'boost-notification');
-		playAudio(sounds.useBoost.audio);
+    // remove game over div
+    toggleGameOver(false);
 
-		removeHeart(state.boostsAvailable);
+    // reset values
+    counter.update(state.counter);
+    goal.update(state.currentGoal);
+    resetBar(bar, 20);
 
-		if (event) {
-			displayCursorCount(pointsAdded, event, true);
-		}
-		updateScoreAndGoal('pop-dec', true);
-	}
+    resetHearts();
+    resetHeartEffect();
 
-	function restartGame(): void {
+    // play reset anim + audio
+    playAudio(sounds.bgMusic.audio);
+    counter.animate("reset-shake");
 
-		if (window.electron) {
-			void window.electron.setDiscordStatus({ gameStatusRPC: 'in-game' });
-		}
-		// reset ui
-		state.reset();
+    goal.addNewGoalEffect("reverse");
+    goalText.addNewTextEffect();
+    goal.update(state.currentGoal, true, "reverse");
+  }
 
-		// remove vfx from last game
-		highScore.removeNewScoreEffect();
-		goal.removeNewGoalEffect();
-		goalText.removeNewTextEffect();
-
-		// remove game over div
-		toggleGameOver(false);
-
-		// reset values
-		counter.update(state.counter);
-		goal.update(state.currentGoal);
-		resetBar(bar, 20);
-
-		resetHearts();
-		resetHeartEffect();
-
-		// play reset anim + audio
-		playAudio(sounds.bgMusic.audio);
-		counter.animate('reset-shake');
-
-		goal.addNewGoalEffect('reverse');
-		goalText.addNewTextEffect();
-		goal.update(state.currentGoal, true, 'reverse');
-
-	}
-
-	return { increase, jumpToGoal, restartGame };
-
+  return { increase, jumpToGoal, restartGame };
 }

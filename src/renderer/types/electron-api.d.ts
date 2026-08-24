@@ -1,10 +1,9 @@
-
-import type { ElectronAPI } from '../../preload/preload';
+import type { ElectronAPI } from "../../preload/preload";
 
 declare global {
-	interface Window {
-		electron?: ElectronAPI
-	}
+  interface Window {
+    electron?: ElectronAPI;
+  }
 }
 
-export {}
+export {};
