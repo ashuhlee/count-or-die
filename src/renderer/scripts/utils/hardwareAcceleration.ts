@@ -1,4 +1,3 @@
-
 export default function checkHardwareAcceleration(): boolean {
   const canvas = document.createElement("canvas");
   const gl = canvas.getContext("webgl") || canvas.getContext("webgl2");
