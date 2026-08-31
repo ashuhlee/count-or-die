@@ -1,4 +1,4 @@
-import { beforeEach, expect, describe, test } from "vitest";
+import { beforeEach, expect, describe, test } from "vite-plus/test";
 import { setHighScoreDisplay } from "../src/renderer/scripts/components/highScoreDisplay.ts";
 import GameState from "../src/renderer/scripts/core/gameState.ts";
 
