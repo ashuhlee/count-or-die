@@ -9,4 +9,3 @@ old_code/
 .editorconfig
 eslint.config.ts
 .prettierrc
-.prettierignore
