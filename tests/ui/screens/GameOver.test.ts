@@ -220,6 +220,62 @@ describe("running out of time", () => {
   });
 });
 
+describe("the game over background", () => {
+  const background = () => game.$("#game-over .go-background [data-balatro]");
+
+  test("is not there while the game is on", () => {
+    game = renderGame();
+    game.wait(5000);
+
+    expect(game.$(".go-background")).toBeNull();
+    expect(game.$("[data-balatro]")).toBeNull();
+  });
+
+  test("is in place as soon as the game ends, before the screen shows", () => {
+    game = renderGame();
+    game.wait(TIME_IS_UP);
+
+    expect(isShown()).toBe(false);
+    expect(background()).not.toBeNull();
+  });
+
+  test("stays while the game over screen is showing", () => {
+    game = renderGame();
+    game.wait(TIME_IS_UP);
+    fireAnimationEnd(game.$("#red-flash"));
+
+    expect(isShown()).toBe(true);
+    expect(background()).not.toBeNull();
+  });
+
+  test("is gone again when the game restarts", () => {
+    game = renderGame();
+    game.wait(TIME_IS_UP);
+    game.click("#reset-img");
+
+    expect(background()).toBeNull();
+  });
+
+  test("is gone again after restarting from the game over screen", () => {
+    game = renderGame();
+    game.wait(TIME_IS_UP);
+    fireAnimationEnd(game.$("#red-flash"));
+    game.click("#game-over-btn");
+    game.wait(600);
+
+    expect(background()).toBeNull();
+  });
+
+  test("comes back for the next game over", () => {
+    game = renderGame();
+    game.wait(TIME_IS_UP);
+    game.click("#reset-img");
+    game.wait(TIME_IS_UP);
+
+    expect(background()).not.toBeNull();
+  });
+});
+
 describe("starting over", () => {
   test("the reset button restarts right away", () => {
     fakeElectron();

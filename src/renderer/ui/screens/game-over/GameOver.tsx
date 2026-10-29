@@ -14,6 +14,7 @@ import quitBtnPng from "@assets/ui/buttons/quit-btn.png";
 import { playSound } from "../../../utils/sounds.ts";
 import { useGame } from "../../../provider/useGame.ts";
 import BackToMenu from "./BackToMenu.tsx";
+import GameOverBackground from "./GameOverBackground.tsx";
 import { useGameOverView } from "./useGameOverView.ts";
 
 const QUIT_DELAY = 400;
@@ -37,6 +38,7 @@ export default function GameOver() {
 
   return (
     <div id="game-over" className={view.visible ? "visible" : undefined}>
+      {view.background && <GameOverBackground />}
       <div className="go-content">
         <div id="red-overlay"></div>
         <h2 className="you-died">

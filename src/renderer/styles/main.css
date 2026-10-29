@@ -906,9 +906,6 @@ img {
   height: 100%;
   place-items: center;
   font-family: "Silkscreen", sans-serif;
-  background: #ff4d88 url("../assets/ui/textures/tile-go.png") repeat 0 center;
-  background-size: 128px auto;
-  animation: slide 4s linear infinite reverse;
   z-index: 10;
   mask: url("../assets/ui/masks/drip-mask.png") no-repeat 0%
     200%/var(--mask-size);
@@ -919,6 +916,21 @@ img {
   #game-over {
     --mask-size: 200% 200%;
   }
+}
+#game-over .go-background {
+  position: absolute;
+  inset: 0;
+  z-index: -11;
+}
+#game-over::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -10;
+  background: url("../assets/ui/textures/tile-go-2.png") repeat 0 center;
+  background-size: 128px auto;
+  animation: slide 4s linear infinite reverse;
+  pointer-events: none;
 }
 #game-over.visible {
   transition:

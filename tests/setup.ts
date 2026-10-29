@@ -22,3 +22,9 @@ vi.mock("powerglitch", () => ({
   },
 }));
 vi.mock("canvas-confetti", () => ({ default: vi.fn() }));
+
+// the game over background needs WebGL, which jsdom does not have
+vi.mock("../src/renderer/ui/components/balatro/Balatro.tsx", async () => {
+  const { createElement } = await import("react");
+  return { default: () => createElement("div", { "data-balatro": "" }) };
+});

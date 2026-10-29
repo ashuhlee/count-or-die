@@ -9,6 +9,8 @@ import { useGameEvent } from "../../../provider/useGameEvent.ts";
 export function useGameOverView() {
   const [view, setView] = useState({
     visible: false,
+    // the animated background only exists from game over until the restart
+    background: false,
     phrase: "you died lolz",
     rainbow: false,
     scoreText: "score: 0",
@@ -19,6 +21,7 @@ export function useGameOverView() {
     waitingForFlash.current = true;
     setView((current) => ({
       ...current,
+      background: true,
       phrase: pickGameOverPhrase(isHighScore, Math.random()),
       rainbow: current.rainbow || isHighScore,
       scoreText: `Score: ${formatCounter(score)}`,
@@ -37,6 +40,7 @@ export function useGameOverView() {
     setView((current) => ({
       ...current,
       visible: false,
+      background: false,
       rainbow: false,
       phrase: pickGameOverPhrase(false, Math.random()),
     }));
