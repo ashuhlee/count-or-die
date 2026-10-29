@@ -1,6 +1,6 @@
 import smokeGif from "@assets/ui/deco/smoke.gif";
 
-import { splitLetters } from "../anim/animations.ts";
+import { cycleThemeColor } from "./goalStore.ts";
 
 export const HEART_COUNT = 4;
 
@@ -98,7 +98,8 @@ export function removeHeart(boostsLeft: number): void {
 
   if (boostsLeft === 0) {
     setState({ noBoosts: true });
-    splitLetters(".no-boost-text", "shake");
+    // the shake letters used to advance the shared color cycle too
+    cycleThemeColor();
   }
 }
 

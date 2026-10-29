@@ -18,7 +18,6 @@ type ProgressBarState = {
   phase: BarPhase;
   duration: number;
   running: boolean;
-  // bumped on every reset so the bar remounts and its CSS animation restarts
   resetCount: number;
 };
 
@@ -59,7 +58,7 @@ export const progressBarStore = {
 
 // vanilla side: the game code drives the bar through these
 export const progressBar = {
-  // restart the countdown, at a new speed if the round got faster
+  // restart the countdown at a new speed if the round got faster
   reset(speed: number = DEFAULT_DURATION): void {
     animStartTime = Date.now();
     setState({

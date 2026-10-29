@@ -42,7 +42,7 @@ export default function Controls() {
   }
 
   return (
-    <>
+    <div className="controls">
       <img
         id="soundBtn"
         alt="sound icon"
@@ -57,6 +57,6 @@ export default function Controls() {
           alert("Oops! The settings menu is not available in the beta.")
         }
       />
-    </>
+    </div>
   );
 }

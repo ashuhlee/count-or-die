@@ -5,6 +5,7 @@ import heartPurple from "@assets/ui/deco/px_heart_purple.png";
 import heartBlue from "@assets/ui/deco/px_heart_blue.png";
 import heartWhite from "@assets/ui/deco/px_heart_white.png";
 
+import Letters from "./Letters.tsx";
 import { heartStore } from "./heartStore.ts";
 
 const HEARTS = [
@@ -22,13 +23,14 @@ export default function Hearts() {
 
   return (
     <>
-      {/* splitLetters() rewrites this span's text by hand, so keep it static */}
       <h1
         className="no-boosts"
         id="no-boosts"
         style={{ display: noBoosts ? "grid" : "none" }}
       >
-        <span className="no-boost-text">no boosts left!</span>
+        <span className="no-boost-text">
+          <Letters text="no boosts left!" step={0.2} />
+        </span>
       </h1>
       <div className="hearts">
         {HEARTS.map(({ className, src }, index) => {

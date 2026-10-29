@@ -1,3 +1,4 @@
+import { flashScreen } from "../react/gameOverStore.ts";
 import { replenishHearts } from "../react/heartStore.ts";
 import { playAudio, audioConfig } from "../controls/audioHandler.ts";
 import { playAnimation, resetHeartEffect } from "../anim/animations.ts";
@@ -178,7 +179,6 @@ export default function setPowerUps({
       options.length > 0 ? options : POWER_UPS,
     );
 
-    const flash: HTMLElement | null = document.getElementById("red-flash");
     const container: HTMLElement | null =
       document.getElementById("game-container");
 
@@ -223,14 +223,7 @@ export default function setPowerUps({
         playAnimation(container, "penalty-shake");
         counter.animate("pop-min");
 
-        flash?.classList.add("flash-penalty");
-        flash?.addEventListener(
-          "animationend",
-          () => {
-            flash.classList.remove("flash-penalty");
-          },
-          { once: true },
-        );
+        flashScreen("flash-penalty");
       } else {
         counter.animate("pop");
       }

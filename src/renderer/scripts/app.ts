@@ -3,12 +3,11 @@ import {
   counter as counterDisplay,
   formatCounter,
 } from "./react/counterStore.ts";
+import { cycleThemeColor } from "./react/goalStore.ts";
+import { gameOverScreen } from "./react/gameOverStore.ts";
 import { mountReact } from "./react/main.tsx";
 
 import checkHardwareAcceleration from "./utils/hardwareAcceleration.ts";
-
-import renderGame from "./containers/gameContainer.ts";
-import renderMain from "./containers/mainContainer.ts";
 
 import setGameActions from "./core/gameActions.ts";
 import setPowerUps from "./core/powerUps.ts";
@@ -18,7 +17,6 @@ import { toggleGameOver, youDiedConsole } from "./core/gameOver.ts";
 import { keyboardControls } from "./controls/keyHandler.ts";
 import { playAudio, pauseAudio, audioConfig } from "./controls/audioHandler.ts";
 
-import { splitLetters } from "./anim/animations.ts";
 import { heartGlitch } from "./anim/glitchEffect.ts";
 
 import { highScore as highScoreDisplay } from "./react/highScoreStore.ts";
@@ -48,7 +46,7 @@ async function createGame(): Promise<void> {
   await alertHardwareAcceleration();
 
   playAudio(audioConfig.bgMusic.audio);
-  renderContent();
+  mountReact();
 
   const ui = createDomRefs();
   const ctx = createGameCtx();
@@ -70,12 +68,6 @@ async function alertHardwareAcceleration(): Promise<void> {
   }
 }
 
-function renderContent(): void {
-  renderMain();
-  renderGame();
-  mountReact();
-}
-
 function createDomRefs() {
   return {
     increaseBtn: document.getElementById("increase-img"),
@@ -85,9 +77,6 @@ function createDomRefs() {
     gameOverBtn: document.getElementById("game-over-btn"),
     menuBtn: document.getElementById("menu-btn"),
     quitBtn: document.getElementById("quit-btn"),
-
-    deathTracker: document.getElementById("death-tracker"),
-    scoreText: document.querySelector<HTMLElement>(".score-text"),
   };
 }
 
@@ -127,7 +116,8 @@ function createGameCtx() {
 }
 
 function initUserInterface(ctx: GameContext): void {
-  splitLetters(".game-name", "wavy");
+  // the title's letters used to advance the shared color cycle too
+  cycleThemeColor();
   heartGlitch();
 
   ctx.highScore.update(ctx.state.highScore);
@@ -151,7 +141,7 @@ function bindUIEvents(ctx: GameContext, ui: DomReference): void {
   });
 
   document.addEventListener("progressBarExp", () => {
-    onTimerExpired(ctx, ui);
+    onTimerExpired(ctx);
   });
 }
 
@@ -224,7 +214,7 @@ function onQuitClick(): void {
   }
 }
 
-function onTimerExpired(ctx: GameContext, ui: DomReference): void {
+function onTimerExpired(ctx: GameContext): void {
   if (ctx.state.isGoalReached() || ctx.state.isGameOver) return;
 
   playAudio(audioConfig.gameOver.audio);
@@ -245,15 +235,11 @@ function onTimerExpired(ctx: GameContext, ui: DomReference): void {
   const nextDeathCount = getDeathCount() + 1;
   setDeathCount(nextDeathCount);
 
-  if (ui.deathTracker) {
-    ui.deathTracker.textContent = String(nextDeathCount);
-  }
+  gameOverScreen.setDeathCount(nextDeathCount);
 
   const currentScore = formatCounter(ctx.state.counter);
 
-  if (ui.scoreText) {
-    ui.scoreText.textContent = `Score: ${currentScore}`;
-  }
+  gameOverScreen.setScoreText(`Score: ${currentScore}`);
   if (!window.electron) {
     youDiedConsole(currentScore);
   }

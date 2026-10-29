@@ -4,8 +4,6 @@ import increaseBtnPress from "@assets/ui/buttons/increase-press.png";
 import powerBtn from "@assets/ui/buttons/decrease.png";
 import powerBtnPress from "@assets/ui/buttons/decrease-press.png";
 
-import { cycleThemeColor } from "../react/goalStore.ts";
-
 const animClasses = [
   "pop",
   "pop-dec",
@@ -76,40 +74,6 @@ export function animateBtn(btnType: string, disabled = false) {
   setTimeout(() => {
     img.src = btnImages[btnType].normal;
   }, 100);
-}
-
-// show text by letter
-export function splitLetters(
-  className: string,
-  animationType = "fade",
-  direction = "forward",
-) {
-  const newColor: string = cycleThemeColor();
-  const isReverse: boolean = direction === "reverse";
-
-  const elements: NodeListOf<Element> = document.querySelectorAll(className);
-  elements.forEach((element) => {
-    const text = element.textContent;
-    element.textContent = "";
-
-    text.split("").forEach((char, index) => {
-      const span = document.createElement("span");
-      span.textContent = char === " " ? "\u00A0" : char;
-
-      const delayIndex = isReverse ? text.length - 1 - index : index;
-
-      if (animationType === "wavy") {
-        span.style.setProperty("--delay", `${delayIndex * 0.1}s`);
-      } else if (animationType === "shake") {
-        span.style.setProperty("--delay", `${delayIndex * 0.2}s`);
-      } else {
-        span.style.setProperty("--delay", `${delayIndex * 0.05}s`);
-        span.style.setProperty("color", newColor);
-      }
-
-      element.appendChild(span);
-    });
-  });
 }
 
 export function resetHeartEffect() {

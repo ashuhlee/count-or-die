@@ -1,33 +1,59 @@
-import { createPortal } from "react-dom";
+import cloudTopLeft from "@assets/ui/deco/clouds/cloud_1.png";
+import cloudBottomLeft from "@assets/ui/deco/clouds/cloud_2.png";
+import cloudTopRight from "@assets/ui/deco/clouds/cloud_3.png";
+import cloudBottomRight from "@assets/ui/deco/clouds/cloud_4.png";
+import cloudMini from "@assets/ui/deco/clouds/cloud_5.png";
 
 import Controls from "./Controls.tsx";
-import Counter from "./Counter.tsx";
 import CursorCounts from "./CursorCounts.tsx";
-import GoalBox from "./GoalBox.tsx";
-import Hearts from "./Hearts.tsx";
+import GameOver from "./GameOver.tsx";
+import GameScreen from "./GameScreen.tsx";
 import HighScore from "./HighScore.tsx";
 import LoadingScreen from "./LoadingScreen.tsx";
-import ProgressBar from "./ProgressBar.tsx";
+import RedFlash from "./RedFlash.tsx";
 
-// Root of the incremental React migration. Each ported component renders into a
-// placeholder element left behind by the vanilla containers, so the rest of the
-// UI keeps working while pieces move over one at a time.
+// The whole page. The power-up spawner, the smoke popups and the game-over
+// code still look elements up by id, so those ids stay put.
 export default function App() {
-  const controlsRoot = document.getElementById("controls-root");
-  const counterRoot = document.getElementById("counter-root");
-  const goalRoot = document.getElementById("goal-root");
-  const boostRoot = document.getElementById("boost-root");
-  const highScoreRoot = document.getElementById("high-score-root");
-  const progressRoot = document.getElementById("progress-root");
-
   return (
     <>
-      {controlsRoot && createPortal(<Controls />, controlsRoot)}
-      {counterRoot && createPortal(<Counter />, counterRoot)}
-      {goalRoot && createPortal(<GoalBox />, goalRoot)}
-      {boostRoot && createPortal(<Hearts />, boostRoot)}
-      {highScoreRoot && createPortal(<HighScore />, highScoreRoot)}
-      {progressRoot && createPortal(<ProgressBar />, progressRoot)}
+      {/* vfx */}
+      <div className="scanlines"></div>
+      <div className="scanlines-bg"></div>
+      <div className="top-gradient"></div>
+
+      {/* clouds */}
+      <div className="clouds">
+        <img className="cloud-t-left" alt="cloud" src={cloudTopLeft} />
+        <img className="cloud-b-left" alt="cloud" src={cloudBottomLeft} />
+        <img className="cloud-mini" alt="cloud" src={cloudMini} />
+        <img className="cloud-t-right" alt="cloud" src={cloudTopRight} />
+        <img className="cloud-b-right" alt="cloud" src={cloudBottomRight} />
+      </div>
+
+      <img
+        id="popupElement"
+        alt="smoke"
+        style={{ filter: "brightness(1.03) saturate(110%)" }}
+      />
+      <img
+        id="powerUpUsedElement"
+        alt="smoke"
+        style={{ filter: "brightness(1.03) saturate(110%)" }}
+      />
+
+      <Controls />
+
+      <RedFlash />
+      <GameOver />
+
+      <div className="app" id="app">
+        <GameScreen />
+      </div>
+      <HighScore />
+      <p id="app-ver" className="app-ver">
+        {__APP_VERSION__}
+      </p>
 
       {/* these position themselves with fixed positioning */}
       <CursorCounts />

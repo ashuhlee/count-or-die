@@ -8,7 +8,6 @@ import {
   goal,
   goalText,
 } from "../src/renderer/scripts/react/goalStore.ts";
-import { splitLetters } from "../src/renderer/scripts/anim/animations.ts";
 
 (
   globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }
@@ -85,20 +84,21 @@ describe("GoalBox", () => {
     expect(text().textContent).toBe("next: 30");
   });
 
-  test("the top border follows the latest letter color, from any text", () => {
-    const first = cycleThemeColor();
-    act(() => cycleThemeColor());
-    act(() => {
-      const title = document.createElement("span");
-      title.className = "x";
-      title.textContent = "hi";
-      container.appendChild(title);
-      splitLetters(".x", "wavy");
-    });
+  test("the top border follows the latest color picked", () => {
+    let first = "";
+    let second = "";
 
-    const border = box().style.borderTop;
-    expect(border).toContain("3px solid");
-    expect(border).not.toContain(first.toLowerCase());
+    act(() => {
+      first = cycleThemeColor();
+    });
+    const borderAfterFirst = box().style.borderTop;
+    expect(borderAfterFirst).toContain("3px solid");
+
+    act(() => {
+      second = cycleThemeColor();
+    });
+    expect(second).not.toBe(first);
+    expect(box().style.borderTop).not.toBe(borderAfterFirst);
   });
 
   test("new-goal effect adds its class and replays by remounting", () => {

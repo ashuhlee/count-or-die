@@ -1,3 +1,5 @@
+import { gameOverScreen } from "../react/gameOverStore.ts";
+
 const phrasesRegular = [
   "you died lolz",
   "lol loser",
@@ -28,58 +30,14 @@ export function toggleGameOver(
   isGameOver = false,
   highScoreReached = false,
 ): void {
-  let isNegative = true;
-  const backToMenu = document.getElementById("menu-btn") as HTMLElement;
-
-  backToMenu.addEventListener("mouseenter", () => {
-    backToMenu.style.transform = `scale(1.15) 
-			rotate(${isNegative ? "-4deg" : "4deg"})`;
-
-    backToMenu.style.setProperty(
-      "--arr-color",
-      isNegative ? "#FBB6FF" : "#FFDEB6",
-    );
-  });
-
-  backToMenu.addEventListener("mouseleave", () => {
-    backToMenu.style.transform = "";
-    backToMenu.style.removeProperty("--arr-color");
-    if (backToMenu) isNegative = !isNegative;
-  });
-
-  const flash = document.getElementById("red-flash");
-  const gameOverScreen = document.getElementById("game-over");
-
-  const displayText = document.querySelector(
-    ".go-text-random",
-  ) as HTMLTextAreaElement;
-  const scoreText = document.querySelector(
-    ".score-text",
-  ) as HTMLTextAreaElement;
-
-  if (highScoreReached) {
-    displayText.textContent = setRandomText(phrasesNewScore);
-    displayText.classList.add("rainbow-txt");
-    scoreText.classList.add("rainbow-txt");
-  } else {
-    displayText.textContent = setRandomText(phrasesRegular);
-  }
+  const phrase = setRandomText(
+    highScoreReached ? phrasesNewScore : phrasesRegular,
+  );
 
   if (isGameOver) {
-    flash.classList.add("flash");
-    flash.addEventListener(
-      "animationend",
-      () => {
-        flash.classList.remove("flash");
-        gameOverScreen.classList.add("visible");
-      },
-      { once: true },
-    );
+    gameOverScreen.show(phrase, highScoreReached);
   } else {
-    gameOverScreen.classList.remove("visible");
-
-    displayText.classList.remove("rainbow-txt");
-    scoreText.classList.remove("rainbow-txt");
+    gameOverScreen.hide(phrase);
   }
 }
 

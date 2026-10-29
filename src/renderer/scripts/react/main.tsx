@@ -4,10 +4,10 @@ import { createRoot } from "react-dom/client";
 
 import App from "./App.tsx";
 
-// Called once the vanilla containers have rendered their placeholders. Renders
-// synchronously so the DOM is ready before app.ts looks elements up.
+// Renders the whole page into #main. Synchronous, so app.ts can find the
+// elements it attaches listeners to right after this returns.
 export function mountReact(): void {
-  const container = document.getElementById("react-root");
+  const container = document.getElementById("main");
   if (!container) return;
 
   flushSync(() => {
