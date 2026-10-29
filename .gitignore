@@ -7,3 +7,4 @@ old_code/
 .vite/
 .DS_Store
 .editorconfig
+.archive/
