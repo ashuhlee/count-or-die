@@ -10,12 +10,13 @@ import GameOver from "./GameOver.tsx";
 import GameScreen from "./GameScreen.tsx";
 import HighScore from "./HighScore.tsx";
 import LoadingScreen from "./LoadingScreen.tsx";
+import PowerUps from "./PowerUps.tsx";
 import RedFlash from "./RedFlash.tsx";
 import SmokePopups from "./SmokePopups.tsx";
 import useKeyboardControls from "./useKeyboardControls.ts";
 
-// The whole page. The power-up spawner still looks elements up by id, so
-// those ids stay put.
+// The whole page. A few animations are still replayed by hand on elements
+// found by id (see playAnimation), so those ids stay put.
 export default function App() {
   useKeyboardControls();
 
@@ -53,6 +54,7 @@ export default function App() {
       {/* these position themselves with fixed positioning */}
       <CursorCounts />
       <LoadingScreen />
+      <PowerUps />
     </>
   );
 }

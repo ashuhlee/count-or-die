@@ -1,5 +1,6 @@
 import { flashScreen } from "../react/gameOverStore.ts";
 import { replenishHearts } from "../react/heartStore.ts";
+import { powerUps } from "../react/powerUpStore.ts";
 import { showSmoke } from "../react/smokeStore.ts";
 import { playAudio, audioConfig } from "../controls/audioHandler.ts";
 import { playAnimation, resetHeartEffect } from "../anim/animations.ts";
@@ -163,7 +164,8 @@ export default function setPowerUps({
     }
   }
 
-  // creates element in DOM and handles click event listener
+  // puts a falling power-up on screen; collecting or missing it restarts the
+  // spawn timer
   function spawnPowerUp(): void {
     const boostsFull: boolean = state.boostsAvailable >= 4;
 
@@ -179,63 +181,36 @@ export default function setPowerUps({
       options.length > 0 ? options : POWER_UPS,
     );
 
-    const container: HTMLElement | null =
-      document.getElementById("game-container");
+    powerUps.spawn({
+      type: powerUp.type,
+      icon: powerUp.icon,
+      fall: Math.random() < 0.5 ? "falling" : "falling-reverse",
+      side: Math.random() < 0.5 ? "left" : "right",
+      xRand: Math.random(),
 
-    const spawnArea: HTMLElement = document.createElement("div");
-    spawnArea.className = "spawn-area";
+      onCollect: (rect) => {
+        applyPowerUp(powerUp);
+        playAudio(powerUp.sfx);
 
-    const icon: HTMLImageElement = document.createElement("img");
-    icon.className = "power-up-img";
-    icon.src = powerUp.icon;
-    icon.dataset.powerUpType = powerUp.type;
+        // puff of smoke next to where the power-up was
+        showSmoke("powerUpUsedElement", rect.left + 20, rect.top + 30);
 
-    icon.style.animation =
-      Math.random() < 0.5
-        ? "falling 2.8s linear forwards"
-        : "falling-reverse 2.8s linear forwards";
+        if (powerUp.effect === "bad") {
+          const container = document.getElementById("game-container");
+          playAnimation(container, "penalty-shake");
+          counter.animate("pop-min");
 
-    const side = Math.random() < 0.5 ? "left" : "right";
-    icon.classList.add(`spawn-area--${side}`);
+          flashScreen("flash-penalty");
+        } else {
+          counter.animate("pop");
+        }
 
-    const mainDiv: HTMLElement | null = document.getElementById("main");
-    mainDiv?.appendChild(spawnArea);
-    spawnArea.appendChild(icon);
+        if (!state.isGameOver) spawnCooldown();
+      },
 
-    const spawnAreaWidth: number = spawnArea.offsetWidth;
-    const xPos = Math.floor(
-      Math.random() * (Math.min(spawnAreaWidth / 3, 150) + 1),
-    );
-
-    if (spawnAreaWidth > 600) {
-      icon.style[side] = `${xPos}px`;
-    }
-
-    icon.addEventListener("click", () => {
-      applyPowerUp(powerUp);
-      playAudio(powerUp.sfx);
-
-      addUseEffect(icon);
-      icon.remove();
-      spawnArea.remove();
-
-      if (powerUp.effect === "bad") {
-        playAnimation(container, "penalty-shake");
-        counter.animate("pop-min");
-
-        flashScreen("flash-penalty");
-      } else {
-        counter.animate("pop");
-      }
-
-      if (!state.isGameOver) spawnCooldown();
-    });
-
-    icon.addEventListener("animationend", () => {
-      spawnArea.remove();
-      icon.remove();
-
-      if (!state.isGameOver) spawnCooldown();
+      onMiss: () => {
+        if (!state.isGameOver) spawnCooldown();
+      },
     });
   }
 
@@ -269,13 +244,7 @@ export default function setPowerUps({
   // stops all power-up activity: cancels spawn timer + clears screen
   function clearPowerUps(): void {
     clearSpawnTimer();
-    document.querySelectorAll(".spawn-area").forEach((el) => el.remove());
-  }
-
-  // puff of smoke next to where the power-up was
-  function addUseEffect(icon: HTMLElement): void {
-    const rect: DOMRect = icon.getBoundingClientRect();
-    showSmoke("powerUpUsedElement", rect.left + 20, rect.top + 30);
+    powerUps.clear();
   }
 
   return { spawnCooldown, clearPowerUps };
