@@ -1,7 +1,9 @@
 import chatTip from "@assets/ui/svg/chat-tip.svg";
 
 import decreaseBtn from "@assets/ui/buttons/decrease.png";
+import decreaseBtnPress from "@assets/ui/buttons/decrease-press.png";
 import increaseBtn from "@assets/ui/buttons/increase.png";
+import increaseBtnPress from "@assets/ui/buttons/increase-press.png";
 import resetBtn from "@assets/ui/buttons/reset-btn.png";
 
 import Counter from "./Counter.tsx";
@@ -9,6 +11,7 @@ import GoalBox from "./GoalBox.tsx";
 import Hearts from "./Hearts.tsx";
 import Letters from "./Letters.tsx";
 import { gameControls } from "./gameControls.ts";
+import PressButton from "./PressButton.tsx";
 import ProgressBar from "./ProgressBar.tsx";
 
 // The button handlers come from app.ts through gameControls. Playing
@@ -47,20 +50,24 @@ export default function GameScreen() {
       <div className="buttons">
         {/* boost button */}
         <div id="decrease-button">
-          <img
-            src={decreaseBtn}
+          <PressButton
+            type="decrease"
             id="decrease-img"
             alt="boost-reg"
-            onClick={(event) => gameControls.boost(event.nativeEvent)}
+            normal={decreaseBtn}
+            pressed={decreaseBtnPress}
+            onClick={gameControls.boost}
           />
         </div>
         {/* increment button */}
         <div id="increase-button">
-          <img
-            src={increaseBtn}
+          <PressButton
+            type="increase"
             id="increase-img"
             alt="increase-reg"
-            onClick={(event) => gameControls.increase(event.nativeEvent)}
+            normal={increaseBtn}
+            pressed={increaseBtnPress}
+            onClick={gameControls.increase}
           />
         </div>
       </div>

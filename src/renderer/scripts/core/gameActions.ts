@@ -1,13 +1,10 @@
 import { playAudio } from "../controls/audioHandler.ts";
 
 import { removeHeart, resetHearts } from "../react/heartStore.ts";
+import { animateBtn } from "../react/buttonStore.ts";
 import { displayCursorCount } from "../react/cursorStore.ts";
 
-import {
-  animateBtn,
-  playAnimation,
-  resetHeartEffect,
-} from "../anim/animations.ts";
+import { playAnimation, resetHeartEffect } from "../anim/animations.ts";
 import { playConfetti } from "../anim/confetti.ts";
 
 import { toggleGameOver } from "./gameOver.ts";

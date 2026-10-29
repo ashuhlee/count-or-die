@@ -1,5 +1,6 @@
 import { flashScreen } from "../react/gameOverStore.ts";
 import { replenishHearts } from "../react/heartStore.ts";
+import { showSmoke } from "../react/smokeStore.ts";
 import { playAudio, audioConfig } from "../controls/audioHandler.ts";
 import { playAnimation, resetHeartEffect } from "../anim/animations.ts";
 
@@ -7,7 +8,6 @@ import GameState from "./gameState.ts";
 import type { counter as counterDisplay } from "../react/counterStore.ts";
 
 import { candy, donut, badDonut, star, superstar } from "@assets/ui/power-ups";
-import smokeGif from "@assets/ui/deco/smoke.gif";
 
 type PowerUpType =
   | "double_click"
@@ -215,7 +215,7 @@ export default function setPowerUps({
       applyPowerUp(powerUp);
       playAudio(powerUp.sfx);
 
-      addUseEffect(icon, smokeGif);
+      addUseEffect(icon);
       icon.remove();
       spawnArea.remove();
 
@@ -272,36 +272,10 @@ export default function setPowerUps({
     document.querySelectorAll(".spawn-area").forEach((el) => el.remove());
   }
 
-  function addUseEffect(icon: HTMLElement, imgType: string): void {
-    const popupElement = document.getElementById(
-      "powerUpUsedElement",
-    ) as HTMLImageElement;
-    if (!popupElement) return;
-
-    const rect: DOMRect = icon.getBoundingClientRect()!;
-
-    const effectWidth = 70;
-    const effectHeight = 70;
-
-    const xPos: number = rect.left + 20;
-    const yPos: number = rect.top + 30;
-
-    popupElement.style.left = `${xPos}px`;
-    popupElement.style.top = `${yPos}px`;
-
-    popupElement.style.width = `${effectWidth}px`;
-    popupElement.style.height = `${effectHeight}px`;
-
-    // display smoke effect
-    popupElement.src = "";
-    popupElement.src = `${imgType}?t=${Date.now()}`;
-
-    popupElement.style.display = "block";
-    popupElement.style.zIndex = `2`;
-
-    setTimeout(() => {
-      popupElement.style.display = "none";
-    }, 3000);
+  // puff of smoke next to where the power-up was
+  function addUseEffect(icon: HTMLElement): void {
+    const rect: DOMRect = icon.getBoundingClientRect();
+    showSmoke("powerUpUsedElement", rect.left + 20, rect.top + 30);
   }
 
   return { spawnCooldown, clearPowerUps };

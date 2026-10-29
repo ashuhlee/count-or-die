@@ -1,11 +1,9 @@
-import smokeGif from "@assets/ui/deco/smoke.gif";
-
 import { cycleThemeColor } from "./goalStore.ts";
+import { showSmoke } from "./smokeStore.ts";
 
 export const HEART_COUNT = 4;
 
 const RESTORE_STAGGER = 150;
-const SMOKE_DURATION = 3000;
 
 type HeartSlot = { used: boolean; restoring: boolean };
 type HeartsState = { slots: HeartSlot[]; noBoosts: boolean };
@@ -54,38 +52,19 @@ export const heartStore = {
   },
 };
 
-// the smoke popup is a shared element (also used by powerUps), so it is still
-// positioned by hand over the heart's on-screen rect
+// puff of smoke over the heart's on-screen position
 function addUseEffect(boostsLeft: number, powerUp = false): void {
   const target = document.getElementById(`boost-${boostsLeft + 1}`);
-  const popupElement = document.getElementById(
-    "popupElement",
-  ) as HTMLImageElement;
-
   const rect = target.getBoundingClientRect();
-
-  const smokeWidth = 70;
-  const smokeHeight = 70;
 
   const xOffset = -30;
   const yOffset = -36;
 
-  popupElement.style.left = `${powerUp ? rect.left + xOffset : rect.left}px`;
-  popupElement.style.top = `${powerUp ? rect.top + yOffset : rect.top}px`;
-
-  popupElement.style.width = `${smokeWidth}px`;
-  popupElement.style.height = `${smokeHeight}px`;
-
-  // display smoke effect
-  popupElement.src = "";
-  popupElement.src = `${smokeGif}?t=${Date.now()}`;
-
-  popupElement.style.display = "block";
-  popupElement.style.zIndex = `2`;
-
-  setTimeout(() => {
-    popupElement.style.display = "none";
-  }, SMOKE_DURATION);
+  showSmoke(
+    "popupElement",
+    powerUp ? rect.left + xOffset : rect.left,
+    powerUp ? rect.top + yOffset : rect.top,
+  );
 }
 
 // vanilla side: same functions the game code already calls

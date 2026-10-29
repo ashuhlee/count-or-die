@@ -1,9 +1,3 @@
-import increaseBtn from "@assets/ui/buttons/increase.png";
-import increaseBtnPress from "@assets/ui/buttons/increase-press.png";
-
-import powerBtn from "@assets/ui/buttons/decrease.png";
-import powerBtnPress from "@assets/ui/buttons/decrease-press.png";
-
 const animClasses = [
   "pop",
   "pop-dec",
@@ -16,17 +10,6 @@ const animClasses = [
   "boost-notification",
   "penalty-shake",
 ];
-
-export const btnImages = {
-  increase: {
-    normal: increaseBtn,
-    pressed: increaseBtnPress,
-  },
-  decrease: {
-    normal: powerBtn,
-    pressed: powerBtnPress,
-  },
-};
 
 // main animation function
 export function playAnimation(
@@ -47,33 +30,6 @@ export function playAnimationMulti(elements: HTMLElement[], className: string) {
   elements.forEach((element) => {
     playAnimation(element, className);
   });
-}
-
-// clicking animation
-export function animateBtn(btnType: string, disabled = false) {
-  const img = document.getElementById(`${btnType}-img`) as HTMLImageElement;
-  img.src = btnImages[btnType].pressed;
-
-  if (disabled) {
-    playAnimation(img, "no-boosts-shake");
-    img.animate(
-      [
-        {
-          filter:
-            "opacity(0.4) drop-shadow(0 0 0 red) drop-shadow(0 0 0 red) brightness(0.8) saturate(120%)",
-        },
-        { filter: "none" },
-      ],
-      {
-        duration: 800,
-        easing: "ease",
-        fill: "forwards",
-      },
-    );
-  }
-  setTimeout(() => {
-    img.src = btnImages[btnType].normal;
-  }, 100);
 }
 
 export function resetHeartEffect() {

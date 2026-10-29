@@ -11,10 +11,11 @@ import GameScreen from "./GameScreen.tsx";
 import HighScore from "./HighScore.tsx";
 import LoadingScreen from "./LoadingScreen.tsx";
 import RedFlash from "./RedFlash.tsx";
+import SmokePopups from "./SmokePopups.tsx";
 import useKeyboardControls from "./useKeyboardControls.ts";
 
-// The whole page. The power-up spawner and the smoke popups still look
-// elements up by id, so those ids stay put.
+// The whole page. The power-up spawner still looks elements up by id, so
+// those ids stay put.
 export default function App() {
   useKeyboardControls();
 
@@ -34,16 +35,7 @@ export default function App() {
         <img className="cloud-b-right" alt="cloud" src={cloudBottomRight} />
       </div>
 
-      <img
-        id="popupElement"
-        alt="smoke"
-        style={{ filter: "brightness(1.03) saturate(110%)" }}
-      />
-      <img
-        id="powerUpUsedElement"
-        alt="smoke"
-        style={{ filter: "brightness(1.03) saturate(110%)" }}
-      />
+      <SmokePopups />
 
       <Controls />
 

@@ -27,8 +27,6 @@ describe("Hearts", () => {
 
   beforeEach(() => {
     vi.useFakeTimers();
-    // the smoke popup is shared with the power-ups
-    document.body.innerHTML = `<img id="popupElement" alt="smoke" />`;
     container = document.createElement("div");
     document.body.appendChild(container);
     root = createRoot(container);
