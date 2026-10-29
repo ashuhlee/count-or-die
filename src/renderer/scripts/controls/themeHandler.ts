@@ -1,4 +1,4 @@
-import { barColors } from "../components/progressBarDisplay.ts";
+import { barColors } from "../react/progressBarStore.ts";
 
 import tile4 from "@assets/ui/textures/tile-4.png";
 import resetBtnPink from "@assets/ui/buttons/reset-btn-pink.png";

@@ -1,6 +1,5 @@
 import { playAudio } from "../controls/audioHandler.ts";
 
-import { resetBar } from "../components/progressBarDisplay.ts";
 import { removeHeart, resetHearts } from "../react/heartStore.ts";
 import { displayCursorCount } from "../react/cursorStore.ts";
 
@@ -19,6 +18,10 @@ type Sounds = typeof import("../controls/audioHandler.ts").audioConfig;
 interface CounterUI {
   update: (value: number) => void;
   animate: (type: string) => void;
+}
+
+interface ProgressBarUI {
+  reset: (speed?: number) => void;
 }
 
 interface HighScoreUI {
@@ -44,7 +47,7 @@ interface GameActions {
   highScore: HighScoreUI;
   goal: GoalUI;
   goalText: GoalTextUI;
-  bar: HTMLElement;
+  bar: ProgressBarUI;
   sounds: Sounds;
 }
 
@@ -91,7 +94,7 @@ export default function setGameActions({
       state.incrementGoal(boosted);
 
       goal.update(state.currentGoal, true);
-      resetBar(bar, state.barSpeed());
+      bar.reset(state.barSpeed());
     }
 
     counter.animate(counterAnimation);
@@ -162,7 +165,7 @@ export default function setGameActions({
     // reset values
     counter.update(state.counter);
     goal.update(state.currentGoal);
-    resetBar(bar, 20);
+    bar.reset(20);
 
     resetHearts();
     resetHeartEffect();

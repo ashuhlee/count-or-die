@@ -20,7 +20,7 @@ export default function renderGame() {
 			<img src="${chatTip}" class="chat-tip" alt="chat tip"/>
 		</div>
 		
-        <div class="progress"><div class="pg-lines"></div><div class="progress-bar" id="progress-bar"></div><div class="progress-bg"></div></div>
+        <div class="progress" id="progress-root"></div>
         <h1 class="title"><span class="game-name">count or die</span></h1>
 
         <div class="counter-container" id="counter-root"></div>

@@ -23,10 +23,7 @@ import { heartGlitch } from "./anim/glitchEffect.ts";
 
 import { highScore as highScoreDisplay } from "./react/highScoreStore.ts";
 import { setGoalDisplay, setGradientText } from "./components/goalDisplay.ts";
-import {
-  initProgressBar,
-  updateBarColor,
-} from "./components/progressBarDisplay.ts";
+import { progressBar as progressBarDisplay } from "./react/progressBarStore.ts";
 
 import { hideLoadingScreen, showLoadingScreen } from "./react/loadingStore.ts";
 
@@ -95,7 +92,8 @@ function createDomRefs() {
 }
 
 function createGameCtx(ui: DomReference) {
-  const progressBar = initProgressBar();
+  const progressBar = progressBarDisplay;
+  progressBar.reset();
   const state = new GameState();
 
   const counter = counterDisplay;
@@ -173,7 +171,7 @@ function startFrameLoop(ctx: GameContext): void {
       if (ctx.state.updateHighScore()) {
         ctx.state.isHighScore = true;
       }
-      updateBarColor(ctx.progressBar, ctx.state.isHighScore);
+      ctx.progressBar.tick(ctx.state.isHighScore);
     }
     requestAnimationFrame(frame);
   }
@@ -241,7 +239,7 @@ function onTimerExpired(ctx: GameContext, ui: DomReference): void {
   }
 
   ctx.state.setGameOver(true);
-  ctx.progressBar.style.animation = "none";
+  ctx.progressBar.stop();
   toggleGameOver(true, ctx.state.isHighScore);
 
   const nextDeathCount = getDeathCount() + 1;
