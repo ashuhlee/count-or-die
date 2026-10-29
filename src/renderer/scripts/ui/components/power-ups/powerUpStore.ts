@@ -1,3 +1,5 @@
+import { createStore } from "../../createStore.ts";
+
 export type SpawnedPowerUp = {
   id: number;
   type: string;
@@ -14,36 +16,25 @@ export type SpawnedPowerUp = {
 
 export type NewPowerUp = Omit<SpawnedPowerUp, "id">;
 
-const listeners = new Set<() => void>();
-let items: SpawnedPowerUp[] = [];
+const store = createStore<SpawnedPowerUp[]>([]);
 let nextId = 0;
 
-function setItems(next: SpawnedPowerUp[]): void {
-  items = next;
-  listeners.forEach((listener) => listener());
-}
-
-// React side: read the falling power-ups and remove them once they are gone
+// For the components: the falling power-ups, and removing one once it is gone
 export const powerUpStore = {
-  subscribe(listener: () => void) {
-    listeners.add(listener);
-    return () => {
-      listeners.delete(listener);
-    };
-  },
-  getSnapshot: () => items,
+  subscribe: store.subscribe,
+  getSnapshot: store.getSnapshot,
   remove(id: number) {
-    setItems(items.filter((item) => item.id !== id));
+    store.set(store.getSnapshot().filter((item) => item.id !== id));
   },
 };
 
-// vanilla side: the power-up system spawns and clears them
+// For the game code: spawn power-ups and clear them
 export const powerUps = {
   spawn(powerUp: NewPowerUp): void {
-    setItems([...items, { ...powerUp, id: nextId++ }]);
+    store.set([...store.getSnapshot(), { ...powerUp, id: nextId++ }]);
   },
 
   clear(): void {
-    setItems([]);
+    store.set([]);
   },
 };

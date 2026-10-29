@@ -1,3 +1,5 @@
+import { createStore } from "../../createStore.ts";
+
 import { cycleThemeColor } from "../goal/goalStore.ts";
 import { showSmoke } from "../smoke/smokeStore.ts";
 
@@ -8,8 +10,7 @@ const RESTORE_STAGGER = 150;
 type HeartSlot = { used: boolean; restoring: boolean };
 type HeartsState = { slots: HeartSlot[]; noBoosts: boolean };
 
-const listeners = new Set<() => void>();
-let state = createInitialState();
+const store = createStore(createInitialState());
 
 function createInitialState(): HeartsState {
   return {
@@ -21,34 +22,24 @@ function createInitialState(): HeartsState {
   };
 }
 
-function setState(next: Partial<HeartsState>): void {
-  state = { ...state, ...next };
-  listeners.forEach((listener) => listener());
-}
-
 function setSlot(index: number, next: Partial<HeartSlot>): void {
-  setState({
-    slots: state.slots.map((slot, i) =>
-      i === index ? { ...slot, ...next } : slot,
-    ),
+  store.patch({
+    slots: store
+      .getSnapshot()
+      .slots.map((slot, i) => (i === index ? { ...slot, ...next } : slot)),
   });
 }
 
-// React side: read the state
+// For the components: the state
 export const heartStore = {
-  subscribe(listener: () => void) {
-    listeners.add(listener);
-    return () => {
-      listeners.delete(listener);
-    };
-  },
-  getSnapshot: () => state,
+  subscribe: store.subscribe,
+  getSnapshot: store.getSnapshot,
   endRestore(index: number) {
-    if (state.slots[index]?.restoring) setSlot(index, { restoring: false });
+    if (store.getSnapshot().slots[index]?.restoring)
+      setSlot(index, { restoring: false });
   },
   reset() {
-    state = createInitialState();
-    listeners.forEach((listener) => listener());
+    store.set(createInitialState());
   },
 };
 
@@ -67,16 +58,16 @@ function addUseEffect(boostsLeft: number, powerUp = false): void {
   );
 }
 
-// vanilla side: same functions the game code already calls
+// For the game code: use up, restore and reset the hearts
 export function removeHeart(boostsLeft: number): void {
   const index = boostsLeft;
-  if (!state.slots[index]) return;
+  if (!store.getSnapshot().slots[index]) return;
 
   setSlot(index, { used: true });
   addUseEffect(boostsLeft);
 
   if (boostsLeft === 0) {
-    setState({ noBoosts: true });
+    store.patch({ noBoosts: true });
     // the shake letters used to advance the shared color cycle too
     cycleThemeColor();
   }
@@ -86,7 +77,7 @@ export function replenishHearts(boostsLeft: number, powerUpType: string): void {
   let restoreCount = 0;
 
   for (let i = 1; i <= boostsLeft; i++) {
-    if (!state.slots[i - 1]?.used) continue;
+    if (!store.getSnapshot().slots[i - 1]?.used) continue;
 
     const delay =
       powerUpType === "replenish_boosts" && restoreCount > 0
@@ -100,12 +91,12 @@ export function replenishHearts(boostsLeft: number, powerUpType: string): void {
     }, delay);
   }
 
-  if (boostsLeft > 0) setState({ noBoosts: false });
+  if (boostsLeft > 0) store.patch({ noBoosts: false });
 }
 
 export function resetHearts(): void {
-  setState({
-    slots: state.slots.map((slot) => ({ ...slot, used: false })),
+  store.patch({
+    slots: store.getSnapshot().slots.map((slot) => ({ ...slot, used: false })),
     noBoosts: false,
   });
 }

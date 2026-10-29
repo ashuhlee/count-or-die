@@ -1,33 +1,24 @@
+import { createStore } from "../../createStore.ts";
+
 type HighScoreState = { score: number; isNew: boolean };
 
-const listeners = new Set<() => void>();
-let state: HighScoreState = { score: 0, isNew: false };
+const store = createStore<HighScoreState>({ score: 0, isNew: false });
 
-function setState(next: Partial<HighScoreState>): void {
-  state = { ...state, ...next };
-  listeners.forEach((listener) => listener());
-}
-
-// React side: read the state
+// For the components: the state
 export const highScoreStore = {
-  subscribe(listener: () => void) {
-    listeners.add(listener);
-    return () => {
-      listeners.delete(listener);
-    };
-  },
-  getSnapshot: () => state,
+  subscribe: store.subscribe,
+  getSnapshot: store.getSnapshot,
 };
 
-// vanilla side: same API the game code already calls
+// For the game code: update the score and its highlight
 export const highScore = {
   update(score: number): void {
-    setState({ score });
+    store.patch({ score });
   },
   addNewScoreEffect(): void {
-    setState({ isNew: true });
+    store.patch({ isNew: true });
   },
   removeNewScoreEffect(): void {
-    setState({ isNew: false });
+    store.patch({ isNew: false });
   },
 };

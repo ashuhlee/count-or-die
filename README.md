@@ -152,23 +152,22 @@ src/
 ├── main/              Electron main process (window, Discord Rich Presence)
 ├── preload/           Bridge between Electron and the game
 └── renderer/
-    ├── assets/        Images and audio
-    ├── styles/        SCSS and the compiled main.css
+    ├── assets/
+    ├── styles/
     └── scripts/
         ├── app.ts     Starts the game and connects the pieces below
         ├── core/      Game rules: state, actions, power-ups, game over
         ├── controls/  What buttons, keys and settings do (input, audio)
-        ├── anim/      Animation helpers (confetti, glitch, replaying CSS animations)
+        ├── anim/      Animation helpers
         ├── utils/
         └── ui/        React interface
-            ├── screens/      Full screens: game, game over
-            ├── overlays/     Drawn over the whole screen: loading screen
-            └── components/   One folder per feature (counter, hearts, goal, ...),
-                              a component next to the store the game code updates it through
+            ├── screens/      Full screens
+            ├── overlays/     Drawn over the whole screen
+            └── components/   Components and state stores
 tests/
 ├── core/              Game logic tests
 ├── controls/          Input tests
-├── ui/                Interface tests (components/, screens/ and overlays/, one file per feature)
+├── ui/                Interface tests (components, screens and overlays)
 └── helpers/           Shared test utilities
 ```
 

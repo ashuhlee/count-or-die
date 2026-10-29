@@ -1,3 +1,5 @@
+import { createStore } from "../../createStore.ts";
+
 export const barColors = {
   highScore: "var(--rainbow-gradient-bar)",
   primary: "#B4A6FF",
@@ -21,22 +23,16 @@ type ProgressBarState = {
   resetCount: number;
 };
 
-const listeners = new Set<() => void>();
-let state: ProgressBarState = {
+const store = createStore<ProgressBarState>({
   phase: "primary",
   duration: DEFAULT_DURATION,
   running: true,
   resetCount: 0,
-};
+});
 
 // the CSS animation drives the bar's width; this clock mirrors it so the game
 // knows when to change color and when time has run out
 let animStartTime: number | null = null;
-
-function setState(next: Partial<ProgressBarState>): void {
-  state = { ...state, ...next };
-  listeners.forEach((listener) => listener());
-}
 
 function getPhase(percentage: number, highScoreReached: boolean): BarPhase {
   if (percentage <= 15) return "criticalFast";
@@ -45,27 +41,22 @@ function getPhase(percentage: number, highScoreReached: boolean): BarPhase {
   return highScoreReached ? "highScore" : "primary";
 }
 
-// React side: read the state
+// For the components: the state
 export const progressBarStore = {
-  subscribe(listener: () => void) {
-    listeners.add(listener);
-    return () => {
-      listeners.delete(listener);
-    };
-  },
-  getSnapshot: () => state,
+  subscribe: store.subscribe,
+  getSnapshot: store.getSnapshot,
 };
 
-// vanilla side: the game code drives the bar through these
+// For the game code: restart, tick and stop the countdown
 export const progressBar = {
   // restart the countdown at a new speed if the round got faster
   reset(speed: number = DEFAULT_DURATION): void {
     animStartTime = Date.now();
-    setState({
+    store.patch({
       phase: "primary",
       duration: speed,
       running: true,
-      resetCount: state.resetCount + 1,
+      resetCount: store.getSnapshot().resetCount + 1,
     });
   },
 
@@ -75,7 +66,8 @@ export const progressBar = {
 
     // track how much time has passed
     const elapsed = (Date.now() - animStartTime) / 1000; // ms to seconds
-    const cycle = (elapsed % state.duration) / state.duration;
+    const cycle =
+      (elapsed % store.getSnapshot().duration) / store.getSnapshot().duration;
     const percentage = Math.round((1 - cycle) * 100);
 
     if (percentage < 0.1) {
@@ -84,11 +76,11 @@ export const progressBar = {
     }
 
     const phase = getPhase(percentage, highScoreReached);
-    if (phase !== state.phase) setState({ phase });
+    if (phase !== store.getSnapshot().phase) store.patch({ phase });
   },
 
   // freeze the bar (game over)
   stop(): void {
-    setState({ running: false });
+    store.patch({ running: false });
   },
 };

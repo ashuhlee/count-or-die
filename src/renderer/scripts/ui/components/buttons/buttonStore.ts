@@ -1,3 +1,5 @@
+import { createStore } from "../../createStore.ts";
+
 const PRESS_DURATION = 100;
 
 export type ButtonType = "increase" | "decrease";
@@ -11,11 +13,10 @@ type ButtonState = {
 
 type ButtonsState = Record<ButtonType, ButtonState>;
 
-const listeners = new Set<() => void>();
 const releaseTimers: Partial<
   Record<ButtonType, ReturnType<typeof setTimeout>>
 > = {};
-let state: ButtonsState = createInitialState();
+const store = createStore(createInitialState());
 
 function createInitialState(): ButtonsState {
   return {
@@ -25,35 +26,31 @@ function createInitialState(): ButtonsState {
 }
 
 function setButton(type: ButtonType, next: Partial<ButtonState>): void {
-  state = { ...state, [type]: { ...state[type], ...next } };
-  listeners.forEach((listener) => listener());
+  const state = store.getSnapshot();
+  store.set({ ...state, [type]: { ...state[type], ...next } });
 }
 
-// React side: read the state
+// For the components: the state
 export const buttonStore = {
-  subscribe(listener: () => void) {
-    listeners.add(listener);
-    return () => {
-      listeners.delete(listener);
-    };
-  },
-  getSnapshot: () => state,
+  subscribe: store.subscribe,
+  getSnapshot: store.getSnapshot,
 
   reset() {
     Object.values(releaseTimers).forEach(clearTimeout);
-    state = createInitialState();
-    listeners.forEach((listener) => listener());
+    store.set(createInitialState());
   },
 };
 
-// vanilla side: same function the game code already calls. Shows the pressed
-// image for a moment; a disabled press also shakes the button.
+// For the game code: show the pressed image for a moment; a disabled press
+// also shakes the button.
 export function animateBtn(type: ButtonType, disabled = false): void {
   clearTimeout(releaseTimers[type]);
 
   setButton(type, {
     pressed: true,
-    shakeId: disabled ? state[type].shakeId + 1 : state[type].shakeId,
+    shakeId: disabled
+      ? store.getSnapshot()[type].shakeId + 1
+      : store.getSnapshot()[type].shakeId,
   });
 
   releaseTimers[type] = setTimeout(

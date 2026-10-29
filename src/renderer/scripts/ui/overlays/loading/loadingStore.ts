@@ -1,43 +1,38 @@
+import { createStore } from "../../createStore.ts";
+
 const HIDE_DELAY = 600;
 
 type LoadingState = { mounted: boolean; visible: boolean; hiding: boolean };
 
-const listeners = new Set<() => void>();
-let state: LoadingState = { mounted: false, visible: false, hiding: false };
+const store = createStore<LoadingState>({
+  mounted: false,
+  visible: false,
+  hiding: false,
+});
 let hideTimer: ReturnType<typeof setTimeout> | undefined;
 
-function setState(next: Partial<LoadingState>): void {
-  state = { ...state, ...next };
-  listeners.forEach((listener) => listener());
-}
-
-// React side: read the state
+// For the components: the state
 export const loadingStore = {
-  subscribe(listener: () => void) {
-    listeners.add(listener);
-    return () => {
-      listeners.delete(listener);
-    };
-  },
-  getSnapshot: () => state,
+  subscribe: store.subscribe,
+  getSnapshot: store.getSnapshot,
 };
 
-// vanilla side: same functions the game code already calls
+// For the game code: show and hide the loading screen
 export function showLoadingScreen(): void {
   clearTimeout(hideTimer);
-  setState({ mounted: true, visible: false, hiding: false });
+  store.patch({ mounted: true, visible: false, hiding: false });
 
   // add "visible" a frame after mounting so the CSS transition runs
   requestAnimationFrame(() => {
-    if (state.mounted) setState({ visible: true });
+    if (store.getSnapshot().mounted) store.patch({ visible: true });
   });
 }
 
 export function hideLoadingScreen(): void {
-  if (!state.mounted) return;
+  if (!store.getSnapshot().mounted) return;
 
-  setState({ hiding: true });
+  store.patch({ hiding: true });
   hideTimer = setTimeout(() => {
-    setState({ mounted: false, visible: false, hiding: false });
+    store.patch({ mounted: false, visible: false, hiding: false });
   }, HIDE_DELAY);
 }

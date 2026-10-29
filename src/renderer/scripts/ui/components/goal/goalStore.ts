@@ -1,3 +1,5 @@
+import { createStore } from "../../createStore.ts";
+
 // splitLetters() colors, in the order they cycle through
 const THEME_COLORS = ["#ff80ea", "#A193FF", "#9ad9ff", "#BEB9DC"];
 
@@ -18,9 +20,8 @@ type GoalState = {
   textEffect: boolean;
 };
 
-const listeners = new Set<() => void>();
 let colorIndex = 0;
-let state: GoalState = {
+const store = createStore<GoalState>({
   text: "next: 30",
   letters: null,
   letterColor: null,
@@ -29,12 +30,7 @@ let state: GoalState = {
   effect: null,
   effectId: 0,
   textEffect: false,
-};
-
-function setState(next: Partial<GoalState>): void {
-  state = { ...state, ...next };
-  listeners.forEach((listener) => listener());
-}
+});
 
 // Every letter animation (title, no-boosts text, goal) advances the same color
 // cycle, and the goal box's border follows whichever color was picked last.
@@ -42,38 +38,33 @@ export function cycleThemeColor(): string {
   const color = THEME_COLORS[colorIndex];
   colorIndex = (colorIndex + 1) % THEME_COLORS.length;
 
-  setState({ borderColor: color });
+  store.patch({ borderColor: color });
   return color;
 }
 
-// React side: read the state
+// For the components: the state
 export const goalStore = {
-  subscribe(listener: () => void) {
-    listeners.add(listener);
-    return () => {
-      listeners.delete(listener);
-    };
-  },
-  getSnapshot: () => state,
+  subscribe: store.subscribe,
+  getSnapshot: store.getSnapshot,
 };
 
-// vanilla side: same API the game code already calls
+// For the game code: update the score and its highlight
 export const goal = {
   update(value: number, animateByLetter = false, direction = "forward"): void {
     const text = `next: ${value}`;
 
     if (!animateByLetter) {
-      setState({ text, letters: null });
+      store.patch({ text, letters: null });
       return;
     }
 
     const letterColor = cycleThemeColor();
     const isReverse = direction === "reverse";
 
-    setState({
+    store.patch({
       text,
       letterColor,
-      updateId: state.updateId + 1,
+      updateId: store.getSnapshot().updateId + 1,
       letters: text.split("").map((char, index) => {
         const delayIndex = isReverse ? text.length - 1 - index : index;
         return {
@@ -85,23 +76,23 @@ export const goal = {
   },
 
   addNewGoalEffect(direction = "forward"): void {
-    setState({
+    store.patch({
       effect: direction === "forward" ? "new-goal" : "new-goal-reverse",
-      effectId: state.effectId + 1,
+      effectId: store.getSnapshot().effectId + 1,
     });
   },
 
   removeNewGoalEffect(): void {
-    setState({ effect: null });
+    store.patch({ effect: null });
   },
 };
 
 export const goalText = {
   addNewTextEffect(): void {
-    setState({ textEffect: true });
+    store.patch({ textEffect: true });
   },
 
   removeNewTextEffect(): void {
-    setState({ textEffect: false });
+    store.patch({ textEffect: false });
   },
 };

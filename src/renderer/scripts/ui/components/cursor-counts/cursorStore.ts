@@ -1,3 +1,5 @@
+import { createStore } from "../../createStore.ts";
+
 const COLORS = ["#E8E3F8", "#83d0ff", "#ae9eff", "#FF98E1"];
 const PLAIN_COLOR = "#FFFFFF";
 
@@ -12,15 +14,9 @@ export type CursorCount = {
   rotateDeg: number;
 };
 
-const listeners = new Set<() => void>();
-let counts: CursorCount[] = [];
+const store = createStore<CursorCount[]>([]);
 let nextId = 0;
 let boostIndex = 0;
-
-function setCounts(next: CursorCount[]): void {
-  counts = next;
-  listeners.forEach((listener) => listener());
-}
 
 function cycleColor(isBoosted: boolean): string {
   if (!isBoosted) return PLAIN_COLOR;
@@ -30,28 +26,23 @@ function cycleColor(isBoosted: boolean): string {
   return color;
 }
 
-// React side: read the floating counts and remove them once they finish
+// For the components: the floating counts, and removing one once it finishes
 export const cursorStore = {
-  subscribe(listener: () => void) {
-    listeners.add(listener);
-    return () => {
-      listeners.delete(listener);
-    };
-  },
-  getSnapshot: () => counts,
+  subscribe: store.subscribe,
+  getSnapshot: store.getSnapshot,
   remove(id: number) {
-    setCounts(counts.filter((count) => count.id !== id));
+    store.set(store.getSnapshot().filter((count) => count.id !== id));
   },
 };
 
-// vanilla side: same function the game code already calls
+// For the game code: float a +N where the player clicked
 export function displayCursorCount(
   value: number,
   event?: MouseEvent,
   isBoosted = false,
 ): void {
-  setCounts([
-    ...counts,
+  store.set([
+    ...store.getSnapshot(),
     {
       id: nextId++,
       value,

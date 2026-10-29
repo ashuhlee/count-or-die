@@ -1,3 +1,4 @@
+import { createStore } from "../../createStore.ts";
 import { playAnimation } from "../../../anim/animations.ts";
 
 type CounterElements = {
@@ -6,8 +7,7 @@ type CounterElements = {
   shine: SVGElement | null;
 };
 
-const listeners = new Set<() => void>();
-let value = 0;
+const store = createStore(0);
 let elements: CounterElements = { text: null, outer: null, shine: null };
 
 export function formatCounter(counter: number): string {
@@ -15,25 +15,19 @@ export function formatCounter(counter: number): string {
   return counter < 0 ? `-${absValue}` : absValue;
 }
 
-// React side: read the value and hand over the elements to animate
+// For the components: the value to show, and the elements to animate
 export const counterStore = {
-  subscribe(listener: () => void) {
-    listeners.add(listener);
-    return () => {
-      listeners.delete(listener);
-    };
-  },
-  getSnapshot: () => value,
+  subscribe: store.subscribe,
+  getSnapshot: store.getSnapshot,
   register(next: CounterElements) {
     elements = next;
   },
 };
 
-// vanilla side: same update/animate API the game code already calls
+// For the game code: change the value and play the counter's animations
 export const counter = {
   update(next: number): void {
-    value = next;
-    listeners.forEach((listener) => listener());
+    store.set(next);
   },
 
   animate(className: string): void {

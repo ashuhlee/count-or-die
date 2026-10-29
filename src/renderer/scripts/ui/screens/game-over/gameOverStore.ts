@@ -1,3 +1,5 @@
+import { createStore } from "../../createStore.ts";
+
 export type FlashKind = "flash" | "flash-penalty";
 
 type GameOverState = {
@@ -13,8 +15,7 @@ type GameOverState = {
 
 const DEATH_COUNT_KEY = "deathCount";
 
-const listeners = new Set<() => void>();
-let state = createInitialState();
+const store = createStore(createInitialState());
 
 function readDeathCount(): number {
   const parsed = Number.parseInt(
@@ -36,61 +37,56 @@ function createInitialState(): GameOverState {
   };
 }
 
-function setState(next: Partial<GameOverState>): void {
-  state = { ...state, ...next };
-  listeners.forEach((listener) => listener());
-}
-
-// React side: read the state, and report when the flash animation ends
+// For the components: the state, and when the flash animation ends
 export const gameOverStore = {
-  subscribe(listener: () => void) {
-    listeners.add(listener);
-    return () => {
-      listeners.delete(listener);
-    };
-  },
-  getSnapshot: () => state,
+  subscribe: store.subscribe,
+  getSnapshot: store.getSnapshot,
 
   endFlash() {
-    if (state.flash === null) return;
+    if (store.getSnapshot().flash === null) return;
 
-    setState({
+    store.patch({
       flash: null,
-      visible: state.visible || state.showAfterFlash,
+      visible:
+        store.getSnapshot().visible || store.getSnapshot().showAfterFlash,
       showAfterFlash: false,
     });
   },
 
   reset() {
-    state = createInitialState();
-    listeners.forEach((listener) => listener());
+    store.set(createInitialState());
   },
 };
 
-// vanilla side: the game code drives the screen through these
+// For the game code: show and hide the screen, set the score and death count
 export const gameOverScreen = {
   show(phrase: string, highScoreReached: boolean): void {
-    setState({
+    store.patch({
       phrase,
-      rainbow: state.rainbow || highScoreReached,
+      rainbow: store.getSnapshot().rainbow || highScoreReached,
       flash: "flash",
       showAfterFlash: true,
     });
   },
 
   hide(phrase: string): void {
-    setState({ phrase, rainbow: false, visible: false, showAfterFlash: false });
+    store.patch({
+      phrase,
+      rainbow: false,
+      visible: false,
+      showAfterFlash: false,
+    });
   },
 
   setDeathCount(deathCount: number): void {
-    setState({ deathCount });
+    store.patch({ deathCount });
   },
 
   setScoreText(scoreText: string): void {
-    setState({ scoreText });
+    store.patch({ scoreText });
   },
 };
 
 export function flashScreen(kind: FlashKind): void {
-  setState({ flash: kind });
+  store.patch({ flash: kind });
 }

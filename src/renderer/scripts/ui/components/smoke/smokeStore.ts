@@ -1,5 +1,7 @@
 import smokeGif from "@assets/ui/deco/smoke.gif";
 
+import { createStore } from "../../createStore.ts";
+
 const SMOKE_SIZE = 70;
 const SMOKE_DURATION = 3000;
 
@@ -14,10 +16,9 @@ type Popup = {
 };
 type SmokeState = Record<SmokeKind, Popup>;
 
-const listeners = new Set<() => void>();
 const hideTimers: Partial<Record<SmokeKind, ReturnType<typeof setTimeout>>> =
   {};
-let state: SmokeState = createInitialState();
+const store = createStore(createInitialState());
 
 function createInitialState(): SmokeState {
   const popup = { src: null, left: 0, top: 0, visible: false };
@@ -25,29 +26,23 @@ function createInitialState(): SmokeState {
 }
 
 function setPopup(kind: SmokeKind, next: Partial<Popup>): void {
-  state = { ...state, [kind]: { ...state[kind], ...next } };
-  listeners.forEach((listener) => listener());
+  const state = store.getSnapshot();
+  store.set({ ...state, [kind]: { ...state[kind], ...next } });
 }
 
-// React side: read the state
+// For the components: the state
 export const smokeStore = {
-  subscribe(listener: () => void) {
-    listeners.add(listener);
-    return () => {
-      listeners.delete(listener);
-    };
-  },
-  getSnapshot: () => state,
+  subscribe: store.subscribe,
+  getSnapshot: store.getSnapshot,
   size: SMOKE_SIZE,
 
   reset() {
     Object.values(hideTimers).forEach(clearTimeout);
-    state = createInitialState();
-    listeners.forEach((listener) => listener());
+    store.set(createInitialState());
   },
 };
 
-// vanilla side: puff of smoke at a screen position
+// For the game code: a puff of smoke at a screen position
 export function showSmoke(kind: SmokeKind, left: number, top: number): void {
   clearTimeout(hideTimers[kind]);
 
