@@ -4,9 +4,9 @@ import { act, type ComponentType } from "react";
 import {
   createInitialState,
   type GameState,
-} from "../../src/renderer/scripts/game/gameReducer.ts";
-import { Game } from "../../src/renderer/scripts/ui/App.tsx";
-import { GameProvider } from "../../src/renderer/scripts/ui/GameProvider.tsx";
+} from "../../src/renderer/game/gameReducer.ts";
+import { Game } from "../../src/renderer/App.tsx";
+import { GameProvider } from "../../src/renderer/ui/provider/GameProvider.tsx";
 import { renderInto } from "./dom.ts";
 
 type RenderGameOptions = {

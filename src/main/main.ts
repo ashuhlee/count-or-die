@@ -1,5 +1,5 @@
 import path from "node:path";
-import { setDiscordStatus } from "./discordRPC.ts";
+import { setDiscordStatus } from "./discord.ts";
 import {
   app,
   nativeImage,

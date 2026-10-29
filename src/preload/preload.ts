@@ -1,6 +1,6 @@
 import { contextBridge, ipcRenderer } from "electron";
 import type { MessageBoxReturnValue } from "electron";
-import type { Presence } from "../main/discordRPC.ts";
+import type { Presence } from "../main/discord.ts";
 
 export interface ElectronAPI {
   setDiscordStatus: (data: Presence) => Promise<void>;

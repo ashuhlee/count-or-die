@@ -7,8 +7,8 @@ import {
   roundSecondsFor,
   type GameAction,
   type GameState,
-} from "../../src/renderer/scripts/game/gameReducer.ts";
-import type { GameEvent } from "../../src/renderer/scripts/game/events.ts";
+} from "../../src/renderer/game/gameReducer.ts";
+import type { GameEvent } from "../../src/renderer/game/events.ts";
 
 // runs a list of actions in order, collecting everything that was reported
 function play(state: GameState, ...actions: GameAction[]) {

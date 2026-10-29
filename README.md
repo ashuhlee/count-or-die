@@ -152,21 +152,24 @@ src/
 ├── main/              Electron main process (window, Discord Rich Presence)
 ├── preload/           Bridge between Electron and the game
 └── renderer/
-    ├── assets/        Images and audio
+    ├── index.html, index.tsx, App.tsx   The page and where React starts
+    ├── preload.d.ts   Types for what the preload exposes on `window`
+    ├── assets/        Images and audio files
     ├── styles/        SCSS and the compiled main.css
-    └── scripts/
-        ├── main.tsx   Starts the app
-        ├── game/      The game rules: plain functions, no React or DOM
-        ├── controls/  Audio and keyboard handling
-        ├── utils/
-        └── ui/        React. GameProvider runs the game (state, timers,
-            │          sounds, saving); everything else just shows it
-            ├── screens/      Full screens: game, game over
-            ├── overlays/     Drawn over the whole screen: loading screen
-            └── components/   One folder per feature (counter, hearts, goal, ...)
+    ├── game/          The game rules: plain functions, no React or DOM
+    ├── audio/         Sound effects and music
+    ├── utils/
+    └── ui/            React. GameProvider runs the game (state, timers,
+        │              sounds, saving); everything else just shows it
+        ├── provider/     GameProvider, useGame and the event bus
+        ├── hooks/        Shared hooks
+        ├── screens/      Full screens: game, game over
+        ├── overlays/     Drawn over the whole screen: loading screen
+        └── components/   One folder per feature (counter, hearts, goal, ...)
 tests/
 ├── game/              The rules
 ├── ui/                The game played like a person would: clicks, keys, time
+│                      (one file per component or screen, named after it)
 └── helpers/           Shared test utilities
 ```
 

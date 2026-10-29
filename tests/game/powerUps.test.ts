@@ -5,8 +5,8 @@ import {
   choosePowerUp,
   getPowerUp,
   POWER_UPS,
-} from "../../src/renderer/scripts/game/powerUps.ts";
-import { pickGameOverPhrase } from "../../src/renderer/scripts/game/phrases.ts";
+} from "../../src/renderer/game/powerUps.ts";
+import { pickGameOverPhrase } from "../../src/renderer/game/phrases.ts";
 
 describe("power-up definitions", () => {
   test("looks one up by type", () => {
