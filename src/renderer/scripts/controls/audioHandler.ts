@@ -135,3 +135,13 @@ export function toggleAudio(mute: boolean): void {
     config.audio.volume = mute ? 0 : config.volume;
   }
 }
+
+export type SoundName = keyof typeof audioConfig;
+
+export function playSound(name: SoundName): void {
+  playAudio(audioConfig[name].audio);
+}
+
+export function pauseSound(name: SoundName): void {
+  pauseAudio(audioConfig[name].audio);
+}

@@ -1,4 +1,4 @@
-import { useRef, useState, useSyncExternalStore } from "react";
+import { useRef, useState } from "react";
 
 import gameOverGif from "@assets/ui/deco/game_over.gif";
 
@@ -13,19 +13,33 @@ import tombstonePng from "@assets/ui/deco/tombstone.png";
 import resetBtnPng from "@assets/ui/buttons/reset-btn.png";
 import quitBtnPng from "@assets/ui/buttons/quit-btn.png";
 
-import { gameControls } from "../../../controls/gameControls.ts";
-import { gameOverStore } from "./gameOverStore.ts";
+import { playSound } from "../../../controls/audioHandler.ts";
+import { pickGameOverPhrase } from "../../../game/phrases.ts";
+import { formatCounter } from "../../formatCounter.ts";
+import { useGame } from "../../GameProvider.tsx";
+import { useGameEvent } from "../../gameEvents.ts";
+
+const MENU_DELAY = 500;
+const QUIT_DELAY = 400;
 
 // "back to menu" tilts the opposite way each time it is hovered
 function BackToMenu() {
   const [tilt, setTilt] = useState<"left" | "right" | null>(null);
   const nextTilt = useRef<"left" | "right">("left");
 
+  function onClick() {
+    playSound("buttonClick");
+    setTimeout(
+      () => alert("Oops! The menu is not available in the beta."),
+      MENU_DELAY,
+    );
+  }
+
   return (
     <h2
       className="back-to-menu underline left"
       id="menu-btn"
-      onClick={() => gameControls.menu()}
+      onClick={onClick}
       onMouseEnter={() => setTilt(nextTilt.current)}
       onMouseLeave={() => {
         nextTilt.current = nextTilt.current === "left" ? "right" : "left";
@@ -45,24 +59,70 @@ function BackToMenu() {
   );
 }
 
-export default function GameOver() {
-  const { visible, phrase, rainbow, deathCount, scoreText } =
-    useSyncExternalStore(gameOverStore.subscribe, gameOverStore.getSnapshot);
+function onQuit() {
+  playSound("buttonClick");
 
-  const rainbowClass = rainbow ? " rainbow-txt" : "";
+  if (window.electron) {
+    setTimeout(window.electron.quitApp, QUIT_DELAY);
+  } else {
+    alert("Thank you for playing!");
+  }
+}
+
+export default function GameOver() {
+  const { state, actions } = useGame();
+
+  const [view, setView] = useState({
+    visible: false,
+    phrase: "you died lolz",
+    rainbow: false,
+    scoreText: "score: 0",
+  });
+  // game over appears once the red flash has played, unless the game was
+  // restarted in the meantime
+  const waitingForFlash = useRef(false);
+
+  useGameEvent("gameOver", ({ isHighScore, score }) => {
+    waitingForFlash.current = true;
+    setView((current) => ({
+      ...current,
+      phrase: pickGameOverPhrase(isHighScore, Math.random()),
+      rainbow: current.rainbow || isHighScore,
+      scoreText: `Score: ${formatCounter(score)}`,
+    }));
+  });
+
+  useGameEvent("flashEnded", () => {
+    if (!waitingForFlash.current) return;
+
+    waitingForFlash.current = false;
+    setView((current) => ({ ...current, visible: true }));
+  });
+
+  useGameEvent("restarted", () => {
+    waitingForFlash.current = false;
+    setView((current) => ({
+      ...current,
+      visible: false,
+      rainbow: false,
+      phrase: pickGameOverPhrase(false, Math.random()),
+    }));
+  });
+
+  const rainbowClass = view.rainbow ? " rainbow-txt" : "";
 
   return (
-    <div id="game-over" className={visible ? "visible" : undefined}>
+    <div id="game-over" className={view.visible ? "visible" : undefined}>
       <div className="go-content">
         <div id="red-overlay"></div>
         <h2 className="you-died" id="dead-text">
-          <span className={`go-text-random${rainbowClass}`}>{phrase}</span>
+          <span className={`go-text-random${rainbowClass}`}>{view.phrase}</span>
         </h2>
         <div className="top-right-info">
           <div className="tracker-container">
             <img src={skullTracker} alt="skull" className="skull-tracker" />
             <h2 className="death-tracker" id="death-tracker">
-              {deathCount}
+              {state.deathCount}
             </h2>
           </div>
         </div>
@@ -74,7 +134,7 @@ export default function GameOver() {
         <img src={gameOverGif} alt="game over text" className="go-title" />
 
         <h2 className="final-score" id="final-score">
-          <span className={`score-text${rainbowClass}`}>{scoreText}</span>
+          <span className={`score-text${rainbowClass}`}>{view.scoreText}</span>
         </h2>
 
         <h2 className="play-again">
@@ -87,14 +147,14 @@ export default function GameOver() {
               id="game-over-btn"
               className="play-again-btn btn-hover"
               alt="game over reset button"
-              onClick={() => gameControls.restart()}
+              onClick={actions.restartFromGameOver}
             />
             <img
               src={quitBtnPng}
               id="quit-btn"
               className="play-again-btn-2 btn-hover"
               alt="rage quit button"
-              onClick={() => gameControls.quit()}
+              onClick={onQuit}
             />
           </div>
           <div className="menu-anim">

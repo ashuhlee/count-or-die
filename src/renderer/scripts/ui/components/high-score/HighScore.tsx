@@ -1,19 +1,14 @@
-import { useSyncExternalStore } from "react";
-
-import { highScoreStore } from "./highScoreStore.ts";
+import { useGame } from "../../GameProvider.tsx";
 
 export default function HighScore() {
-  const { score, isNew } = useSyncExternalStore(
-    highScoreStore.subscribe,
-    highScoreStore.getSnapshot,
-  );
+  const { state } = useGame();
 
   return (
     <h1
       id="high-score"
-      className={`animate__animated${isNew ? " new-score" : ""}`}
+      className={`animate__animated${state.isHighScore ? " new-score" : ""}`}
     >
-      {`high score: ${score}`}
+      {`high score: ${state.highScore}`}
     </h1>
   );
 }

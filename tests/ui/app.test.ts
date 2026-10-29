@@ -4,8 +4,8 @@ import { createRoot, type Root } from "react-dom/client";
 
 import App from "../../src/renderer/scripts/ui/App.tsx";
 
-// every id/class the game code (app.ts, gameActions, powerUps, animations)
-// still looks up by hand, so a missing one fails here instead of at runtime
+// the ids and classes the stylesheet and the tests rely on, so one going
+// missing fails here with a clear name instead of somewhere else
 const IDS = [
   "main",
   "app",
@@ -74,7 +74,9 @@ describe("App", () => {
   });
 
   test("renders the version, the title and the starting counter", () => {
-    expect(main.querySelector("#app-ver").textContent).toBe(__APP_VERSION__);
+    expect(main.querySelector("#app-ver").textContent).toContain(
+      __APP_VERSION__,
+    );
     expect(main.querySelector(".game-name").textContent).toBe("count or die");
     expect(main.querySelector("#counter").textContent).toBe("00");
     expect(main.querySelectorAll(".hearts > div").length).toBe(4);

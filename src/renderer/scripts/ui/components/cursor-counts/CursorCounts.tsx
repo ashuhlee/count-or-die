@@ -1,17 +1,29 @@
-import { useEffect, useRef, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-import { cursorStore, type CursorCount } from "./cursorStore.ts";
+import { useGameEvent } from "../../gameEvents.ts";
+
+const BOOST_COLORS = ["#E8E3F8", "#83d0ff", "#ae9eff", "#FF98E1"];
+const PLAIN_COLOR = "#FFFFFF";
+
+type CursorCount = {
+  id: number;
+  value: number;
+  x: number;
+  y: number;
+  color: string;
+  isBoosted: boolean;
+  xPos: number;
+  rotateDeg: number;
+};
 
 function FloatingCount({
-  id,
-  value,
-  x,
-  y,
-  color,
-  isBoosted,
-  xPos,
-  rotateDeg,
-}: CursorCount) {
+  count,
+  onDone,
+}: {
+  count: CursorCount;
+  onDone: (id: number) => void;
+}) {
+  const { id, value, x, y, color, isBoosted, xPos, rotateDeg } = count;
   const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
@@ -30,20 +42,17 @@ function FloatingCount({
           color,
         },
       ],
-      {
-        duration: 700,
-        easing: "ease-out",
-      },
+      { duration: 700, easing: "ease-out" },
     );
 
-    const onFinish = () => cursorStore.remove(id);
-    animation.addEventListener("finish", onFinish);
+    const finish = () => onDone(id);
+    animation.addEventListener("finish", finish);
 
     return () => {
-      animation.removeEventListener("finish", onFinish);
+      animation.removeEventListener("finish", finish);
       animation.cancel();
     };
-  }, [id, color, isBoosted, xPos, rotateDeg]);
+  }, [id, color, isBoosted, xPos, rotateDeg, onDone]);
 
   return (
     <span
@@ -61,16 +70,44 @@ function FloatingCount({
   );
 }
 
+// the "+N" that floats up from wherever the player clicked
 export default function CursorCounts() {
-  const counts = useSyncExternalStore(
-    cursorStore.subscribe,
-    cursorStore.getSnapshot,
+  const [counts, setCounts] = useState<CursorCount[]>([]);
+  const nextId = useRef(0);
+  const boostColor = useRef(0);
+
+  useGameEvent("cursorCount", ({ value, boosted, x, y }) => {
+    let color = PLAIN_COLOR;
+    if (boosted) {
+      color = BOOST_COLORS[boostColor.current];
+      boostColor.current = (boostColor.current + 1) % BOOST_COLORS.length;
+    }
+
+    setCounts((current) => [
+      ...current,
+      {
+        id: nextId.current++,
+        value,
+        x,
+        y,
+        color,
+        isBoosted: boosted,
+        xPos: (Math.random() - 0.5) * 70,
+        rotateDeg: (Math.random() - 0.5) * 50,
+      },
+    ]);
+  });
+
+  const remove = useCallback(
+    (id: number) =>
+      setCounts((current) => current.filter((count) => count.id !== id)),
+    [],
   );
 
   return (
     <>
       {counts.map((count) => (
-        <FloatingCount key={count.id} {...count} />
+        <FloatingCount key={count.id} count={count} onDone={remove} />
       ))}
     </>
   );

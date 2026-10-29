@@ -1,14 +1,10 @@
-import { useSyncExternalStore } from "react";
-
 import skullImg from "@assets/ui/deco/skull_gradient.png";
 
-import { loadingStore } from "./loadingStore.ts";
+import { useGame } from "../../GameProvider.tsx";
 
 export default function LoadingScreen() {
-  const { mounted, visible, hiding } = useSyncExternalStore(
-    loadingStore.subscribe,
-    loadingStore.getSnapshot,
-  );
+  const { loading } = useGame();
+  const { mounted, visible, hiding } = loading;
 
   if (!mounted) return null;
 

@@ -4,30 +4,27 @@ import cloudTopRight from "@assets/ui/deco/clouds/cloud_3.png";
 import cloudBottomRight from "@assets/ui/deco/clouds/cloud_4.png";
 import cloudMini from "@assets/ui/deco/clouds/cloud_5.png";
 
-import MenuBar from "./components/menu-bar/MenuBar.tsx";
-import CursorCounts from "./components/cursor-counts/CursorCounts.tsx";
-import GameOver from "./screens/game-over/GameOver.tsx";
-import GameScreen from "./screens/game/GameScreen.tsx";
-import HighScore from "./components/high-score/HighScore.tsx";
-import LoadingScreen from "./overlays/loading/LoadingScreen.tsx";
-import PowerUps from "./components/power-ups/PowerUps.tsx";
-import RedFlash from "./screens/game-over/RedFlash.tsx";
-import SmokePopups from "./components/smoke/SmokePopups.tsx";
 import useKeyboardControls from "../controls/useKeyboardControls.ts";
+import CursorCounts from "./components/cursor-counts/CursorCounts.tsx";
+import HighScore from "./components/high-score/HighScore.tsx";
+import MenuBar from "./components/menu-bar/MenuBar.tsx";
+import PowerUps from "./components/power-ups/PowerUps.tsx";
+import SmokePopups from "./components/smoke/SmokePopups.tsx";
+import { GameProvider } from "./GameProvider.tsx";
+import LoadingScreen from "./overlays/loading/LoadingScreen.tsx";
+import GameOver from "./screens/game-over/GameOver.tsx";
+import RedFlash from "./screens/game-over/RedFlash.tsx";
+import GameScreen from "./screens/game/GameScreen.tsx";
 
-// The whole page. A few animations are still replayed by hand on elements
-// found by id (see playAnimation), so those ids stay put.
-export default function App() {
+export function Game() {
   useKeyboardControls();
 
   return (
     <>
-      {/* vfx */}
       <div className="scanlines"></div>
       <div className="scanlines-bg"></div>
       <div className="top-gradient"></div>
 
-      {/* clouds */}
       <div className="clouds">
         <img className="cloud-t-left" alt="cloud" src={cloudTopLeft} />
         <img className="cloud-b-left" alt="cloud" src={cloudBottomLeft} />
@@ -51,10 +48,17 @@ export default function App() {
         {__APP_VERSION__}
       </p>
 
-      {/* these position themselves with fixed positioning */}
       <CursorCounts />
       <LoadingScreen />
       <PowerUps />
     </>
+  );
+}
+
+export default function App() {
+  return (
+    <GameProvider>
+      <Game />
+    </GameProvider>
   );
 }

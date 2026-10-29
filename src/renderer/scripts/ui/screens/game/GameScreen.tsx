@@ -1,3 +1,5 @@
+import type { MouseEvent } from "react";
+
 import chatTip from "@assets/ui/svg/chat-tip.svg";
 
 import decreaseBtn from "@assets/ui/buttons/decrease.png";
@@ -10,16 +12,41 @@ import Counter from "../../components/counter/Counter.tsx";
 import GoalBox from "../../components/goal/GoalBox.tsx";
 import Hearts from "../../components/hearts/Hearts.tsx";
 import Letters from "../../components/letters/Letters.tsx";
-import { gameControls } from "../../../controls/gameControls.ts";
 import PressButton from "../../components/buttons/PressButton.tsx";
 import ProgressBar from "../../components/progress-bar/ProgressBar.tsx";
+import { useGame } from "../../GameProvider.tsx";
+import { useGameEvent } from "../../gameEvents.ts";
+import { useReplayAnimation } from "../../hooks.ts";
+import { useState } from "react";
+
+const pointerOf = (event: MouseEvent) => ({
+  x: event.clientX,
+  y: event.clientY,
+});
 
 export default function GameScreen() {
+  const { actions } = useGame();
+
+  // the whole screen shakes when a bad power-up is collected
+  const [screenRef, shake] =
+    useReplayAnimation<HTMLDivElement>("penalty-shake");
+  useGameEvent("penalty", shake);
+
+  // the "boost!" text floats up; a new key remounts it to replay that
+  const [boostNotification, setBoostNotification] = useState(0);
+  useGameEvent("boostNotification", () =>
+    setBoostNotification((current) => current + 1),
+  );
+
   return (
-    <div id="game-container">
+    <div id="game-container" ref={screenRef}>
       <div className="goal-chatbox" id="goal-chatbox">
         <div className="notifications">
-          <span id="boost-notif-text" className="boost-notif-text">
+          <span
+            id="boost-notif-text"
+            className={`boost-notif-text${boostNotification > 0 ? " boost-notification" : ""}`}
+            key={boostNotification}
+          >
             boost!
           </span>
         </div>
@@ -48,23 +75,23 @@ export default function GameScreen() {
         {/* boost button */}
         <div id="decrease-button">
           <PressButton
-            type="decrease"
+            button="decrease"
             id="decrease-img"
             alt="boost-reg"
             normal={decreaseBtn}
             pressed={decreaseBtnPress}
-            onClick={gameControls.boost}
+            onClick={(event) => actions.boost(pointerOf(event))}
           />
         </div>
         {/* increment button */}
         <div id="increase-button">
           <PressButton
-            type="increase"
+            button="increase"
             id="increase-img"
             alt="increase-reg"
             normal={increaseBtn}
             pressed={increaseBtnPress}
-            onClick={gameControls.increase}
+            onClick={(event) => actions.increase(pointerOf(event))}
           />
         </div>
       </div>
@@ -75,7 +102,7 @@ export default function GameScreen() {
           id="reset-img"
           className="btn-hover"
           alt="increase-reg"
-          onClick={() => gameControls.reset()}
+          onClick={actions.reset}
         />
       </div>
     </div>

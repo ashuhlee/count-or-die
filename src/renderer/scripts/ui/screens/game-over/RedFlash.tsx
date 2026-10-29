@@ -1,18 +1,24 @@
-import { useSyncExternalStore } from "react";
+import { useState } from "react";
 
-import { gameOverStore } from "./gameOverStore.ts";
+import { useGame } from "../../GameProvider.tsx";
+import { useGameEvent } from "../../gameEvents.ts";
 
+// the whole screen flashes red: slowly for game over, quickly for a penalty
 export default function RedFlash() {
-  const { flash } = useSyncExternalStore(
-    gameOverStore.subscribe,
-    gameOverStore.getSnapshot,
-  );
+  const { actions } = useGame();
+  const [flash, setFlash] = useState<"flash" | "flash-penalty" | null>(null);
+
+  useGameEvent("gameOver", () => setFlash("flash"));
+  useGameEvent("penalty", () => setFlash("flash-penalty"));
 
   return (
     <div
       id="red-flash"
       className={flash ?? undefined}
-      onAnimationEnd={gameOverStore.endFlash}
+      onAnimationEnd={() => {
+        setFlash(null);
+        actions.emit({ type: "flashEnded" });
+      }}
     ></div>
   );
 }

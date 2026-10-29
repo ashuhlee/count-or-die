@@ -1,32 +1,69 @@
-import { useSyncExternalStore } from "react";
+import { useRef, useState } from "react";
 
-import { smokeStore, type SmokeKind } from "./smokeStore.ts";
+import smokeGif from "@assets/ui/deco/smoke.gif";
 
-const KINDS: SmokeKind[] = ["popupElement", "powerUpUsedElement"];
+import { useGameEvent } from "../../gameEvents.ts";
+import { useTimeouts } from "../../hooks.ts";
+
+const SMOKE_SIZE = 70;
+const SMOKE_DURATION = 3000;
+
+const POPUPS = {
+  heart: "popupElement",
+  powerUp: "powerUpUsedElement",
+} as const;
+
+type Kind = keyof typeof POPUPS;
+type Popup = { src: string | null; x: number; y: number; visible: boolean };
+
+const HIDDEN: Popup = { src: null, x: 0, y: 0, visible: false };
 
 export default function SmokePopups() {
-  const state = useSyncExternalStore(
-    smokeStore.subscribe,
-    smokeStore.getSnapshot,
-  );
+  const [popups, setPopups] = useState<Record<Kind, Popup>>({
+    heart: HIDDEN,
+    powerUp: HIDDEN,
+  });
+
+  const later = useTimeouts();
+  const hideTimers = useRef<
+    Partial<Record<Kind, ReturnType<typeof setTimeout>>>
+  >({});
+
+  useGameEvent("smoke", ({ kind, x, y }) => {
+    clearTimeout(hideTimers.current[kind]);
+
+    setPopups((current) => ({
+      ...current,
+      [kind]: { src: `${smokeGif}?t=${Date.now()}`, x, y, visible: true },
+    }));
+
+    hideTimers.current[kind] = later(
+      () =>
+        setPopups((current) => ({
+          ...current,
+          [kind]: { ...current[kind], visible: false },
+        })),
+      SMOKE_DURATION,
+    );
+  });
 
   return (
     <>
-      {KINDS.map((kind) => {
-        const { src, left, top, visible } = state[kind];
+      {(Object.keys(POPUPS) as Kind[]).map((kind) => {
+        const { src, x, y, visible } = popups[kind];
 
         return (
           <img
             key={kind}
-            id={kind}
+            id={POPUPS[kind]}
             alt="smoke"
             src={src ?? undefined}
             style={{
               filter: "brightness(1.03) saturate(110%)",
-              left: `${left}px`,
-              top: `${top}px`,
-              width: `${smokeStore.size}px`,
-              height: `${smokeStore.size}px`,
+              left: `${x}px`,
+              top: `${y}px`,
+              width: `${SMOKE_SIZE}px`,
+              height: `${SMOKE_SIZE}px`,
               display: visible ? "block" : undefined,
               zIndex: 2,
             }}

@@ -1,6 +1,9 @@
-import { useEffect, useRef, useSyncExternalStore } from "react";
+import { useState } from "react";
 
-import { counterStore, formatCounter } from "./counterStore.ts";
+import type { CounterAnimation } from "../../../game/events.ts";
+import { formatCounter } from "../../formatCounter.ts";
+import { useGame } from "../../GameProvider.tsx";
+import { useGameEvent } from "../../gameEvents.ts";
 
 const TEXT_PROPS = {
   x: "50%",
@@ -10,34 +13,33 @@ const TEXT_PROPS = {
 } as const;
 
 export default function Counter() {
-  const value = useSyncExternalStore(
-    counterStore.subscribe,
-    counterStore.getSnapshot,
+  const { state } = useGame();
+  const display = formatCounter(state.counter);
+
+  // the number pops, shakes... whenever the game says so; a new key remounts
+  // the text, which replays the CSS animation
+  const [animation, setAnimation] = useState<{
+    name: CounterAnimation;
+    id: number;
+  } | null>(null);
+
+  useGameEvent("counterAnimation", ({ name }) =>
+    setAnimation((current) => ({ name, id: (current?.id ?? 0) + 1 })),
   );
-  const display = formatCounter(value);
 
-  const textRef = useRef<SVGTextElement>(null);
-  const outerRef = useRef<SVGTextElement>(null);
-  const shineRef = useRef<SVGTextElement>(null);
-
-  // the animation helpers add/remove classes on these nodes directly, so none
-  // of them get a className prop (React would otherwise overwrite it)
-  useEffect(() => {
-    counterStore.register({
-      text: textRef.current,
-      outer: outerRef.current,
-      shine: shineRef.current,
-    });
-    return () => {
-      counterStore.register({ text: null, outer: null, shine: null });
-    };
-  }, []);
+  const key = animation?.id ?? 0;
+  const className = animation?.name;
 
   return (
     <svg viewBox="0 0 300 140" className="counter-svg">
       <defs>
         <clipPath id="shine-effect">
-          <text {...TEXT_PROPS} id="counter-shine" ref={shineRef}>
+          <text
+            {...TEXT_PROPS}
+            id="counter-shine"
+            key={key}
+            className={className}
+          >
             {display}
           </text>
         </clipPath>
@@ -72,7 +74,8 @@ export default function Counter() {
         fill="none"
         paintOrder="stroke"
         id="counter-outer"
-        ref={outerRef}
+        key={`outer-${key}`}
+        className={className}
       >
         {display}
       </text>
@@ -85,7 +88,8 @@ export default function Counter() {
         strokeLinecap="round"
         paintOrder="stroke fill"
         id="counter"
-        ref={textRef}
+        key={`inner-${key}`}
+        className={className}
       >
         {display}
       </text>

@@ -1,14 +1,17 @@
-import { useEffect, useRef, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 
-import { buttonStore, type ButtonType } from "./buttonStore.ts";
+import { useGameEvent } from "../../gameEvents.ts";
+import { useTimeouts } from "../../hooks.ts";
+
+const PRESS_DURATION = 100;
 
 type PressButtonProps = {
-  type: ButtonType;
+  button: "increase" | "decrease";
   id: string;
   alt: string;
   normal: string;
   pressed: string;
-  onClick: (event: MouseEvent) => void;
+  onClick: (event: MouseEvent<HTMLImageElement>) => void;
 };
 
 // the red tint that fades out after pressing a button with no boosts left
@@ -21,17 +24,30 @@ const DISABLED_FLASH = [
 ];
 
 export default function PressButton({
-  type,
+  button,
   id,
   alt,
   normal,
   pressed,
   onClick,
 }: PressButtonProps) {
-  const { pressed: isPressed, shakeId } = useSyncExternalStore(
-    buttonStore.subscribe,
-    () => buttonStore.getSnapshot()[type],
-  );
+  const [isPressed, setIsPressed] = useState(false);
+  // bumped each time the button is pressed while disabled, so it remounts
+  // and replays its shake; 0 means it never has
+  const [shakeId, setShakeId] = useState(0);
+
+  const later = useTimeouts();
+  const releaseTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  useGameEvent("pressed", (event) => {
+    if (event.button !== button) return;
+
+    clearTimeout(releaseTimer.current);
+    setIsPressed(true);
+    if (event.disabled) setShakeId((current) => current + 1);
+
+    releaseTimer.current = later(() => setIsPressed(false), PRESS_DURATION);
+  });
 
   const ref = useRef<HTMLImageElement>(null);
 
@@ -48,14 +64,13 @@ export default function PressButton({
 
   return (
     <img
-      // a new key remounts the button, which replays the shake
       key={shakeId}
       ref={ref}
       id={id}
       alt={alt}
       src={isPressed ? pressed : normal}
       className={shakeId > 0 ? "no-boosts-shake" : undefined}
-      onClick={(event) => onClick(event.nativeEvent)}
+      onClick={onClick}
     />
   );
 }

@@ -139,7 +139,7 @@ npm install
 ## Tech Stack
 
 - **Electron:** Framework for cross-platform desktop application development
-- **React:** Renders the game's interface
+- **React:** Runs the game and renders its interface
 - **Vite:** Build tool for fast development and bundling
 - **Vite+:** Toolchain for linting, formatting and testing (`vp check`, `vp test`)
 - **Discord Integration:** Discord Rich Presence support [(simple-discord-rpc)](https://www.npmjs.com/package/simple-discord-rpc)
@@ -152,22 +152,21 @@ src/
 ├── main/              Electron main process (window, Discord Rich Presence)
 ├── preload/           Bridge between Electron and the game
 └── renderer/
-    ├── assets/
-    ├── styles/
+    ├── assets/        Images and audio
+    ├── styles/        SCSS and the compiled main.css
     └── scripts/
-        ├── app.ts     Starts the game and connects the pieces below
-        ├── core/      Game rules: state, actions, power-ups, game over
-        ├── controls/  What buttons, keys and settings do (input, audio)
-        ├── anim/      Animation helpers
+        ├── main.tsx   Starts the app
+        ├── game/      The game rules: plain functions, no React or DOM
+        ├── controls/  Audio and keyboard handling
         ├── utils/
-        └── ui/        React interface
-            ├── screens/      Full screens
-            ├── overlays/     Drawn over the whole screen
-            └── components/   Components and state stores
+        └── ui/        React. GameProvider runs the game (state, timers,
+            │          sounds, saving); everything else just shows it
+            ├── screens/      Full screens: game, game over
+            ├── overlays/     Drawn over the whole screen: loading screen
+            └── components/   One folder per feature (counter, hearts, goal, ...)
 tests/
-├── core/              Game logic tests
-├── controls/          Input tests
-├── ui/                Interface tests (components, screens and overlays)
+├── game/              The rules
+├── ui/                The game played like a person would: clicks, keys, time
 └── helpers/           Shared test utilities
 ```
 
