@@ -9,13 +9,13 @@ import {
 import { act, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
 
-import Hearts from "../src/renderer/scripts/react/Hearts.tsx";
+import Hearts from "../src/renderer/scripts/ui/hearts/Hearts.tsx";
 import {
   heartStore,
   removeHeart,
   replenishHearts,
   resetHearts,
-} from "../src/renderer/scripts/react/heartStore.ts";
+} from "../src/renderer/scripts/ui/hearts/heartStore.ts";
 
 (
   globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }

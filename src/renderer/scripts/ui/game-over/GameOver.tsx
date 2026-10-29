@@ -13,7 +13,7 @@ import tombstonePng from "@assets/ui/deco/tombstone.png";
 import resetBtnPng from "@assets/ui/buttons/reset-btn.png";
 import quitBtnPng from "@assets/ui/buttons/quit-btn.png";
 
-import { gameControls } from "./gameControls.ts";
+import { gameControls } from "../input/gameControls.ts";
 import { gameOverStore } from "./gameOverStore.ts";
 
 // "back to menu" tilts the opposite way each time it is hovered

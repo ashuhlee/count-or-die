@@ -1,6 +1,6 @@
 // Currently unused. Will be used in the future for
 // changing the game visual theme + sfx
-import { barColors } from "../react/progressBarStore.ts";
+import { barColors } from "../ui/progress-bar/progressBarStore.ts";
 
 import tile4 from "@assets/ui/textures/tile-4.png";
 import resetBtnPink from "@assets/ui/buttons/reset-btn-pink.png";

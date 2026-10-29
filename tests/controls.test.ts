@@ -9,8 +9,8 @@ import {
 import { act, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
 
-import App from "../src/renderer/scripts/react/App.tsx";
-import { gameControls } from "../src/renderer/scripts/react/gameControls.ts";
+import App from "../src/renderer/scripts/ui/App.tsx";
+import { gameControls } from "../src/renderer/scripts/ui/input/gameControls.ts";
 
 (
   globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }

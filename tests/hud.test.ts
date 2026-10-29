@@ -9,21 +9,21 @@ import {
 import { act, createElement, type ComponentType } from "react";
 import { createRoot, type Root } from "react-dom/client";
 
-import Controls from "../src/renderer/scripts/react/Controls.tsx";
-import CursorCounts from "../src/renderer/scripts/react/CursorCounts.tsx";
-import HighScore from "../src/renderer/scripts/react/HighScore.tsx";
-import LoadingScreen from "../src/renderer/scripts/react/LoadingScreen.tsx";
+import Controls from "../src/renderer/scripts/ui/menu-bar/MenuBar.tsx";
+import CursorCounts from "../src/renderer/scripts/ui/cursor-counts/CursorCounts.tsx";
+import HighScore from "../src/renderer/scripts/ui/high-score/HighScore.tsx";
+import LoadingScreen from "../src/renderer/scripts/ui/loading/LoadingScreen.tsx";
 
 import { audioConfig } from "../src/renderer/scripts/controls/audioHandler.ts";
 import {
   cursorStore,
   displayCursorCount,
-} from "../src/renderer/scripts/react/cursorStore.ts";
-import { highScore } from "../src/renderer/scripts/react/highScoreStore.ts";
+} from "../src/renderer/scripts/ui/cursor-counts/cursorStore.ts";
+import { highScore } from "../src/renderer/scripts/ui/high-score/highScoreStore.ts";
 import {
   hideLoadingScreen,
   showLoadingScreen,
-} from "../src/renderer/scripts/react/loadingStore.ts";
+} from "../src/renderer/scripts/ui/loading/loadingStore.ts";
 
 (
   globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }

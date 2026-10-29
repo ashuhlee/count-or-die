@@ -9,11 +9,11 @@ import {
 import { act, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
 
-import ProgressBar from "../src/renderer/scripts/react/ProgressBar.tsx";
+import ProgressBar from "../src/renderer/scripts/ui/progress-bar/ProgressBar.tsx";
 import {
   barColors,
   progressBar,
-} from "../src/renderer/scripts/react/progressBarStore.ts";
+} from "../src/renderer/scripts/ui/progress-bar/progressBarStore.ts";
 
 (
   globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }

@@ -4,16 +4,16 @@ import cloudTopRight from "@assets/ui/deco/clouds/cloud_3.png";
 import cloudBottomRight from "@assets/ui/deco/clouds/cloud_4.png";
 import cloudMini from "@assets/ui/deco/clouds/cloud_5.png";
 
-import Controls from "./Controls.tsx";
-import CursorCounts from "./CursorCounts.tsx";
-import GameOver from "./GameOver.tsx";
+import MenuBar from "./menu-bar/MenuBar.tsx";
+import CursorCounts from "./cursor-counts/CursorCounts.tsx";
+import GameOver from "./game-over/GameOver.tsx";
 import GameScreen from "./GameScreen.tsx";
-import HighScore from "./HighScore.tsx";
-import LoadingScreen from "./LoadingScreen.tsx";
-import PowerUps from "./PowerUps.tsx";
-import RedFlash from "./RedFlash.tsx";
-import SmokePopups from "./SmokePopups.tsx";
-import useKeyboardControls from "./useKeyboardControls.ts";
+import HighScore from "./high-score/HighScore.tsx";
+import LoadingScreen from "./loading/LoadingScreen.tsx";
+import PowerUps from "./power-ups/PowerUps.tsx";
+import RedFlash from "./game-over/RedFlash.tsx";
+import SmokePopups from "./smoke/SmokePopups.tsx";
+import useKeyboardControls from "./input/useKeyboardControls.ts";
 
 // The whole page. A few animations are still replayed by hand on elements
 // found by id (see playAnimation), so those ids stay put.
@@ -38,7 +38,7 @@ export default function App() {
 
       <SmokePopups />
 
-      <Controls />
+      <MenuBar />
 
       <RedFlash />
       <GameOver />

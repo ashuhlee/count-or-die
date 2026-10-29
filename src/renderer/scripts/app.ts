@@ -2,11 +2,11 @@ import GameState from "./core/gameState.ts";
 import {
   counter as counterDisplay,
   formatCounter,
-} from "./react/counterStore.ts";
-import { cycleThemeColor } from "./react/goalStore.ts";
-import { gameOverScreen } from "./react/gameOverStore.ts";
-import { gameControls } from "./react/gameControls.ts";
-import { mountReact } from "./react/main.tsx";
+} from "./ui/counter/counterStore.ts";
+import { cycleThemeColor } from "./ui/goal/goalStore.ts";
+import { gameOverScreen } from "./ui/game-over/gameOverStore.ts";
+import { gameControls } from "./ui/input/gameControls.ts";
+import { mountApp } from "./ui/mount.tsx";
 
 import checkHardwareAcceleration from "./utils/hardwareAcceleration.ts";
 
@@ -19,14 +19,17 @@ import { playAudio, pauseAudio, audioConfig } from "./controls/audioHandler.ts";
 
 import { heartGlitch } from "./anim/glitchEffect.ts";
 
-import { highScore as highScoreDisplay } from "./react/highScoreStore.ts";
+import { highScore as highScoreDisplay } from "./ui/high-score/highScoreStore.ts";
 import {
   goal as goalDisplay,
   goalText as goalTextDisplay,
-} from "./react/goalStore.ts";
-import { progressBar as progressBarDisplay } from "./react/progressBarStore.ts";
+} from "./ui/goal/goalStore.ts";
+import { progressBar as progressBarDisplay } from "./ui/progress-bar/progressBarStore.ts";
 
-import { hideLoadingScreen, showLoadingScreen } from "./react/loadingStore.ts";
+import {
+  hideLoadingScreen,
+  showLoadingScreen,
+} from "./ui/loading/loadingStore.ts";
 
 type GameContext = ReturnType<typeof createGameCtx>;
 
@@ -45,7 +48,7 @@ async function createGame(): Promise<void> {
   await alertHardwareAcceleration();
 
   playAudio(audioConfig.bgMusic.audio);
-  mountReact();
+  mountApp();
 
   const ctx = createGameCtx();
 

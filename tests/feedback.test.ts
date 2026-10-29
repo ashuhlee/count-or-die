@@ -9,16 +9,16 @@ import {
 import { act, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
 
-import PressButton from "../src/renderer/scripts/react/PressButton.tsx";
-import SmokePopups from "../src/renderer/scripts/react/SmokePopups.tsx";
+import PressButton from "../src/renderer/scripts/ui/buttons/PressButton.tsx";
+import SmokePopups from "../src/renderer/scripts/ui/smoke/SmokePopups.tsx";
 import {
   animateBtn,
   buttonStore,
-} from "../src/renderer/scripts/react/buttonStore.ts";
+} from "../src/renderer/scripts/ui/buttons/buttonStore.ts";
 import {
   showSmoke,
   smokeStore,
-} from "../src/renderer/scripts/react/smokeStore.ts";
+} from "../src/renderer/scripts/ui/smoke/smokeStore.ts";
 
 (
   globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }

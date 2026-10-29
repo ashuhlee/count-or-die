@@ -6,13 +6,13 @@ import increaseBtn from "@assets/ui/buttons/increase.png";
 import increaseBtnPress from "@assets/ui/buttons/increase-press.png";
 import resetBtn from "@assets/ui/buttons/reset-btn.png";
 
-import Counter from "./Counter.tsx";
-import GoalBox from "./GoalBox.tsx";
-import Hearts from "./Hearts.tsx";
+import Counter from "./counter/Counter.tsx";
+import GoalBox from "./goal/GoalBox.tsx";
+import Hearts from "./hearts/Hearts.tsx";
 import Letters from "./Letters.tsx";
-import { gameControls } from "./gameControls.ts";
-import PressButton from "./PressButton.tsx";
-import ProgressBar from "./ProgressBar.tsx";
+import { gameControls } from "./input/gameControls.ts";
+import PressButton from "./buttons/PressButton.tsx";
+import ProgressBar from "./progress-bar/ProgressBar.tsx";
 
 // The button handlers come from app.ts through gameControls. Playing
 // animations on #game-container and #boost-notif-text is still done by hand,

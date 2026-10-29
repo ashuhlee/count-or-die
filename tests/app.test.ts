@@ -2,7 +2,7 @@ import { afterEach, beforeEach, expect, describe, test } from "vite-plus/test";
 import { act, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
 
-import App from "../src/renderer/scripts/react/App.tsx";
+import App from "../src/renderer/scripts/ui/App.tsx";
 
 (
   globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }

@@ -9,15 +9,15 @@ import {
 import { act, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
 
-import PowerUps from "../src/renderer/scripts/react/PowerUps.tsx";
+import PowerUps from "../src/renderer/scripts/ui/power-ups/PowerUps.tsx";
 import {
   powerUpStore,
   powerUps,
-} from "../src/renderer/scripts/react/powerUpStore.ts";
-import { gameOverStore } from "../src/renderer/scripts/react/gameOverStore.ts";
-import { smokeStore } from "../src/renderer/scripts/react/smokeStore.ts";
-import { counter } from "../src/renderer/scripts/react/counterStore.ts";
-import { heartStore } from "../src/renderer/scripts/react/heartStore.ts";
+} from "../src/renderer/scripts/ui/power-ups/powerUpStore.ts";
+import { gameOverStore } from "../src/renderer/scripts/ui/game-over/gameOverStore.ts";
+import { smokeStore } from "../src/renderer/scripts/ui/smoke/smokeStore.ts";
+import { counter } from "../src/renderer/scripts/ui/counter/counterStore.ts";
+import { heartStore } from "../src/renderer/scripts/ui/hearts/heartStore.ts";
 
 import setPowerUps from "../src/renderer/scripts/core/powerUps.ts";
 import GameState from "../src/renderer/scripts/core/gameState.ts";

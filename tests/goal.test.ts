@@ -2,12 +2,12 @@ import { afterEach, beforeEach, expect, describe, test } from "vite-plus/test";
 import { act, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
 
-import GoalBox from "../src/renderer/scripts/react/GoalBox.tsx";
+import GoalBox from "../src/renderer/scripts/ui/goal/GoalBox.tsx";
 import {
   cycleThemeColor,
   goal,
   goalText,
-} from "../src/renderer/scripts/react/goalStore.ts";
+} from "../src/renderer/scripts/ui/goal/goalStore.ts";
 
 (
   globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }

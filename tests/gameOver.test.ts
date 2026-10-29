@@ -9,13 +9,13 @@ import {
 import { act, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
 
-import GameOver from "../src/renderer/scripts/react/GameOver.tsx";
-import RedFlash from "../src/renderer/scripts/react/RedFlash.tsx";
+import GameOver from "../src/renderer/scripts/ui/game-over/GameOver.tsx";
+import RedFlash from "../src/renderer/scripts/ui/game-over/RedFlash.tsx";
 import {
   flashScreen,
   gameOverScreen,
   gameOverStore,
-} from "../src/renderer/scripts/react/gameOverStore.ts";
+} from "../src/renderer/scripts/ui/game-over/gameOverStore.ts";
 import { toggleGameOver } from "../src/renderer/scripts/core/gameOver.ts";
 
 (

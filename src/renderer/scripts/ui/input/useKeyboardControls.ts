@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { handleKeydown } from "../controls/keyHandler.ts";
+import { handleKeydown } from "../../controls/keyHandler.ts";
 import { gameControls } from "./gameControls.ts";
 
 export default function useKeyboardControls(): void {

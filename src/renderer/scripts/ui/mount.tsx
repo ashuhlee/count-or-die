@@ -6,7 +6,7 @@ import App from "./App.tsx";
 
 // Renders the whole page into #main. Synchronous, so app.ts can find the
 // elements it attaches listeners to right after this returns.
-export function mountReact(): void {
+export function mountApp(): void {
   const container = document.getElementById("main");
   if (!container) return;
 

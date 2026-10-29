@@ -2,11 +2,11 @@ import { afterEach, beforeEach, expect, describe, test } from "vite-plus/test";
 import { act, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
 
-import Counter from "../src/renderer/scripts/react/Counter.tsx";
+import Counter from "../src/renderer/scripts/ui/counter/Counter.tsx";
 import {
   counter,
   formatCounter,
-} from "../src/renderer/scripts/react/counterStore.ts";
+} from "../src/renderer/scripts/ui/counter/counterStore.ts";
 
 (
   globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }

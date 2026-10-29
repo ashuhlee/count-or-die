@@ -1,7 +1,7 @@
-import { cycleThemeColor } from "./goalStore.ts";
-import { showSmoke } from "./smokeStore.ts";
+import { cycleThemeColor } from "../goal/goalStore.ts";
+import { showSmoke } from "../smoke/smokeStore.ts";
 
-export const HEART_COUNT = 4;
+const HEART_COUNT = 4;
 
 const RESTORE_STAGGER = 150;
 
