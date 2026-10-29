@@ -14,9 +14,6 @@ import { gameControls } from "./input/gameControls.ts";
 import PressButton from "./buttons/PressButton.tsx";
 import ProgressBar from "./progress-bar/ProgressBar.tsx";
 
-// The button handlers come from app.ts through gameControls. Playing
-// animations on #game-container and #boost-notif-text is still done by hand,
-// so neither gets a className prop.
 export default function GameScreen() {
   return (
     <div id="game-container">

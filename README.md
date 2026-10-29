@@ -139,9 +139,34 @@ npm install
 ## Tech Stack
 
 - **Electron:** Framework for cross-platform desktop application development
+- **React:** Renders the game's interface
 - **Vite:** Build tool for fast development and bundling
+- **Vite+:** Toolchain for linting, formatting and testing (`vp check`, `vp test`)
 - **Discord Integration:** Discord Rich Presence support [(simple-discord-rpc)](https://www.npmjs.com/package/simple-discord-rpc)
 - **Electron Forge:** For packaging and distributing Electron apps
+
+## Project Structure
+
+```
+src/
+├── main/              Electron main process (window, Discord Rich Presence)
+├── preload/           Bridge between Electron and the game
+└── renderer/
+    ├── assets/        Images and audio
+    ├── styles/        SCSS and the compiled main.css
+    └── scripts/
+        ├── app.ts     Starts the game and connects the pieces below
+        ├── core/      Game rules: state, actions, power-ups, game over
+        ├── ui/        React interface, one folder per feature
+        │              (a component next to the store the game code updates it through)
+        ├── anim/      Animation helpers (confetti, glitch, replaying CSS animations)
+        ├── controls/  Audio and keyboard handling
+        └── utils/
+tests/
+├── core/              Game logic tests
+├── ui/                Component tests, one file per feature
+└── helpers/           Shared test utilities
+```
 
 ## Contributing
 
