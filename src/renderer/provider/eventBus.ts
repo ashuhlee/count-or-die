@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import type { GameEvent } from "../../game/events.ts";
+import type { GameEvent } from "../game/events.ts";
 
 export type AppEvent =
   | Exclude<GameEvent, { type: "cursorCount" }>

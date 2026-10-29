@@ -7,15 +7,15 @@ import {
   type ReactNode,
 } from "react";
 
-import { pauseSound, playSound } from "../../audio/sounds.ts";
+import { pauseSound, playSound } from "../utils/sounds.ts";
 import {
   createInitialState,
   reduce,
   type GameAction,
   type GameState,
-} from "../../game/gameReducer.ts";
-import { getPowerUp } from "../../game/powerUps.ts";
-import { loadSavedGame } from "../../utils/savedGame.ts";
+} from "../game/gameReducer.ts";
+import { getPowerUp } from "../game/powerUps.ts";
+import { loadSavedGame } from "../utils/savedGame.ts";
 import { useTimeouts } from "../hooks/useTimeouts.ts";
 import { createEventBus, EventBusContext } from "./eventBus.ts";
 import { performEvent } from "./performEvent.ts";

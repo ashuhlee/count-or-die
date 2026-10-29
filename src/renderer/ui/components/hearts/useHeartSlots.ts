@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
 import { MAX_BOOSTS } from "../../../game/gameReducer.ts";
-import { useTimeouts } from "../../hooks/useTimeouts.ts";
-import { useGame } from "../../provider/useGame.ts";
-import { useGameEvent } from "../../provider/useGameEvent.ts";
+import { useTimeouts } from "../../../hooks/useTimeouts.ts";
+import { useGame } from "../../../provider/useGame.ts";
+import { useGameEvent } from "../../../provider/useGameEvent.ts";
 
 // how long between each heart coming back from a power-up
 const RESTORE_STAGGER = 150;

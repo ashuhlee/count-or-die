@@ -14,9 +14,9 @@ import Hearts from "../../components/hearts/Hearts.tsx";
 import Letters from "../../components/letters/Letters.tsx";
 import PressButton from "../../components/buttons/PressButton.tsx";
 import ProgressBar from "../../components/progress-bar/ProgressBar.tsx";
-import { useGame } from "../../provider/useGame.ts";
-import { useGameEvent } from "../../provider/useGameEvent.ts";
-import { useReplayAnimation } from "../../hooks/useReplayAnimation.ts";
+import { useGame } from "../../../provider/useGame.ts";
+import { useGameEvent } from "../../../provider/useGameEvent.ts";
+import { useReplayAnimation } from "../../../hooks/useReplayAnimation.ts";
 import { useState } from "react";
 
 const pointerOf = (event: MouseEvent) => ({

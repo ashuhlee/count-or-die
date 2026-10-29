@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 
-import type { GameState } from "../../game/gameReducer.ts";
-import type { PowerUpType } from "../../game/powerUps.ts";
+import type { GameState } from "../game/gameReducer.ts";
+import type { PowerUpType } from "../game/powerUps.ts";
 import type { AppEvent } from "./eventBus.ts";
 
 // where the player clicked, on screen

@@ -4,7 +4,7 @@ import { act, type ComponentType, type ReactElement } from "react";
 import { renderInto } from "../../helpers/dom.ts";
 
 import MenuBar from "../../../src/renderer/ui/components/menu-bar/MenuBar.tsx";
-import { audioConfig } from "../../../src/renderer/audio/sounds.ts";
+import { audioConfig } from "../../../src/renderer/utils/sounds.ts";
 
 describe("MenuBar", () => {
   let container: HTMLDivElement;

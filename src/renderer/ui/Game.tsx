@@ -4,7 +4,7 @@ import cloudTopRight from "@assets/ui/deco/clouds/cloud_3.png";
 import cloudBottomRight from "@assets/ui/deco/clouds/cloud_4.png";
 import cloudMini from "@assets/ui/deco/clouds/cloud_5.png";
 
-import { useKeyboardControls } from "./hooks/useKeyboardControls.ts";
+import { useKeyboardControls } from "../hooks/useKeyboardControls.ts";
 import CursorCounts from "./components/cursor-counts/CursorCounts.tsx";
 import HighScore from "./components/high-score/HighScore.tsx";
 import MenuBar from "./components/menu-bar/MenuBar.tsx";

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 
-import { useGameEvent } from "../../provider/useGameEvent.ts";
-import { useTimeouts } from "../../hooks/useTimeouts.ts";
+import { useGameEvent } from "../../../provider/useGameEvent.ts";
+import { useTimeouts } from "../../../hooks/useTimeouts.ts";
 
 const PRESS_DURATION = 100;
 

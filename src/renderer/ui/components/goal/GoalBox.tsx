@@ -1,7 +1,7 @@
 import { useState, type CSSProperties } from "react";
 
-import { useGame } from "../../provider/useGame.ts";
-import { useGameEvent } from "../../provider/useGameEvent.ts";
+import { useGame } from "../../../provider/useGame.ts";
+import { useGameEvent } from "../../../provider/useGameEvent.ts";
 
 // each letter animation picks the next of these; the box's top border wears
 // the color picked last

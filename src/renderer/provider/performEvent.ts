@@ -1,9 +1,9 @@
-import { pauseSound, playSound } from "../../audio/sounds.ts";
-import type { GameEvent } from "../../game/events.ts";
-import { playConfetti } from "../../utils/confetti.ts";
-import { formatCounter } from "../../utils/formatCounter.ts";
-import { saveDeathCount, saveHighScore } from "../../utils/savedGame.ts";
-import { youDiedConsole } from "../../utils/youDiedConsole.ts";
+import { pauseSound, playSound } from "../utils/sounds.ts";
+import type { GameEvent } from "../game/events.ts";
+import { playConfetti } from "../utils/confetti.ts";
+import { formatCounter } from "../utils/formatCounter.ts";
+import { saveDeathCount, saveHighScore } from "../utils/savedGame.ts";
+import { youDiedConsole } from "../utils/youDiedConsole.ts";
 import type { EventBus } from "./eventBus.ts";
 import type { Later } from "../hooks/useTimeouts.ts";
 import type { Pointer } from "./useGame.ts";

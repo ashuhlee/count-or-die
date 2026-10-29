@@ -157,17 +157,17 @@ src/
     ├── assets/        Images and audio files
     ├── styles/        SCSS and the compiled main.css
     ├── game/          The game rules: plain functions, no React or DOM
-    ├── audio/         Sound effects and music
-    ├── utils/
-    └── ui/            React. GameProvider runs the game (state, timers,
-        │              sounds, saving); everything else just shows it
-        ├── provider/     GameProvider, useGame and the event bus
-        ├── hooks/        Shared hooks
+    ├── provider/      Runs the game in React: GameProvider (state, timers,
+    │                  sounds, saving), useGame and the event bus
+    ├── hooks/         Shared hooks
+    ├── utils/         Sound, confetti, saving and other small helpers
+    └── ui/            What is drawn
         ├── screens/      Full screens: game, game over
         ├── overlays/     Drawn over the whole screen: loading screen
         └── components/   One folder per feature (counter, hearts, goal, ...)
 tests/
 ├── game/              The rules
+├── provider/          Running the game: saving, timers, errors
 ├── ui/                The game played like a person would: clicks, keys, time
 │                      (one file per component or screen, named after it)
 └── helpers/           Shared test utilities

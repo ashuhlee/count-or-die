@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import type { GameState } from "../../game/gameReducer.ts";
+import type { GameState } from "../game/gameReducer.ts";
 import type { BarStage } from "./useGame.ts";
 
 // how far into a round the bar changes color, and when time is up, as a

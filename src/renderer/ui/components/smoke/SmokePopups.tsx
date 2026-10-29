@@ -2,8 +2,8 @@ import { useRef, useState } from "react";
 
 import smokeGif from "@assets/ui/deco/smoke.gif";
 
-import { useGameEvent } from "../../provider/useGameEvent.ts";
-import { useTimeouts } from "../../hooks/useTimeouts.ts";
+import { useGameEvent } from "../../../provider/useGameEvent.ts";
+import { useTimeouts } from "../../../hooks/useTimeouts.ts";
 
 const SMOKE_SIZE = 70;
 const SMOKE_DURATION = 3000;

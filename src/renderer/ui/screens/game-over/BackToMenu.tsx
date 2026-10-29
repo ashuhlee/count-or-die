@@ -1,6 +1,6 @@
 import { useRef, useState, type CSSProperties } from "react";
 
-import { playSound } from "../../../audio/sounds.ts";
+import { playSound } from "../../../utils/sounds.ts";
 
 const MENU_DELAY = 500;
 

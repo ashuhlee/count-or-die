@@ -3,9 +3,9 @@ import heartPurple from "@assets/ui/deco/px_heart_purple.png";
 import heartBlue from "@assets/ui/deco/px_heart_blue.png";
 import heartWhite from "@assets/ui/deco/px_heart_white.png";
 
-import { useReplayAnimation } from "../../hooks/useReplayAnimation.ts";
-import { useGame } from "../../provider/useGame.ts";
-import { useGameEvent } from "../../provider/useGameEvent.ts";
+import { useReplayAnimation } from "../../../hooks/useReplayAnimation.ts";
+import { useGame } from "../../../provider/useGame.ts";
+import { useGameEvent } from "../../../provider/useGameEvent.ts";
 import Letters from "../letters/Letters.tsx";
 import Heart from "./Heart.tsx";
 import { useHeartSlots } from "./useHeartSlots.ts";

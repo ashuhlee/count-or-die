@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 
 import { pickGameOverPhrase } from "../../../game/phrases.ts";
 import { formatCounter } from "../../../utils/formatCounter.ts";
-import { useGameEvent } from "../../provider/useGameEvent.ts";
+import { useGameEvent } from "../../../provider/useGameEvent.ts";
 
 // What the game over screen says and whether it is showing. It appears once
 // the red flash has played, unless the game was restarted in the meantime.

@@ -1,4 +1,4 @@
-import { useGame, type BarStage } from "../../provider/useGame.ts";
+import { useGame, type BarStage } from "../../../provider/useGame.ts";
 
 const COLORS = {
   highScore: "var(--rainbow-gradient-bar)",

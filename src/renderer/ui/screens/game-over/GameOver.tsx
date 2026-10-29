@@ -11,8 +11,8 @@ import tombstonePng from "@assets/ui/deco/tombstone.png";
 import resetBtnPng from "@assets/ui/buttons/reset-btn.png";
 import quitBtnPng from "@assets/ui/buttons/quit-btn.png";
 
-import { playSound } from "../../../audio/sounds.ts";
-import { useGame } from "../../provider/useGame.ts";
+import { playSound } from "../../../utils/sounds.ts";
+import { useGame } from "../../../provider/useGame.ts";
 import BackToMenu from "./BackToMenu.tsx";
 import { useGameOverView } from "./useGameOverView.ts";
 

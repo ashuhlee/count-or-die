@@ -5,8 +5,8 @@ import { renderGame } from "../../helpers/game.tsx";
 
 const audio = vi.hoisted(() => ({ playSound: vi.fn(), pauseSound: vi.fn() }));
 
-vi.mock("../../../src/renderer/audio/sounds.ts", async (original) => ({
-  ...(await original<typeof import("../../../src/renderer/audio/sounds.ts")>()),
+vi.mock("../../../src/renderer/utils/sounds.ts", async (original) => ({
+  ...(await original<typeof import("../../../src/renderer/utils/sounds.ts")>()),
   ...audio,
 }));
 

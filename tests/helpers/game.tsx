@@ -6,7 +6,7 @@ import {
   type GameState,
 } from "../../src/renderer/game/gameReducer.ts";
 import Game from "../../src/renderer/ui/Game.tsx";
-import GameProvider from "../../src/renderer/ui/provider/GameProvider.tsx";
+import GameProvider from "../../src/renderer/provider/GameProvider.tsx";
 import { renderInto } from "./dom.ts";
 
 type RenderGameOptions = {

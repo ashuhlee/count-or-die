@@ -1,4 +1,4 @@
-import { useGame } from "../../provider/useGame.ts";
+import { useGame } from "../../../provider/useGame.ts";
 
 export default function HighScore() {
   const { state } = useGame();

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { useGameEvent } from "../../provider/useGameEvent.ts";
+import { useGameEvent } from "../../../provider/useGameEvent.ts";
 
 const BOOST_COLORS = ["#E8E3F8", "#83d0ff", "#ae9eff", "#FF98E1"];
 const PLAIN_COLOR = "#FFFFFF";
