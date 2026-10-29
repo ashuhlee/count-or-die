@@ -1,5 +1,4 @@
 import { beforeEach, expect, describe, test } from "vite-plus/test";
-import { setHighScoreDisplay } from "../src/renderer/scripts/components/highScoreDisplay.ts";
 import GameState from "../src/renderer/scripts/core/gameState.ts";
 
 window.HTMLMediaElement.prototype.play = () => Promise.resolve();
@@ -12,9 +11,6 @@ describe("GameState", () => {
 
   const state = new GameState();
   const storage = localStorage;
-
-  document.body.innerHTML = `<p id="high-score"></p>`;
-  let highScoreText = document.getElementById("high-score");
 
   test("Counter increments properly", () => {
     state.increment();
@@ -31,9 +27,6 @@ describe("GameState", () => {
 
     expect(state.counter).toBe(101);
     expect(state.highScore).toBe(101);
-
-    setHighScoreDisplay(highScoreText).update(state.highScore);
-    expect(highScoreText.textContent).toBe(`high score: 101`);
   });
 
   // check game state local storage values

@@ -1,8 +1,5 @@
 import gameOverGif from "@assets/ui/deco/game_over.gif";
 
-import soundBtnSvg from "@assets/ui/svg/sound-button-reg.svg";
-import optionsBtnSvg from "@assets/ui/svg/options-button.svg";
-
 import questionPng from "@assets/ui/deco/question.png";
 import exclamationPng from "@assets/ui/deco/exclamation.png";
 
@@ -43,10 +40,7 @@ export default function renderMain() {
 		<img id="powerUpUsedElement" alt="smoke" style="filter: brightness(1.03) saturate(110%)">
 		
 		<!-- menu bar -->
-		<div class="controls">
-			<img id="soundBtn" alt="sound icon" src="${soundBtnSvg}"/>
-			<img id="optionsBtn" alt="options icon" src="${optionsBtnSvg}"/>
-		</div>
+		<div class="controls" id="controls-root"></div>
 		
 		<div id="red-flash"></div>
 		
@@ -99,7 +93,7 @@ export default function renderMain() {
     	<!-- render main app -->
     	<div class="app" id="app"></div>
     	<!-- high score text -->
-    	<h1 id="high-score" class="animate__animated">high score: 0</h1>
+    	<div id="high-score-root"></div>
     	<!-- app version -->
     	<p id="app-ver" class="app-ver">${__APP_VERSION__}</p>
 	`;

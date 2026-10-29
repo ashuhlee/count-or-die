@@ -21,18 +21,14 @@ import { playAudio, pauseAudio, audioConfig } from "./controls/audioHandler.ts";
 import { splitLetters } from "./anim/animations.ts";
 import { heartGlitch } from "./anim/glitchEffect.ts";
 
-import { setHighScoreDisplay } from "./components/highScoreDisplay.ts";
+import { highScore as highScoreDisplay } from "./react/highScoreStore.ts";
 import { setGoalDisplay, setGradientText } from "./components/goalDisplay.ts";
 import {
   initProgressBar,
   updateBarColor,
 } from "./components/progressBarDisplay.ts";
 
-import {
-  hideLoadingScreen,
-  showLoadingScreen,
-} from "./components/loadingScreen.ts";
-import { soundToggle, menuToggle } from "./components/menuBar.ts";
+import { hideLoadingScreen, showLoadingScreen } from "./react/loadingStore.ts";
 
 type DomReference = ReturnType<typeof createDomRefs>;
 type GameContext = ReturnType<typeof createGameCtx>;
@@ -82,7 +78,6 @@ function renderContent(): void {
 
 function createDomRefs() {
   return {
-    highScoreText: document.getElementById("high-score"),
     goalBox: document.getElementById("next-goal"),
     goalText: document.querySelector<HTMLElement>(".goal-text"),
 
@@ -105,7 +100,7 @@ function createGameCtx(ui: DomReference) {
 
   const counter = counterDisplay;
 
-  const highScore = setHighScoreDisplay(ui.highScoreText);
+  const highScore = highScoreDisplay;
   const goal = setGoalDisplay(ui.goalBox);
   const goalText = setGradientText(ui.goalText);
 
@@ -156,9 +151,6 @@ function bindUIEvents(ctx: GameContext, ui: DomReference): void {
     onBoost: ctx.actions.jumpToGoal,
     disabled: () => ctx.state.isGameOver,
   });
-
-  soundToggle();
-  menuToggle();
 
   document.addEventListener("progressBarExp", () => {
     onTimerExpired(ctx, ui);
