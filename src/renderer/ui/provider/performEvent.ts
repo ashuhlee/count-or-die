@@ -1,7 +1,6 @@
 import { pauseSound, playSound } from "../../audio/sounds.ts";
 import type { GameEvent } from "../../game/events.ts";
 import { playConfetti } from "../../utils/confetti.ts";
-import { updateDiscordPresence } from "../../utils/discordPresence.ts";
 import { formatCounter } from "../../utils/formatCounter.ts";
 import { saveDeathCount, saveHighScore } from "../../utils/savedGame.ts";
 import { youDiedConsole } from "../../utils/youDiedConsole.ts";
@@ -40,18 +39,18 @@ export function performEvent(
 
     case "highScore":
       saveHighScore(event.score);
-      updateDiscordPresence({ highScoreRPC: event.score });
+      void window.electron?.setDiscordStatus({ highScoreRPC: event.score });
       break;
 
     case "gameOver":
       saveDeathCount(deathCount);
       later(() => playSound("gameOverMusic"), GAME_OVER_MUSIC_DELAY);
-      updateDiscordPresence({ gameStatusRPC: "game-over" });
+      void window.electron?.setDiscordStatus({ gameStatusRPC: "game-over" });
       if (!window.electron) youDiedConsole(formatCounter(event.score));
       break;
 
     case "restarted":
-      updateDiscordPresence({ gameStatusRPC: "in-game" });
+      void window.electron?.setDiscordStatus({ gameStatusRPC: "in-game" });
       break;
   }
 
