@@ -32,7 +32,7 @@ export default defineConfig({
     environment: "jsdom",
     include: ["tests/**/*.test.ts", "src/**/*.test.ts"],
     exclude: ["node_modules/**", "out/**", ".vite/**"],
-    setupFiles: ["vitest-localstorage-mock"],
+    setupFiles: ["vitest-localstorage-mock", "tests/setup.ts"],
     mockReset: false,
     restoreMocks: true,
   },

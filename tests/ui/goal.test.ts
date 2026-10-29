@@ -1,27 +1,20 @@
 import { afterEach, beforeEach, expect, describe, test } from "vite-plus/test";
-import { act, createElement } from "react";
-import { createRoot, type Root } from "react-dom/client";
+import { act } from "react";
 
-import GoalBox from "../src/renderer/scripts/ui/goal/GoalBox.tsx";
+import GoalBox from "../../src/renderer/scripts/ui/goal/GoalBox.tsx";
 import {
   cycleThemeColor,
   goal,
   goalText,
-} from "../src/renderer/scripts/ui/goal/goalStore.ts";
-
-(
-  globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }
-).IS_REACT_ACT_ENVIRONMENT = true;
+} from "../../src/renderer/scripts/ui/goal/goalStore.ts";
+import { renderInto } from "../helpers/dom.ts";
 
 describe("GoalBox", () => {
   let container: HTMLDivElement;
-  let root: Root;
+  let unmount: () => void;
 
   beforeEach(() => {
-    container = document.createElement("div");
-    document.body.appendChild(container);
-    root = createRoot(container);
-    act(() => root.render(createElement(GoalBox)));
+    ({ container, unmount } = renderInto(GoalBox));
   });
 
   afterEach(() => {
@@ -30,8 +23,7 @@ describe("GoalBox", () => {
       goal.removeNewGoalEffect();
       goalText.removeNewTextEffect();
     });
-    act(() => root.unmount());
-    container.remove();
+    unmount();
   });
 
   const box = () => container.querySelector<HTMLElement>("#next-goal");

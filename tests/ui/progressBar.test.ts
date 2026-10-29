@@ -6,36 +6,28 @@ import {
   test,
   vi,
 } from "vite-plus/test";
-import { act, createElement } from "react";
-import { createRoot, type Root } from "react-dom/client";
+import { act } from "react";
 
-import ProgressBar from "../src/renderer/scripts/ui/progress-bar/ProgressBar.tsx";
+import ProgressBar from "../../src/renderer/scripts/ui/progress-bar/ProgressBar.tsx";
 import {
   barColors,
   progressBar,
-} from "../src/renderer/scripts/ui/progress-bar/progressBarStore.ts";
-
-(
-  globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }
-).IS_REACT_ACT_ENVIRONMENT = true;
+} from "../../src/renderer/scripts/ui/progress-bar/progressBarStore.ts";
+import { renderInto } from "../helpers/dom.ts";
 
 describe("ProgressBar", () => {
   let container: HTMLDivElement;
-  let root: Root;
+  let unmount: () => void;
 
   beforeEach(() => {
     vi.useFakeTimers();
     vi.setSystemTime(0);
-    container = document.createElement("div");
-    document.body.appendChild(container);
-    root = createRoot(container);
-    act(() => root.render(createElement(ProgressBar)));
+    ({ container, unmount } = renderInto(ProgressBar));
     act(() => progressBar.reset(20));
   });
 
   afterEach(() => {
-    act(() => root.unmount());
-    container.remove();
+    unmount();
     vi.useRealTimers();
   });
 

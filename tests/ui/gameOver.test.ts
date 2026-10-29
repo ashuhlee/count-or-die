@@ -9,18 +9,15 @@ import {
 import { act, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
 
-import GameOver from "../src/renderer/scripts/ui/game-over/GameOver.tsx";
-import RedFlash from "../src/renderer/scripts/ui/game-over/RedFlash.tsx";
+import GameOver from "../../src/renderer/scripts/ui/game-over/GameOver.tsx";
+import RedFlash from "../../src/renderer/scripts/ui/game-over/RedFlash.tsx";
 import {
   flashScreen,
   gameOverScreen,
   gameOverStore,
-} from "../src/renderer/scripts/ui/game-over/gameOverStore.ts";
-import { toggleGameOver } from "../src/renderer/scripts/core/gameOver.ts";
-
-(
-  globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }
-).IS_REACT_ACT_ENVIRONMENT = true;
+} from "../../src/renderer/scripts/ui/game-over/gameOverStore.ts";
+import { toggleGameOver } from "../../src/renderer/scripts/core/gameOver.ts";
+import { fireAnimationEnd } from "../helpers/dom.ts";
 
 describe("game over screen", () => {
   let container: HTMLDivElement;
@@ -55,15 +52,8 @@ describe("game over screen", () => {
   const phrase = () => container.querySelector(".go-text-random");
   const score = () => container.querySelector(".score-text");
 
-  // the flash overlay finished its CSS animation; jsdom has no AnimationEvent,
-  // so React listens for the prefixed name there
-  function endFlash() {
-    const type =
-      "AnimationEvent" in window ? "animationend" : "webkitAnimationEnd";
-    act(() => {
-      flash().dispatchEvent(new Event(type, { bubbles: true }));
-    });
-  }
+  // the flash overlay finished its CSS animation
+  const endFlash = () => fireAnimationEnd(flash());
 
   test("starts hidden with the saved death count", () => {
     expect(screen().classList.contains("visible")).toBe(false);

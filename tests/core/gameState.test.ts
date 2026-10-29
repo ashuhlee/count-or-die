@@ -1,5 +1,5 @@
 import { beforeEach, expect, describe, test } from "vite-plus/test";
-import GameState from "../src/renderer/scripts/core/gameState.ts";
+import GameState from "../../src/renderer/scripts/core/gameState.ts";
 
 window.HTMLMediaElement.prototype.play = () => Promise.resolve();
 

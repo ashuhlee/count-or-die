@@ -1,31 +1,23 @@
 import { afterEach, beforeEach, expect, describe, test } from "vite-plus/test";
-import { act, createElement } from "react";
-import { createRoot, type Root } from "react-dom/client";
+import { act } from "react";
 
-import Counter from "../src/renderer/scripts/ui/counter/Counter.tsx";
+import Counter from "../../src/renderer/scripts/ui/counter/Counter.tsx";
 import {
   counter,
   formatCounter,
-} from "../src/renderer/scripts/ui/counter/counterStore.ts";
-
-(
-  globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }
-).IS_REACT_ACT_ENVIRONMENT = true;
+} from "../../src/renderer/scripts/ui/counter/counterStore.ts";
+import { renderInto } from "../helpers/dom.ts";
 
 describe("Counter", () => {
   let container: HTMLDivElement;
-  let root: Root;
+  let unmount: () => void;
 
   beforeEach(() => {
-    container = document.createElement("div");
-    document.body.appendChild(container);
-    root = createRoot(container);
-    act(() => root.render(createElement(Counter)));
+    ({ container, unmount } = renderInto(Counter));
   });
 
   afterEach(() => {
-    act(() => root.unmount());
-    container.remove();
+    unmount();
     counter.update(0);
   });
 

@@ -6,30 +6,26 @@ import {
   test,
   vi,
 } from "vite-plus/test";
-import { act, createElement } from "react";
-import { createRoot, type Root } from "react-dom/client";
+import { act } from "react";
 
-import PowerUps from "../src/renderer/scripts/ui/power-ups/PowerUps.tsx";
+import PowerUps from "../../src/renderer/scripts/ui/power-ups/PowerUps.tsx";
 import {
   powerUpStore,
   powerUps,
-} from "../src/renderer/scripts/ui/power-ups/powerUpStore.ts";
-import { gameOverStore } from "../src/renderer/scripts/ui/game-over/gameOverStore.ts";
-import { smokeStore } from "../src/renderer/scripts/ui/smoke/smokeStore.ts";
-import { counter } from "../src/renderer/scripts/ui/counter/counterStore.ts";
-import { heartStore } from "../src/renderer/scripts/ui/hearts/heartStore.ts";
+} from "../../src/renderer/scripts/ui/power-ups/powerUpStore.ts";
+import { gameOverStore } from "../../src/renderer/scripts/ui/game-over/gameOverStore.ts";
+import { smokeStore } from "../../src/renderer/scripts/ui/smoke/smokeStore.ts";
+import { counter } from "../../src/renderer/scripts/ui/counter/counterStore.ts";
+import { heartStore } from "../../src/renderer/scripts/ui/hearts/heartStore.ts";
 
-import setPowerUps from "../src/renderer/scripts/core/powerUps.ts";
-import GameState from "../src/renderer/scripts/core/gameState.ts";
-
-(
-  globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }
-).IS_REACT_ACT_ENVIRONMENT = true;
+import setPowerUps from "../../src/renderer/scripts/core/powerUps.ts";
+import GameState from "../../src/renderer/scripts/core/gameState.ts";
+import { fireAnimationEnd, renderInto } from "../helpers/dom.ts";
 
 window.HTMLMediaElement.prototype.play = () => Promise.resolve();
 
 let container: HTMLDivElement;
-let root: Root;
+let unmount: () => void;
 
 // jsdom does not lay anything out, so say how wide the spawn area is
 function setSpawnAreaWidth(width: number) {
@@ -48,16 +44,12 @@ beforeEach(() => {
   setSpawnAreaWidth(1000);
 
   document.body.innerHTML = `<div id="game-container"></div>`;
-  container = document.createElement("div");
-  document.body.appendChild(container);
-  root = createRoot(container);
-  act(() => root.render(createElement(PowerUps)));
+  ({ container, unmount } = renderInto(PowerUps));
 });
 
 afterEach(() => {
   act(() => powerUps.clear());
-  act(() => root.unmount());
-  container.remove();
+  unmount();
   delete (HTMLElement.prototype as { offsetWidth?: unknown }).offsetWidth;
   vi.useRealTimers();
   vi.restoreAllMocks();
@@ -134,12 +126,7 @@ describe("PowerUps component", () => {
 
   test("falling off the screen misses it", () => {
     const { onCollect, onMiss } = spawn();
-    const type =
-      "AnimationEvent" in window ? "animationend" : "webkitAnimationEnd";
-
-    act(() => {
-      icons()[0].dispatchEvent(new Event(type, { bubbles: true }));
-    });
+    fireAnimationEnd(icons()[0]);
 
     expect(onMiss).toHaveBeenCalledTimes(1);
     expect(onCollect).not.toHaveBeenCalled();
@@ -280,11 +267,7 @@ describe("power-up system", () => {
 
   test("missing one also restarts the cooldown", () => {
     spawnWith(0);
-    const type =
-      "AnimationEvent" in window ? "animationend" : "webkitAnimationEnd";
-    act(() => {
-      icons()[0].dispatchEvent(new Event(type, { bubbles: true }));
-    });
+    fireAnimationEnd(icons()[0]);
 
     expect(icons().length).toBe(0);
     act(() => vi.advanceTimersByTime(12000));

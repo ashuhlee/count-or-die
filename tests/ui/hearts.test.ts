@@ -6,35 +6,28 @@ import {
   test,
   vi,
 } from "vite-plus/test";
-import { act, createElement } from "react";
-import { createRoot, type Root } from "react-dom/client";
+import { act } from "react";
 
-import Hearts from "../src/renderer/scripts/ui/hearts/Hearts.tsx";
+import Hearts from "../../src/renderer/scripts/ui/hearts/Hearts.tsx";
 import {
   heartStore,
   removeHeart,
   replenishHearts,
   resetHearts,
-} from "../src/renderer/scripts/ui/hearts/heartStore.ts";
-
-(
-  globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }
-).IS_REACT_ACT_ENVIRONMENT = true;
+} from "../../src/renderer/scripts/ui/hearts/heartStore.ts";
+import { fireAnimationEnd, renderInto } from "../helpers/dom.ts";
 
 describe("Hearts", () => {
   let container: HTMLDivElement;
-  let root: Root;
+  let unmount: () => void;
 
   beforeEach(() => {
     vi.useFakeTimers();
-    container = document.createElement("div");
-    document.body.appendChild(container);
-    root = createRoot(container);
-    act(() => root.render(createElement(Hearts)));
+    ({ container, unmount } = renderInto(Hearts));
   });
 
   afterEach(() => {
-    act(() => root.unmount());
+    unmount();
     heartStore.reset();
     vi.useRealTimers();
   });
@@ -103,12 +96,7 @@ describe("Hearts", () => {
     act(() => vi.advanceTimersByTime(0));
     expect(heart(1).classList.contains("heart-restore")).toBe(true);
 
-    act(() => {
-      // jsdom has no AnimationEvent, so React listens for the prefixed name
-      const type =
-        "AnimationEvent" in window ? "animationend" : "webkitAnimationEnd";
-      heart(1).dispatchEvent(new Event(type, { bubbles: true }));
-    });
+    fireAnimationEnd(heart(1));
 
     expect(heart(1).classList.contains("heart-restore")).toBe(false);
     expect((heart(1) as HTMLElement).style.animationDelay).toBe("");

@@ -9,13 +9,8 @@ import {
 import { act, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
 
-import App from "../src/renderer/scripts/ui/App.tsx";
-import { gameControls } from "../src/renderer/scripts/ui/input/gameControls.ts";
-
-(
-  globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }
-).IS_REACT_ACT_ENVIRONMENT = true;
-(globalThis as { __APP_VERSION__?: string }).__APP_VERSION__ = "test";
+import App from "../../src/renderer/scripts/ui/App.tsx";
+import { gameControls } from "../../src/renderer/scripts/ui/input/gameControls.ts";
 
 describe("game controls", () => {
   let main: HTMLDivElement;
