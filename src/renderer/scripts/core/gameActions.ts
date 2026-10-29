@@ -1,7 +1,7 @@
 import { playAudio } from "../controls/audioHandler.ts";
 
 import { resetBar } from "../components/progressBarDisplay.ts";
-import { removeHeart, resetHearts } from "../components/heartDisplay.ts";
+import { removeHeart, resetHearts } from "../react/heartStore.ts";
 import { displayCursorCount } from "../components/cursorDisplay.ts";
 
 import {

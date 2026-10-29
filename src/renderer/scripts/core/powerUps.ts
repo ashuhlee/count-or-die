@@ -1,4 +1,4 @@
-import { replenishHearts } from "../components/heartDisplay.ts";
+import { replenishHearts } from "../react/heartStore.ts";
 import { playAudio, audioConfig } from "../controls/audioHandler.ts";
 import { playAnimation, resetHeartEffect } from "../anim/animations.ts";
 
