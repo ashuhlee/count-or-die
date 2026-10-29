@@ -11,10 +11,13 @@ import GameScreen from "./GameScreen.tsx";
 import HighScore from "./HighScore.tsx";
 import LoadingScreen from "./LoadingScreen.tsx";
 import RedFlash from "./RedFlash.tsx";
+import useKeyboardControls from "./useKeyboardControls.ts";
 
-// The whole page. The power-up spawner, the smoke popups and the game-over
-// code still look elements up by id, so those ids stay put.
+// The whole page. The power-up spawner and the smoke popups still look
+// elements up by id, so those ids stay put.
 export default function App() {
+  useKeyboardControls();
+
   return (
     <>
       {/* vfx */}

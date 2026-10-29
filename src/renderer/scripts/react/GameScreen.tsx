@@ -8,11 +8,12 @@ import Counter from "./Counter.tsx";
 import GoalBox from "./GoalBox.tsx";
 import Hearts from "./Hearts.tsx";
 import Letters from "./Letters.tsx";
+import { gameControls } from "./gameControls.ts";
 import ProgressBar from "./ProgressBar.tsx";
 
-// The click handlers for the buttons are still attached by app.ts (by id).
-// Playing animations on #game-container and #boost-notif-text is also still
-// done by hand, so neither gets a className prop.
+// The button handlers come from app.ts through gameControls. Playing
+// animations on #game-container and #boost-notif-text is still done by hand,
+// so neither gets a className prop.
 export default function GameScreen() {
   return (
     <div id="game-container">
@@ -46,11 +47,21 @@ export default function GameScreen() {
       <div className="buttons">
         {/* boost button */}
         <div id="decrease-button">
-          <img src={decreaseBtn} id="decrease-img" alt="boost-reg" />
+          <img
+            src={decreaseBtn}
+            id="decrease-img"
+            alt="boost-reg"
+            onClick={(event) => gameControls.boost(event.nativeEvent)}
+          />
         </div>
         {/* increment button */}
         <div id="increase-button">
-          <img src={increaseBtn} id="increase-img" alt="increase-reg" />
+          <img
+            src={increaseBtn}
+            id="increase-img"
+            alt="increase-reg"
+            onClick={(event) => gameControls.increase(event.nativeEvent)}
+          />
         </div>
       </div>
 
@@ -60,6 +71,7 @@ export default function GameScreen() {
           id="reset-img"
           className="btn-hover"
           alt="increase-reg"
+          onClick={() => gameControls.reset()}
         />
       </div>
     </div>

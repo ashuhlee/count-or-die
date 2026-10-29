@@ -1,34 +1,28 @@
 type KeyBinds = {
-  onIncrease: (event?: MouseEvent) => void;
-  onBoost: (event?: MouseEvent) => void;
-  disabled?: () => boolean;
+  onIncrease: () => void;
+  onBoost: () => void;
 };
 
-export function keyboardControls(handlers: KeyBinds): void {
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      alert("Oops! The settings menu is not available in the beta.");
-      return;
-    }
-    if (handlers.disabled && handlers.disabled()) {
-      return;
-    }
-    if (event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) {
-      return;
-    }
-    switch (event.key) {
-      case "ArrowUp":
-      case "ArrowRight":
-      case "W":
-      case "w":
-      case "D":
-      case "d":
-        handlers.onIncrease();
-        break;
+export function handleKeydown(event: KeyboardEvent, handlers: KeyBinds): void {
+  if (event.key === "Escape") {
+    alert("Oops! The settings menu is not available in the beta.");
+    return;
+  }
+  if (event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) {
+    return;
+  }
+  switch (event.key) {
+    case "ArrowUp":
+    case "ArrowRight":
+    case "W":
+    case "w":
+    case "D":
+    case "d":
+      handlers.onIncrease();
+      break;
 
-      case " ":
-        handlers.onBoost();
-        break;
-    }
-  });
+    case " ":
+      handlers.onBoost();
+      break;
+  }
 }

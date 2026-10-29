@@ -5,6 +5,7 @@ import {
 } from "./react/counterStore.ts";
 import { cycleThemeColor } from "./react/goalStore.ts";
 import { gameOverScreen } from "./react/gameOverStore.ts";
+import { gameControls } from "./react/gameControls.ts";
 import { mountReact } from "./react/main.tsx";
 
 import checkHardwareAcceleration from "./utils/hardwareAcceleration.ts";
@@ -14,7 +15,6 @@ import setPowerUps from "./core/powerUps.ts";
 
 import { toggleGameOver, youDiedConsole } from "./core/gameOver.ts";
 
-import { keyboardControls } from "./controls/keyHandler.ts";
 import { playAudio, pauseAudio, audioConfig } from "./controls/audioHandler.ts";
 
 import { heartGlitch } from "./anim/glitchEffect.ts";
@@ -28,7 +28,6 @@ import { progressBar as progressBarDisplay } from "./react/progressBarStore.ts";
 
 import { hideLoadingScreen, showLoadingScreen } from "./react/loadingStore.ts";
 
-type DomReference = ReturnType<typeof createDomRefs>;
 type GameContext = ReturnType<typeof createGameCtx>;
 
 const DEATH_COUNT_KEY = "deathCount";
@@ -48,11 +47,10 @@ async function createGame(): Promise<void> {
   playAudio(audioConfig.bgMusic.audio);
   mountReact();
 
-  const ui = createDomRefs();
   const ctx = createGameCtx();
 
   initUserInterface(ctx);
-  bindUIEvents(ctx, ui);
+  bindUIEvents(ctx);
   startGameLoops(ctx);
 }
 
@@ -66,18 +64,6 @@ async function alertHardwareAcceleration(): Promise<void> {
       );
     }
   }
-}
-
-function createDomRefs() {
-  return {
-    increaseBtn: document.getElementById("increase-img"),
-    boostBtn: document.getElementById("decrease-img"),
-    resetBtn: document.getElementById("reset-img"),
-
-    gameOverBtn: document.getElementById("game-over-btn"),
-    menuBtn: document.getElementById("menu-btn"),
-    quitBtn: document.getElementById("quit-btn"),
-  };
 }
 
 function createGameCtx() {
@@ -125,19 +111,14 @@ function initUserInterface(ctx: GameContext): void {
   ctx.goal.update(ctx.state.currentGoal, false);
 }
 
-function bindUIEvents(ctx: GameContext, ui: DomReference): void {
-  ui.increaseBtn.addEventListener("click", (e) => onIncrease(ctx, e));
-  ui.boostBtn.addEventListener("click", (e) => onBoost(ctx, e));
-  ui.resetBtn.addEventListener("click", () => onReset(ctx));
-
-  ui.gameOverBtn.addEventListener("click", () => onGameOverRestart(ctx));
-  ui.menuBtn.addEventListener("click", onMenuClick);
-  ui.quitBtn.addEventListener("click", onQuitClick);
-
-  keyboardControls({
-    onIncrease: ctx.actions.increase,
-    onBoost: ctx.actions.jumpToGoal,
-    disabled: () => ctx.state.isGameOver,
+function bindUIEvents(ctx: GameContext): void {
+  gameControls.register({
+    increase: (event) => onIncrease(ctx, event),
+    boost: (event) => onBoost(ctx, event),
+    reset: () => onReset(ctx),
+    restart: () => onGameOverRestart(ctx),
+    menu: onMenuClick,
+    quit: onQuitClick,
   });
 
   document.addEventListener("progressBarExp", () => {

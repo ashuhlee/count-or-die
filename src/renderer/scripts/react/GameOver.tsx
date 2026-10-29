@@ -13,6 +13,7 @@ import tombstonePng from "@assets/ui/deco/tombstone.png";
 import resetBtnPng from "@assets/ui/buttons/reset-btn.png";
 import quitBtnPng from "@assets/ui/buttons/quit-btn.png";
 
+import { gameControls } from "./gameControls.ts";
 import { gameOverStore } from "./gameOverStore.ts";
 
 // "back to menu" tilts the opposite way each time it is hovered
@@ -24,6 +25,7 @@ function BackToMenu() {
     <h2
       className="back-to-menu underline left"
       id="menu-btn"
+      onClick={() => gameControls.menu()}
       onMouseEnter={() => setTilt(nextTilt.current)}
       onMouseLeave={() => {
         nextTilt.current = nextTilt.current === "left" ? "right" : "left";
@@ -85,12 +87,14 @@ export default function GameOver() {
               id="game-over-btn"
               className="play-again-btn btn-hover"
               alt="game over reset button"
+              onClick={() => gameControls.restart()}
             />
             <img
               src={quitBtnPng}
               id="quit-btn"
               className="play-again-btn-2 btn-hover"
               alt="rage quit button"
+              onClick={() => gameControls.quit()}
             />
           </div>
           <div className="menu-anim">
