@@ -1,4 +1,4 @@
-import { playAnimation } from "../../anim/animations.ts";
+import { playAnimation } from "../../../anim/animations.ts";
 
 type CounterElements = {
   text: SVGElement | null;

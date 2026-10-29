@@ -161,13 +161,13 @@ src/
         ├── anim/      Animation helpers (confetti, glitch, replaying CSS animations)
         ├── utils/
         └── ui/        React interface
-            ├── screens/   Full screens: game, game over, loading
-            └── ...        One folder per feature (counter, hearts, goal, ...),
-                           a component next to the store the game code updates it through
+            ├── screens/      Full screens: game, game over, loading
+            └── components/   One folder per feature (counter, hearts, goal, ...),
+                              a component next to the store the game code updates it through
 tests/
 ├── core/              Game logic tests
 ├── controls/          Input tests
-├── ui/                Component tests, one file per feature (screens/ for the screens)
+├── ui/                Interface tests (components/ and screens/, one file per feature)
 └── helpers/           Shared test utilities
 ```
 

@@ -8,14 +8,14 @@ import {
 } from "vite-plus/test";
 import { act } from "react";
 
-import Hearts from "../../src/renderer/scripts/ui/hearts/Hearts.tsx";
+import Hearts from "../../../src/renderer/scripts/ui/components/hearts/Hearts.tsx";
 import {
   heartStore,
   removeHeart,
   replenishHearts,
   resetHearts,
-} from "../../src/renderer/scripts/ui/hearts/heartStore.ts";
-import { fireAnimationEnd, renderInto } from "../helpers/dom.ts";
+} from "../../../src/renderer/scripts/ui/components/hearts/heartStore.ts";
+import { fireAnimationEnd, renderInto } from "../../helpers/dom.ts";
 
 describe("Hearts", () => {
   let container: HTMLDivElement;

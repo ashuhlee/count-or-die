@@ -1,10 +1,10 @@
 import { afterEach, beforeEach, expect, describe, test } from "vite-plus/test";
 import { act, type ComponentType, type ReactElement } from "react";
 
-import { renderInto } from "../helpers/dom.ts";
+import { renderInto } from "../../helpers/dom.ts";
 
-import MenuBar from "../../src/renderer/scripts/ui/menu-bar/MenuBar.tsx";
-import { audioConfig } from "../../src/renderer/scripts/controls/audioHandler.ts";
+import MenuBar from "../../../src/renderer/scripts/ui/components/menu-bar/MenuBar.tsx";
+import { audioConfig } from "../../../src/renderer/scripts/controls/audioHandler.ts";
 
 describe("MenuBar", () => {
   let container: HTMLDivElement;

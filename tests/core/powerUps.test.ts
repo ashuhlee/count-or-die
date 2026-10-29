@@ -8,15 +8,15 @@ import {
 } from "vite-plus/test";
 import { act } from "react";
 
-import PowerUps from "../../src/renderer/scripts/ui/power-ups/PowerUps.tsx";
+import PowerUps from "../../src/renderer/scripts/ui/components/power-ups/PowerUps.tsx";
 import {
   powerUpStore,
   powerUps,
-} from "../../src/renderer/scripts/ui/power-ups/powerUpStore.ts";
+} from "../../src/renderer/scripts/ui/components/power-ups/powerUpStore.ts";
 import { gameOverStore } from "../../src/renderer/scripts/ui/screens/game-over/gameOverStore.ts";
-import { smokeStore } from "../../src/renderer/scripts/ui/smoke/smokeStore.ts";
-import { counter } from "../../src/renderer/scripts/ui/counter/counterStore.ts";
-import { heartStore } from "../../src/renderer/scripts/ui/hearts/heartStore.ts";
+import { smokeStore } from "../../src/renderer/scripts/ui/components/smoke/smokeStore.ts";
+import { counter } from "../../src/renderer/scripts/ui/components/counter/counterStore.ts";
+import { heartStore } from "../../src/renderer/scripts/ui/components/hearts/heartStore.ts";
 
 import setPowerUps from "../../src/renderer/scripts/core/powerUps.ts";
 import GameState from "../../src/renderer/scripts/core/gameState.ts";

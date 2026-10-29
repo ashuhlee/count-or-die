@@ -5,7 +5,7 @@ import soundBtnNoMusic from "@assets/ui/svg/sound-button-no_music.svg";
 import soundBtnUnmuted from "@assets/ui/svg/sound-button-reg.svg";
 import optionsBtnSvg from "@assets/ui/svg/options-button.svg";
 
-import { audioConfig, toggleAudio } from "../../controls/audioHandler.ts";
+import { audioConfig, toggleAudio } from "../../../controls/audioHandler.ts";
 
 const SOUND_STATE_KEY = "soundState";
 

@@ -8,12 +8,12 @@ import {
 } from "vite-plus/test";
 import { act } from "react";
 
-import ProgressBar from "../../src/renderer/scripts/ui/progress-bar/ProgressBar.tsx";
+import ProgressBar from "../../../src/renderer/scripts/ui/components/progress-bar/ProgressBar.tsx";
 import {
   barColors,
   progressBar,
-} from "../../src/renderer/scripts/ui/progress-bar/progressBarStore.ts";
-import { renderInto } from "../helpers/dom.ts";
+} from "../../../src/renderer/scripts/ui/components/progress-bar/progressBarStore.ts";
+import { renderInto } from "../../helpers/dom.ts";
 
 describe("ProgressBar", () => {
   let container: HTMLDivElement;

@@ -1,12 +1,12 @@
 import { afterEach, beforeEach, expect, describe, test } from "vite-plus/test";
 import { act } from "react";
 
-import Counter from "../../src/renderer/scripts/ui/counter/Counter.tsx";
+import Counter from "../../../src/renderer/scripts/ui/components/counter/Counter.tsx";
 import {
   counter,
   formatCounter,
-} from "../../src/renderer/scripts/ui/counter/counterStore.ts";
-import { renderInto } from "../helpers/dom.ts";
+} from "../../../src/renderer/scripts/ui/components/counter/counterStore.ts";
+import { renderInto } from "../../helpers/dom.ts";
 
 describe("Counter", () => {
   let container: HTMLDivElement;

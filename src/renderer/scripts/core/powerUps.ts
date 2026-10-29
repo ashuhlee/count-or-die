@@ -1,12 +1,12 @@
 import { flashScreen } from "../ui/screens/game-over/gameOverStore.ts";
-import { replenishHearts } from "../ui/hearts/heartStore.ts";
-import { powerUps } from "../ui/power-ups/powerUpStore.ts";
-import { showSmoke } from "../ui/smoke/smokeStore.ts";
+import { replenishHearts } from "../ui/components/hearts/heartStore.ts";
+import { powerUps } from "../ui/components/power-ups/powerUpStore.ts";
+import { showSmoke } from "../ui/components/smoke/smokeStore.ts";
 import { playAudio, audioConfig } from "../controls/audioHandler.ts";
 import { playAnimation, resetHeartEffect } from "../anim/animations.ts";
 
 import GameState from "./gameState.ts";
-import type { counter as counterDisplay } from "../ui/counter/counterStore.ts";
+import type { counter as counterDisplay } from "../ui/components/counter/counterStore.ts";
 
 import { candy, donut, badDonut, star, superstar } from "@assets/ui/power-ups";
 

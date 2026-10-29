@@ -6,13 +6,13 @@ import increaseBtn from "@assets/ui/buttons/increase.png";
 import increaseBtnPress from "@assets/ui/buttons/increase-press.png";
 import resetBtn from "@assets/ui/buttons/reset-btn.png";
 
-import Counter from "../../counter/Counter.tsx";
-import GoalBox from "../../goal/GoalBox.tsx";
-import Hearts from "../../hearts/Hearts.tsx";
-import Letters from "../../Letters.tsx";
+import Counter from "../../components/counter/Counter.tsx";
+import GoalBox from "../../components/goal/GoalBox.tsx";
+import Hearts from "../../components/hearts/Hearts.tsx";
+import Letters from "../../components/letters/Letters.tsx";
 import { gameControls } from "../../../controls/gameControls.ts";
-import PressButton from "../../buttons/PressButton.tsx";
-import ProgressBar from "../../progress-bar/ProgressBar.tsx";
+import PressButton from "../../components/buttons/PressButton.tsx";
+import ProgressBar from "../../components/progress-bar/ProgressBar.tsx";
 
 export default function GameScreen() {
   return (

@@ -5,7 +5,7 @@ import heartPurple from "@assets/ui/deco/px_heart_purple.png";
 import heartBlue from "@assets/ui/deco/px_heart_blue.png";
 import heartWhite from "@assets/ui/deco/px_heart_white.png";
 
-import Letters from "../Letters.tsx";
+import Letters from "../letters/Letters.tsx";
 import { heartStore } from "./heartStore.ts";
 
 const HEARTS = [

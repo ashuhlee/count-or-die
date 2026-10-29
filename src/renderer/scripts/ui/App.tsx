@@ -4,15 +4,15 @@ import cloudTopRight from "@assets/ui/deco/clouds/cloud_3.png";
 import cloudBottomRight from "@assets/ui/deco/clouds/cloud_4.png";
 import cloudMini from "@assets/ui/deco/clouds/cloud_5.png";
 
-import MenuBar from "./menu-bar/MenuBar.tsx";
-import CursorCounts from "./cursor-counts/CursorCounts.tsx";
+import MenuBar from "./components/menu-bar/MenuBar.tsx";
+import CursorCounts from "./components/cursor-counts/CursorCounts.tsx";
 import GameOver from "./screens/game-over/GameOver.tsx";
 import GameScreen from "./screens/game/GameScreen.tsx";
-import HighScore from "./high-score/HighScore.tsx";
+import HighScore from "./components/high-score/HighScore.tsx";
 import LoadingScreen from "./screens/loading/LoadingScreen.tsx";
-import PowerUps from "./power-ups/PowerUps.tsx";
+import PowerUps from "./components/power-ups/PowerUps.tsx";
 import RedFlash from "./screens/game-over/RedFlash.tsx";
-import SmokePopups from "./smoke/SmokePopups.tsx";
+import SmokePopups from "./components/smoke/SmokePopups.tsx";
 import useKeyboardControls from "../controls/useKeyboardControls.ts";
 
 // The whole page. A few animations are still replayed by hand on elements

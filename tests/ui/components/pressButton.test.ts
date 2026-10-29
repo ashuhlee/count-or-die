@@ -13,13 +13,13 @@ import {
   type ReactElement,
 } from "react";
 
-import { renderInto } from "../helpers/dom.ts";
+import { renderInto } from "../../helpers/dom.ts";
 
-import PressButton from "../../src/renderer/scripts/ui/buttons/PressButton.tsx";
+import PressButton from "../../../src/renderer/scripts/ui/components/buttons/PressButton.tsx";
 import {
   animateBtn,
   buttonStore,
-} from "../../src/renderer/scripts/ui/buttons/buttonStore.ts";
+} from "../../../src/renderer/scripts/ui/components/buttons/buttonStore.ts";
 
 const makeOnClick = () => vi.fn<(event: MouseEvent) => void>();
 

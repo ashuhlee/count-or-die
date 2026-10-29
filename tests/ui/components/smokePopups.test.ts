@@ -13,13 +13,13 @@ import {
   type ReactElement,
 } from "react";
 
-import { renderInto } from "../helpers/dom.ts";
+import { renderInto } from "../../helpers/dom.ts";
 
-import SmokePopups from "../../src/renderer/scripts/ui/smoke/SmokePopups.tsx";
+import SmokePopups from "../../../src/renderer/scripts/ui/components/smoke/SmokePopups.tsx";
 import {
   showSmoke,
   smokeStore,
-} from "../../src/renderer/scripts/ui/smoke/smokeStore.ts";
+} from "../../../src/renderer/scripts/ui/components/smoke/smokeStore.ts";
 
 describe("SmokePopups", () => {
   let container: HTMLDivElement;

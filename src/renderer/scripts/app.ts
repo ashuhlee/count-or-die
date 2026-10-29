@@ -2,8 +2,8 @@ import GameState from "./core/gameState.ts";
 import {
   counter as counterDisplay,
   formatCounter,
-} from "./ui/counter/counterStore.ts";
-import { cycleThemeColor } from "./ui/goal/goalStore.ts";
+} from "./ui/components/counter/counterStore.ts";
+import { cycleThemeColor } from "./ui/components/goal/goalStore.ts";
 import { gameOverScreen } from "./ui/screens/game-over/gameOverStore.ts";
 import { gameControls } from "./controls/gameControls.ts";
 import { mountApp } from "./ui/mount.tsx";
@@ -19,12 +19,12 @@ import { playAudio, pauseAudio, audioConfig } from "./controls/audioHandler.ts";
 
 import { heartGlitch } from "./anim/glitchEffect.ts";
 
-import { highScore as highScoreDisplay } from "./ui/high-score/highScoreStore.ts";
+import { highScore as highScoreDisplay } from "./ui/components/high-score/highScoreStore.ts";
 import {
   goal as goalDisplay,
   goalText as goalTextDisplay,
-} from "./ui/goal/goalStore.ts";
-import { progressBar as progressBarDisplay } from "./ui/progress-bar/progressBarStore.ts";
+} from "./ui/components/goal/goalStore.ts";
+import { progressBar as progressBarDisplay } from "./ui/components/progress-bar/progressBarStore.ts";
 
 import {
   hideLoadingScreen,

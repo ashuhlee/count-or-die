@@ -1,13 +1,13 @@
 import { afterEach, beforeEach, expect, describe, test } from "vite-plus/test";
 import { act, type ComponentType, type ReactElement } from "react";
 
-import { renderInto } from "../helpers/dom.ts";
+import { renderInto } from "../../helpers/dom.ts";
 
-import CursorCounts from "../../src/renderer/scripts/ui/cursor-counts/CursorCounts.tsx";
+import CursorCounts from "../../../src/renderer/scripts/ui/components/cursor-counts/CursorCounts.tsx";
 import {
   cursorStore,
   displayCursorCount,
-} from "../../src/renderer/scripts/ui/cursor-counts/cursorStore.ts";
+} from "../../../src/renderer/scripts/ui/components/cursor-counts/cursorStore.ts";
 
 describe("CursorCounts", () => {
   let container: HTMLDivElement;

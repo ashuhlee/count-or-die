@@ -1,13 +1,13 @@
 import { afterEach, beforeEach, expect, describe, test } from "vite-plus/test";
 import { act } from "react";
 
-import GoalBox from "../../src/renderer/scripts/ui/goal/GoalBox.tsx";
+import GoalBox from "../../../src/renderer/scripts/ui/components/goal/GoalBox.tsx";
 import {
   cycleThemeColor,
   goal,
   goalText,
-} from "../../src/renderer/scripts/ui/goal/goalStore.ts";
-import { renderInto } from "../helpers/dom.ts";
+} from "../../../src/renderer/scripts/ui/components/goal/goalStore.ts";
+import { renderInto } from "../../helpers/dom.ts";
 
 describe("GoalBox", () => {
   let container: HTMLDivElement;

@@ -1,10 +1,10 @@
 import { afterEach, beforeEach, expect, describe, test } from "vite-plus/test";
 import { act, type ComponentType, type ReactElement } from "react";
 
-import { renderInto } from "../helpers/dom.ts";
+import { renderInto } from "../../helpers/dom.ts";
 
-import HighScore from "../../src/renderer/scripts/ui/high-score/HighScore.tsx";
-import { highScore } from "../../src/renderer/scripts/ui/high-score/highScoreStore.ts";
+import HighScore from "../../../src/renderer/scripts/ui/components/high-score/HighScore.tsx";
+import { highScore } from "../../../src/renderer/scripts/ui/components/high-score/highScoreStore.ts";
 
 describe("HighScore", () => {
   let container: HTMLDivElement;
