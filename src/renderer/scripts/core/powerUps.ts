@@ -3,7 +3,7 @@ import { playAudio, audioConfig } from "../controls/audioHandler.ts";
 import { playAnimation, resetHeartEffect } from "../anim/animations.ts";
 
 import GameState from "./gameState.ts";
-import Counter from "../components/counterDisplay.ts";
+import type { counter as counterDisplay } from "../react/counterStore.ts";
 
 import { candy, donut, badDonut, star, superstar } from "@assets/ui/power-ups";
 import smokeGif from "@assets/ui/deco/smoke.gif";
@@ -31,7 +31,7 @@ type PowerUpSystem = {
 };
 
 type PowerUpArgs = {
-  counter: Counter;
+  counter: typeof counterDisplay;
   state: GameState;
 };
 

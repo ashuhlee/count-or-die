@@ -28,39 +28,7 @@ export default function renderGame() {
         <div class="progress"><div class="pg-lines"></div><div class="progress-bar" id="progress-bar"></div><div class="progress-bg"></div></div>
         <h1 class="title"><span class="game-name">count or die</span></h1>
 
-        <div class="counter-container">
-            <svg viewBox="0 0 300 140" class="counter-svg">
-	  			<defs>
-					<clipPath id="shine-effect">
-					<text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" id="counter-shine">00</text>
-					</clipPath>
-					<linearGradient id="gradient-counter" x1="0%" y1="0%" x2="100%" y2="100%">
-						<stop offset="0%" style="stop-color:#FFACAD" /> 
-						<stop offset="14.28%" style="stop-color:#FFD5A5" />
-						<stop offset="28.57%" style="stop-color:#FDFFB6" /> 
-						<stop offset="42.85%" style="stop-color:#CBFFBF" />
-						<stop offset="57.14%" style="stop-color:#9BF6FF" /> 
-						<stop offset="85.71%" style="stop-color:#BDB2FF" /> 
-						<stop offset="100%" style="stop-color:#ffb7fe" />
-					</linearGradient>
-					<linearGradient id="default-color" x1="0%" x2="0%" y1="0%" y2="100%">
-						<stop offset="5%" stop-color="#FFE3F9" />
-						<stop offset="30%" stop-color="#F69DE2" />
-						<stop offset="100%" stop-color="#DD77C6" />
-					</linearGradient>
-		  		</defs>
-				<!-- outer stroke -->
-				<text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle"  stroke="#6a376b" stroke-width="12.5" stroke-linejoin="round"
-						stroke-linecap="round" fill="none" paint-order="stroke" id="counter-outer">00
-				</text>
-				<!-- inner stroke -->
-				<text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" stroke="#FFF4F7" stroke-width="8" stroke-linejoin="round"
-					stroke-linecap="round" paint-order="stroke fill" id="counter">00
-				</text>
-  				<!-- shine effect -->
-  				<rect x="0" y="0" width="100%" height="100%" clip-path="url(#shine-effect)" class="shine-rect"/>
-            </svg>
-        </div>
+        <div class="counter-container" id="counter-root"></div>
 		<div class="boost-stuff">
 			<h1 class="no-boosts" id="no-boosts"><span class="no-boost-text">no boosts left!</span></h1>
 			<div class="hearts">

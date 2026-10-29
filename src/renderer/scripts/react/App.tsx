@@ -1,5 +1,9 @@
-// Root of the incremental React migration. Components get ported in here one
-// at a time while the vanilla code in ../app.ts keeps running the rest of the UI.
+import { createPortal } from "react-dom";
+
+import Counter from "./Counter.tsx";
+
 export default function App() {
-  return null;
+  const counterRoot = document.getElementById("counter-root");
+
+  return <>{counterRoot && createPortal(<Counter />, counterRoot)}</>;
 }

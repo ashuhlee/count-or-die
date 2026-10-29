@@ -45,7 +45,10 @@ function applyColorTheme(color: string) {
 }
 
 // main animation function
-export function playAnimation(element: HTMLElement, className: string) {
+export function playAnimation(
+  element: HTMLElement | SVGElement,
+  className: string,
+) {
   // reset animations
   element.style.animation = "none	";
   element.getBoundingClientRect();

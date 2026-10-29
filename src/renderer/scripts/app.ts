@@ -1,5 +1,9 @@
 import GameState from "./core/gameState.ts";
-import Counter from "./components/counterDisplay.ts";
+import {
+  counter as counterDisplay,
+  formatCounter,
+} from "./react/counterStore.ts";
+import { mountReact } from "./react/main.tsx";
 
 import checkHardwareAcceleration from "./utils/hardwareAcceleration.ts";
 
@@ -73,14 +77,11 @@ async function alertHardwareAcceleration(): Promise<void> {
 function renderContent(): void {
   renderMain();
   renderGame();
+  mountReact();
 }
 
 function createDomRefs() {
   return {
-    counterText: document.getElementById("counter"),
-    counterOuter: document.getElementById("counter-outer"),
-    counterShine: document.getElementById("counter-shine"),
-
     highScoreText: document.getElementById("high-score"),
     goalBox: document.getElementById("next-goal"),
     goalText: document.querySelector<HTMLElement>(".goal-text"),
@@ -102,11 +103,7 @@ function createGameCtx(ui: DomReference) {
   const progressBar = initProgressBar();
   const state = new GameState();
 
-  const counter = new Counter({
-    textElement: ui.counterText,
-    outerElement: ui.counterOuter,
-    textShine: ui.counterShine,
-  });
+  const counter = counterDisplay;
 
   const highScore = setHighScoreDisplay(ui.highScoreText);
   const goal = setGoalDisplay(ui.goalBox);
@@ -262,7 +259,7 @@ function onTimerExpired(ctx: GameContext, ui: DomReference): void {
     ui.deathTracker.textContent = String(nextDeathCount);
   }
 
-  const currentScore = ui.counterText?.textContent ?? "0";
+  const currentScore = formatCounter(ctx.state.counter);
 
   if (ui.scoreText) {
     ui.scoreText.textContent = `Score: ${currentScore}`;

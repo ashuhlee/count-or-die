@@ -1,4 +1,5 @@
 import { defineConfig } from "vite-plus";
+import path from "path";
 
 export default defineConfig({
   staged: {
@@ -20,6 +21,11 @@ export default defineConfig({
     printWidth: 80,
     sortPackageJson: false,
     ignorePatterns: ["dist/", ".vite/", "node_modules/"],
+  },
+  resolve: {
+    alias: {
+      "@assets": path.resolve(__dirname, "src/renderer/assets"),
+    },
   },
   test: {
     globals: true,
