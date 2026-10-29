@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import "./Balatro.css";
+import "./PixelSwirl.css";
 
-// Balatro, from React Bits (reactbits.dev): a swirling WebGL background.
+// PixelSwirl, based on Balatro from React Bits (reactbits.dev): a swirling
+// WebGL background.
 // Ported to TypeScript; the shaders and the drawing logic are unchanged.
 
 const PIXEL_BUDGET = 2.4e6;
@@ -230,7 +231,7 @@ const smoother = (t: number) => {
   return x * x * x * (x * (x * 6 - 15) + 10);
 };
 
-type BalatroProps = {
+type PixelSwirlProps = {
   color1?: string;
   color2?: string;
   color3?: string;
@@ -255,7 +256,7 @@ type BalatroProps = {
   style?: CSSProperties;
 };
 
-export default function Balatro({
+export default function PixelSwirl({
   color1 = "#DE443B",
   color2 = "#006BB4",
   color3 = "#162325",
@@ -278,7 +279,7 @@ export default function Balatro({
   maxDevicePixelRatio = 2,
   className = "",
   style,
-}: BalatroProps) {
+}: PixelSwirlProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wakeRef = useRef<(() => void) | null>(null);
@@ -788,10 +789,14 @@ export default function Balatro({
   return (
     <div
       ref={containerRef}
-      className={`balatro${className ? ` ${className}` : ""}`}
+      className={`pixel-swirl${className ? ` ${className}` : ""}`}
       style={style}
     >
-      <canvas ref={canvasRef} className="balatro__canvas" aria-hidden="true" />
+      <canvas
+        ref={canvasRef}
+        className="pixel-swirl__canvas"
+        aria-hidden="true"
+      />
     </div>
   );
 }

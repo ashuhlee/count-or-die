@@ -1,13 +1,13 @@
 import { memo } from "react";
 
-import Balatro from "../../components/balatro/Balatro.tsx";
+import PixelSwirl from "../../shaders/pixel-swirl/PixelSwirl.tsx";
 
 // Never re-renders: the game changes constantly, but this has no props to
-// follow, and re-rendering Balatro would make it re-measure itself each time.
+// follow, and re-rendering PixelSwirl would make it re-measure itself each time.
 export default memo(function GameOverBackground() {
   return (
     <div className="go-background">
-      <Balatro
+      <PixelSwirl
         color1="#fd93e4"
         color2="#ff90e5"
         color3="#ffbaee"

@@ -221,14 +221,15 @@ describe("running out of time", () => {
 });
 
 describe("the game over background", () => {
-  const background = () => game.$("#game-over .go-background [data-balatro]");
+  const background = () =>
+    game.$("#game-over .go-background [data-pixel-swirl]");
 
   test("is not there while the game is on", () => {
     game = renderGame();
     game.wait(5000);
 
     expect(game.$(".go-background")).toBeNull();
-    expect(game.$("[data-balatro]")).toBeNull();
+    expect(game.$("[data-pixel-swirl]")).toBeNull();
   });
 
   test("is in place as soon as the game ends, before the screen shows", () => {

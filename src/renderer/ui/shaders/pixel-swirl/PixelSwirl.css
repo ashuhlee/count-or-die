@@ -1,11 +1,11 @@
-.balatro {
+.pixel-swirl {
   position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
 
-.balatro__canvas {
+.pixel-swirl__canvas {
   position: absolute;
   inset: 0;
   display: block;
