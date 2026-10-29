@@ -22,7 +22,10 @@ import { splitLetters } from "./anim/animations.ts";
 import { heartGlitch } from "./anim/glitchEffect.ts";
 
 import { highScore as highScoreDisplay } from "./react/highScoreStore.ts";
-import { setGoalDisplay, setGradientText } from "./components/goalDisplay.ts";
+import {
+  goal as goalDisplay,
+  goalText as goalTextDisplay,
+} from "./react/goalStore.ts";
 import { progressBar as progressBarDisplay } from "./react/progressBarStore.ts";
 
 import { hideLoadingScreen, showLoadingScreen } from "./react/loadingStore.ts";
@@ -48,7 +51,7 @@ async function createGame(): Promise<void> {
   renderContent();
 
   const ui = createDomRefs();
-  const ctx = createGameCtx(ui);
+  const ctx = createGameCtx();
 
   initUserInterface(ctx);
   bindUIEvents(ctx, ui);
@@ -75,9 +78,6 @@ function renderContent(): void {
 
 function createDomRefs() {
   return {
-    goalBox: document.getElementById("next-goal"),
-    goalText: document.querySelector<HTMLElement>(".goal-text"),
-
     increaseBtn: document.getElementById("increase-img"),
     boostBtn: document.getElementById("decrease-img"),
     resetBtn: document.getElementById("reset-img"),
@@ -91,7 +91,7 @@ function createDomRefs() {
   };
 }
 
-function createGameCtx(ui: DomReference) {
+function createGameCtx() {
   const progressBar = progressBarDisplay;
   progressBar.reset();
   const state = new GameState();
@@ -99,8 +99,8 @@ function createGameCtx(ui: DomReference) {
   const counter = counterDisplay;
 
   const highScore = highScoreDisplay;
-  const goal = setGoalDisplay(ui.goalBox);
-  const goalText = setGradientText(ui.goalText);
+  const goal = goalDisplay;
+  const goalText = goalTextDisplay;
 
   const actions = setGameActions({
     state,

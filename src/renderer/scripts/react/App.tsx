@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import Controls from "./Controls.tsx";
 import Counter from "./Counter.tsx";
 import CursorCounts from "./CursorCounts.tsx";
+import GoalBox from "./GoalBox.tsx";
 import Hearts from "./Hearts.tsx";
 import HighScore from "./HighScore.tsx";
 import LoadingScreen from "./LoadingScreen.tsx";
@@ -14,6 +15,7 @@ import ProgressBar from "./ProgressBar.tsx";
 export default function App() {
   const controlsRoot = document.getElementById("controls-root");
   const counterRoot = document.getElementById("counter-root");
+  const goalRoot = document.getElementById("goal-root");
   const boostRoot = document.getElementById("boost-root");
   const highScoreRoot = document.getElementById("high-score-root");
   const progressRoot = document.getElementById("progress-root");
@@ -22,6 +24,7 @@ export default function App() {
     <>
       {controlsRoot && createPortal(<Controls />, controlsRoot)}
       {counterRoot && createPortal(<Counter />, counterRoot)}
+      {goalRoot && createPortal(<GoalBox />, goalRoot)}
       {boostRoot && createPortal(<Hearts />, boostRoot)}
       {highScoreRoot && createPortal(<HighScore />, highScoreRoot)}
       {progressRoot && createPortal(<ProgressBar />, progressRoot)}

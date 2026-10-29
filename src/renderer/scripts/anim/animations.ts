@@ -4,7 +4,7 @@ import increaseBtnPress from "@assets/ui/buttons/increase-press.png";
 import powerBtn from "@assets/ui/buttons/decrease.png";
 import powerBtnPress from "@assets/ui/buttons/decrease-press.png";
 
-let i = 0;
+import { cycleThemeColor } from "../react/goalStore.ts";
 
 const animClasses = [
   "pop",
@@ -29,20 +29,6 @@ export const btnImages = {
     pressed: powerBtnPress,
   },
 };
-
-function updateColor(): string {
-  const colors = ["#ff80ea", "#A193FF", "#9ad9ff", "#BEB9DC"];
-  const color = colors[i];
-  i = (i + 1) % colors.length;
-
-  return color;
-}
-
-// match goal box colors with the letters
-function applyColorTheme(color: string) {
-  const goalBox: HTMLElement = document.querySelector(".next-goal");
-  goalBox.style.borderTop = `3px solid ${color}`;
-}
 
 // main animation function
 export function playAnimation(
@@ -98,8 +84,7 @@ export function splitLetters(
   animationType = "fade",
   direction = "forward",
 ) {
-  const newColor: string = updateColor();
-  applyColorTheme(newColor);
+  const newColor: string = cycleThemeColor();
   const isReverse: boolean = direction === "reverse";
 
   const elements: NodeListOf<Element> = document.querySelectorAll(className);

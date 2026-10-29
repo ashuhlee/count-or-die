@@ -14,9 +14,7 @@ export default function renderGame() {
 				<span id="boost-notif-text" class="boost-notif-text">boost!</span>
 			</div>
 
-			<div class="next-goal animate__animated animate__fast" id="next-goal">
-				<span class="goal-text fade-up-text">next: 30</span>
-			</div>
+			<div id="goal-root" style="display: contents"></div>
 			<img src="${chatTip}" class="chat-tip" alt="chat tip"/>
 		</div>
 		

@@ -1,3 +1,5 @@
+// Currently unused. Will be used in the future for
+// changing the game visual theme + sfx
 import { barColors } from "../react/progressBarStore.ts";
 
 import tile4 from "@assets/ui/textures/tile-4.png";
