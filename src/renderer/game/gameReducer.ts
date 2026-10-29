@@ -2,9 +2,9 @@ import type { CounterAnimation, GameEvent } from "./events.ts";
 import { getPowerUp, type PowerUpType } from "./powerUps.ts";
 
 export const MAX_BOOSTS = 4;
-export const FIRST_GOAL = 30;
-export const ROUND_SECONDS = 20;
-export const PENALTY_POINTS = 25;
+const FIRST_GOAL = 30;
+const ROUND_SECONDS = 20;
+const PENALTY_POINTS = 25;
 
 export const DEFAULT_GOAL_STEPS = [10, 15, 20, 25, 30];
 
@@ -42,7 +42,7 @@ export type GameAction =
   | { type: "collectPowerUp"; powerUp: PowerUpType }
   | { type: "powerUpEnded" };
 
-export type Update = { state: GameState; events: GameEvent[] };
+type Update = { state: GameState; events: GameEvent[] };
 
 export function createInitialState(
   saved: { highScore?: number; deathCount?: number } = {},

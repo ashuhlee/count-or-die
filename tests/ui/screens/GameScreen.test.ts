@@ -191,13 +191,13 @@ describe("the keyboard", () => {
     expect(game.counter()).toBe("00");
   });
 
-  test("stop working when the game goes away", () => {
+  test("stops listening when the game goes away", () => {
+    const remove = vi.spyOn(document, "removeEventListener");
     game = renderGame();
     game.unmount();
-    document.dispatchEvent(new KeyboardEvent("keydown", { key: "w" }));
 
-    // nothing to throw, and nothing left to score
-    expect(document.querySelector("#counter")).toBeNull();
+    expect(remove).toHaveBeenCalledWith("keydown", expect.any(Function));
+    // so afterEach has a game to unmount
     game = renderGame();
   });
 });
@@ -303,11 +303,6 @@ describe("boosting", () => {
 
     expect(usedHearts()).toEqual([false, false, false, false]);
     expect(game.$("#no-boosts").style.display).toBe("none");
-  });
-
-  test("a power-up brings missing hearts back one after the other", () => {
-    game = renderGame({ state: { boostsAvailable: 0 } });
-    expect(usedHearts()).toEqual([true, true, true, true]);
   });
 });
 

@@ -30,14 +30,10 @@ import { useLoadingScreen } from "./useLoadingScreen.ts";
 
 type GameProviderProps = {
   children: ReactNode;
-  // for tests: where the game starts, and what "random" gives
   initialState?: GameState;
   random?: () => number;
 };
 
-// Runs the game. The rules (game/) say what happens; this keeps the state,
-// does everything else that goes with it (sound, saving, timers) and hands the
-// result to the components through useGame().
 export default function GameProvider({
   children,
   initialState,
@@ -49,7 +45,7 @@ export default function GameProvider({
   const [state, setState] = useState<GameState>(
     () => initialState ?? createInitialState(loadSavedGame()),
   );
-  // the latest state, readable straight away (before React re-renders)
+
   const stateRef = useRef(state);
 
   const randomRef = useRef(random);

@@ -50,7 +50,6 @@ export default function MenuBar() {
         onClick={onSoundClick}
       />
       <img
-        id="optionsBtn"
         alt="options icon"
         src={optionsBtnSvg}
         onClick={() =>

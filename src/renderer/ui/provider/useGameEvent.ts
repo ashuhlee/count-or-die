@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef } from "react";
 
 import { EventBusContext, type AppEvent, type EventBus } from "./eventBus.ts";
 
-export function useEventBus(): EventBus {
+function useEventBus(): EventBus {
   const bus = useContext(EventBusContext);
   if (!bus) throw new Error("useEventBus needs a <GameProvider> above it");
   return bus;

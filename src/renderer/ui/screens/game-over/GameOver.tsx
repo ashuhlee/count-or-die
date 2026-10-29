@@ -39,7 +39,7 @@ export default function GameOver() {
     <div id="game-over" className={view.visible ? "visible" : undefined}>
       <div className="go-content">
         <div id="red-overlay"></div>
-        <h2 className="you-died" id="dead-text">
+        <h2 className="you-died">
           <span className={`go-text-random${rainbowClass}`}>{view.phrase}</span>
         </h2>
         <div className="top-right-info">

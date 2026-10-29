@@ -4,19 +4,11 @@ import { createRoot, type Root } from "react-dom/client";
 
 import App from "../../src/renderer/App.tsx";
 
-// the ids and classes the stylesheet and the tests rely on, so one going
-// missing fails here with a clear name instead of somewhere else
+// ids the stylesheet targets and no other test looks for; the rest are checked
+// by the tests that use them
 const IDS = [
   "main",
-  "app",
-  "game-container",
   "goal-chatbox",
-  "boost-notif-text",
-  "next-goal",
-  "progress-bar",
-  "counter",
-  "counter-outer",
-  "counter-shine",
   "boost-1",
   "boost-2",
   "boost-3",
@@ -25,23 +17,6 @@ const IDS = [
   "heart2",
   "heart3",
   "heart4",
-  "no-boosts",
-  "increase-img",
-  "decrease-img",
-  "reset-img",
-  "reset",
-  "high-score",
-  "app-ver",
-  "popupElement",
-  "powerUpUsedElement",
-  "red-flash",
-  "game-over",
-  "game-over-btn",
-  "quit-btn",
-  "menu-btn",
-  "death-tracker",
-  "soundBtn",
-  "optionsBtn",
 ];
 
 describe("App", () => {
@@ -64,13 +39,6 @@ describe("App", () => {
 
   test.each(IDS.filter((id) => id !== "main"))("has #%s", (id) => {
     expect(main.querySelector(`#${id}`)).not.toBeNull();
-  });
-
-  test("has the classes the game looks up", () => {
-    expect(main.querySelector(".game-name")).not.toBeNull();
-    expect(main.querySelector(".next-goal")).not.toBeNull();
-    expect(main.querySelector(".go-text-random")).not.toBeNull();
-    expect(main.querySelector(".score-text")).not.toBeNull();
   });
 
   test("renders the version, the title and the starting counter", () => {

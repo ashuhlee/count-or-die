@@ -1,8 +1,9 @@
+import type { SoundName } from "../game/events.ts";
+
 import bgMusicFile from "@assets/audio/music/the-return-of-the-8-bit-era.mp3";
 import gameOverMusicFile from "@assets/audio/sfx/game-over-music.mp3";
 
 import btnIncFxFile from "@assets/audio/sfx/button-press-1.mp3";
-import btnDecFxFile from "@assets/audio/sfx/button-press-2.mp3";
 
 import goalReachedFxFile from "@assets/audio/sfx/goal-reached.mp3";
 import highScoreFxFile from "@assets/audio/sfx/highscore.mp3";
@@ -24,11 +25,8 @@ type AudioTrack = {
   volume: number;
   loop?: boolean;
 };
-type AudioConfig = {
-  [key: string]: AudioTrack;
-};
-
-export const audioConfig: AudioConfig = {
+// every sound the game can ask for has to be here, and nothing else
+export const audioConfig: Record<SoundName, AudioTrack> = {
   bgMusic: {
     audio: new Audio(bgMusicFile),
     volume: 0.2,
@@ -37,10 +35,6 @@ export const audioConfig: AudioConfig = {
   buttonInc: {
     audio: new Audio(btnIncFxFile),
     volume: 1,
-  },
-  buttonReset: {
-    audio: new Audio(btnDecFxFile),
-    volume: 0.2,
   },
   useBoost: {
     audio: new Audio(boostFxFile),
@@ -97,10 +91,11 @@ for (const config of Object.values(audioConfig)) {
 }
 
 // audio controls
-export function playAudio(audio: HTMLAudioElement, fromStart = true) {
-  if (fromStart) {
-    audio.currentTime = 0;
-  }
+
+export function playSound(name: SoundName): void {
+  const { audio } = audioConfig[name];
+
+  audio.currentTime = 0;
   audio.play().catch((err) => {
     console.warn(`${audio.src} failed to play`, {
       error: err.name,
@@ -110,22 +105,12 @@ export function playAudio(audio: HTMLAudioElement, fromStart = true) {
   });
 }
 
-export function pauseAudio(audio: HTMLAudioElement): void {
-  audio.pause();
+export function pauseSound(name: SoundName): void {
+  audioConfig[name].audio.pause();
 }
 
 export function toggleAudio(mute: boolean): void {
   for (const config of Object.values(audioConfig)) {
     config.audio.volume = mute ? 0 : config.volume;
   }
-}
-
-export type SoundName = keyof typeof audioConfig;
-
-export function playSound(name: SoundName): void {
-  playAudio(audioConfig[name].audio);
-}
-
-export function pauseSound(name: SoundName): void {
-  pauseAudio(audioConfig[name].audio);
 }

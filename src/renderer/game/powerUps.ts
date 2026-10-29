@@ -7,7 +7,7 @@ export type PowerUpType =
   | "extra_boost"
   | "replenish_boosts";
 
-export type PowerUpDefinition = {
+type PowerUpDefinition = {
   type: PowerUpType;
   // how likely it is to appear, relative to the others
   weight: number;
