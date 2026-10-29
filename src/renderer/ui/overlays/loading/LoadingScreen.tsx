@@ -1,6 +1,6 @@
 import skullImg from "@assets/ui/deco/skull_gradient.png";
 
-import { useGame } from "../../provider/GameProvider.tsx";
+import { useGame } from "../../provider/useGame.ts";
 
 export default function LoadingScreen() {
   const { loading } = useGame();

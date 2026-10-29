@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
 import App from "./App.tsx";
-import checkHardwareAcceleration from "./utils/hardwareAcceleration.ts";
+import { checkHardwareAcceleration } from "./utils/hardwareAcceleration.ts";
 
 async function alertHardwareAcceleration(): Promise<void> {
   if (checkHardwareAcceleration()) return;

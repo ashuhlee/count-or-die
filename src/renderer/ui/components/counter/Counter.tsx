@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import type { CounterAnimation } from "../../../game/events.ts";
 import { formatCounter } from "../../../utils/formatCounter.ts";
-import { useGame } from "../../provider/GameProvider.tsx";
+import { useGame } from "../../provider/useGame.ts";
 import { useGameEvent } from "../../provider/useGameEvent.ts";
 
 const TEXT_PROPS = {

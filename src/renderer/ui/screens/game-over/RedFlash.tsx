@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useGame } from "../../provider/GameProvider.tsx";
+import { useGame } from "../../provider/useGame.ts";
 import { useGameEvent } from "../../provider/useGameEvent.ts";
 
 // the whole screen flashes red: slowly for game over, quickly for a penalty

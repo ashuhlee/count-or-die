@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useRef } from "react";
 
-// a setTimeout that is cleared when the component goes away
-export function useTimeouts() {
+// returns the timer, in case a caller wants to cancel it early
+export type Later = (
+  callback: () => void,
+  ms: number,
+) => ReturnType<typeof setTimeout>;
+
+export function useTimeouts(): Later {
   const ids = useRef(new Set<ReturnType<typeof setTimeout>>());
 
   useEffect(() => {
@@ -12,7 +17,7 @@ export function useTimeouts() {
     };
   }, []);
 
-  return useCallback((callback: () => void, ms: number) => {
+  return useCallback((callback, ms) => {
     const id = setTimeout(() => {
       ids.current.delete(id);
       callback();

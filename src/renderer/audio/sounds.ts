@@ -114,22 +114,6 @@ export function pauseAudio(audio: HTMLAudioElement): void {
   audio.pause();
 }
 
-export function lowerVolume(
-  audio: HTMLAudioElement,
-  targetVolume: number,
-): void {
-  if (audio && !audio.paused) {
-    audio.volume = targetVolume;
-  }
-}
-
-export function toggleMusic(audio: HTMLAudioElement): void {
-  audio.muted = !audio.muted;
-  if (!audio.muted) {
-    void audio.play();
-  }
-}
-
 export function toggleAudio(mute: boolean): void {
   for (const config of Object.values(audioConfig)) {
     config.audio.volume = mute ? 0 : config.volume;

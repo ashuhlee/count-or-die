@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, describe, test, vi } from "vitest";
 
-import { useGame } from "../../../src/renderer/ui/provider/GameProvider.tsx";
+import { useGame } from "../../../src/renderer/ui/provider/useGame.ts";
 import { renderInto, stubWebAnimations } from "../../helpers/dom.ts";
 import { renderGame } from "../../helpers/game.tsx";
 
