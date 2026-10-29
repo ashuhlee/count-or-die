@@ -1,20 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap');
-@import url('https://fonts.cdnfonts.com/css/alien-cyborg');
-@import url('https://fonts.cdnfonts.com/css/serious');
-@import url('https://fonts.cdnfonts.com/css/smw-text-nc');
+@import url("https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap");
+@import url("https://fonts.cdnfonts.com/css/alien-cyborg");
+@import url("https://fonts.cdnfonts.com/css/serious");
+@import url("https://fonts.cdnfonts.com/css/smw-text-nc");
 
 :root {
-	--shadow-pink-005: rgba(206,42,133,0.05);
-	--shadow-pink-010: rgba(206,42,133,0.10);
-	--shadow-pink-015: rgba(206,42,133,0.15);
-	--shadow-pink-020: rgba(206,42,133,0.2);
+  --shadow-pink-005: rgba(206, 42, 133, 0.05);
+  --shadow-pink-010: rgba(206, 42, 133, 0.1);
+  --shadow-pink-015: rgba(206, 42, 133, 0.15);
+  --shadow-pink-020: rgba(206, 42, 133, 0.2);
 
-	--shadow-purple-005: rgba(181, 121, 255, 0.15);
-	--shadow-purple-015: rgba(181, 121, 255, 0.25);
-	--shadow-purple-020: rgba(181, 121, 255, 0.3);
+  --shadow-purple-005: rgba(181, 121, 255, 0.15);
+  --shadow-purple-015: rgba(181, 121, 255, 0.25);
+  --shadow-purple-020: rgba(181, 121, 255, 0.3);
 
-    --rainbow-gradient-bar: linear-gradient(
-    to right, #ffd5a5, #FFB2EE, #C0C3FF, #A7EAFF
+  --rainbow-gradient-bar: linear-gradient(
+    to right,
+    #ffd5a5,
+    #ffb2ee,
+    #c0c3ff,
+    #a7eaff
   );
 }
 
@@ -29,13 +33,13 @@ $scanline: "#{$assets}/ui/textures/scanlines-2.png";
 $delay-step: 0.3s;
 
 $rainbow-gradient: linear-gradient(
-    to right,
-    #ffacad,
-    #ffd5a5,
-    #fdffb6,
-    #cbffbf,
-    #9bf6ff,
-    #a0c4ff,
-    #bdb2ff,
-    #ffc6ff
+  to right,
+  #ffacad,
+  #ffd5a5,
+  #fdffb6,
+  #cbffbf,
+  #9bf6ff,
+  #a0c4ff,
+  #bdb2ff,
+  #ffc6ff
 );

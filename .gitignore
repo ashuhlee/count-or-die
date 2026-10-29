@@ -8,3 +8,4 @@ old_code/
 .DS_Store
 .editorconfig
 eslint.config.ts
+.prettierrc

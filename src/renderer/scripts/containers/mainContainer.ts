@@ -1,32 +1,30 @@
+import gameOverGif from "@assets/ui/deco/game_over.gif";
 
-import gameOverGif from '@assets/ui/deco/game_over.gif';
+import soundBtnSvg from "@assets/ui/svg/sound-button-reg.svg";
+import optionsBtnSvg from "@assets/ui/svg/options-button.svg";
 
-import soundBtnSvg from '@assets/ui/svg/sound-button-reg.svg';
-import optionsBtnSvg from '@assets/ui/svg/options-button.svg';
+import questionPng from "@assets/ui/deco/question.png";
+import exclamationPng from "@assets/ui/deco/exclamation.png";
 
-import questionPng from '@assets/ui/deco/question.png';
-import exclamationPng from '@assets/ui/deco/exclamation.png';
+import ghostPng from "@assets/ui/deco/ghost.gif";
+import skullFloor from "@assets/ui/deco/skull_floor.png";
+import skullTracker from "@assets/ui/deco/skull_grey.png";
+import tombstonePng from "@assets/ui/deco/tombstone.png";
 
-import ghostPng from '@assets/ui/deco/ghost.gif';
-import skullFloor from '@assets/ui/deco/skull_floor.png';
-import skullTracker from '@assets/ui/deco/skull_grey.png';
-import tombstonePng from '@assets/ui/deco/tombstone.png';
+import resetBtnPng from "@assets/ui/buttons/reset-btn.png";
+import quitBtnPng from "@assets/ui/buttons/quit-btn.png";
 
-import resetBtnPng from '@assets/ui/buttons/reset-btn.png';
-import quitBtnPng from '@assets/ui/buttons/quit-btn.png';
-
-import cloudTopLeft from '@assets/ui/deco/clouds/cloud_1.png';
-import cloudBottomLeft from '@assets/ui/deco/clouds/cloud_2.png';
-import cloudTopRight from '@assets/ui/deco/clouds/cloud_3.png';
-import cloudBottomRight from '@assets/ui/deco/clouds/cloud_4.png';
-import cloudMini from '@assets/ui/deco/clouds/cloud_5.png';
+import cloudTopLeft from "@assets/ui/deco/clouds/cloud_1.png";
+import cloudBottomLeft from "@assets/ui/deco/clouds/cloud_2.png";
+import cloudTopRight from "@assets/ui/deco/clouds/cloud_3.png";
+import cloudBottomRight from "@assets/ui/deco/clouds/cloud_4.png";
+import cloudMini from "@assets/ui/deco/clouds/cloud_5.png";
 
 export default function renderMain() {
+  const main = document.getElementById("main") as HTMLDivElement;
+  const totalDeaths = localStorage.getItem("deathCount") ?? "0";
 
-	const main = document.getElementById('main') as HTMLDivElement;
-	const totalDeaths = localStorage.getItem('deathCount') ?? '0';
-
-	main.innerHTML = `
+  main.innerHTML = `
 		<!-- vfx -->
 		<div class="scanlines"></div>
 		<div class="scanlines-bg"></div>
@@ -104,5 +102,5 @@ export default function renderMain() {
     	<h1 id="high-score" class="animate__animated">high score: 0</h1>
     	<!-- app version -->
     	<p id="app-ver" class="app-ver">${__APP_VERSION__}</p>
-	`
+	`;
 }

@@ -1,123 +1,120 @@
-
 export default class GameState {
+  counter: number;
+  boostsAvailable: number;
+  countIncrement: number;
 
-	counter: number;
-	boostsAvailable: number;
-	countIncrement: number;
+  currentGoal: number;
+  goalsReached: number;
+  trueGoalsReached: number;
 
-	currentGoal: number;
-	goalsReached: number;
-	trueGoalsReached: number;
+  highScore: number;
 
-	highScore: number;
+  goalIncrement: number;
+  goalIncRandomizer: number[];
 
-	goalIncrement: number;
-	goalIncRandomizer: number[];
+  isGameOver: boolean;
+  isHighScore: boolean;
 
-	isGameOver: boolean;
-	isHighScore: boolean;
+  highScoreFxPlayed: boolean;
+  confettiPlayed: boolean;
+  gradientFxPlayed: boolean;
 
-	highScoreFxPlayed: boolean;
-	confettiPlayed: boolean;
-	gradientFxPlayed: boolean;
+  constructor() {
+    this.isGameOver = false;
 
-	constructor() {
+    this.counter = 0;
+    this.boostsAvailable = 4;
+    this.countIncrement = 1;
 
-		this.isGameOver = false;
+    this.currentGoal = 30;
+    this.goalsReached = 0;
+    this.trueGoalsReached = 0; // without boosts
 
-		this.counter = 0;
-		this.boostsAvailable = 4;
-		this.countIncrement = 1;
+    this.goalIncrement = 25; // starting increment
+    this.goalIncRandomizer = [10, 15, 20, 25, 30];
 
-		this.currentGoal = 30;
-		this.goalsReached = 0;
-		this.trueGoalsReached = 0; // without boosts
+    this.isHighScore = false;
+    this.highScoreFxPlayed = false;
 
-		this.goalIncrement = 25; // starting increment
-		this.goalIncRandomizer = [10, 15, 20, 25, 30];
+    this.confettiPlayed = false;
+    this.gradientFxPlayed = false;
 
-		this.isHighScore = false;
-		this.highScoreFxPlayed = false;
+    this.highScore = Number(localStorage.getItem("highScore")) || 0;
+  }
 
-		this.confettiPlayed = false;
-		this.gradientFxPlayed = false;
+  // buttons logic
+  increment() {
+    this.counter += this.countIncrement;
+  }
+  boost() {
+    if (this.boostsAvailable <= 0) {
+      return false;
+    }
+    this.counter = this.currentGoal;
 
-		this.highScore = Number(localStorage.getItem("highScore")) || 0;
-	}
+    this.goalsReached++;
+    this.boostsAvailable--;
 
-	// buttons logic
-	increment() {
-		this.counter += this.countIncrement;
-	}
-	boost() {
-		if (this.boostsAvailable <= 0) {
-			return false;
-		}
-		this.counter = this.currentGoal;
+    return true;
+  }
 
-		this.goalsReached++;
-		this.boostsAvailable--;
+  setGameOver(value: boolean) {
+    this.isGameOver = value;
+  }
+  reset() {
+    this.counter = 0;
+    this.boostsAvailable = 4;
+    this.currentGoal = 30;
 
-		return true;
-	}
+    this.goalsReached = 0;
+    this.trueGoalsReached = 0;
 
-	setGameOver(value: boolean) {
-		this.isGameOver = value;
-	}
-	reset() {
-		this.counter = 0;
-		this.boostsAvailable = 4;
-		this.currentGoal = 30;
+    this.isHighScore = false;
+    this.highScoreFxPlayed = false;
 
-		this.goalsReached = 0;
-		this.trueGoalsReached = 0;
+    this.gradientFxPlayed = false;
+    this.confettiPlayed = false;
 
-		this.isHighScore = false;
-		this.highScoreFxPlayed = false;
+    this.isGameOver = false;
+  }
 
-		this.gradientFxPlayed = false;
-		this.confettiPlayed = false;
+  getRandomGoal() {
+    const i = Math.floor(Math.random() * this.goalIncRandomizer.length);
+    return this.goalIncRandomizer[i];
+  }
 
-		this.isGameOver = false;
-	}
+  // update high score logic
+  updateHighScore() {
+    if (this.counter > this.highScore) {
+      this.highScore = this.counter;
+      this.isHighScore = true;
 
-	getRandomGoal() {
-		const i = Math.floor(Math.random() * this.goalIncRandomizer.length);
-		return this.goalIncRandomizer[i];
-	}
+      localStorage.setItem("highScore", String(this.highScore));
 
-	// update high score logic
-	updateHighScore() {
-		if (this.counter > this.highScore) {
-			this.highScore = this.counter;
-			this.isHighScore = true;
+      if (window.electron) {
+        void window.electron.setDiscordStatus({ highScoreRPC: this.highScore });
+      }
+      return true;
+    }
+    return false;
+  }
 
-			localStorage.setItem('highScore', String(this.highScore));
+  // goal logic
+  isGoalReached() {
+    return this.counter >= this.currentGoal;
+  }
+  incrementGoal(boosted = false) {
+    this.goalIncrement = this.getRandomGoal();
+    this.currentGoal += this.goalIncrement; // random increments of [10, 15, 20, 25, 30]
+    this.goalsReached++;
 
-			if (window.electron) {
-				void window.electron.setDiscordStatus({ highScoreRPC: this.highScore });
-			}
-			return true;
-		}
-		return false;
-	}
-
-	// goal logic
-	isGoalReached() {
-		return this.counter >= this.currentGoal;
-	}
-	incrementGoal(boosted = false) {
-		this.goalIncrement = this.getRandomGoal();
-		this.currentGoal += this.goalIncrement; // random increments of [10, 15, 20, 25, 30]
-		this.goalsReached++;
-
-		if (!boosted) {
-			this.trueGoalsReached++;
-		}
-	}
-	// 1.2x speed increase each round
-	barSpeed() {
-		const multiplier = Math.pow(1.2, this.trueGoalsReached);
-		return 20 / multiplier;
-	}
+    if (!boosted) {
+      this.trueGoalsReached++;
+    }
+  }
+  // 1.2x speed increase each round
+  barSpeed() {
+    const multiplier = Math.pow(1.2, this.trueGoalsReached);
+    return 20 / multiplier;
+  }
 }

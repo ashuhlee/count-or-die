@@ -1,90 +1,101 @@
-
 const phrasesRegular = [
-	'you died lolz',
-	'lol loser',
-	'aw, you died',
-	'you died :(',
-	'better luck next life..',
-	'nice try!',
-	"let's aim a bit higher..",
-	'sooo close!',
-	'you are dead',
-	'another try maybe?',
-	'give it another go!'
-]
+  "you died lolz",
+  "lol loser",
+  "aw, you died",
+  "you died :(",
+  "better luck next life..",
+  "nice try!",
+  "let's aim a bit higher..",
+  "sooo close!",
+  "you are dead",
+  "another try maybe?",
+  "give it another go!",
+];
 
 const phrasesNewScore = [
-	'new high score!',
-	'you beat your best score!',
-	"you're getting better!",
-	'oooh, a new record!'
-]
+  "new high score!",
+  "you beat your best score!",
+  "you're getting better!",
+  "oooh, a new record!",
+];
 
 function setRandomText(arr: string[]): string {
-	const i = Math.floor(Math.random() * arr.length);
-	return arr[i];
+  const i = Math.floor(Math.random() * arr.length);
+  return arr[i];
 }
 
-export function toggleGameOver(isGameOver = false, highScoreReached = false): void {
+export function toggleGameOver(
+  isGameOver = false,
+  highScoreReached = false,
+): void {
+  let isNegative = true;
+  const backToMenu = document.getElementById("menu-btn") as HTMLElement;
 
-	let isNegative = true;
-	const backToMenu = document.getElementById('menu-btn') as HTMLElement;
+  backToMenu.addEventListener("mouseenter", () => {
+    backToMenu.style.transform = `scale(1.15) 
+			rotate(${isNegative ? "-4deg" : "4deg"})`;
 
-	backToMenu.addEventListener('mouseenter', () => {
-		backToMenu.style.transform = `scale(1.15) 
-			rotate(${isNegative ? '-4deg' : '4deg'})`;
+    backToMenu.style.setProperty(
+      "--arr-color",
+      isNegative ? "#FBB6FF" : "#FFDEB6",
+    );
+  });
 
-		backToMenu.style.setProperty('--arr-color', isNegative ? '#FBB6FF' : '#FFDEB6');
-	})
+  backToMenu.addEventListener("mouseleave", () => {
+    backToMenu.style.transform = "";
+    backToMenu.style.removeProperty("--arr-color");
+    if (backToMenu) isNegative = !isNegative;
+  });
 
-	backToMenu.addEventListener('mouseleave', () => {
-		backToMenu.style.transform = '';
-		backToMenu.style.removeProperty('--arr-color');
-		if (backToMenu) isNegative = !isNegative;
-	})
+  const flash = document.getElementById("red-flash");
+  const gameOverScreen = document.getElementById("game-over");
 
-	const flash = document.getElementById('red-flash');
-	const gameOverScreen = document.getElementById('game-over');
+  const displayText = document.querySelector(
+    ".go-text-random",
+  ) as HTMLTextAreaElement;
+  const scoreText = document.querySelector(
+    ".score-text",
+  ) as HTMLTextAreaElement;
 
-	const displayText = document.querySelector('.go-text-random') as HTMLTextAreaElement;
-	const scoreText = document.querySelector('.score-text') as HTMLTextAreaElement;
+  if (highScoreReached) {
+    displayText.textContent = setRandomText(phrasesNewScore);
+    displayText.classList.add("rainbow-txt");
+    scoreText.classList.add("rainbow-txt");
+  } else {
+    displayText.textContent = setRandomText(phrasesRegular);
+  }
 
-	if (highScoreReached) {
-		displayText.textContent = setRandomText(phrasesNewScore);
-		displayText.classList.add('rainbow-txt');
-		scoreText.classList.add('rainbow-txt');
+  if (isGameOver) {
+    flash.classList.add("flash");
+    flash.addEventListener(
+      "animationend",
+      () => {
+        flash.classList.remove("flash");
+        gameOverScreen.classList.add("visible");
+      },
+      { once: true },
+    );
+  } else {
+    gameOverScreen.classList.remove("visible");
 
-	}
-	else {
-		displayText.textContent = setRandomText(phrasesRegular);
-	}
-
-    if (isGameOver) {
-		flash.classList.add('flash');
-		flash.addEventListener('animationend', () => {
-			flash.classList.remove('flash');
-			gameOverScreen.classList.add('visible');
-
-		}, {once: true})
-	} else {
-		gameOverScreen.classList.remove('visible');
-
-		displayText.classList.remove('rainbow-txt');
-		scoreText.classList.remove('rainbow-txt');
-	}
+    displayText.classList.remove("rainbow-txt");
+    scoreText.classList.remove("rainbow-txt");
+  }
 }
 
 export function youDiedConsole(finalScore: string | number) {
-	console.log(
-	'%c▓██   ██▓ ▒█████   █    ██    ▓█████▄  ██▓▓█████ ▓█████▄ \n' +
-	' ▒██  ██▒▒██▒  ██▒ ██  ▓██▒   ▒██▀ ██▌▓██▒▓█   ▀ ▒██▀ ██▌\n' +
-	'  ▒██ ██░▒██░  ██▒▓██  ▒██░   ░██   █▌▒██▒▒███   ░██   █▌\n' +
-	'  ░ ▐██▓░▒██   ██░▓▓█  ░██░   ░▓█▄   ▌░██░▒▓█  ▄ ░▓█▄   ▌\n' +
-	'  ░ ██▒▓░░ ████▓▒░▒▒█████▓    ░▒████▓ ░██░░▒████▒░▒████▓ \n' +
-	'   ██▒▒▒ ░ ▒░▒░▒░ ░▒▓▒ ▒ ▒     ▒▒▓  ▒ ░▓  ░░ ▒░ ░ ▒▒▓  ▒ \n' +
-	' ▓██ ░▒░   ░ ▒ ▒░ ░░▒░ ░ ░     ░ ▒  ▒  ▒ ░ ░ ░  ░ ░ ▒  ▒ \n' +
-	' ▒ ▒ ░░  ░ ░ ░ ▒   ░░░ ░ ░     ░ ░  ░  ▒ ░   ░    ░ ░  ░ \n' +
-	' ░ ░         ░ ░     ░           ░     ░     ░  ░   ░    \n' +
-	' ░ ░                           ░                  ░      \n\n' +
-	`Final score: ${finalScore}`, 'color: #FF2659')
+  console.log(
+    "%c▓██   ██▓ ▒█████   █    ██    ▓█████▄  ██▓▓█████ ▓█████▄ \n" +
+      " ▒██  ██▒▒██▒  ██▒ ██  ▓██▒   ▒██▀ ██▌▓██▒▓█   ▀ ▒██▀ ██▌\n" +
+      "  ▒██ ██░▒██░  ██▒▓██  ▒██░   ░██   █▌▒██▒▒███   ░██   █▌\n" +
+      "  ░ ▐██▓░▒██   ██░▓▓█  ░██░   ░▓█▄   ▌░██░▒▓█  ▄ ░▓█▄   ▌\n" +
+      "  ░ ██▒▓░░ ████▓▒░▒▒█████▓    ░▒████▓ ░██░░▒████▒░▒████▓ \n" +
+      "   ██▒▒▒ ░ ▒░▒░▒░ ░▒▓▒ ▒ ▒     ▒▒▓  ▒ ░▓  ░░ ▒░ ░ ▒▒▓  ▒ \n" +
+      " ▓██ ░▒░   ░ ▒ ▒░ ░░▒░ ░ ░     ░ ▒  ▒  ▒ ░ ░ ░  ░ ░ ▒  ▒ \n" +
+      " ▒ ▒ ░░  ░ ░ ░ ▒   ░░░ ░ ░     ░ ░  ░  ▒ ░   ░    ░ ░  ░ \n" +
+      " ░ ░         ░ ░     ░           ░     ░     ░  ░   ░    \n" +
+      " ░ ░                           ░                  ░      \n\n" +
+      `Final score: ${finalScore}`,
+    "color: #FF2659",
+  );
 }

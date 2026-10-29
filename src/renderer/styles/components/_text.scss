@@ -1,4 +1,5 @@
-.title, .no-boosts {
+.title,
+.no-boosts {
   color: #fff;
   text-shadow: 0 5px 0 rgba(255, 163, 231, 0.8);
   font-family: "Silkscreen", sans-serif;
@@ -8,21 +9,21 @@
   text-align: center;
 }
 .title {
-	transform: translateY(60px);
-	font-size: 30px;
+  transform: translateY(60px);
+  font-size: 30px;
 }
 .no-boosts {
-	display: none;
-	padding-top: 10px !important;
-	font-size: 26px;
+  display: none;
+  padding-top: 10px !important;
+  font-size: 26px;
 }
 
 .count-cursor {
-	position: fixed;
-	font-family: 'SMW Text NC', sans-serif;
-	font-size: 24px;
-	pointer-events: none;
-	z-index: 5;
+  position: fixed;
+  font-family: "SMW Text NC", sans-serif;
+  font-size: 24px;
+  pointer-events: none;
+  z-index: 5;
 }
 
 #high-score {
@@ -30,7 +31,7 @@
   font-size: 22px;
   color: white;
   text-shadow: 0 4px 0 var(--shadow-pink-015);
-  font-family: 'serious1', sans-serif;
+  font-family: "serious1", sans-serif;
   font-weight: bold;
   bottom: -10px;
   right: 0;
@@ -41,8 +42,10 @@
 .app-ver {
   position: absolute;
   font-size: 18px;
-  color: white; opacity: 0.6;
-  font-family: 'serious1', sans-serif;
-  bottom: -4px; left: 8px;
+  color: white;
+  opacity: 0.6;
+  font-family: "serious1", sans-serif;
+  bottom: -4px;
+  left: 8px;
   padding: 4px;
 }

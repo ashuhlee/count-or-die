@@ -1,53 +1,48 @@
-
-import { beforeEach, expect, describe, test } from 'vitest';
-import { setHighScoreDisplay } from '../src/renderer/scripts/components/highScoreDisplay.ts';
-import GameState from '../src/renderer/scripts/core/gameState.ts';
+import { beforeEach, expect, describe, test } from "vite-plus/test";
+import { setHighScoreDisplay } from "../src/renderer/scripts/components/highScoreDisplay.ts";
+import GameState from "../src/renderer/scripts/core/gameState.ts";
 
 window.HTMLMediaElement.prototype.play = () => Promise.resolve();
 
-describe('GameState', () => {
+describe("GameState", () => {
+  // clear local storage before every test
+  beforeEach(() => {
+    localStorage.clear();
+  });
 
-	// clear local storage before every test
-	beforeEach(() => {
-		localStorage.clear();
-	});
+  const state = new GameState();
+  const storage = localStorage;
 
-	const state = new GameState();
-	const storage = localStorage;
+  document.body.innerHTML = `<p id="high-score"></p>`;
+  let highScoreText = document.getElementById("high-score");
 
-	document.body.innerHTML = `<p id="high-score"></p>`;
-	let highScoreText = document.getElementById('high-score');
+  test("Counter increments properly", () => {
+    state.increment();
+    expect(state.counter).toBe(1);
 
-	test('Counter increments properly', () => {
-		state.increment();
-		expect(state.counter).toBe(1);
+    state.increment();
+    expect(state.counter).toBe(2);
+  });
 
-		state.increment();
-		expect(state.counter).toBe(2);
-	})
+  test("High score and counter updates", () => {
+    state.counter = 100;
+    state.increment();
+    state.updateHighScore();
 
-	test('High score and counter updates', () => {
-		state.counter = 100;
-		state.increment();
-		state.updateHighScore();
+    expect(state.counter).toBe(101);
+    expect(state.highScore).toBe(101);
 
-		expect(state.counter).toBe(101);
-		expect(state.highScore).toBe(101);
+    setHighScoreDisplay(highScoreText).update(state.highScore);
+    expect(highScoreText.textContent).toBe(`high score: 101`);
+  });
 
-		setHighScoreDisplay(highScoreText).update(state.highScore);
-		expect(highScoreText.textContent).toBe(`high score: 101`);
+  // check game state local storage values
+  describe("Local Storage", () => {
+    test("Loads high score", () => {
+      storage.setItem("highScore", "50");
 
-	})
-
-	// check game state local storage values
-	describe('Local Storage', () => {
-
-		test('Loads high score', () => {
-			storage.setItem('highScore', '50');
-
-			const state = new GameState();
-			expect(state.highScore).toBe(50);
-		})
-	})
-
-})
+      const state = new GameState();
+      expect(state.highScore).toBe(50);
+    });
+  });
+});
