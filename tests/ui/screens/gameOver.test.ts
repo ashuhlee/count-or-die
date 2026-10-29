@@ -9,15 +9,15 @@ import {
 import { act, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
 
-import GameOver from "../../src/renderer/scripts/ui/game-over/GameOver.tsx";
-import RedFlash from "../../src/renderer/scripts/ui/game-over/RedFlash.tsx";
+import GameOver from "../../../src/renderer/scripts/ui/screens/game-over/GameOver.tsx";
+import RedFlash from "../../../src/renderer/scripts/ui/screens/game-over/RedFlash.tsx";
 import {
   flashScreen,
   gameOverScreen,
   gameOverStore,
-} from "../../src/renderer/scripts/ui/game-over/gameOverStore.ts";
-import { toggleGameOver } from "../../src/renderer/scripts/core/gameOver.ts";
-import { fireAnimationEnd } from "../helpers/dom.ts";
+} from "../../../src/renderer/scripts/ui/screens/game-over/gameOverStore.ts";
+import { toggleGameOver } from "../../../src/renderer/scripts/core/gameOver.ts";
+import { fireAnimationEnd } from "../../helpers/dom.ts";
 
 describe("game over screen", () => {
   let container: HTMLDivElement;

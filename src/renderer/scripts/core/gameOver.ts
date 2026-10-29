@@ -1,4 +1,4 @@
-import { gameOverScreen } from "../ui/game-over/gameOverStore.ts";
+import { gameOverScreen } from "../ui/screens/game-over/gameOverStore.ts";
 
 const phrasesRegular = [
   "you died lolz",

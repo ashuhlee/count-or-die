@@ -157,14 +157,17 @@ src/
     └── scripts/
         ├── app.ts     Starts the game and connects the pieces below
         ├── core/      Game rules: state, actions, power-ups, game over
-        ├── ui/        React interface, one folder per feature
-        │              (a component next to the store the game code updates it through)
+        ├── controls/  What buttons, keys and settings do (input, audio)
         ├── anim/      Animation helpers (confetti, glitch, replaying CSS animations)
-        ├── controls/  Audio and keyboard handling
-        └── utils/
+        ├── utils/
+        └── ui/        React interface
+            ├── screens/   Full screens: game, game over, loading
+            └── ...        One folder per feature (counter, hearts, goal, ...),
+                           a component next to the store the game code updates it through
 tests/
 ├── core/              Game logic tests
-├── ui/                Component tests, one file per feature
+├── controls/          Input tests
+├── ui/                Component tests, one file per feature (screens/ for the screens)
 └── helpers/           Shared test utilities
 ```
 

@@ -10,7 +10,7 @@ import { act, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
 
 import App from "../../src/renderer/scripts/ui/App.tsx";
-import { gameControls } from "../../src/renderer/scripts/ui/input/gameControls.ts";
+import { gameControls } from "../../src/renderer/scripts/controls/gameControls.ts";
 
 describe("game controls", () => {
   let main: HTMLDivElement;

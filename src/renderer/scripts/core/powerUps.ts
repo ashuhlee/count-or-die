@@ -1,4 +1,4 @@
-import { flashScreen } from "../ui/game-over/gameOverStore.ts";
+import { flashScreen } from "../ui/screens/game-over/gameOverStore.ts";
 import { replenishHearts } from "../ui/hearts/heartStore.ts";
 import { powerUps } from "../ui/power-ups/powerUpStore.ts";
 import { showSmoke } from "../ui/smoke/smokeStore.ts";

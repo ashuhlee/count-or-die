@@ -4,8 +4,8 @@ import {
   formatCounter,
 } from "./ui/counter/counterStore.ts";
 import { cycleThemeColor } from "./ui/goal/goalStore.ts";
-import { gameOverScreen } from "./ui/game-over/gameOverStore.ts";
-import { gameControls } from "./ui/input/gameControls.ts";
+import { gameOverScreen } from "./ui/screens/game-over/gameOverStore.ts";
+import { gameControls } from "./controls/gameControls.ts";
 import { mountApp } from "./ui/mount.tsx";
 
 import checkHardwareAcceleration from "./utils/hardwareAcceleration.ts";
@@ -29,7 +29,7 @@ import { progressBar as progressBarDisplay } from "./ui/progress-bar/progressBar
 import {
   hideLoadingScreen,
   showLoadingScreen,
-} from "./ui/loading/loadingStore.ts";
+} from "./ui/screens/loading/loadingStore.ts";
 
 type GameContext = ReturnType<typeof createGameCtx>;
 

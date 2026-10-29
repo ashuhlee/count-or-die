@@ -13,7 +13,7 @@ import {
   powerUpStore,
   powerUps,
 } from "../../src/renderer/scripts/ui/power-ups/powerUpStore.ts";
-import { gameOverStore } from "../../src/renderer/scripts/ui/game-over/gameOverStore.ts";
+import { gameOverStore } from "../../src/renderer/scripts/ui/screens/game-over/gameOverStore.ts";
 import { smokeStore } from "../../src/renderer/scripts/ui/smoke/smokeStore.ts";
 import { counter } from "../../src/renderer/scripts/ui/counter/counterStore.ts";
 import { heartStore } from "../../src/renderer/scripts/ui/hearts/heartStore.ts";

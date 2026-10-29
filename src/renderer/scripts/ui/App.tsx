@@ -6,14 +6,14 @@ import cloudMini from "@assets/ui/deco/clouds/cloud_5.png";
 
 import MenuBar from "./menu-bar/MenuBar.tsx";
 import CursorCounts from "./cursor-counts/CursorCounts.tsx";
-import GameOver from "./game-over/GameOver.tsx";
-import GameScreen from "./GameScreen.tsx";
+import GameOver from "./screens/game-over/GameOver.tsx";
+import GameScreen from "./screens/game/GameScreen.tsx";
 import HighScore from "./high-score/HighScore.tsx";
-import LoadingScreen from "./loading/LoadingScreen.tsx";
+import LoadingScreen from "./screens/loading/LoadingScreen.tsx";
 import PowerUps from "./power-ups/PowerUps.tsx";
-import RedFlash from "./game-over/RedFlash.tsx";
+import RedFlash from "./screens/game-over/RedFlash.tsx";
 import SmokePopups from "./smoke/SmokePopups.tsx";
-import useKeyboardControls from "./input/useKeyboardControls.ts";
+import useKeyboardControls from "../controls/useKeyboardControls.ts";
 
 // The whole page. A few animations are still replayed by hand on elements
 // found by id (see playAnimation), so those ids stay put.
