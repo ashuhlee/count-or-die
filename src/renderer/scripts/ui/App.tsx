@@ -9,7 +9,7 @@ import CursorCounts from "./components/cursor-counts/CursorCounts.tsx";
 import GameOver from "./screens/game-over/GameOver.tsx";
 import GameScreen from "./screens/game/GameScreen.tsx";
 import HighScore from "./components/high-score/HighScore.tsx";
-import LoadingScreen from "./screens/loading/LoadingScreen.tsx";
+import LoadingScreen from "./overlays/loading/LoadingScreen.tsx";
 import PowerUps from "./components/power-ups/PowerUps.tsx";
 import RedFlash from "./screens/game-over/RedFlash.tsx";
 import SmokePopups from "./components/smoke/SmokePopups.tsx";

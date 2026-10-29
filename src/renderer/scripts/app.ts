@@ -29,7 +29,7 @@ import { progressBar as progressBarDisplay } from "./ui/components/progress-bar/
 import {
   hideLoadingScreen,
   showLoadingScreen,
-} from "./ui/screens/loading/loadingStore.ts";
+} from "./ui/overlays/loading/loadingStore.ts";
 
 type GameContext = ReturnType<typeof createGameCtx>;
 

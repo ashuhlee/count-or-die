@@ -10,11 +10,11 @@ import { act, type ComponentType, type ReactElement } from "react";
 
 import { renderInto } from "../../helpers/dom.ts";
 
-import LoadingScreen from "../../../src/renderer/scripts/ui/screens/loading/LoadingScreen.tsx";
+import LoadingScreen from "../../../src/renderer/scripts/ui/overlays/loading/LoadingScreen.tsx";
 import {
   hideLoadingScreen,
   showLoadingScreen,
-} from "../../../src/renderer/scripts/ui/screens/loading/loadingStore.ts";
+} from "../../../src/renderer/scripts/ui/overlays/loading/loadingStore.ts";
 
 describe("LoadingScreen", () => {
   let container: HTMLDivElement;
