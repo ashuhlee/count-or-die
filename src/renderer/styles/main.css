@@ -61,10 +61,6 @@ img {
   -webkit-user-drag: none;
   user-drag: none;
 }
-img :not(#closeApp) {
-  pointer-events: none;
-  image-rendering: pixelated;
-}
 @keyframes slide {
   0% {
     background-position: 0 0;
@@ -104,43 +100,12 @@ img :not(#closeApp) {
     background-position: 200% center;
   }
 }
-@keyframes hide-heart {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
 @keyframes fade-in-up {
   to {
     color: #4b4d5a;
     opacity: 1;
     transform: translateY(0);
     margin-left: 0;
-  }
-}
-@keyframes text-gradient {
-  0% {
-    color: rgba(0, 0, 0, 0);
-    background-image: linear-gradient(
-      to right,
-      #ffacad,
-      #ffd5a5,
-      #fdffb6,
-      #cbffbf,
-      #9bf6ff,
-      #a0c4ff,
-      #bdb2ff,
-      #ffc6ff
-    );
-    background-clip: text;
-    background-size: 100% auto;
-    background-position: 0% center;
-  }
-  100% {
-    color: #4b4d5a;
-    background-position: 200% center;
   }
 }
 @keyframes wavy-text {
@@ -243,19 +208,6 @@ img :not(#closeApp) {
   100% {
     transform: scale(1) rotate(0);
     filter: none;
-  }
-}
-@keyframes fade-gradient {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  40% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0;
   }
 }
 @keyframes reset-shake {
@@ -463,9 +415,6 @@ img :not(#closeApp) {
     transform: scale(1) rotate(6deg);
   }
 }
-#counter.new-score-counter {
-  fill: url(#gradient-counter);
-}
 .heart-pink,
 .heart-purple,
 .heart-blue,
@@ -504,7 +453,6 @@ img :not(#closeApp) {
 }
 .new-goal,
 .new-goal-reverse {
-  transform-origin: 50% 100%;
   transform-style: preserve-3d;
   backface-visibility: hidden;
   will-change: transform, filter;
@@ -566,10 +514,6 @@ img :not(#closeApp) {
   animation: pop-right 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
   transform-origin: center;
 }
-.pop-gradient {
-  animation: fade-gradient 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
-  transform-origin: center;
-}
 .reset-shake {
   animation: reset-shake 0.25s ease-out;
   transform-box: fill-box;
@@ -596,9 +540,6 @@ img :not(#closeApp) {
 }
 .boost-notification {
   animation: float-up 1.6s cubic-bezier(0.68, -0.6, 0.32, 1.6) forwards;
-}
-.bounce-in {
-  animation: bounce-in 0.02s ease-out;
 }
 .buttons {
   display: flex;
@@ -786,19 +727,6 @@ img :not(#closeApp) {
   background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, #fff 100%);
   opacity: 0.1;
 }
-.left-deco {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  padding: 30px;
-  height: 180px;
-  opacity: 0.8;
-}
-@media screen and (max-height: 950px) and (max-width: 900px) {
-  .left-deco {
-    display: none;
-  }
-}
 .clouds {
   opacity: 0.85;
   transition: opacity 0.2s ease;
@@ -875,9 +803,7 @@ img :not(#closeApp) {
   display: flex;
   justify-content: center;
 }
-.goal-chatbox .boost-notif-text,
-.goal-chatbox .theme-switch-notif-text,
-.goal-chatbox .score-notif-text {
+.goal-chatbox .boost-notif-text {
   position: absolute;
   white-space: nowrap;
   color: #fff;
@@ -1114,8 +1040,7 @@ img :not(#closeApp) {
 #game-over .top-right-info:hover {
   transform: perspective(200px) rotateY(0deg);
 }
-#game-over .tracker-container,
-#game-over .leaderboard-container {
+#game-over .tracker-container {
   height: 30px;
   width: fit-content;
   display: flex;
@@ -1128,22 +1053,16 @@ img :not(#closeApp) {
   transition: transform 1s ease;
 }
 #game-over .tracker-container:hover .skull-tracker,
-#game-over .tracker-container:hover .death-tracker,
-#game-over .leaderboard-container:hover .skull-tracker,
-#game-over .leaderboard-container:hover .death-tracker {
+#game-over .tracker-container:hover .death-tracker {
   animation: flash 0.6s;
 }
-#game-over .tracker-container .skull-tracker,
-#game-over .leaderboard-container .skull-tracker {
+#game-over .tracker-container .skull-tracker {
   width: 17px;
   height: 17px;
   will-change: transform;
   transform: translateZ(0);
 }
-#game-over .tracker-container .death-tracker,
-#game-over .tracker-container .leaderboard,
-#game-over .leaderboard-container .death-tracker,
-#game-over .leaderboard-container .leaderboard {
+#game-over .tracker-container .death-tracker {
   font-weight: bold;
   font-family: "serious1", sans-serif;
   font-size: 23px;

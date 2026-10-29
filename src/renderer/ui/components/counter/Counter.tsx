@@ -43,21 +43,6 @@ export default function Counter() {
             {display}
           </text>
         </clipPath>
-        <linearGradient
-          id="gradient-counter"
-          x1="0%"
-          y1="0%"
-          x2="100%"
-          y2="100%"
-        >
-          <stop offset="0%" style={{ stopColor: "#FFACAD" }} />
-          <stop offset="14.28%" style={{ stopColor: "#FFD5A5" }} />
-          <stop offset="28.57%" style={{ stopColor: "#FDFFB6" }} />
-          <stop offset="42.85%" style={{ stopColor: "#CBFFBF" }} />
-          <stop offset="57.14%" style={{ stopColor: "#9BF6FF" }} />
-          <stop offset="85.71%" style={{ stopColor: "#BDB2FF" }} />
-          <stop offset="100%" style={{ stopColor: "#ffb7fe" }} />
-        </linearGradient>
         <linearGradient id="default-color" x1="0%" x2="0%" y1="0%" y2="100%">
           <stop offset="5%" stopColor="#FFE3F9" />
           <stop offset="30%" stopColor="#F69DE2" />

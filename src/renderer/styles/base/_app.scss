@@ -52,8 +52,4 @@ select {
 img {
   -webkit-user-drag: none;
   user-drag: none;
-  :not(#closeApp) {
-    pointer-events: none;
-    image-rendering: pixelated;
-  }
 }

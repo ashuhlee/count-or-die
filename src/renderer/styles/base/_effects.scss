@@ -1,9 +1,5 @@
 @use "globals";
 
-#counter.new-score-counter {
-  fill: url(#gradient-counter);
-}
-
 .heart-pink,
 .heart-purple,
 .heart-blue,
@@ -26,7 +22,6 @@
 
 .new-goal,
 .new-goal-reverse {
-  transform-origin: 50% 100%;
   transform-style: preserve-3d;
   backface-visibility: hidden;
   will-change: transform, filter;
@@ -92,10 +87,6 @@
   animation: pop-right 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
   transform-origin: center;
 }
-.pop-gradient {
-  animation: fade-gradient 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
-  transform-origin: center;
-}
 
 .reset-shake {
   animation: reset-shake 0.25s ease-out;
@@ -124,7 +115,4 @@
 }
 .boost-notification {
   animation: float-up 1.6s cubic-bezier(0.68, -0.6, 0.32, 1.6) forwards;
-}
-.bounce-in {
-  animation: bounce-in 0.02s ease-out;
 }

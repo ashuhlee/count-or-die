@@ -151,8 +151,7 @@
       transform: perspective(200px) rotateY(0deg);
     }
   }
-  .tracker-container,
-  .leaderboard-container {
+  .tracker-container {
     height: 30px;
     width: fit-content;
     display: flex;
@@ -176,8 +175,7 @@
       transform: translateZ(0);
     }
 
-    .death-tracker,
-    .leaderboard {
+    .death-tracker {
       font-weight: bold;
       font-family: "serious1", sans-serif;
       font-size: 23px;
