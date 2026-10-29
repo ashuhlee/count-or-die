@@ -689,9 +689,9 @@ img {
 }
 .app-ver {
   position: absolute;
-  font-size: 18px;
+  font-size: 16px;
   color: #fff;
-  opacity: 0.6;
+  opacity: 0.8;
   font-family: "serious1", sans-serif;
   bottom: -4px;
   left: 8px;

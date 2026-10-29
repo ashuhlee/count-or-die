@@ -9,10 +9,8 @@ export type PowerUpType =
 
 type PowerUpDefinition = {
   type: PowerUpType;
-  // how likely it is to appear, relative to the others
-  weight: number;
-  // how long a timed effect lasts; null for instant ones
-  duration: number | null;
+  weight: number; // how likely it is to appear, relative to the others
+  duration: number | null; // how long a timed effect lasts; null for instant ones
   sound: SoundName;
   effect: "good" | "bad";
   description: string;
@@ -80,7 +78,7 @@ export function availablePowerUps(
   return options.length > 0 ? options : POWER_UPS;
 }
 
-// picks one by weight; `random` is a number from 0 up to (not including) 1
+// picks one by weight
 export function choosePowerUp(
   options: PowerUpDefinition[],
   random: number,

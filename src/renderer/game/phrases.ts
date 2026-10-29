@@ -19,7 +19,6 @@ const PHRASES_NEW_SCORE = [
   "oooh, a new record!",
 ];
 
-// `random` is a number from 0 up to (not including) 1
 export function pickGameOverPhrase(
   isHighScore: boolean,
   random: number,

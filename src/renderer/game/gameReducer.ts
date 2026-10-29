@@ -34,7 +34,6 @@ export type GameState = {
 };
 
 export type GameAction =
-  // `random` picks how much the goal grows if this click reaches it
   | { type: "increase"; random: number }
   | { type: "boost"; random: number }
   | { type: "restart" }
@@ -73,13 +72,10 @@ export function roundSecondsFor(trueGoalsReached: number): number {
   return ROUND_SECONDS / Math.pow(1.2, trueGoalsReached);
 }
 
-// `random` is a number from 0 up to (not including) 1
 function pickGoalStep(steps: number[], random: number): number {
   return steps[Math.floor(random * steps.length)];
 }
 
-// after the counter changed from a click or a boost: new high score? goal
-// reached?
 function scoreAndGoal(
   state: GameState,
   animation: CounterAnimation,

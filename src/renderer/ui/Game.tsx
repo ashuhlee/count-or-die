@@ -15,8 +15,6 @@ import GameOver from "./screens/game-over/GameOver.tsx";
 import RedFlash from "./screens/game-over/RedFlash.tsx";
 import GameScreen from "./screens/game/GameScreen.tsx";
 
-// The whole page, from the background up to the things that cover it. The
-// screens and components get what they show from the game running above.
 export default function Game() {
   useKeyboardControls();
 
@@ -46,7 +44,7 @@ export default function Game() {
       </div>
       <HighScore />
       <p id="app-ver" className="app-ver">
-        {__APP_VERSION__}
+        {__APP_VERSION__}-beta
       </p>
 
       <CursorCounts />
