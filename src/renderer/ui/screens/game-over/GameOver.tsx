@@ -64,7 +64,7 @@ export default function GameOver() {
         </h2>
 
         <h2 className="play-again">
-          <span className="try-again">try again ?</span>
+          <span className="try-again">try again?</span>
         </h2>
         <div className="bottom-section">
           <div className="game-over-btns">

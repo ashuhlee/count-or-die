@@ -135,12 +135,13 @@
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color: #ffffff;
-    text-shadow: 0 5px 0 var(--shadow-pink-015);
+    text-shadow: 0 3px 0 var(--shadow-pink-020);
   }
   .final-score {
+    font-size: 32px;
     color: #ffffff;
     font-weight: bold;
-    margin: 18px;
+    margin: 12px;
     font-family: "serious1", sans-serif;
   }
   .you-died {
@@ -181,7 +182,7 @@
     &:hover {
       .skull-tracker,
       .death-tracker {
-        animation: flash 0.6s;
+        animation: flash 0.4s;
       }
     }
     .skull-tracker {
@@ -202,7 +203,7 @@
 
   .play-again {
     font-size: 30px;
-    -webkit-text-stroke: 10px #696491;
+    -webkit-text-stroke: 9px #595480;
     filter: drop-shadow(4px 4px 0px var(--shadow-pink-015));
     paint-order: stroke fill;
   }
@@ -210,7 +211,7 @@
   .go-title {
     width: 80vw;
     max-width: 390px;
-    filter: drop-shadow(5px 5px 0px var(--shadow-pink-005));
+    filter: drop-shadow(6px 6px 0px var(--shadow-pink-015));
   }
   img {
     image-rendering: pixelated;
