@@ -1,11 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./CRTShader.css";
 
-// The lighting of the WebGL CRT shader by Matt Sephton (MIT licence, github.com/
-// gingerbeardman/webgl-crt-shader): scanlines, vignette, flicker and a curve.
-// The original reads the picture it is drawn over, which a web page cannot
-// give it, so this draws only the lighting, as a canvas that is multiplied over
-// the page. The lighting maths is the original's.
+// WebGL CRT shader by Matt Sephton (github.com/gingerbeardman/webgl-crt-shader)
 
 const VERTEX = `
 attribute vec2 position;
@@ -85,7 +81,7 @@ void main() {
     lightingMask *= vignetteApprox(uv, vignetteStrength);
   }
 
-  gl_FragColor = vec4(vec3(lightingMask), 1.0);
+  gl_FragColor = vec4(0.0, 0.0, 0.0, clamp(1.0 - lightingMask, 0.0, 1.0));
 }`;
 
 const UNIFORMS = [
@@ -143,7 +139,7 @@ const bloomGain = (threshold: number) => 1 + 1.5 * (1 - threshold);
 export default function CRTShader({
   scanlineIntensity = 0.15,
   scanlineCount = 256,
-  drift = 6,
+  drift = 0,
   adaptiveIntensity = 0.3,
   vignetteStrength = 0.2,
   curvature = 0.1,
@@ -174,8 +170,10 @@ export default function CRTShader({
     maxDevicePixelRatio,
   };
   const settingsRef = useRef(settings);
+  const redrawRef = useRef<(() => void) | null>(null);
   useEffect(() => {
     settingsRef.current = settings;
+    redrawRef.current?.();
   });
 
   useEffect(() => {
@@ -183,7 +181,8 @@ export default function CRTShader({
     if (!canvas) return;
 
     const gl = canvas.getContext("webgl", {
-      alpha: false,
+      alpha: true,
+      premultipliedAlpha: true,
       antialias: false,
       depth: false,
       stencil: false,
@@ -227,6 +226,7 @@ export default function CRTShader({
     const start = performance.now();
 
     const draw = () => {
+      raf = 0;
       const s = settingsRef.current;
       const ratio = Math.min(
         window.devicePixelRatio || 1,
@@ -254,9 +254,17 @@ export default function CRTShader({
       gl.uniform1f(uniform.flickerStrength, s.flickerStrength);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
 
-      raf = requestAnimationFrame(draw);
+      // only keeps going if something moves; otherwise it is drawn once, and
+      // again whenever the size or the settings change
+      if (s.drift > 0 || s.flickerStrength > 0)
+        raf = requestAnimationFrame(draw);
     };
     raf = requestAnimationFrame(draw);
+    redrawRef.current = () => {
+      if (!raf) raf = requestAnimationFrame(draw);
+    };
+    const resizeObserver = new ResizeObserver(() => redrawRef.current?.());
+    resizeObserver.observe(canvas);
 
     const onLost = (event: Event) => {
       event.preventDefault();
@@ -268,6 +276,8 @@ export default function CRTShader({
 
     return () => {
       cancelAnimationFrame(raf);
+      redrawRef.current = null;
+      resizeObserver.disconnect();
       canvas.removeEventListener("webglcontextlost", onLost);
       canvas.removeEventListener("webglcontextrestored", onRestored);
       if (!gl.isContextLost()) {
@@ -277,6 +287,7 @@ export default function CRTShader({
     };
   }, [generation]);
 
+  const adjusting = brightness !== 1 || contrast !== 1 || saturation !== 1;
   const colors = `brightness(${brightness}) contrast(${contrast}) saturate(${saturation})`;
 
   return (
@@ -294,7 +305,7 @@ export default function CRTShader({
       <canvas
         ref={canvasRef}
         className="crt-shader"
-        style={{ backdropFilter: colors }}
+        style={adjusting ? { backdropFilter: colors } : undefined}
         aria-hidden="true"
       />
     </>
