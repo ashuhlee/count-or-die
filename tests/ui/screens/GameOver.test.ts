@@ -342,6 +342,31 @@ describe("starting over", () => {
     expect(game.$("#loading-screen")).toBeNull();
   });
 
+  test("the game over button draws the whole page again, under the loading screen", () => {
+    game = renderGame({ state: { counter: 12 } });
+    const page = game.$("#app");
+    game.wait(TIME_IS_UP);
+    fireAnimationEnd(game.$("#red-flash"));
+
+    game.click("#game-over-btn");
+    game.wait(520);
+    expect(game.$("#app")).toBe(page);
+
+    game.wait(10);
+    expect(game.$("#app")).not.toBe(page);
+    expect(game.$("#loading-screen")).not.toBeNull();
+    expect(game.counter()).toBe("00");
+  });
+
+  test("the reset button keeps the page, so the counter can shake", () => {
+    game = renderGame({ state: { counter: 12 } });
+    const page = game.$("#app");
+
+    game.click("#reset-img");
+
+    expect(game.$("#app")).toBe(page);
+  });
+
   test("a new game can be played, and lost, again", () => {
     game = renderGame();
     game.wait(TIME_IS_UP);

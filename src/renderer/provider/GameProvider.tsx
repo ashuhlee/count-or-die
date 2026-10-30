@@ -89,7 +89,10 @@ export default function GameProvider({
       restartFromGameOver() {
         playSound("buttonClick");
         pauseSound("gameOverMusic");
-        cover(() => dispatch({ type: "restart" }));
+        cover(() => {
+          dispatch({ type: "restart" });
+          bus.emit({ type: "pageReset" });
+        });
       },
 
       collectPowerUp(type) {

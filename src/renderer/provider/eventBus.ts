@@ -11,7 +11,8 @@ export type AppEvent =
       y: number;
     }
   | { type: "smoke"; kind: "heart" | "powerUp"; x: number; y: number }
-  | { type: "flashEnded" }; // the red flash finished playing
+  | { type: "flashEnded" } // the red flash finished playing
+  | { type: "pageReset" }; // the whole page starts over, behind the loading screen
 
 type Listener = (event: AppEvent) => void;
 
