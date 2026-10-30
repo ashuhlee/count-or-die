@@ -23,7 +23,7 @@ function slotsFor(boostsAvailable: number): Slots {
 
 // What each heart looks like: gone, coming back, or there. A heart goes when
 // a boost is used and comes back with a power-up (one after the other), both
-// with a puff of smoke; a new game brings them all back at once.
+// with a puff of smoke.
 export function useHeartSlots() {
   const { state, actions } = useGame();
   const boosts = state.boostsAvailable;
@@ -32,7 +32,6 @@ export function useHeartSlots() {
 
   const later = useTimeouts();
   const slotElements = useRef<(HTMLDivElement | null)[]>([]);
-  const restoreTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const previous = useRef(boosts);
 
   const smokeAt = (index: number, offset = { x: 0, y: 0 }) => {
@@ -47,12 +46,9 @@ export function useHeartSlots() {
     });
   };
 
-  useGameEvent("restarted", () => {
-    restoreTimers.current.forEach(clearTimeout);
-    restoreTimers.current = [];
-    previous.current = MAX_BOOSTS;
-    setSlots(slotsFor(MAX_BOOSTS));
-  });
+  // the puff goes where the heart is now: once the last boost is used, the "no
+  // boosts left!" text pushes the hearts down
+  useGameEvent("boostNotification", () => smokeAt(previous.current - 1));
 
   useEffect(() => {
     const before = previous.current;
@@ -61,7 +57,6 @@ export function useHeartSlots() {
     // a boost was used: its heart goes
     if (boosts < before) {
       setSlots((current) => ({ ...current, used: slotsFor(boosts).used }));
-      smokeAt(boosts);
       return;
     }
 
@@ -69,17 +64,16 @@ export function useHeartSlots() {
     for (let index = before; index < boosts; index++) {
       const delay = (index - before) * RESTORE_STAGGER;
 
-      restoreTimers.current.push(
-        later(() => {
-          setSlots((current) => ({
-            used: current.used.map((used, i) => (i === index ? false : used)),
-            restoring: current.restoring.map((r, i) =>
-              i === index ? true : r,
-            ),
-          }));
-          smokeAt(index, RESTORE_SMOKE_OFFSET);
-        }, delay),
-      );
+      later(() => {
+        // a boost used since then keeps its heart gone
+        if (index >= previous.current) return;
+
+        setSlots((current) => ({
+          used: current.used.map((used, i) => (i === index ? false : used)),
+          restoring: current.restoring.map((r, i) => (i === index ? true : r)),
+        }));
+        smokeAt(index, RESTORE_SMOKE_OFFSET);
+      }, delay);
     }
     // smokeAt only reads refs and emits events
     // oxlint-disable-next-line react-hooks/exhaustive-deps

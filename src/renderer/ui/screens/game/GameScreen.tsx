@@ -32,6 +32,10 @@ export default function GameScreen() {
     useReplayAnimation<HTMLDivElement>("penalty-shake");
   useGameEvent("penalty", shake);
 
+  // a new game starts the hearts from scratch
+  const [run, setRun] = useState(0);
+  useGameEvent("restarted", () => setRun((current) => current + 1));
+
   // the "boost!" text floats up; a new key remounts it to replay that
   const [boostNotification, setBoostNotification] = useState(0);
   useGameEvent("boostNotification", () =>
@@ -68,7 +72,7 @@ export default function GameScreen() {
         <Counter />
       </div>
       <div className="boost-stuff">
-        <Hearts />
+        <Hearts key={run} />
       </div>
 
       <div className="buttons">

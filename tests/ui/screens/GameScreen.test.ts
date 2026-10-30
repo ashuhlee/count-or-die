@@ -228,6 +228,22 @@ describe("boosting", () => {
     expect(game.$("#popupElement").style.display).toBe("");
   });
 
+  test("puffs the smoke where the last heart was, not where the layout moved it", () => {
+    game = renderGame({ state: { boostsAvailable: 1 } });
+
+    // there is no layout here, so the hearts are placed by hand: the "no
+    // boosts left!" text pushes them 45px down
+    vi.spyOn(Element.prototype, "getBoundingClientRect").mockImplementation(
+      function (this: Element) {
+        const pushedDown = game.$("#no-boosts").style.display === "grid";
+        return { left: 100, top: pushedDown ? 445 : 400 } as DOMRect;
+      },
+    );
+    game.click("#decrease-img");
+
+    expect(game.$("#popupElement").style.top).toBe("400px");
+  });
+
   test("floats a +N for the points it added", () => {
     game = renderGame();
     game.click("#decrease-img", { clientX: 5, clientY: 6 });
