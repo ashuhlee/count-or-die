@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import "./PixelSwirlShader.css";
 
-// PixelSwirlShader, based on Balatro from React Bits (reactbits.dev): a swirling
-// WebGL background.
-// Ported to TypeScript; the shaders and the drawing logic are unchanged.
+// PixelSwirlShader, based on Balatro from React Bits (reactbits.dev)
 
 const PIXEL_BUDGET = 2.4e6;
 const MAX_TWIRLS = 4;

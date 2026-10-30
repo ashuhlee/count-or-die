@@ -4,12 +4,9 @@ import { pickGameOverPhrase } from "../../../game/phrases.ts";
 import { formatCounter } from "../../../utils/formatCounter.ts";
 import { useGameEvent } from "../../../provider/useGameEvent.ts";
 
-// What the game over screen says and whether it is showing. It appears once
-// the red flash has played, unless the game was restarted in the meantime.
 export function useGameOverView() {
   const [view, setView] = useState({
     visible: false,
-    // the animated background only exists from game over until the restart
     background: false,
     phrase: "you died lolz",
     rainbow: false,

@@ -43,8 +43,8 @@
 
   &.visible {
     transition:
-      mask-position 1s ease,
-      -webkit-mask-position 1s ease;
+      mask-position 0.8s ease,
+      -webkit-mask-position 0.8s ease;
     mask-position: 0 0;
     -webkit-mask-position: 0 0;
     pointer-events: all;
@@ -114,7 +114,7 @@
     background: #ee1f6e;
     opacity: 1;
     pointer-events: none;
-    transition: opacity 0.5s ease 0.15s;
+    transition: opacity 0.5s ease 0.2s;
   }
 
   .deco-icons {

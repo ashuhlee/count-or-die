@@ -20,7 +20,7 @@ export default memo(function GameOverBackground({
         swirl={0.2}
         scale={1}
         contrast={5}
-        pixelSize={7}
+        pixelSize={6}
         detail={7}
         lighting={0.2}
         rotationSpeed={-0.1}

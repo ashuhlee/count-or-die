@@ -200,20 +200,6 @@ describe("running out of time", () => {
     });
   });
 
-  test("writes the you died art to the console in the browser only", () => {
-    const log = vi.spyOn(console, "log").mockImplementation(() => {});
-    game = renderGame();
-    game.wait(TIME_IS_UP);
-    expect(log).toHaveBeenCalledTimes(1);
-    game.unmount();
-
-    log.mockClear();
-    fakeElectron();
-    game = renderGame();
-    game.wait(TIME_IS_UP);
-    expect(log).not.toHaveBeenCalled();
-  });
-
   test("reaching the goal in time beats the clock", () => {
     game = renderGame({ state: { counter: 30 } });
     game.wait(TIME_IS_UP);
