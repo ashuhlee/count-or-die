@@ -57,7 +57,11 @@ vi.mock(
   async () => {
     const { createElement } = await import("react");
     return {
-      default: () => createElement("div", { "data-pixel-swirl-shader": "" }),
+      default: ({ paused }: { paused?: boolean }) =>
+        createElement("div", {
+          "data-pixel-swirl-shader": "",
+          "data-paused": String(paused ?? false),
+        }),
     };
   },
 );

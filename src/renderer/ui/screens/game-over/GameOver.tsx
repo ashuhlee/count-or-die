@@ -39,7 +39,7 @@ export default function GameOver() {
 
   return (
     <div id="game-over" className={view.visible ? "visible" : undefined}>
-      {view.background && <GameOverBackground />}
+      <GameOverBackground paused={!view.background} />
       <div className="go-content">
         <div id="red-overlay"></div>
         <h2 className="you-died">

@@ -233,59 +233,62 @@ describe("running out of time", () => {
 });
 
 describe("the game over background", () => {
+  // it is set up from the start, so that creating it does not freeze the red
+  // flash, and only runs between the end of a game and the next one
   const background = () =>
     game.$("#game-over .go-background [data-pixel-swirl-shader]");
+  const running = () => background().dataset.paused === "false";
 
-  test("is not there while the game is on", () => {
+  test("is ready, but not running, while the game is on", () => {
     game = renderGame();
     game.wait(5000);
 
-    expect(game.$(".go-background")).toBeNull();
-    expect(game.$("#game-over [data-pixel-swirl-shader]")).toBeNull();
+    expect(background()).not.toBeNull();
+    expect(running()).toBe(false);
   });
 
-  test("is in place as soon as the game ends, before the screen shows", () => {
+  test("runs as soon as the game ends, before the screen shows", () => {
     game = renderGame();
     game.wait(TIME_IS_UP);
 
     expect(isShown()).toBe(false);
-    expect(background()).not.toBeNull();
+    expect(running()).toBe(true);
   });
 
-  test("stays while the game over screen is showing", () => {
+  test("keeps running while the game over screen is showing", () => {
     game = renderGame();
     game.wait(TIME_IS_UP);
     fireAnimationEnd(game.$("#red-flash"));
 
     expect(isShown()).toBe(true);
-    expect(background()).not.toBeNull();
+    expect(running()).toBe(true);
   });
 
-  test("is gone again when the game restarts", () => {
+  test("stops again when the game restarts", () => {
     game = renderGame();
     game.wait(TIME_IS_UP);
     game.click("#reset-img");
 
-    expect(background()).toBeNull();
+    expect(running()).toBe(false);
   });
 
-  test("is gone again after restarting from the game over screen", () => {
+  test("stops again after restarting from the game over screen", () => {
     game = renderGame();
     game.wait(TIME_IS_UP);
     fireAnimationEnd(game.$("#red-flash"));
     game.click("#game-over-btn");
     game.wait(600);
 
-    expect(background()).toBeNull();
+    expect(running()).toBe(false);
   });
 
-  test("comes back for the next game over", () => {
+  test("runs again for the next game over", () => {
     game = renderGame();
     game.wait(TIME_IS_UP);
     game.click("#reset-img");
     game.wait(TIME_IS_UP);
 
-    expect(background()).not.toBeNull();
+    expect(running()).toBe(true);
   });
 });
 

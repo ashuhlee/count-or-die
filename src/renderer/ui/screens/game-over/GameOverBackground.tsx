@@ -2,7 +2,11 @@ import { memo } from "react";
 
 import PixelSwirlShader from "../../shaders/pixel-swirl-shader/PixelSwirlShader.tsx";
 
-export default memo(function GameOverBackground() {
+export default memo(function GameOverBackground({
+  paused,
+}: {
+  paused: boolean;
+}) {
   return (
     <div className="go-background">
       <PixelSwirlShader
@@ -20,6 +24,7 @@ export default memo(function GameOverBackground() {
         mouseInteraction={false}
         clickSwirl={false}
         intro={false}
+        paused={paused}
       />
     </div>
   );

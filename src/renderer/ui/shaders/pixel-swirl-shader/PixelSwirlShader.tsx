@@ -232,6 +232,8 @@ const smoother = (t: number) => {
 };
 
 type PixelSwirlShaderProps = {
+  // stops drawing and keeps showing the last frame
+  paused?: boolean;
   color1?: string;
   color2?: string;
   color3?: string;
@@ -277,6 +279,7 @@ export default function PixelSwirlShader({
   lightMode = false,
   opacity = 1,
   maxDevicePixelRatio = 2,
+  paused = false,
   className = "",
   style,
 }: PixelSwirlShaderProps) {
@@ -308,6 +311,7 @@ export default function PixelSwirlShader({
     light: lightMode,
     opacity: clamp(opacity, 0, 1),
     maxRatio: clamp(maxDevicePixelRatio, 0.5, 3),
+    paused,
   };
   const settingsRef = useRef(settings);
 
@@ -665,11 +669,14 @@ export default function PixelSwirlShader({
         field.energy > 0.05 ||
         twirls.length > 0;
       const busy = s.speed > 0 || s.rotation !== 0 || opening < 1 || settling;
-      if (busy && visible && pageVisible) raf = requestAnimationFrame(frame);
+      if (busy && visible && pageVisible && !s.paused) {
+        raf = requestAnimationFrame(frame);
+      }
     };
 
     const wake = () => {
       if (raf || lost || !visible || !pageVisible) return;
+      if (settingsRef.current.paused) return;
       last = performance.now();
       raf = requestAnimationFrame(frame);
     };
