@@ -53,9 +53,6 @@
       opacity: 0;
     }
 
-    .go-title {
-      animation: bounceIn 0.5s ease 0.3s forwards;
-    }
     .final-score {
       animation: jackInTheBox 0.5s ease 0.7s forwards;
     }
@@ -211,7 +208,6 @@
   .go-title {
     width: 80vw;
     max-width: 390px;
-    filter: drop-shadow(6px 6px 0px var(--shadow-pink-015));
   }
   img {
     image-rendering: pixelated;
@@ -353,7 +349,6 @@
     background-position: 0 center;
   }
 
-  .go-title,
   .final-score,
   .play-again,
   .play-again-btn,

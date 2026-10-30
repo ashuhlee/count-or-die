@@ -924,9 +924,6 @@ img {
 #game-over.visible #red-overlay {
   opacity: 0;
 }
-#game-over.visible .go-title {
-  animation: bounceIn 0.5s ease 0.3s forwards;
-}
 #game-over.visible .final-score {
   animation: jackInTheBox 0.5s ease 0.7s forwards;
 }
@@ -1072,7 +1069,6 @@ img {
 #game-over .go-title {
   width: 80vw;
   max-width: 390px;
-  filter: drop-shadow(6px 6px 0px var(--shadow-pink-015));
 }
 #game-over img {
   image-rendering: pixelated;
@@ -1200,7 +1196,6 @@ img {
   background-size: 100% auto;
   background-position: 0 center;
 }
-#game-over .go-title,
 #game-over .final-score,
 #game-over .play-again,
 #game-over .play-again-btn,

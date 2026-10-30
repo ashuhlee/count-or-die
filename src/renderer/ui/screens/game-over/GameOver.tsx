@@ -14,6 +14,7 @@ import quitBtnPng from "@assets/ui/buttons/quit-btn.png";
 import { playSound } from "../../../utils/sounds.ts";
 import { useGame } from "../../../provider/useGame.ts";
 import BackToMenu from "./BackToMenu.tsx";
+import MeltInShader from "../../shaders/melt-in-shader/MeltInShader.tsx";
 import GameOverBackground from "./GameOverBackground.tsx";
 import { useGameOverView } from "./useGameOverView.ts";
 
@@ -57,7 +58,14 @@ export default function GameOver() {
           <img src={exclamationPng} alt="exclamation mark" className="excl" />
         </div>
 
-        <img src={gameOverGif} alt="game over text" className="go-title" />
+        <MeltInShader
+          src={gameOverGif}
+          alt="game over text"
+          className="go-title"
+          active={view.visible}
+          delay={200}
+          duration={1600}
+        />
 
         <h2 className="final-score" id="final-score">
           <span className={`score-text${rainbowClass}`}>{view.scoreText}</span>

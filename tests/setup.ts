@@ -28,6 +28,31 @@ vi.mock("../src/renderer/ui/shaders/crt-shader/CRTShader.tsx", () => ({
   default: () => null,
 }));
 vi.mock(
+  "../src/renderer/ui/shaders/melt-in-shader/MeltInShader.tsx",
+  async () => {
+    const { createElement } = await import("react");
+    return {
+      default: ({
+        src,
+        alt,
+        className,
+        active,
+      }: {
+        src: string;
+        alt: string;
+        className: string;
+        active: boolean;
+      }) =>
+        createElement("img", {
+          src,
+          alt,
+          className,
+          "data-melt-active": String(active),
+        }),
+    };
+  },
+);
+vi.mock(
   "../src/renderer/ui/shaders/pixel-swirl-shader/PixelSwirlShader.tsx",
   async () => {
     const { createElement } = await import("react");

@@ -121,6 +121,18 @@ describe("running out of time", () => {
     expect(isShown()).toBe(true);
   });
 
+  test("the game over title melts in once the screen is shown", () => {
+    game = renderGame();
+    const title = () => game.$("#game-over .go-title").dataset.meltActive;
+    expect(title()).toBe("false");
+
+    game.wait(TIME_IS_UP);
+    expect(title()).toBe("false");
+
+    fireAnimationEnd(game.$("#red-flash"));
+    expect(title()).toBe("true");
+  });
+
   test("shows a phrase, the final score and counts the death", () => {
     game = renderGame({ state: { highScore: 99 } });
     game.click("#increase-img");
