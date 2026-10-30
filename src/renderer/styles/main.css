@@ -77,14 +77,6 @@ img {
     background-position: -128px -128px;
   }
 }
-@keyframes scanlines {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 0 1920px;
-  }
-}
 @keyframes gradient {
   0% {
     color: rgba(0, 0, 0, 0);
@@ -704,27 +696,6 @@ img {
   bottom: -4px;
   left: 8px;
   padding: 4px;
-}
-.scanlines,
-.scanlines-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url("../assets/ui/textures/scanlines-2.png") repeat 0 center;
-  animation: scanlines 300s linear infinite;
-  pointer-events: none;
-}
-.scanlines {
-  opacity: 0.2;
-  mix-blend-mode: soft-light;
-  z-index: 12;
-}
-.scanlines-bg {
-  opacity: 0.6;
-  mix-blend-mode: soft-light;
-  z-index: -2;
 }
 .top-gradient {
   position: fixed;

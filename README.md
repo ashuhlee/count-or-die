@@ -164,7 +164,7 @@ src/
     └── ui/            What is drawn
         ├── screens/      Full screens: game, game over
         ├── overlays/     Drawn over the whole screen: loading screen
-        ├── shaders/      WebGL backgrounds (pixel-swirl-shader)
+        ├── shaders/      WebGL effects: PixelSwirlShader background, CRTShader screen
         └── components/   One folder per feature (counter, hearts, goal, ...)
 tests/
 ├── game/              The rules

@@ -13,6 +13,7 @@ import HighScore from "./components/high-score/HighScore.tsx";
 import MenuBar from "./components/menu-bar/MenuBar.tsx";
 import PowerUps from "./components/power-ups/PowerUps.tsx";
 import SmokePopups from "./components/smoke/SmokePopups.tsx";
+import CRTShader from "./shaders/crt-shader/CRTShader.tsx";
 import LoadingScreen from "./overlays/loading/LoadingScreen.tsx";
 import GameOver from "./screens/game-over/GameOver.tsx";
 import RedFlash from "./screens/game-over/RedFlash.tsx";
@@ -27,10 +28,24 @@ export default function Game() {
   return (
     <>
       <GameBackground />
+      <CRTShader
+        scanlineIntensity={0.03}
+        scanlineCount={256}
+        adaptiveIntensity={0.13}
+        brightness={1}
+        contrast={1.05}
+        saturation={1}
+        bloomIntensity={0.1}
+        bloomThreshold={0.8}
+        bloomRadius={2}
+        vignetteStrength={0.02}
+        curvature={0.03}
+        edgeBlur={6}
+        bezel={0}
+        flickerStrength={0}
+      />
 
       <Fragment key={page}>
-        <div className="scanlines"></div>
-        <div className="scanlines-bg"></div>
         <div className="top-gradient"></div>
 
         <div className="clouds">
