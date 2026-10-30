@@ -13,6 +13,7 @@ import SmokePopups from "./components/smoke/SmokePopups.tsx";
 import LoadingScreen from "./overlays/loading/LoadingScreen.tsx";
 import GameOver from "./screens/game-over/GameOver.tsx";
 import RedFlash from "./screens/game-over/RedFlash.tsx";
+import GameBackground from "./screens/game/GameBackground.tsx";
 import GameScreen from "./screens/game/GameScreen.tsx";
 
 export default function Game() {
@@ -20,6 +21,7 @@ export default function Game() {
 
   return (
     <>
+      <GameBackground />
       <div className="scanlines"></div>
       <div className="scanlines-bg"></div>
       <div className="top-gradient"></div>

@@ -22,8 +22,6 @@
     --mask-size: 200% 200%;
   }
 
-  // the animated background goes at the very back, with the tile pattern
-  // sliding over it; everything else in here sits above both
   .go-background {
     position: absolute;
     inset: 0;
@@ -36,6 +34,8 @@
     inset: 0;
     z-index: -10;
     background: url("#{globals.$game-over-bg}") repeat 0 center;
+    opacity: 1;
+    mix-blend-mode: soft-light;
     background-size: 128px auto;
     animation: slide 4s linear infinite reverse;
     pointer-events: none;
@@ -209,7 +209,7 @@
 
   .go-title {
     width: 80vw;
-    max-width: 380px;
+    max-width: 390px;
     filter: drop-shadow(5px 5px 0px var(--shadow-pink-005));
   }
   img {
@@ -317,7 +317,7 @@
     .game-over-btns {
       display: flex;
       gap: 22px;
-      filter: drop-shadow(0px 7px 0px var(--shadow-pink-010));
+      filter: drop-shadow(0px 7px 0px var(--shadow-pink-015));
 
       img {
         width: 190px;

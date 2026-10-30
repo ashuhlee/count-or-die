@@ -229,7 +229,7 @@ describe("the game over background", () => {
     game.wait(5000);
 
     expect(game.$(".go-background")).toBeNull();
-    expect(game.$("[data-pixel-swirl]")).toBeNull();
+    expect(game.$("#game-over [data-pixel-swirl]")).toBeNull();
   });
 
   test("is in place as soon as the game ends, before the screen shows", () => {

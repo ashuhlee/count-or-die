@@ -51,6 +51,14 @@ body {
   -webkit-user-select: none;
   -webkit-app-region: no-drag;
 }
+.game-background {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  opacity: 0.1;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
 button,
 input,
 textarea,
@@ -927,7 +935,9 @@ img {
   position: absolute;
   inset: 0;
   z-index: -10;
-  background: url("../assets/ui/textures/tile-go-2.png") repeat 0 center;
+  background: url("../assets/ui/textures/tile-go.png") repeat 0 center;
+  opacity: 1;
+  mix-blend-mode: soft-light;
   background-size: 128px auto;
   animation: slide 4s linear infinite reverse;
   pointer-events: none;
@@ -1089,7 +1099,7 @@ img {
 }
 #game-over .go-title {
   width: 80vw;
-  max-width: 380px;
+  max-width: 390px;
   filter: drop-shadow(5px 5px 0px var(--shadow-pink-005));
 }
 #game-over img {
@@ -1190,7 +1200,7 @@ img {
 #game-over .bottom-section .game-over-btns {
   display: flex;
   gap: 22px;
-  filter: drop-shadow(0px 7px 0px var(--shadow-pink-010));
+  filter: drop-shadow(0px 7px 0px var(--shadow-pink-015));
 }
 #game-over .bottom-section .game-over-btns img {
   width: 190px;
