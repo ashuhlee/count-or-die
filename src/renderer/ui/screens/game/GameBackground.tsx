@@ -1,11 +1,11 @@
 import { memo } from "react";
 
-import PixelSwirl from "../../shaders/pixel-swirl/PixelSwirl.tsx";
+import PixelSwirlShader from "../../shaders/pixel-swirl-shader/PixelSwirlShader.tsx";
 
 export default memo(function GameBackground() {
   return (
     <div className="game-background">
-      <PixelSwirl
+      <PixelSwirlShader
         color1="#ff54d6"
         color2="#ffa0ea"
         color3="#ffa0ea"

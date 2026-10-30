@@ -24,7 +24,12 @@ vi.mock("powerglitch", () => ({
 vi.mock("canvas-confetti", () => ({ default: vi.fn() }));
 
 // the game over background needs WebGL, which jsdom does not have
-vi.mock("../src/renderer/ui/shaders/pixel-swirl/PixelSwirl.tsx", async () => {
-  const { createElement } = await import("react");
-  return { default: () => createElement("div", { "data-pixel-swirl": "" }) };
-});
+vi.mock(
+  "../src/renderer/ui/shaders/pixel-swirl-shader/PixelSwirlShader.tsx",
+  async () => {
+    const { createElement } = await import("react");
+    return {
+      default: () => createElement("div", { "data-pixel-swirl-shader": "" }),
+    };
+  },
+);

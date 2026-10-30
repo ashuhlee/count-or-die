@@ -1,11 +1,11 @@
 import { memo } from "react";
 
-import PixelSwirl from "../../shaders/pixel-swirl/PixelSwirl.tsx";
+import PixelSwirlShader from "../../shaders/pixel-swirl-shader/PixelSwirlShader.tsx";
 
 export default memo(function GameOverBackground() {
   return (
     <div className="go-background">
-      <PixelSwirl
+      <PixelSwirlShader
         color1="#ff8be3"
         color2="#ffc4f2"
         color3="#ffa0ea"

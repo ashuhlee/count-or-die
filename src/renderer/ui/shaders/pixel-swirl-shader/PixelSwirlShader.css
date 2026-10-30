@@ -1,11 +1,11 @@
-.pixel-swirl {
+.pixel-swirl-shader {
   position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
 
-.pixel-swirl__canvas {
+.pixel-swirl-shader__canvas {
   position: absolute;
   inset: 0;
   display: block;

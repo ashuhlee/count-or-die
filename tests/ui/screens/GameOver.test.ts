@@ -222,14 +222,14 @@ describe("running out of time", () => {
 
 describe("the game over background", () => {
   const background = () =>
-    game.$("#game-over .go-background [data-pixel-swirl]");
+    game.$("#game-over .go-background [data-pixel-swirl-shader]");
 
   test("is not there while the game is on", () => {
     game = renderGame();
     game.wait(5000);
 
     expect(game.$(".go-background")).toBeNull();
-    expect(game.$("#game-over [data-pixel-swirl]")).toBeNull();
+    expect(game.$("#game-over [data-pixel-swirl-shader]")).toBeNull();
   });
 
   test("is in place as soon as the game ends, before the screen shows", () => {

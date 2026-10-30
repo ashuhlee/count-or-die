@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import "./PixelSwirl.css";
+import "./PixelSwirlShader.css";
 
-// PixelSwirl, based on Balatro from React Bits (reactbits.dev): a swirling
+// PixelSwirlShader, based on Balatro from React Bits (reactbits.dev): a swirling
 // WebGL background.
 // Ported to TypeScript; the shaders and the drawing logic are unchanged.
 
@@ -231,7 +231,7 @@ const smoother = (t: number) => {
   return x * x * x * (x * (x * 6 - 15) + 10);
 };
 
-type PixelSwirlProps = {
+type PixelSwirlShaderProps = {
   color1?: string;
   color2?: string;
   color3?: string;
@@ -256,7 +256,7 @@ type PixelSwirlProps = {
   style?: CSSProperties;
 };
 
-export default function PixelSwirl({
+export default function PixelSwirlShader({
   color1 = "#DE443B",
   color2 = "#006BB4",
   color3 = "#162325",
@@ -279,7 +279,7 @@ export default function PixelSwirl({
   maxDevicePixelRatio = 2,
   className = "",
   style,
-}: PixelSwirlProps) {
+}: PixelSwirlShaderProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wakeRef = useRef<(() => void) | null>(null);
@@ -789,12 +789,12 @@ export default function PixelSwirl({
   return (
     <div
       ref={containerRef}
-      className={`pixel-swirl${className ? ` ${className}` : ""}`}
+      className={`pixel-swirl-shader${className ? ` ${className}` : ""}`}
       style={style}
     >
       <canvas
         ref={canvasRef}
-        className="pixel-swirl__canvas"
+        className="pixel-swirl-shader__canvas"
         aria-hidden="true"
       />
     </div>
