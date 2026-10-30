@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 import gameOverGif from "@assets/ui/deco/game_over.gif";
 
 import questionPng from "@assets/ui/deco/question.png";
@@ -15,7 +17,7 @@ import { playSound } from "../../../utils/sounds.ts";
 import { useGame } from "../../../provider/useGame.ts";
 import BackToMenu from "./BackToMenu.tsx";
 import MeltInShader from "../../shaders/melt-in-shader/MeltInShader.tsx";
-import GameOverBackground from "./GameOverBackground.tsx";
+import GameOverBackground, { GAME_OVER_HUE } from "./GameOverBackground.tsx";
 import { useGameOverView } from "./useGameOverView.ts";
 
 const QUIT_DELAY = 400;
@@ -38,8 +40,17 @@ export default function GameOver() {
   const rainbowClass = view.rainbow ? " rainbow-txt" : "";
 
   return (
-    <div id="game-over" className={view.visible ? "visible" : undefined}>
-      <GameOverBackground paused={!view.background} />
+    <div
+      id="game-over"
+      className={view.visible ? "visible" : undefined}
+      style={
+        {
+          "--hue-start": `${GAME_OVER_HUE.start}deg`,
+          "--hue-duration": `${GAME_OVER_HUE.duration}ms`,
+        } as CSSProperties
+      }
+    >
+      <GameOverBackground paused={!view.background} visible={view.visible} />
       <div className="go-content">
         <div id="red-overlay"></div>
         <h2 className="you-died">

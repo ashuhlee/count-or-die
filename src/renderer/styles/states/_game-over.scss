@@ -49,6 +49,12 @@
     -webkit-mask-position: 0 0;
     pointer-events: all;
 
+    &::before {
+      animation:
+        slide 4s linear infinite reverse,
+        hue-rotate-in var(--hue-duration) cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+
     #red-overlay {
       opacity: 0;
     }

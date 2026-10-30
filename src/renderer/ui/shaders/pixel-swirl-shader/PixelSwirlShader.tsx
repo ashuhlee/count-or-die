@@ -180,6 +180,19 @@ const parseColor = (value: string): number[] | null => {
   return null;
 };
 
+// turns a color around the grey axis of the color wheel
+const rotateHue = ([r, g, b]: number[], degrees: number) => {
+  const angle = (degrees * Math.PI) / 180;
+  const cos = Math.cos(angle);
+  const sin = Math.sin(angle) * 0.57735;
+  const grey = ((r + g + b) / 3) * (1 - cos);
+  return [
+    r * cos + (b - g) * sin + grey,
+    g * cos + (r - b) * sin + grey,
+    b * cos + (g - r) * sin + grey,
+  ].map((value) => clamp(value, 0, 1));
+};
+
 const compile = (gl: Gl, type: number, source: string) => {
   const shader = gl.createShader(type);
   if (!shader) return null;
@@ -232,6 +245,10 @@ const smoother = (t: number) => {
 };
 
 type PixelSwirlShaderProps = {
+  // turns the colors this many degrees around the color wheel; a change eases
+  // over hueDuration ms
+  hue?: number;
+  hueDuration?: number;
   // stops drawing and keeps showing the last frame
   paused?: boolean;
   color1?: string;
@@ -280,6 +297,8 @@ export default function PixelSwirlShader({
   opacity = 1,
   maxDevicePixelRatio = 2,
   paused = false,
+  hue = 0,
+  hueDuration = 0,
   className = "",
   style,
 }: PixelSwirlShaderProps) {
@@ -312,6 +331,8 @@ export default function PixelSwirlShader({
     opacity: clamp(opacity, 0, 1),
     maxRatio: clamp(maxDevicePixelRatio, 0.5, 3),
     paused,
+    hue,
+    hueDuration,
   };
   const settingsRef = useRef(settings);
 
@@ -384,6 +405,10 @@ export default function PixelSwirlShader({
     let spin = 0;
     let opening =
       settingsRef.current.intro && !reduced && generation === 0 ? 0 : 1;
+    let hueNow = settingsRef.current.hue;
+    let hueFrom = hueNow;
+    let hueTo = hueNow;
+    let hueStart = 0;
     let raf = 0;
     let last = 0;
     let visible = true;
@@ -546,6 +571,14 @@ export default function PixelSwirlShader({
       raf = 0;
       if (lost) return;
       const s = settingsRef.current;
+      if (s.hue !== hueTo) {
+        hueFrom = hueNow;
+        hueTo = s.hue;
+        hueStart = now;
+      }
+      const hueProgress =
+        s.hueDuration > 0 ? clamp((now - hueStart) / s.hueDuration, 0, 1) : 1;
+      hueNow = hueFrom + (hueTo - hueFrom) * (1 - (1 - hueProgress) ** 3);
       const dt = clamp((now - last) / 1000 || 0, 0, 0.05);
       last = Math.max(last, now);
       const pace = reduced ? 0.2 : 1;
@@ -635,9 +668,12 @@ export default function PixelSwirlShader({
       gl.uniform1f(u.uFlow, flow);
       gl.uniform1f(u.uSpin, -0.4 + spin + steer.value + 2.6 * unwind * unwind);
       gl.uniform2f(u.uOffset, s.offset[0], s.offset[1]);
-      gl.uniform3f(u.uColor1, s.color1[0], s.color1[1], s.color1[2]);
-      gl.uniform3f(u.uColor2, s.color2[0], s.color2[1], s.color2[2]);
-      gl.uniform3f(u.uColor3, s.color3[0], s.color3[1], s.color3[2]);
+      const [c1, c2, c3] = [s.color1, s.color2, s.color3].map((color) =>
+        hueNow === 0 ? color : rotateHue(color, hueNow),
+      );
+      gl.uniform3f(u.uColor1, c1[0], c1[1], c1[2]);
+      gl.uniform3f(u.uColor2, c2[0], c2[1], c2[2]);
+      gl.uniform3f(u.uColor3, c3[0], c3[1], c3[2]);
       gl.uniform1f(u.uContrast, s.contrast);
       gl.uniform1f(u.uLighting, s.lighting);
       gl.uniform1f(u.uSwirl, Math.min(1, s.swirl + 0.55 * unwind));
@@ -668,7 +704,12 @@ export default function PixelSwirlShader({
         Math.abs(steerTarget - steer.value) > 0.0005 ||
         field.energy > 0.05 ||
         twirls.length > 0;
-      const busy = s.speed > 0 || s.rotation !== 0 || opening < 1 || settling;
+      const busy =
+        s.speed > 0 ||
+        s.rotation !== 0 ||
+        opening < 1 ||
+        settling ||
+        hueNow !== hueTo;
       if (busy && visible && pageVisible && !s.paused) {
         raf = requestAnimationFrame(frame);
       }

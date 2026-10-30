@@ -57,10 +57,11 @@ vi.mock(
   async () => {
     const { createElement } = await import("react");
     return {
-      default: ({ paused }: { paused?: boolean }) =>
+      default: ({ paused, hue }: { paused?: boolean; hue?: number }) =>
         createElement("div", {
           "data-pixel-swirl-shader": "",
           "data-paused": String(paused ?? false),
+          "data-hue": String(hue ?? 0),
         }),
     };
   },

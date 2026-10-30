@@ -247,6 +247,18 @@ describe("the game over background", () => {
     expect(running()).toBe(false);
   });
 
+  test("starts purple and goes back to its colors as the screen appears", () => {
+    const hue = () => Number(background().dataset.hue);
+    game = renderGame();
+    expect(hue()).toBeLessThan(0);
+
+    game.wait(TIME_IS_UP);
+    expect(hue()).toBeLessThan(0);
+
+    fireAnimationEnd(game.$("#red-flash"));
+    expect(hue()).toBe(0);
+  });
+
   test("runs as soon as the game ends, before the screen shows", () => {
     game = renderGame();
     game.wait(TIME_IS_UP);

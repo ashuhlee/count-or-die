@@ -77,6 +77,14 @@ img {
     background-position: -128px -128px;
   }
 }
+@keyframes hue-rotate-in {
+  from {
+    filter: hue-rotate(var(--hue-start));
+  }
+  to {
+    filter: hue-rotate(0deg);
+  }
+}
 @keyframes gradient {
   0% {
     color: rgba(0, 0, 0, 0);
@@ -920,6 +928,11 @@ img {
   mask-position: 0 0;
   -webkit-mask-position: 0 0;
   pointer-events: all;
+}
+#game-over.visible::before {
+  animation:
+    slide 4s linear infinite reverse,
+    hue-rotate-in var(--hue-duration) cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 #game-over.visible #red-overlay {
   opacity: 0;

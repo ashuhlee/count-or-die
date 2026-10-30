@@ -8,6 +8,15 @@
     background-position: -128px -128px;
   }
 }
+@keyframes hue-rotate-in {
+  from {
+    filter: hue-rotate(var(--hue-start));
+  }
+  to {
+    filter: hue-rotate(0deg);
+  }
+}
+
 @keyframes gradient {
   0% {
     color: transparent;
