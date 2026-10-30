@@ -18,7 +18,6 @@ async function alertHardwareAcceleration(): Promise<void> {
 
 async function start(): Promise<void> {
   await alertHardwareAcceleration();
-
   createRoot(document.getElementById("main")).render(
     <StrictMode>
       <App />

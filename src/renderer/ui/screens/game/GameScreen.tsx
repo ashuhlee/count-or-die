@@ -27,16 +27,13 @@ const pointerOf = (event: MouseEvent) => ({
 export default function GameScreen() {
   const { actions } = useGame();
 
-  // the whole screen shakes when a bad power-up is collected
   const [screenRef, shake] =
     useReplayAnimation<HTMLDivElement>("penalty-shake");
   useGameEvent("penalty", shake);
 
-  // a new game starts the hearts from scratch
   const [run, setRun] = useState(0);
   useGameEvent("restarted", () => setRun((current) => current + 1));
 
-  // the "boost!" text floats up; a new key remounts it to replay that
   const [boostNotification, setBoostNotification] = useState(0);
   useGameEvent("boostNotification", () =>
     setBoostNotification((current) => current + 1),

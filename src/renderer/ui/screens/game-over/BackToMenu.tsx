@@ -4,7 +4,6 @@ import { playSound } from "../../../utils/sounds.ts";
 
 const MENU_DELAY = 500;
 
-// "back to menu" tilts the opposite way each time it is hovered
 export default function BackToMenu() {
   const [tilt, setTilt] = useState<"left" | "right" | null>(null);
   const nextTilt = useRef<"left" | "right">("left");
