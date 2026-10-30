@@ -8,3 +8,5 @@ old_code/
 .DS_Store
 .editorconfig
 .archive/
+
+debug/
