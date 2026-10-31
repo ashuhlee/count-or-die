@@ -33,6 +33,13 @@ ipcMain.on("close", () => {
   app.quit();
 });
 
+// the page is fixed here, so the game can never ask for any other one to open
+const BUG_REPORT_URL = "https://github.com/ashuhlee/count-or-die/issues/new";
+
+ipcMain.on("bug-report", () => {
+  void shell.openExternal(BUG_REPORT_URL);
+});
+
 ipcMain.handle("gpu:warning", async () => {
   return dialog.showMessageBox({
     icon: iconPath,

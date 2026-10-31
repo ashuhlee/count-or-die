@@ -23,7 +23,9 @@ function readSavedState(): number {
   return saved === null ? 0 : parseInt(saved);
 }
 
-export default function MenuBar() {
+// `hidden` keeps it out of sight without taking it away, because it also puts
+// back the saved sound settings, and those apply on every screen
+export default function MenuBar({ hidden = false }: { hidden?: boolean }) {
   const [soundState, setSoundState] = useState(readSavedState);
 
   // restore saved audio settings
@@ -40,7 +42,7 @@ export default function MenuBar() {
   }
 
   return (
-    <div className="controls">
+    <div className="controls" style={hidden ? { display: "none" } : undefined}>
       <img
         id="soundBtn"
         alt="sound icon"

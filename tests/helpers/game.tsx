@@ -16,6 +16,8 @@ type RenderGameOptions = {
   random?: () => number;
   // what to show inside the game; the whole game by default
   ui?: ComponentType;
+  // open on the menu, as the app does, instead of straight into a game
+  startOnMenu?: boolean;
 };
 
 // renders the game and gives helpers to play it like a person would
@@ -23,11 +25,13 @@ export function renderGame({
   state,
   random = () => 0,
   ui: Ui = Game,
+  startOnMenu = false,
 }: RenderGameOptions = {}) {
   const rendered = renderInto(
     <GameProvider
       initialState={state ? { ...createInitialState(), ...state } : undefined}
       random={random}
+      startOnMenu={startOnMenu}
     >
       <Ui />
     </GameProvider>,

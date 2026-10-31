@@ -572,13 +572,15 @@ describe("the game over buttons", () => {
     expect(alert).toHaveBeenCalledWith("Thank you for playing!");
   });
 
-  test("back to menu explains it is not there yet", () => {
-    const alert = vi.spyOn(window, "alert").mockImplementation(() => {});
+  test("back to menu goes to the menu behind the loading screen", () => {
     game.click("#menu-btn");
-    expect(alert).not.toHaveBeenCalled();
 
-    game.wait(500);
-    expect(alert).toHaveBeenCalledTimes(1);
+    expect(sounds()).toContain("buttonClick");
+    expect(stoppedSounds()).toContain("gameOverMusic");
+    expect(game.$("#menu-screen")).toBeNull();
+    game.wait(600);
+    expect(game.$("#menu-screen")).not.toBeNull();
+    expect(game.$("#game-container")).toBeNull();
   });
 
   test("back to menu wiggles letter by letter", () => {

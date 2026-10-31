@@ -7,6 +7,7 @@ import cloudBottomRight from "@assets/ui/deco/clouds/cloud_4.png";
 import cloudMini from "@assets/ui/deco/clouds/cloud_5.png";
 
 import { useKeyboardControls } from "../hooks/useKeyboardControls.ts";
+import { useGame } from "../provider/useGame.ts";
 import { useGameEvent } from "../provider/useGameEvent.ts";
 import CursorCounts from "./components/cursor-counts/CursorCounts.tsx";
 import HighScore from "./components/high-score/HighScore.tsx";
@@ -18,9 +19,11 @@ import LoadingScreen from "./overlays/loading/LoadingScreen.tsx";
 import GameOver from "./screens/game-over/GameOver.tsx";
 import RedFlash from "./screens/game-over/RedFlash.tsx";
 import GameScreen from "./screens/game/GameScreen.tsx";
+import MenuScreen from "./screens/menu/MenuScreen.tsx";
 
 export default function Game() {
   useKeyboardControls();
+  const { screen } = useGame();
   const [page, setPage] = useState(0);
   useGameEvent("pageReset", () => setPage((current) => current + 1));
 
@@ -51,21 +54,28 @@ export default function Game() {
           <img className="cloud-b-right" alt="cloud" src={cloudBottomRight} />
         </div>
 
-        <SmokePopups />
-        <MenuBar />
-        <RedFlash />
-        <GameOver />
+        <MenuBar hidden={screen === "menu"} />
 
-        <div className="app" id="app">
-          <GameScreen />
-        </div>
-        <HighScore />
+        {screen === "menu" ? (
+          <MenuScreen />
+        ) : (
+          <>
+            <SmokePopups />
+            <RedFlash />
+            <GameOver />
+
+            <div className="app" id="app">
+              <GameScreen />
+            </div>
+            <HighScore />
+
+            <CursorCounts />
+            <PowerUps />
+          </>
+        )}
         <p id="app-ver" className="app-ver">
           {__APP_VERSION__}-beta
         </p>
-
-        <CursorCounts />
-        <PowerUps />
       </Fragment>
       <LoadingScreen />
     </>

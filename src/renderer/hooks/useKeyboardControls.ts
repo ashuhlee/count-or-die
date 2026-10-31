@@ -4,10 +4,10 @@ import { useGame } from "../provider/useGame.ts";
 import { handleKeydown } from "./handleKeydown.ts";
 
 export function useKeyboardControls(): void {
-  const { actions, ready } = useGame();
+  const { actions, ready, screen } = useGame();
 
   useEffect(() => {
-    if (!ready) return;
+    if (!ready || screen !== "game") return;
 
     const onKeyDown = (event: KeyboardEvent) =>
       handleKeydown(event, {
@@ -17,5 +17,5 @@ export function useKeyboardControls(): void {
 
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [actions, ready]);
+  }, [actions, ready, screen]);
 }

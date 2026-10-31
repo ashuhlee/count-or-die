@@ -15,7 +15,6 @@ import tombstonePng from "@assets/ui/deco/tombstone.png";
 import resetBtnPng from "@assets/ui/buttons/reset-btn.png";
 import quitBtnPng from "@assets/ui/buttons/quit-btn.png";
 
-import { playSound } from "../../../utils/sounds.ts";
 import { useGame } from "../../../provider/useGame.ts";
 import { formatCounter } from "../../../utils/formatCounter.ts";
 import BulgeFilter from "../../components/bulge/BulgeFilter.tsx";
@@ -27,8 +26,6 @@ import MeltInShader, {
 } from "../../shaders/melt-in-shader/MeltInShader.tsx";
 import GameOverBackground, { GAME_OVER_HUE } from "./GameOverBackground.tsx";
 import { useGameOverView } from "./useGameOverView.ts";
-
-const QUIT_DELAY = 400;
 
 const TRACKER_BULGE = { id: "tracker-bulge", strength: 25, area: 6 };
 
@@ -53,16 +50,6 @@ const GHOST_COLORS: MeltColors = {
   sparkB: "#605B84",
   shadow: "#ce2a85",
 };
-
-function onQuit() {
-  playSound("buttonClick");
-
-  if (window.electron) {
-    setTimeout(window.electron.quitApp, QUIT_DELAY);
-  } else {
-    alert("Thank you for playing!");
-  }
-}
 
 export default function GameOver() {
   const { state, actions } = useGame();
@@ -167,7 +154,7 @@ export default function GameOver() {
               id="quit-btn"
               className="play-again-btn-2 btn-hover"
               alt="rage quit button"
-              onClick={onQuit}
+              onClick={actions.quit}
             />
           </div>
           <div className="menu-anim">

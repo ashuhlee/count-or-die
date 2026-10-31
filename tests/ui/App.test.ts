@@ -1,4 +1,11 @@
-import { afterEach, beforeEach, expect, describe, test } from "vite-plus/test";
+import {
+  afterEach,
+  beforeEach,
+  expect,
+  describe,
+  test,
+  vi,
+} from "vite-plus/test";
 import { act, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
 
@@ -35,13 +42,34 @@ describe("App", () => {
   afterEach(() => {
     act(() => root.unmount());
     main.remove();
+    vi.useRealTimers();
+  });
+
+  // gets from the menu the app opens on into the game
+  const play = () => {
+    vi.useFakeTimers();
+    act(() => {
+      main
+        .querySelector("#play-btn")
+        .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    act(() => vi.advanceTimersByTime(530));
+  };
+
+  test("opens on the menu, not in a game", () => {
+    expect(main.querySelector("#menu-screen")).not.toBeNull();
+    expect(main.querySelector("#play-btn")).not.toBeNull();
+    expect(main.querySelector("#quit-game-btn")).not.toBeNull();
+    expect(main.querySelector("#counter")).toBeNull();
   });
 
   test.each(IDS.filter((id) => id !== "main"))("has #%s", (id) => {
+    play();
     expect(main.querySelector(`#${id}`)).not.toBeNull();
   });
 
   test("renders the version, the title and the starting counter", () => {
+    play();
     expect(main.querySelector("#app-ver").textContent).toContain(
       __APP_VERSION__,
     );
@@ -51,6 +79,7 @@ describe("App", () => {
   });
 
   test("keeps the order the CSS expects", () => {
+    play();
     const children = Array.from(main.children).map(
       (el) => el.id || el.className,
     );

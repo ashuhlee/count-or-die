@@ -1,0 +1,14 @@
+@use "../base/pixel-stripes" as stripes;
+
+.menu-screen .menu-bg {
+  background: #ffa4e9;
+
+  &::before {
+    @include stripes.stripes($stripe-opacity: 0.09, $stripe-pixel-size: 2);
+    mix-blend-mode: overlay;
+    animation: slide-stripes 3s linear infinite;
+  }
+  .pixel-swirl-shader {
+    opacity: 0;
+  }
+}

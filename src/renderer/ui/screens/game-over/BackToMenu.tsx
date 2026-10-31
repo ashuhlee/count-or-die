@@ -1,27 +1,18 @@
 import { useRef, useState, type CSSProperties } from "react";
 
-import { playSound } from "../../../utils/sounds.ts";
+import { useGame } from "../../../provider/useGame.ts";
 import Letters from "../../components/letters/Letters.tsx";
 
-const MENU_DELAY = 500;
-
 export default function BackToMenu() {
+  const { actions } = useGame();
   const [tilt, setTilt] = useState<"left" | "right" | null>(null);
   const nextTilt = useRef<"left" | "right">("left");
-
-  function onClick() {
-    playSound("buttonClick");
-    setTimeout(
-      () => alert("Oops! The menu is not available in the beta."),
-      MENU_DELAY,
-    );
-  }
 
   return (
     <h2
       className="back-to-menu underline left"
       id="menu-btn"
-      onClick={onClick}
+      onClick={actions.backToMenu}
       onMouseEnter={() => setTilt(nextTilt.current)}
       onMouseLeave={() => {
         nextTilt.current = nextTilt.current === "left" ? "right" : "left";
