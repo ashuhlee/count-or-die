@@ -36,7 +36,7 @@ export default function BackToMenu() {
           : undefined
       }
     >
-      <Letters text="back to menu" step={0.1} height={0.5} duration={1} />
+      <Letters text="Back to menu" step={0.1} height={0.5} duration={1} />
     </h2>
   );
 }

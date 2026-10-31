@@ -60,9 +60,15 @@ $fonts: "../assets/fonts";
 }
 
 @font-face {
-  font-family: "serious1";
+  font-family: "Teeny Tiny Pixls";
   font-display: block;
-  src: url("#{$fonts}/serious-1.woff") format("woff");
+  src: url("#{$fonts}/teeny-tiny-pixls.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Enter the Gungeon Small";
+  font-display: block;
+  src: url("#{$fonts}/enter-the-gungeon-small.ttf") format("truetype");
 }
 
 @font-face {

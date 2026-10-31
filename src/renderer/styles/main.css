@@ -42,9 +42,14 @@
   src: url("../assets/fonts/alien-cyborg.woff") format("woff");
 }
 @font-face {
-  font-family: "serious1";
+  font-family: "Teeny Tiny Pixls";
   font-display: block;
-  src: url("../assets/fonts/serious-1.woff") format("woff");
+  src: url("../assets/fonts/teeny-tiny-pixls.otf") format("opentype");
+}
+@font-face {
+  font-family: "Enter the Gungeon Small";
+  font-display: block;
+  src: url("../assets/fonts/enter-the-gungeon-small.ttf") format("truetype");
 }
 @font-face {
   font-family: "SMW Text NC";
@@ -766,10 +771,10 @@ img {
 }
 #high-score {
   position: absolute;
-  font-size: 22px;
+  font-size: 15px;
   color: #fff;
   text-shadow: 0 4px 0 var(--shadow-pink-015);
-  font-family: "serious1", sans-serif;
+  font-family: "Teeny Tiny Pixls", sans-serif;
   font-weight: bold;
   bottom: -10px;
   right: 0;
@@ -895,13 +900,13 @@ img {
   position: absolute;
   white-space: nowrap;
   color: #fff;
-  font-family: "serious1", sans-serif;
-  font-size: 20px;
+  font-family: "Teeny Tiny Pixls", sans-serif;
+  font-size: 14px;
   opacity: 0;
 }
 .goal-chatbox .boost-notif-text {
   font-weight: bold;
-  font-size: 22px;
+  font-size: 15px;
   filter: drop-shadow(0px 2px 0px #bdb5ff);
   text-shadow:
     2px 2px 0 #ffa2e2,
@@ -1156,10 +1161,11 @@ img {
 }
 #game-over .you-died {
   font-size: 26px;
+  font-family: "Enter the Gungeon Small", sans-serif;
+  letter-spacing: 1.5px;
   padding-top: 20px;
+  text-transform: none;
   top: 50px;
-  font-weight: bold;
-  font-family: "serious1", sans-serif;
   max-width: 250px;
 }
 #game-over .top-right-info {
@@ -1171,7 +1177,7 @@ img {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 26px;
+  gap: 28px;
   filter: url(#tracker-bulge);
 }
 #game-over .tracker-container.tracker-enter {
@@ -1179,27 +1185,30 @@ img {
   animation: bounce-in-right-soft 1s both;
 }
 #game-over .tracker-container {
-  height: 28px;
+  height: 30px;
   width: fit-content;
   display: flex;
   gap: 14px;
   align-items: center;
   justify-content: center;
-  padding: 16px 10px;
+  padding: 16px 12px;
   transition: transform 1s ease;
 }
 #game-over .tracker-container .tracker-icon {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
 }
 #game-over .tracker-container .tracker-value {
   --shake-scale: 0.965;
   --shake-distance: -2px;
-  font-weight: bold;
-  font-family: "serious1", sans-serif;
-  font-size: 24px;
+  font-family: "Teeny Tiny Pixls", sans-serif;
+  font-size: 16px;
+  letter-spacing: 1.2px;
   text-shadow: none;
   color: #3b375f;
+  position: relative;
+  top: 0.1em;
+  margin-right: calc(-0.2em - 1.2px);
 }
 #game-over .play-again {
   font-size: 30px;
@@ -1263,10 +1272,11 @@ img {
 #game-over .bottom-section .back-to-menu {
   z-index: -5;
   position: relative;
-  padding: 6px;
-  margin-top: 34px;
-  font-family: "serious1", sans-serif;
-  font-size: 22px;
+  padding: 2px 10px;
+  margin-top: 40px;
+  font-family: "Enter the Gungeon Small", sans-serif;
+  font-size: 18px;
+  text-transform: none;
   text-shadow: none;
   transition: all 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.85);
   filter: drop-shadow(0px 4px 0px var(--shadow-pink-015));
@@ -1277,29 +1287,30 @@ img {
 }
 #game-over .bottom-section h2::before {
   content: ">";
-  margin-right: 5px;
+  font-family: "Teeny Tiny Pixls", sans-serif;
+  font-size: 13px;
+  margin-right: 6px;
+  position: relative;
+  top: 0.1em;
   transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.85);
 }
 #game-over .bottom-section h2:hover {
   transform: translateY(4px);
-  color: #fff2fd;
 }
 #game-over .bottom-section h2:hover::before {
-  margin-right: 10px;
+  margin-right: 11px;
   color: var(--arr-color);
 }
 #game-over .bottom-section h2:active::before {
-  margin-right: 2px;
+  margin-right: 3px;
   color: #c8e1ff;
 }
 #game-over .bottom-section .underline::after {
   content: "";
   position: absolute;
   z-index: -3;
-  width: 98%;
+  inset: 0;
   transform: scaleX(1);
-  height: 20px;
-  left: 0px;
   opacity: 0.8;
   background-color: #a1a1ff;
   border-radius: 2px;

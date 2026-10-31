@@ -584,7 +584,7 @@ describe("the game over buttons", () => {
   test("back to menu wiggles letter by letter", () => {
     const letters = game.$$("#menu-btn > span");
     expect(letters.map((letter) => letter.textContent).join("")).toBe(
-      "back\u00a0to\u00a0menu",
+      "Back\u00a0to\u00a0menu",
     );
     expect(letters[1].style.getPropertyValue("--delay")).toBe("0.1s");
     expect(letters[0].style.getPropertyValue("--wave-height")).toMatch(

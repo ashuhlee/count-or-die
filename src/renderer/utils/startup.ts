@@ -2,7 +2,8 @@ export const STARTUP_FONTS = [
   "24px Silkscreen",
   "bold 24px Silkscreen",
   "24px 'Alien Cyborg'",
-  "24px serious1",
+  "24px 'Teeny Tiny Pixls'",
+  "24px 'Enter the Gungeon Small'",
   "24px 'SMW Text NC'",
 ];
 
