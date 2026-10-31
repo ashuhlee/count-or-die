@@ -48,6 +48,27 @@ describe("preload", () => {
     Reflect.deleteProperty(window.HTMLImageElement.prototype, "decode");
   });
 
+  test("reports how much has loaded", async () => {
+    const reported: number[] = [];
+    await preload(["a.png", "b.gif"], ["16px One"], 5000, (fraction) =>
+      reported.push(fraction),
+    );
+    expect(reported[0]).toBe(0);
+    expect(reported.at(-1)).toBe(1);
+    expect(reported).toEqual([...reported].sort((a, b) => a - b));
+  });
+
+  test("shows the progress on the startup screen", async () => {
+    document.body.innerHTML = '<div id="startup-screen"></div>';
+    await preload(["a.png"], []);
+    expect(
+      document
+        .getElementById("startup-screen")
+        ?.style.getPropertyValue("--progress"),
+    ).toBe("1");
+    document.body.innerHTML = "";
+  });
+
   test("loads every picture and every font", async () => {
     await preload(["a.png", "b.gif"], ["16px One", "16px Two"]);
     expect(decoded).toEqual(["a.png", "b.gif"]);
@@ -117,25 +138,17 @@ describe("hideStartupScreen", () => {
     document.body.innerHTML = "";
   });
 
-  test("lets the screen go, then removes it", async () => {
-    const hiding = hideStartupScreen(10_000);
-    await vi.advanceTimersByTimeAsync(0);
-    expect(screen()?.classList.contains("hiding")).toBe(true);
-
-    await vi.advanceTimersByTimeAsync(600);
-    await hiding;
-    expect(screen()).toBeNull();
-  });
-
-  test("waits for the screen to finish growing first", async () => {
-    const hiding = hideStartupScreen(100);
-    await vi.advanceTimersByTimeAsync(499);
+  test("fills the bar, then lets the screen go and removes it", async () => {
+    const hiding = hideStartupScreen(250, 300);
+    expect(screen()?.style.getPropertyValue("--progress")).toBe("1");
+    await vi.advanceTimersByTimeAsync(249);
     expect(screen()?.classList.contains("hiding")).toBe(false);
 
     await vi.advanceTimersByTimeAsync(1);
     expect(screen()?.classList.contains("hiding")).toBe(true);
-    await vi.advanceTimersByTimeAsync(600);
+    await vi.advanceTimersByTimeAsync(300);
     await hiding;
+    expect(screen()).toBeNull();
   });
 
   test("does nothing when there is no startup screen", async () => {

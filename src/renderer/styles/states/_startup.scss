@@ -1,0 +1,52 @@
+.startup-screen {
+  --progress: 0;
+  --startup-bar: #ffa1e6;
+
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  background: black;
+  transition: opacity 0.1s ease;
+
+  &.hiding {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .startup-bar {
+    width: min(300px, 60vw);
+    height: 32px;
+    padding: 3px;
+    border: 3px solid white;
+    border-radius: 8px;
+  }
+
+  .startup-bar-fill {
+    width: calc(var(--progress) * 100%);
+    height: 100%;
+    background: var(--startup-bar);
+    border-radius: 2px;
+    transition: width 0.2s ease-out;
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, 0.3),
+        rgba(255, 255, 255, 0.3) 8px,
+        rgba(255, 255, 255, 0) 8px,
+        rgba(255, 255, 255, 0) 20px
+      );
+      background-size: 28px 28px;
+      animation: move-stripes 2s linear infinite;
+      opacity: 0.5;
+      mix-blend-mode: overlay;
+    }
+  }
+}
