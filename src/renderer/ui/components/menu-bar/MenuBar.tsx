@@ -70,6 +70,7 @@ export default function MenuBar({ entrance, onHome, inGame }: MenuBarProps) {
           variant={5}
           icon={homeBtnSvg}
           iconAlt="home icon"
+          iconSize={28}
           id="home-btn"
           onClick={onHome}
         />
@@ -80,6 +81,7 @@ export default function MenuBar({ entrance, onHome, inGame }: MenuBarProps) {
           variant={5}
           icon={optionsBtnSvg}
           iconAlt="options icon"
+          iconSize={24}
           onClick={() =>
             alert("Oops! The settings menu is not available in the beta.")
           }
@@ -90,6 +92,7 @@ export default function MenuBar({ entrance, onHome, inGame }: MenuBarProps) {
         variant={soundState >= 2 ? 4 : 5}
         icon={SOUND_ICONS[soundState] ?? soundBtnMuted}
         iconAlt="sound icon"
+        iconSize={28}
         iconId="soundBtn"
         onClick={onSoundClick}
       />
