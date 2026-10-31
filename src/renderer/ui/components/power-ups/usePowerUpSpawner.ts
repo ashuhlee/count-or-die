@@ -77,7 +77,6 @@ export function usePowerUpSpawner() {
       actions.collectPowerUp(collected.type);
       actions.emit({
         type: "smoke",
-        kind: "powerUp",
         x: rect.left + 20,
         y: rect.top + 30,
       });

@@ -181,6 +181,7 @@ type MeltInShaderProps = {
   shadow?: boolean;
   colors?: Partial<MeltColors>;
   settledBrightness?: number;
+  onDone?: () => void;
 };
 
 type Phase = "idle" | "melting" | "done";
@@ -212,6 +213,7 @@ export default function MeltInShader({
   shadow = true,
   colors,
   settledBrightness = BRIGHTNESS_END,
+  onDone,
 }: MeltInShaderProps) {
   const imageRef = useRef<HTMLImageElement | null>(null);
   const setImage = useCallback(
@@ -228,6 +230,14 @@ export default function MeltInShader({
   // already burned away when it first shows up, so it does not burn again
   const startsGone = useRef(out && active);
   const [phase, setPhase] = useState<Phase>(out && active ? "done" : "idle");
+
+  const latestOnDone = useRef(onDone);
+  useEffect(() => {
+    latestOnDone.current = onDone;
+  });
+  useEffect(() => {
+    if (phase === "done" && !out) latestOnDone.current?.();
+  }, [phase, out]);
 
   const fragmentSource = FRAGMENT;
   const paletteKey = JSON.stringify({ ...MELT_COLORS, ...colors });

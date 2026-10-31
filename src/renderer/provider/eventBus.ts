@@ -10,7 +10,7 @@ export type AppEvent =
       x: number;
       y: number;
     }
-  | { type: "smoke"; kind: "heart" | "powerUp"; x: number; y: number }
+  | { type: "smoke"; x: number; y: number }
   | { type: "flashEnded" } // the red flash finished playing
   | { type: "pageReset" }; // the whole page starts over, behind the loading screen
 

@@ -5,6 +5,7 @@ import { renderGame } from "../../helpers/game.tsx";
 import { stubWebAnimations } from "../../helpers/dom.ts";
 import GameScreen from "../../../src/renderer/ui/screens/game/GameScreen.tsx";
 import { useGame } from "../../../src/renderer/provider/useGame.ts";
+import { liveSlots } from "../../../src/renderer/ui/components/hearts/useHeartSlots.ts";
 
 vi.mock("../../../src/renderer/utils/sounds.ts", async (original) => ({
   ...(await original<typeof import("../../../src/renderer/utils/sounds.ts")>()),
@@ -81,5 +82,32 @@ describe("the hearts after a power-up", () => {
       false,
       true,
     ]);
+  });
+});
+
+describe("what the hearts show", () => {
+  const settled = (used: boolean[]) => ({
+    used,
+    restoring: used.map(() => false),
+  });
+
+  test("a heart with no boost behind it is used at once, before the slots catch up", () => {
+    const stale = settled([false, false, false, false]);
+    expect(liveSlots(0, stale).used).toEqual([true, true, true, true]);
+    expect(liveSlots(3, stale).used).toEqual([false, false, false, true]);
+  });
+
+  test("a heart waiting to come back stays used until its turn", () => {
+    const waiting = settled([true, true, true, true]);
+    expect(liveSlots(4, waiting).used).toEqual([true, true, true, true]);
+    expect(liveSlots(2, waiting).used).toEqual([true, true, true, true]);
+  });
+
+  test("a heart that is used is never restoring", () => {
+    const melting = { used: [false, false], restoring: [true, true] };
+    expect(liveSlots(1, melting)).toEqual({
+      used: [false, true],
+      restoring: [true, false],
+    });
   });
 });

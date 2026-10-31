@@ -9,6 +9,7 @@
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
+    "hearts": "vp dev -c vite.renderer.config.ts --open /debug/hearts.html",
     "test": "vp test run",
     "rebuild": "rm -rf out && npm run package && npm run make",
     "format": "vp fmt \"src/**/*.{ts,tsx,js,jsx,scss,css,json}\" \"tests/**/*.{ts,tsx,js,jsx}\"",

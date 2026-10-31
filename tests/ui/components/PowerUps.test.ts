@@ -182,9 +182,9 @@ describe("collecting one", () => {
     game.click(".power-up-img");
 
     expect(icons()).toHaveLength(0);
-    expect(game.$("#powerUpUsedElement").style.display).toBe("block");
+    expect(game.$$(".smoke-puff")).toHaveLength(1);
     game.wait(3000);
-    expect(game.$("#powerUpUsedElement").style.display).toBe("");
+    expect(game.$$(".smoke-puff")).toHaveLength(0);
 
     // the next one comes 6 seconds after this
     game.wait(2999);
@@ -310,7 +310,7 @@ describe("boost power-ups", () => {
     expect(seen.has("replenish_boosts")).toBe(false);
   });
 
-  test("an extra boost brings one heart back, with smoke", () => {
+  test("an extra boost brings one heart back, melting in", () => {
     game = renderGame({ state: { boostsAvailable: 3 } });
     expect(usedHearts()).toEqual([false, false, false, true]);
 
@@ -321,18 +321,55 @@ describe("boost power-ups", () => {
 
     expect(usedHearts()).toEqual([false, false, false, false]);
     expect(hearts()[3].classList.contains("heart-restore")).toBe(true);
-    expect(game.$("#popupElement").style.display).toBe("block");
+    const melt = hearts()[3].querySelector(".heart-melt");
+    expect(melt?.getAttribute("data-melt-active")).toBe("true");
+    // the heart melts in, so there is no smoke for it, only for collecting
+    expect(game.$$(".smoke-puff")).toHaveLength(1);
     expect(sounds()).toContain("boostPowerUp");
   });
 
-  test("the restoring heart settles once its animation ends", () => {
+  test("the restoring heart settles once it has melted in", () => {
     game = renderGame({ state: { boostsAvailable: 3 } });
     spawn(EXTRA_BOOST, 0, 0, 0);
     game.click(".power-up-img");
     game.wait(0);
 
-    fireAnimationEnd(hearts()[3]);
+    game.wait(100);
+    expect(hearts()[3].classList.contains("heart-restore")).toBe(true);
+    game.wait(5000);
     expect(hearts()[3].classList.contains("heart-restore")).toBe(false);
+    expect(hearts()[3].querySelector(".heart-melt")).toBeNull();
+    expect(hearts()[3].querySelector("img")).not.toBeNull();
+  });
+
+  test("the plain heart is hidden while its copy melts in", () => {
+    game = renderGame({ state: { boostsAvailable: 3 } });
+    spawn(EXTRA_BOOST, 0, 0, 0);
+    game.click(".power-up-img");
+    game.wait(0);
+
+    const art = hearts()[3].querySelector<HTMLElement>(".heart-art");
+    expect(art?.style.opacity).toBe("0");
+    game.wait(5000);
+    expect(art?.style.opacity).toBe("1");
+  });
+
+  test("a heart used while it is still melting in goes at once", () => {
+    game = renderGame({ state: { boostsAvailable: 3 } });
+    spawn(EXTRA_BOOST, 0, 0, 0);
+    game.click(".power-up-img");
+    game.wait(0);
+    expect(hearts()[3].querySelector(".heart-melt")).not.toBeNull();
+
+    game.wait(100);
+    game.click("#decrease-img");
+
+    expect(hearts()[3].classList.contains("heart-use")).toBe(true);
+    expect(hearts()[3].classList.contains("heart-restore")).toBe(false);
+    expect(hearts()[3].querySelector(".heart-melt")).toBeNull();
+    game.wait(5000);
+    expect(hearts()[3].classList.contains("heart-restore")).toBe(false);
+    expect(hearts()[3].classList.contains("heart-use")).toBe(true);
   });
 
   test("the superstar brings every heart back, one after the other", () => {

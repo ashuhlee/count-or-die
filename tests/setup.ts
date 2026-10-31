@@ -30,7 +30,7 @@ vi.mock("../src/renderer/ui/shaders/crt-shader/CRTShader.tsx", () => ({
 vi.mock(
   "../src/renderer/ui/shaders/melt-in-shader/MeltInShader.tsx",
   async () => {
-    const { createElement } = await import("react");
+    const { createElement, useEffect, useRef } = await import("react");
     return {
       default: ({
         ref,
@@ -40,6 +40,9 @@ vi.mock(
         active,
         mode,
         colors,
+        delay,
+        duration,
+        onDone,
       }: {
         ref?: React.Ref<HTMLImageElement>;
         src: string;
@@ -48,8 +51,25 @@ vi.mock(
         active: boolean;
         mode?: string;
         colors?: Record<string, string>;
-      }) =>
-        createElement("img", {
+        delay?: number;
+        duration?: number;
+        onDone?: () => void;
+      }) => {
+        // the melt takes as long as it was asked to, then says it is done
+        const latestOnDone = useRef(onDone);
+        useEffect(() => {
+          latestOnDone.current = onDone;
+        });
+        useEffect(() => {
+          if (!active || mode === "out") return;
+          const timer = setTimeout(
+            () => latestOnDone.current?.(),
+            (delay ?? 0) + (duration ?? 1600),
+          );
+          return () => clearTimeout(timer);
+        }, [active, mode, delay, duration]);
+
+        return createElement("img", {
           ref,
           src,
           alt,
@@ -57,7 +77,8 @@ vi.mock(
           "data-melt-active": String(active),
           "data-melt-mode": mode ?? "in",
           "data-melt-colors": JSON.stringify(colors ?? {}),
-        }),
+        });
+      },
     };
   },
 );

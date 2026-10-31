@@ -303,13 +303,40 @@ describe("boosting", () => {
     game.click("#decrease-img");
 
     expect(usedHearts()).toEqual([false, false, false, true]);
-    expect(game.$("#popupElement").style.display).toBe("block");
-    expect(game.$("#popupElement").getAttribute("src")).toContain("smoke");
+    expect(game.$$(".smoke-puff")).toHaveLength(1);
+    expect(game.$(".smoke-puff").getAttribute("src")).toContain("smoke");
 
     game.wait(2999);
-    expect(game.$("#popupElement").style.display).toBe("block");
+    expect(game.$$(".smoke-puff")).toHaveLength(1);
     game.wait(1);
-    expect(game.$("#popupElement").style.display).toBe("");
+    expect(game.$$(".smoke-puff")).toHaveLength(0);
+  });
+
+  test("every puff of smoke is its own picture, so it always starts from the start", () => {
+    game = renderGame();
+    game.click("#decrease-img");
+    game.wait(1);
+    game.click("#decrease-img");
+
+    const [first, second] = game
+      .$$(".smoke-puff")
+      .map((puff) => puff.getAttribute("src"));
+    expect(first).toContain("smoke");
+    expect(second).toContain("smoke");
+    expect(second).not.toBe(first);
+  });
+
+  test("every use of a boost puffs its own smoke", () => {
+    game = renderGame();
+    game.click("#decrease-img");
+    game.wait(1000);
+    game.click("#decrease-img");
+
+    expect(game.$$(".smoke-puff")).toHaveLength(2);
+    game.wait(2000);
+    expect(game.$$(".smoke-puff")).toHaveLength(1);
+    game.wait(1000);
+    expect(game.$$(".smoke-puff")).toHaveLength(0);
   });
 
   test("puffs the smoke where the last heart was, not where the layout moved it", () => {
@@ -325,7 +352,7 @@ describe("boosting", () => {
     );
     game.click("#decrease-img");
 
-    expect(game.$("#popupElement").style.top).toBe("400px");
+    expect(game.$(".smoke-puff").style.top).toBe("400px");
   });
 
   test("floats a +N for the points it added", () => {

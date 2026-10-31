@@ -346,20 +346,6 @@ img {
     opacity: 0.7;
   }
 }
-@keyframes heart-appear {
-  0% {
-    transform: scale(0);
-    opacity: 0;
-  }
-  70% {
-    transform: scale(1.2);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
 @keyframes blink {
   0% {
     opacity: 1;
@@ -944,22 +930,35 @@ img {
 .hearts img {
   width: 64px;
 }
+.hearts > div {
+  position: relative;
+}
 .heart-use {
   visibility: hidden;
   opacity: 0;
 }
 .heart-restore {
   visibility: visible;
-  animation: heart-appear 0.3s ease-out forwards;
+}
+.heart-art {
+  display: block;
+}
+.hearts > div > .heart-melt {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 64px;
 }
 .boost-stuff {
   max-height: 64px;
 }
-#popupElement,
-#powerUpUsedElement {
+.smoke-puff {
   position: fixed;
-  display: none;
+  width: 70px;
+  height: 70px;
+  z-index: 2;
   pointer-events: none;
+  filter: brightness(1.03) saturate(110%);
 }
 .spawn-area {
   width: 70%;

@@ -7,14 +7,14 @@ import { useReplayAnimation } from "../../../hooks/useReplayAnimation.ts";
 import { useGame } from "../../../provider/useGame.ts";
 import { useGameEvent } from "../../../provider/useGameEvent.ts";
 import Letters from "../letters/Letters.tsx";
-import Heart from "./Heart.tsx";
+import Heart, { type HeartMelt } from "./Heart.tsx";
 import { useHeartSlots } from "./useHeartSlots.ts";
 
-const HEARTS = [
-  { colorClass: "heart-pink", src: heartPink },
-  { colorClass: "heart-purple", src: heartPurple },
-  { colorClass: "heart-blue", src: heartBlue },
-  { colorClass: "heart-white", src: heartWhite },
+const HEARTS: { colorClass: string; src: string; melt?: HeartMelt }[] = [
+  { colorClass: "heart-pink", src: heartPink, melt: {} },
+  { colorClass: "heart-purple", src: heartPurple, melt: {} },
+  { colorClass: "heart-blue", src: heartBlue, melt: {} },
+  { colorClass: "heart-white", src: heartWhite, melt: {} },
 ];
 
 export default function Hearts() {
@@ -39,7 +39,7 @@ export default function Hearts() {
         </span>
       </h1>
       <div className="hearts">
-        {HEARTS.map(({ colorClass, src }, index) => (
+        {HEARTS.map(({ colorClass, src, melt }, index) => (
           <Heart
             key={index}
             number={index + 1}
@@ -47,6 +47,7 @@ export default function Hearts() {
             src={src}
             used={slots.used[index]}
             restoring={slots.restoring[index]}
+            melt={melt}
             slotRef={slotRef(index)}
             onRestored={() => finishRestoring(index)}
           />
