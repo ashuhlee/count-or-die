@@ -1,7 +1,5 @@
 import type { MouseEvent } from "react";
 
-import chatTip from "@assets/ui/svg/chat-tip.svg";
-
 import decreaseBtn from "@assets/ui/buttons/decrease.png";
 import decreaseBtnPress from "@assets/ui/buttons/decrease-press.png";
 import increaseBtn from "@assets/ui/buttons/increase.png";
@@ -53,7 +51,6 @@ export default function GameScreen() {
         </div>
 
         <GoalBox />
-        <img src={chatTip} className="chat-tip" alt="chat tip" />
       </div>
 
       <div className="progress">

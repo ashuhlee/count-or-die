@@ -57,7 +57,7 @@
   }
 }
 
-.fade-up-text span {
+.fade-up-text > span {
   opacity: 0;
   transform: translateY(20px);
   margin-left: -6px;

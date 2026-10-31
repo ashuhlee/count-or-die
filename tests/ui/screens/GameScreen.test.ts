@@ -420,24 +420,28 @@ describe("goals", () => {
     expect(sounds()).toContain("goalReached");
   });
 
-  test("the goal text waves from the start, one letter after another", () => {
+  test("the goal text shakes from the start, one letter after another", () => {
     game = renderGame();
 
     const letters = game.$$("#next-goal .goal-text > span");
     expect(letters).toHaveLength("next: 30".length);
     expect(letters[0].style.getPropertyValue("--wave-delay")).toBe("0s");
-    expect(letters[1].style.getPropertyValue("--wave-delay")).toBe("0.1s");
-    expect(letters[0].style.getPropertyValue("--wave-height")).toBe("3px");
+    expect(letters[1].style.getPropertyValue("--wave-delay")).toBe("0.3s");
+    expect(letters[0].style.getPropertyValue("--wave-duration")).toBe("3s");
     expect(game.$(".goal-text").classList.contains("fade-up-text")).toBe(false);
   });
 
-  test("a new goal's letters keep waving as they come in", () => {
+  test("each letter shakes inside the span that brings it in", () => {
     game = renderGame({ state: nearGoal });
     game.click("#increase-img");
 
     expect(game.$(".goal-text").classList.contains("fade-up-text")).toBe(true);
-    const letters = game.$$("#next-goal .goal-text > span");
-    expect(letters[1].style.getPropertyValue("--wave-delay")).toBe("0.1s");
+    for (const letter of game.$$("#next-goal .goal-text > span")) {
+      expect(letter.querySelectorAll(":scope > span")).toHaveLength(1);
+    }
+    expect(game.$("#next-goal").textContent?.replace(/\u00a0/g, " ")).toBe(
+      "next: 40",
+    );
   });
 
   test("the goal box swings, and swings again for the next goal", () => {
@@ -461,23 +465,49 @@ describe("goals", () => {
     expect(game.$("#progress-bar")).not.toBe(before);
   });
 
-  test("each goal uses the next color, in the border and the letters", () => {
+  test("each goal's letters take the next color, and the border stays one color", () => {
     game = renderGame({ state: { counter: 29, highScore: 999 } });
-    // the title used the first color
-    expect(game.$("#next-goal").style.borderTop).toBe(
-      "3px solid rgb(255, 128, 234)",
-    );
+    const border = () =>
+      game.$(".goal-bubble").style.getPropertyValue("--goal-border");
+    const letter = () =>
+      game.$<HTMLElement>("#next-goal .goal-text > span").style.color;
+    const fixed = border();
+    expect(fixed).toMatch(/^#[0-9a-f]{6}$/i);
 
     game.click("#increase-img");
-    const second = "rgb(161, 147, 255)";
-    expect(game.$("#next-goal").style.borderTop).toBe(`3px solid ${second}`);
-    expect(
-      game.$<HTMLElement>("#next-goal .goal-text > span").style.color,
-    ).toBe(second);
+    expect(letter()).toBe("rgb(161, 147, 255)");
+    expect(border()).toBe(fixed);
 
     // 29 + 1 reached 30; the goal is 40 now
     game.click("#decrease-img");
-    expect(game.$("#next-goal").style.borderTop).not.toContain(second);
+    expect(letter()).not.toBe("rgb(161, 147, 255)");
+    expect(border()).toBe(fixed);
+  });
+
+  test("the chat tip is drawn in the same border color, inside the same bubble", () => {
+    game = renderGame();
+
+    const bubble = game.$(".goal-bubble");
+    expect(bubble.querySelector("#next-goal")).not.toBeNull();
+    const tip = bubble.querySelector(".chat-tip");
+    expect(tip).not.toBeNull();
+    expect(tip?.querySelector("g")?.getAttribute("fill")).toBe(
+      "var(--goal-border, white)",
+    );
+    expect(tip?.querySelectorAll("use")).toHaveLength(4);
+  });
+
+  test("the chat tip's border is cut off exactly where the goal box ends", () => {
+    game = renderGame();
+
+    const tip = game.$(".chat-tip");
+    const cutOff = parseInt(
+      game.$(".chat-tip-frame").style.clipPath.match(/inset\((\d+)px/)?.[1] ??
+        "",
+    );
+    // the tip sits this far up into the box, and the border starts right there
+    expect(cutOff).toBeGreaterThan(0);
+    expect(tip.style.marginTop).toBe(`-${cutOff}px`);
   });
 
   test("using the last boost also moves the color along", () => {

@@ -1,5 +1,6 @@
 :root {
   --shadow-pink-005: rgba(206, 42, 133, 0.05);
+  --shadow-pink-008: rgba(206, 42, 133, 0.08);
   --shadow-pink-010: rgba(206, 42, 133, 0.1);
   --shadow-pink-012: rgba(206, 42, 133, 0.12);
   --shadow-pink-015: rgba(206, 42, 133, 0.15);
@@ -572,7 +573,7 @@ img {
       scale3d(1, 1, 1);
   }
 }
-.fade-up-text span {
+.fade-up-text > span {
   opacity: 0;
   transform: translateY(20px);
   margin-left: -6px;
@@ -755,6 +756,7 @@ img {
   color: #fff;
   text-shadow: 0 5px 0 rgba(255, 163, 231, 0.8);
   font-family: "Silkscreen", sans-serif;
+  letter-spacing: -1.75px;
   font-weight: bold;
   font-style: normal;
   margin: 0 auto;
@@ -853,11 +855,20 @@ img {
   animation: hover 2s infinite ease-in-out;
   position: relative;
 }
+.goal-chatbox .goal-bubble {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  filter: drop-shadow(0px 5px 0px var(--shadow-pink-008));
+}
 .goal-chatbox .next-goal {
   background: #fff;
-  padding: 8px 12px;
-  filter: drop-shadow(0px 6px 0px rgba(255, 163, 231, 0.5));
-  border-radius: 2px;
+  padding: 6px 12px;
+  box-shadow:
+    -5px 0 0 0 var(--goal-border, white),
+    5px 0 0 0 var(--goal-border, white),
+    0 5px 0 0 var(--goal-border, white),
+    0 -5px 0 0 var(--goal-border, white);
   text-align: center;
   image-rendering: pixelated;
   white-space: nowrap;
@@ -865,30 +876,33 @@ img {
   position: relative;
 }
 .goal-chatbox .next-goal .goal-text {
+  --shake-scale: 0.97;
+  --shake-distance: -1.5px;
   color: #4b4d5a;
   font-family: "Silkscreen", monospace;
-  font-size: 18px;
+  font-size: 20px;
+  letter-spacing: -1.5px;
   font-weight: bold;
 }
-.goal-chatbox .next-goal .goal-text span {
-  position: relative;
+.goal-chatbox .next-goal .goal-text > span {
   display: inline-block;
-  animation: wavy-text-top var(--wave-duration, 2.5s)
-    cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--wave-delay);
 }
-.goal-chatbox .next-goal .goal-text.fade-up-text span {
-  animation:
-    fade-in-up 0.2s ease-out forwards var(--delay),
-    wavy-text-top var(--wave-duration, 2.5s) cubic-bezier(0.25, 0.1, 0.25, 1)
-      infinite var(--wave-delay);
+.goal-chatbox .next-goal .goal-text > span > span {
+  display: inline-block;
+  animation: shake var(--wave-duration, 2s) ease infinite var(--wave-delay);
 }
 .goal-chatbox .chat-tip {
-  width: 32px;
-  height: 16px;
-  margin-top: -6px;
+  position: relative;
   z-index: 1;
-  animation: point 2s infinite ease-in-out;
-  filter: drop-shadow(0px 6px 0px rgba(255, 163, 231, 0.4));
+}
+.goal-chatbox .chat-tip-frame {
+  position: absolute;
+  inset: 0;
+}
+.goal-chatbox .chat-tip-art {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 .goal-chatbox .notifications {
   position: relative;
@@ -1136,7 +1150,7 @@ img {
 }
 #game-over .tracker-container.tracker-enter {
   --bounce: 16px;
-  animation: bounce-in-right-soft 0.8s both;
+  animation: bounce-in-right-soft 1s both;
 }
 #game-over .tracker-container {
   height: 28px;

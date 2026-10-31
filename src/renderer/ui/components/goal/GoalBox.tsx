@@ -2,10 +2,17 @@ import { useState, type CSSProperties } from "react";
 
 import { useGame } from "../../../provider/useGame.ts";
 import { useGameEvent } from "../../../provider/useGameEvent.ts";
+import ChatTip from "./ChatTip.tsx";
 
-const WAVE = { step: 0.1, height: 3, duration: 2 };
+const SHAKE = { step: 0.3, duration: 3 };
 
 const THEME_COLORS = ["#ff80ea", "#A193FF", "#9ad9ff", "#BEB9DC"];
+
+const FRAME = 5;
+const TIP_OVERLAP = 5;
+
+const CYCLE_BORDER_COLOR = false;
+const BORDER_COLOR = "#e4e4ed";
 
 type Theme = {
   next: number;
@@ -35,7 +42,6 @@ export default function GoalBox() {
   const text = `next: ${state.currentGoal}`;
 
   const [theme, setTheme] = useState(INITIAL_THEME);
-  // set after the goal changes: the text animates in letter by letter
   const [letters, setLetters] = useState<{
     id: number;
     direction: "forward" | "reverse";
@@ -60,36 +66,49 @@ export default function GoalBox() {
 
   return (
     <div
-      key={swing.id}
-      className={["next-goal animate__animated animate__fast", swing.className]
-        .filter(Boolean)
-        .join(" ")}
-      id="next-goal"
-      style={{ borderTop: `3px solid ${theme.border}` }}
+      className="goal-bubble"
+      style={
+        {
+          "--goal-border": CYCLE_BORDER_COLOR ? theme.border : BORDER_COLOR,
+        } as CSSProperties
+      }
     >
-      <span className={`goal-text${letters ? " fade-up-text" : ""}`}>
-        {text.split("").map((char, index) => {
-          const delayIndex =
-            letters?.direction === "reverse" ? text.length - 1 - index : index;
+      <div
+        key={swing.id}
+        className={[
+          "next-goal animate__animated animate__fast",
+          swing.className,
+        ]
+          .filter(Boolean)
+          .join(" ")}
+        id="next-goal"
+      >
+        <span className={`goal-text${letters ? " fade-up-text" : ""}`}>
+          {text.split("").map((char, index) => {
+            const delayIndex =
+              letters?.direction === "reverse"
+                ? text.length - 1 - index
+                : index;
 
-          return (
-            <span
-              key={`${letters?.id ?? 0}-${index}`}
-              style={
-                {
-                  "--delay": `${delayIndex * 0.05}s`,
-                  "--wave-delay": `${index * WAVE.step}s`,
-                  "--wave-height": `${WAVE.height}px`,
-                  "--wave-duration": `${WAVE.duration}s`,
-                  color: theme.letterColor,
-                } as CSSProperties
-              }
-            >
-              {char === " " ? "\u00a0" : char}
-            </span>
-          );
-        })}
-      </span>
+            return (
+              <span
+                key={`${letters?.id ?? 0}-${index}`}
+                style={
+                  {
+                    "--delay": `${delayIndex * 0.05}s`,
+                    "--wave-delay": `${index * SHAKE.step}s`,
+                    "--wave-duration": `${SHAKE.duration}s`,
+                    color: theme.letterColor,
+                  } as CSSProperties
+                }
+              >
+                <span>{char === " " ? "\u00a0" : char}</span>
+              </span>
+            );
+          })}
+        </span>
+      </div>
+      <ChatTip border={FRAME} overlap={TIP_OVERLAP} />
     </div>
   );
 }
