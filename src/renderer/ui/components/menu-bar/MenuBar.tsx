@@ -4,6 +4,8 @@ import soundBtnMuted from "@assets/ui/svg/sound-button-muted.svg";
 import soundBtnNoMusic from "@assets/ui/svg/sound-button-no_music.svg";
 import soundBtnUnmuted from "@assets/ui/svg/sound-button-reg.svg";
 import optionsBtnSvg from "@assets/ui/svg/options-button.svg";
+import roundBtnPurple from "@assets/ui/buttons/round-btn-purple.png";
+import roundBtnGrey from "@assets/ui/buttons/round-btn-grey.png";
 
 import { audioConfig, toggleAudio } from "../../../utils/sounds.ts";
 
@@ -23,8 +25,6 @@ function readSavedState(): number {
   return saved === null ? 0 : parseInt(saved);
 }
 
-// `hidden` keeps it out of sight without taking it away, because it also puts
-// back the saved sound settings, and those apply on every screen
 export default function MenuBar({ hidden = false }: { hidden?: boolean }) {
   const [soundState, setSoundState] = useState(readSavedState);
 
@@ -43,19 +43,29 @@ export default function MenuBar({ hidden = false }: { hidden?: boolean }) {
 
   return (
     <div className="controls" style={hidden ? { display: "none" } : undefined}>
-      <img
-        id="soundBtn"
-        alt="sound icon"
-        src={SOUND_ICONS[soundState] ?? soundBtnMuted}
-        onClick={onSoundClick}
-      />
-      <img
-        alt="options icon"
-        src={optionsBtnSvg}
+      <button type="button" className="round-btn" onClick={onSoundClick}>
+        <img className="round-btn-face" alt="" src={roundBtnPurple} />
+        <img
+          id="soundBtn"
+          className="round-btn-icon"
+          alt="sound icon"
+          src={SOUND_ICONS[soundState] ?? soundBtnMuted}
+        />
+      </button>
+      <button
+        type="button"
+        className="round-btn"
         onClick={() =>
           alert("Oops! The settings menu is not available in the beta.")
         }
-      />
+      >
+        <img className="round-btn-face" alt="" src={roundBtnGrey} />
+        <img
+          className="round-btn-icon"
+          alt="options icon"
+          src={optionsBtnSvg}
+        />
+      </button>
     </div>
   );
 }

@@ -43,6 +43,23 @@ describe("MenuBar", () => {
     expect(second).not.toBe(first);
   });
 
+  test("the sound and settings buttons are round pictures with an icon in them", () => {
+    const buttons = Array.from(
+      container.querySelectorAll<HTMLButtonElement>(".round-btn"),
+    );
+
+    expect(buttons).toHaveLength(2);
+    for (const button of buttons) {
+      expect(button.querySelector(".round-btn-face")).not.toBeNull();
+      expect(button.querySelector(".round-btn-icon")).not.toBeNull();
+    }
+    const faces = buttons.map((button) =>
+      button.querySelector(".round-btn-face").getAttribute("src"),
+    );
+    expect(faces[0]).not.toBe(faces[1]);
+    expect(buttons[0].contains(sound())).toBe(true);
+  });
+
   test("restores the saved sound state on mount", () => {
     unmount();
     localStorage.setItem("soundState", "2");
