@@ -73,6 +73,15 @@ export default function GameOver() {
       }
     >
       <GameOverBackground paused={!view.background} visible={view.visible} />
+      <div className="controls left">
+        <RoundButton
+          variant={5}
+          icon={homeBtnSvg}
+          iconAlt="home icon"
+          id="game-over-home-btn"
+          onClick={() => loading.mounted || actions.backToMenu()}
+        />
+      </div>
       <div className="go-content">
         <div id="red-overlay"></div>
         <h2 className="you-died">
