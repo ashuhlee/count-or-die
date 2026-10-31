@@ -45,9 +45,9 @@
   justify-items: end;
   filter: drop-shadow(0px 4px 0px var(--shadow-pink-005));
 
-  &.left {
-    right: auto;
-    left: 30px;
+  &.bottom {
+    top: auto;
+    bottom: 18px;
   }
 
   .round-btn {

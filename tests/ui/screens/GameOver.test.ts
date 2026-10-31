@@ -235,13 +235,16 @@ describe("the game over buttons", () => {
     game = renderGame({ state: { isGameOver: true } });
   });
 
-  test("the home icon goes to the menu behind the loading screen", () => {
-    game.click("#game-over-home-btn");
+  test("the github button opens the project page", () => {
+    const open = vi.spyOn(window, "open").mockImplementation(() => null);
+    game.click("#game-over-github-btn");
 
     expect(sounds()).toContain("buttonClick");
-    expect(game.$("#menu-screen")).toBeNull();
-    game.wait(600);
-    expect(game.$("#menu-screen")).not.toBeNull();
+    expect(open).toHaveBeenCalledWith(
+      "https://github.com/ashuhlee/count-or-die",
+      "_blank",
+      "noopener",
+    );
   });
 
   test("quit closes the app after a moment", () => {

@@ -729,9 +729,9 @@ img {
   justify-items: end;
   filter: drop-shadow(0px 4px 0px var(--shadow-pink-005));
 }
-.controls.left {
-  right: auto;
-  left: 30px;
+.controls.bottom {
+  top: auto;
+  bottom: 18px;
 }
 .controls .round-btn {
   position: relative;

@@ -5,7 +5,7 @@ import gameOverGif from "@assets/ui/deco/game_over.gif";
 import questionPng from "@assets/ui/deco/question.png";
 import exclamationPng from "@assets/ui/deco/exclamation.png";
 
-import homeBtnSvg from "@assets/ui/svg/home-button.svg";
+import githubBtnSvg from "@assets/ui/svg/github-button.svg";
 import ghostPng from "@assets/ui/deco/ghost.gif";
 import skullTracker from "@assets/ui/deco/skull_grey.svg";
 import starTracker from "@assets/ui/deco/star_grey.svg";
@@ -17,6 +17,7 @@ import quitBtnPng from "@assets/ui/buttons/quit-btn.png";
 
 import { useGame } from "../../../provider/useGame.ts";
 import { formatCounter } from "../../../utils/formatCounter.ts";
+import { openGithub } from "../../../utils/openGithub.ts";
 import RoundButton from "../../components/round-button/RoundButton.tsx";
 import SkullFloor from "../../components/skull-floor/SkullFloor.tsx";
 import BulgeFilter from "../../components/bulge/BulgeFilter.tsx";
@@ -54,7 +55,7 @@ const GHOST_COLORS: MeltColors = {
 };
 
 export default function GameOver() {
-  const { state, actions, loading } = useGame();
+  const { state, actions } = useGame();
 
   const view = useGameOverView();
 
@@ -73,13 +74,14 @@ export default function GameOver() {
       }
     >
       <GameOverBackground paused={!view.background} visible={view.visible} />
-      <div className="controls left">
+      <div className="controls bottom">
         <RoundButton
           variant={5}
-          icon={homeBtnSvg}
-          iconAlt="home icon"
-          id="game-over-home-btn"
-          onClick={() => loading.mounted || actions.backToMenu()}
+          icon={githubBtnSvg}
+          iconAlt="github icon"
+          iconSize={30}
+          id="game-over-github-btn"
+          onClick={openGithub}
         />
       </div>
       <div className="go-content">
