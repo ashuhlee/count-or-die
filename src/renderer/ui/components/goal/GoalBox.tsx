@@ -17,7 +17,7 @@ const BORDER_COLOR = "#e4e4ed";
 
 const PANEL_ACCENT = "#e4e4ed";
 const PANEL_DOTS = 1;
-const PANEL_SHADOW = 0.5;
+const PANEL_SHADOW = 0.2;
 
 type Theme = {
   next: number;

@@ -144,8 +144,8 @@ export default function GameOver() {
           alt="game over text"
           className="go-title"
           active={view.visible}
-          delay={200}
-          duration={1700}
+          delay={300}
+          duration={1850}
         />
 
         <h2 className="play-again">

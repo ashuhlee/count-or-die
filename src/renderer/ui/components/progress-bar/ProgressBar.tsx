@@ -2,7 +2,7 @@ import { useGame, type BarStage } from "../../../provider/useGame.ts";
 
 const COLORS = {
   highScore: "var(--rainbow-gradient-bar)",
-  primary: "#B4A6FF",
+  primary: "#AD9EFF",
   warning: "#ffb199",
   critical: "#f7628b",
 };

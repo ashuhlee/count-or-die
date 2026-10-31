@@ -1,0 +1,70 @@
+@use "sass:math";
+
+// the diagonal stripes of the progress bars, drawn pixel by pixel: every row
+// of the tile starts one step further left than the row above it, so the
+// stripes lean "/" with a staircase edge. The step has to divide the period.
+// These are the defaults, and each bar can give its own to the mixin
+$period: 30px;
+$width: 15px;
+$step: 3px;
+$color: "white";
+$opacity: 0.2;
+
+@function tile(
+  $stripe-period: $period,
+  $stripe-width: $width,
+  $stripe-step: $step,
+  $stripe-opacity: $opacity
+) {
+  $size: math.div($stripe-period, 1px);
+  $step-size: math.div($stripe-step, 1px);
+  $stripe: math.div($stripe-width, 1px);
+  $svg: "<svg xmlns='http://www.w3.org/2000/svg' width='#{$size}' height='#{$size}' shape-rendering='crispEdges'>";
+
+  @for $row from 0 to math.div($size, $step-size) {
+    $y: $row * $step-size;
+    $x: $size - $row * $step-size;
+
+    // the stripe is drawn a period to each side too, so it wraps around
+    @each $offset in (-$size, 0, $size) {
+      $svg: $svg +
+        "<rect x='#{$x + $offset}' y='#{$y}' width='#{$stripe}' height='#{$step-size}' fill='#{$color}' fill-opacity='#{$stripe-opacity}'/>";
+    }
+  }
+
+  @return url("data:image/svg+xml,#{$svg}</svg>");
+}
+
+// the stripes as a background; put them on a layer that is blended over a bar
+// with mix-blend-mode: overlay. The gap between two stripes is the period minus
+// the width, and the opacity is 0 to 1. The pixel size scales the whole tile,
+// so 2 makes every step, stripe and gap twice as big (and the scroll distance
+// too); use whole numbers to keep the edges sharp
+@mixin stripes(
+  $stripe-period: $period,
+  $stripe-width: $width,
+  $stripe-step: $step,
+  $stripe-opacity: $opacity,
+  $stripe-pixel-size: 1
+) {
+  --stripe-period: #{$stripe-period * $stripe-pixel-size};
+  background: tile(
+    $stripe-period,
+    $stripe-width,
+    $stripe-step,
+    $stripe-opacity
+  );
+  background-size: ($stripe-period * $stripe-pixel-size)
+    ($stripe-period * $stripe-pixel-size);
+  image-rendering: pixelated;
+}
+
+// for a layer that slides its background to move the stripes
+@keyframes slide-stripes {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: calc(var(--stripe-period) * -1) 0;
+  }
+}

@@ -1,3 +1,5 @@
+@use "../base/pixel-stripes" as stripes;
+
 .startup-screen {
   --progress: 0;
   --startup-bar: #ffa1e6;
@@ -35,19 +37,11 @@
     &::after {
       content: "";
       position: absolute;
-      inset: 0 -28px 0 0;
-      background: repeating-linear-gradient(
-        -45deg,
-        rgba(255, 255, 255, 0.3),
-        rgba(255, 255, 255, 0.3) 8px,
-        rgba(255, 255, 255, 0) 8px,
-        rgba(255, 255, 255, 0) 20px
-      );
-      background-size: 28px 28px;
+      inset: 0 (-(stripes.$period)) 0 0;
+      @include stripes.stripes($stripe-opacity: 0.3);
+      mix-blend-mode: overlay;
       animation: startup-stripes 1.5s linear infinite;
       will-change: transform;
-      opacity: 0.5;
-      mix-blend-mode: overlay;
     }
   }
 }
@@ -57,6 +51,6 @@
     transform: translateX(0);
   }
   to {
-    transform: translateX(-28px);
+    transform: translateX(-(stripes.$period));
   }
 }

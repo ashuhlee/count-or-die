@@ -24,7 +24,7 @@ export default memo(function GameOverBackground({
         detail={7}
         lighting={0.2}
         rotationSpeed={-0.1}
-        crt={0.2}
+        crt={0}
         mouseInteraction={false}
         clickSwirl={false}
         intro={false}

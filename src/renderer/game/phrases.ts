@@ -1,6 +1,6 @@
 const PHRASES_REGULAR = [
   "You died lolz",
-  "Lol loser",
+  "Lol... loser",
   "Lol. Loser.",
   "Aw, you died",
   "You died :(",
