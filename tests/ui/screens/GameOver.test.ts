@@ -56,6 +56,23 @@ describe("the countdown bar", () => {
     );
   });
 
+  test("keeps its stripes inside the fill, running as long as the round", () => {
+    game = renderGame();
+
+    const stripes = game.$(".pg-lines");
+    expect(stripes.style.animation).toContain(
+      "progress-clip 20s linear infinite",
+    );
+    expect(stripes.style.visibility).toBe("visible");
+  });
+
+  test("takes its stripes away with the fill when time is up", () => {
+    game = renderGame();
+
+    game.wait(TIME_IS_UP + 200);
+    expect(game.$(".pg-lines").style.visibility).toBe("hidden");
+  });
+
   test("turns orange, then red and blinking, then blinks faster", () => {
     game = renderGame();
 

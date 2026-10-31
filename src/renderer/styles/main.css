@@ -188,6 +188,14 @@ img {
     transform: scaleX(0);
   }
 }
+@keyframes progress-clip {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 100% 0 0);
+  }
+}
 @keyframes pop {
   0% {
     transform: scale(1) rotate(0);
@@ -656,29 +664,33 @@ img {
   grid-area: 1/1;
   height: 13px;
   width: 140px;
+  z-index: 2;
+  mix-blend-mode: overlay;
+}
+.progress .pg-stripes {
+  width: 100%;
+  height: 100%;
   background: repeating-linear-gradient(
     -45deg,
-    rgba(255, 255, 255, 0.3),
-    rgba(255, 255, 255, 0.3) 5px,
+    rgba(255, 255, 255, 0.4),
+    rgba(255, 255, 255, 0.4) 5px,
     rgba(255, 255, 255, 0) 5px,
     rgba(255, 255, 255, 0) 10px
   );
   background-size: 28px 28px;
   animation: move-stripes 2s linear infinite;
-  z-index: 2;
   opacity: 0.5;
-  mix-blend-mode: overlay;
 }
 .progress .progress-bg {
   grid-area: 1/1;
   height: 13px;
   width: 140px;
-  background: #645d8a;
+  background: #59527c;
   box-shadow:
-    -4px 0 0 0 #fff0fb,
-    4px 0 0 0 #fff0fb,
-    0 -4px 0 0 #fff0fb,
-    0 4px 0 0 #fff0fb;
+    -4px 0 0 0 #fff2fc,
+    4px 0 0 0 #fff2fc,
+    0 -4px 0 0 #fff2fc,
+    0 4px 0 0 #fff2fc;
 }
 .title,
 .no-boosts {

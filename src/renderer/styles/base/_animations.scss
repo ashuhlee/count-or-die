@@ -94,6 +94,15 @@
   }
 }
 
+@keyframes progress-clip {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 100% 0 0);
+  }
+}
+
 @keyframes pop {
   0% {
     transform: scale(1) rotate(0);

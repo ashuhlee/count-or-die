@@ -16,8 +16,12 @@ function getBackground(stage: BarStage, isHighScore: boolean): string {
   return COLORS.critical;
 }
 
-function getAnimation(stage: BarStage, seconds: number): string {
-  const countdown = `progress-anim ${seconds}s linear infinite`;
+function getAnimation(
+  stage: BarStage,
+  seconds: number,
+  countdownName = "progress-anim",
+): string {
+  const countdown = `${countdownName} ${seconds}s linear infinite`;
 
   if (stage === 3) return `${BLINK_FAST}, ${countdown}`;
   if (stage === 2) return `${BLINK_SLOW}, ${countdown}`;
@@ -29,7 +33,18 @@ export default function ProgressBar() {
 
   return (
     <>
-      <div className="pg-lines"></div>
+      <div
+        key={state.round}
+        className="pg-lines"
+        style={{
+          visibility: state.isGameOver ? "hidden" : "visible",
+          animation: state.isGameOver
+            ? "none"
+            : getAnimation(barStage, state.roundSeconds, "progress-clip"),
+        }}
+      >
+        <div className="pg-stripes"></div>
+      </div>
       <div
         key={state.round}
         className="progress-bar"
