@@ -36,7 +36,7 @@ export type GameState = {
 export type GameAction =
   | { type: "increase"; random: number }
   | { type: "boost"; random: number }
-  | { type: "restart" }
+  | { type: "restart"; music?: boolean }
   | { type: "timerExpired" }
   | { type: "collectPowerUp"; powerUp: PowerUpType }
   | { type: "powerUpEnded" };
@@ -177,7 +177,7 @@ function boost(state: GameState, random: number): Update {
   return { state: next, events };
 }
 
-function restart(state: GameState): Update {
+function restart(state: GameState, music = true): Update {
   return {
     state: {
       ...state,
@@ -194,7 +194,7 @@ function restart(state: GameState): Update {
     },
     events: [
       { type: "restarted" },
-      { type: "sound", name: "bgMusic" },
+      ...(music ? [{ type: "sound", name: "bgMusic" } as const] : []),
       { type: "counterAnimation", name: "reset-shake" },
       { type: "goalChanged", direction: "reverse" },
     ],
@@ -275,7 +275,7 @@ export function reduce(state: GameState, action: GameAction): Update {
     case "boost":
       return boost(state, action.random);
     case "restart":
-      return restart(state);
+      return restart(state, action.music);
     case "timerExpired":
       return timerExpired(state);
     case "collectPowerUp":

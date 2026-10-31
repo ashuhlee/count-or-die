@@ -98,6 +98,32 @@ describe("the menu", () => {
     audioConfig.bgMusic.audio.muted = false;
   });
 
+  test("plays no game music, not even once the startup screen has gone", () => {
+    game.wait(5000);
+
+    expect(sounds()).not.toContain("bgMusic");
+  });
+
+  test("the game's music starts with the game", () => {
+    game.click("#play-btn");
+    expect(sounds()).not.toContain("bgMusic");
+
+    game.wait(COVERED);
+    expect(sounds().filter((name) => name === "bgMusic")).toHaveLength(1);
+  });
+
+  test("going back to the menu does not bring the game music back", () => {
+    game.click("#play-btn");
+    game.wait(COVERED + 600);
+    game.wait(TIME_IS_UP);
+    const before = sounds().filter((name) => name === "bgMusic").length;
+
+    game.click("#menu-btn");
+    game.wait(COVERED + 600);
+    expect(game.$("#menu-screen")).not.toBeNull();
+    expect(sounds().filter((name) => name === "bgMusic").length).toBe(before);
+  });
+
   test("does not run a game behind it", () => {
     game.wait(TIME_IS_UP * 2);
     game.press(" ");

@@ -278,6 +278,13 @@ describe("restarting", () => {
     expect(play(messy(), { type: "restart" }).state.countIncrement).toBe(2);
   });
 
+  test("can restart without starting the music", () => {
+    const { events } = play(messy(), { type: "restart", music: false });
+
+    expect(types(events)).toContain("restarted");
+    expect(has(events, { type: "sound", name: "bgMusic" })).toBe(false);
+  });
+
   test("reports it so the screen can reset too", () => {
     const { events } = play(messy(), { type: "restart" });
 

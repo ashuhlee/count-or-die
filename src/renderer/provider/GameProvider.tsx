@@ -117,7 +117,7 @@ export default function GameProvider({
         playSound("buttonClick");
         pauseSound("gameOverMusic");
         cover(() => {
-          dispatch({ type: "restart" });
+          dispatch({ type: "restart", music: false });
           bus.emit({ type: "pageReset" });
           setScreen("menu");
         });
@@ -142,8 +142,8 @@ export default function GameProvider({
   );
 
   useEffect(() => {
-    if (ready) playSound("bgMusic");
-  }, [ready]);
+    if (ready && screen === "game") playSound("bgMusic");
+  }, [ready, screen]);
 
   const value = useMemo<GameContextValue>(
     () => ({ state, barStage, loading, actions, ready, screen }),
