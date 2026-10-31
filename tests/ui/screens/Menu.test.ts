@@ -35,6 +35,7 @@ afterEach(() => {
 });
 
 const sounds = () => audio.playSound.mock.calls.map(([name]) => name);
+const stoppedSounds = () => audio.pauseSound.mock.calls.map(([name]) => name);
 
 // the loading screen needs this long to cover the menu
 const COVERED = 530;
@@ -111,6 +112,24 @@ describe("the menu with the startup screen up", () => {
   const buttonsIn = () =>
     game.$("#menu-screen").classList.contains("buttons-in");
 
+  test("keeps its song quiet until the screen has gone", async () => {
+    // the outer beforeEach drew the menu once before the screen was up
+    audio.playSound.mockClear();
+    expect(sounds()).not.toContain("menuMusic");
+
+    let hiding!: Promise<void>;
+    await act(async () => {
+      hiding = hideStartupScreen(100, 300);
+      await vi.advanceTimersByTimeAsync(100);
+    });
+    expect(sounds().filter((name) => name === "menuMusic")).toHaveLength(1);
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(300);
+      await hiding;
+    });
+  });
+
   test("brings its buttons in a set time after the screen has gone", async () => {
     expect(buttonsIn()).toBe(false);
 
@@ -140,11 +159,11 @@ describe("the menu with the startup screen up", () => {
 describe("the menu", () => {
   test("is what the app opens on, with play, report a bug and quit buttons", () => {
     expect(game.$("#menu-screen")).not.toBeNull();
-    expect(game.$$(".menu-btn").map((button) => button.textContent)).toEqual([
-      "Play game",
-      "Report a bug",
-      "Quit",
-    ]);
+    expect(
+      game
+        .$$(".menu-btn")
+        .map((button) => button.textContent.replace(/\u00a0/g, " ")),
+    ).toEqual(["Play game", "Report a bug", "Quit"]);
     expect(game.$("#game-container")).toBeNull();
   });
 
@@ -189,6 +208,51 @@ describe("the menu", () => {
     expect(audioConfig.bgMusic.audio.muted).toBe(true);
 
     audioConfig.bgMusic.audio.muted = false;
+  });
+
+  test("plays its own song, once", () => {
+    expect(sounds().filter((name) => name === "menuMusic")).toHaveLength(1);
+  });
+
+  test("stops its song the moment play is pressed", () => {
+    expect(stoppedSounds()).not.toContain("menuMusic");
+
+    game.click("#play-btn");
+    expect(stoppedSounds()).toContain("menuMusic");
+    // the game's song waits for the game
+    expect(sounds()).not.toContain("bgMusic");
+  });
+
+  test("the game's song takes over once the game has started", () => {
+    game.click("#play-btn");
+    game.wait(COVERED);
+
+    expect(stoppedSounds()).toContain("menuMusic");
+    expect(sounds()).toContain("bgMusic");
+  });
+
+  test("plays its song again after coming back from a game", () => {
+    game.click("#play-btn");
+    game.wait(COVERED + 600);
+    game.wait(TIME_IS_UP);
+
+    game.click("#menu-btn");
+    game.wait(COVERED + 600);
+    expect(sounds().filter((name) => name === "menuMusic")).toHaveLength(2);
+  });
+
+  test("the text on the buttons is made of letters that shake one after another", () => {
+    const letters = game.$$<HTMLElement>("#play-btn .pixel-btn-label > span");
+
+    expect(letters).toHaveLength("Play game".length);
+    expect(letters[0].style.getPropertyValue("--delay")).toBe("0s");
+    const delays = letters.map((letter) =>
+      parseFloat(letter.style.getPropertyValue("--delay")),
+    );
+    for (let i = 1; i < delays.length; i++) {
+      expect(delays[i]).toBeGreaterThan(delays[i - 1]);
+    }
+    expect(letters[0].style.getPropertyValue("--wave-duration")).toBe("3s");
   });
 
   test("plays no game music, not even once the startup screen has gone", () => {

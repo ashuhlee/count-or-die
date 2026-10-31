@@ -610,7 +610,8 @@ img {
 }
 .no-boost-text span,
 .try-again span,
-.tracker-value span {
+.tracker-value span,
+.menu-btn .pixel-btn-label > span {
   display: inline-block;
   animation: shake var(--wave-duration, 2s) ease infinite var(--delay);
 }
@@ -1675,6 +1676,8 @@ img {
 .menu-screen .menu-btn {
   color: #3b375f;
   text-shadow: none;
+  --shake-scale: 0.965;
+  --shake-distance: -2px;
   --btn-text-down: 0em;
   --btn-text-right: 0.07em;
   font-family: "Enter the Gungeon Small", sans-serif;
@@ -1738,7 +1741,7 @@ img {
   gap: 60px;
 }
 .menu-screen .menu-title {
-  width: 22vw;
+  width: max(26vw, 300px);
 }
 .startup-screen {
   --progress: 0;
@@ -1748,7 +1751,7 @@ img {
   z-index: 30;
   display: grid;
   place-items: center;
-  background: #171526;
+  background: #171523;
   transition: opacity 0.08s ease;
 }
 .startup-screen.hiding {

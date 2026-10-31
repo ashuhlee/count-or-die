@@ -13,7 +13,7 @@ export default function MenuTitle() {
       className="menu-title"
       active={ready}
       delay={100}
-      duration={1800}
+      duration={1700}
       shadow={true}
       pixelScale={2}
     />

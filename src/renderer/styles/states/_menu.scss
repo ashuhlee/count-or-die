@@ -37,6 +37,8 @@
   .menu-btn {
     color: #3b375f;
     text-shadow: none;
+    --shake-scale: 0.965;
+    --shake-distance: -2px;
     --btn-text-down: 0em;
     --btn-text-right: 0.07em;
     font-family: "Enter the Gungeon Small", sans-serif;

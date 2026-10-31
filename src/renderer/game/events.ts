@@ -1,5 +1,6 @@
 export type SoundName =
   | "bgMusic"
+  | "menuMusic"
   | "buttonInc"
   | "useBoost"
   | "noBoosts"

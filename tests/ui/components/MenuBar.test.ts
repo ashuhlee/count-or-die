@@ -14,6 +14,7 @@ describe("MenuBar", () => {
   beforeEach(() => {
     localStorage.clear();
     audioConfig.bgMusic.audio.muted = false;
+    audioConfig.menuMusic.audio.muted = false;
     mount(MenuBar);
   });
   afterEach(() => unmount());
@@ -30,6 +31,7 @@ describe("MenuBar", () => {
     click();
     expect(localStorage.getItem("soundState")).toBe("1");
     expect(audioConfig.bgMusic.audio.muted).toBe(true);
+    expect(audioConfig.menuMusic.audio.muted).toBe(true);
     const second = sound().getAttribute("src");
 
     click();
@@ -39,6 +41,7 @@ describe("MenuBar", () => {
     click();
     expect(localStorage.getItem("soundState")).toBe("0");
     expect(audioConfig.bgMusic.audio.muted).toBe(false);
+    expect(audioConfig.menuMusic.audio.muted).toBe(false);
     expect(sound().getAttribute("src")).toBe(first);
     expect(second).not.toBe(first);
   });

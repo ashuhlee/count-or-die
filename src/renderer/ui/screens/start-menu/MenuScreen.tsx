@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 
 import { useGame } from "../../../provider/useGame.ts";
+import Letters from "../../components/letters/Letters.tsx";
 import PixelButton from "../../components/pixel-button/PixelButton.tsx";
 import MenuBackground from "./MenuBackground.tsx";
 import MenuTitle from "./MenuTitle.tsx";
 
-export const BUTTONS_DELAY = 400;
+export const BUTTONS_DELAY = 300;
 
 const COLORS = { play: "#b0a1ff", report: "#FF85E3", quit: "#CDC8EA" };
 
@@ -43,7 +44,7 @@ export default function MenuScreen() {
           shadeRows={2.5}
           onClick={loading.mounted ? undefined : actions.play}
         >
-          Play game
+          <Letters text="Play game" step={0.2} duration={3} />
         </PixelButton>
         <PixelButton
           {...look(COLORS.report)}
@@ -52,7 +53,7 @@ export default function MenuScreen() {
           shadeRows={2.5}
           onClick={actions.reportBug}
         >
-          Report a bug
+          <Letters text="Report a bug" step={0.2} duration={3} />
         </PixelButton>
         <PixelButton
           {...look(COLORS.quit)}
@@ -61,7 +62,7 @@ export default function MenuScreen() {
           shadeRows={2.5}
           onClick={actions.quit}
         >
-          Quit
+          <Letters text="Quit" step={0.2} duration={3} />
         </PixelButton>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import type { SoundName } from "../game/events.ts";
 
 import bgMusicFile from "@assets/audio/music/the-return-of-the-8-bit-era.mp3";
+import menuMusicFile from "@assets/audio/music/lightyeartraxx-kim-lightyear-time-is-up.mp3";
 import gameOverMusicFile from "@assets/audio/sfx/game-over-music.mp3";
 
 import btnIncFxFile from "@assets/audio/sfx/button-press-1.mp3";
@@ -29,6 +30,11 @@ type AudioTrack = {
 export const audioConfig: Record<SoundName, AudioTrack> = {
   bgMusic: {
     audio: new Audio(bgMusicFile),
+    volume: 0.2,
+    loop: true,
+  },
+  menuMusic: {
+    audio: new Audio(menuMusicFile),
     volume: 0.2,
     loop: true,
   },

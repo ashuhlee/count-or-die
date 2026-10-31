@@ -69,7 +69,7 @@ export default function Game() {
             <div className="app" id="app">
               <GameScreen />
             </div>
-            <HighScore />
+            {/*<HighScore />*/}
 
             <CursorCounts />
             <PowerUps />

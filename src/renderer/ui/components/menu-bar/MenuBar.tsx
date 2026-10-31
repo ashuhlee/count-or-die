@@ -16,6 +16,7 @@ const SOUND_ICONS = [soundBtnUnmuted, soundBtnNoMusic, soundBtnMuted];
 
 function applySoundState(state: number): void {
   audioConfig.bgMusic.audio.muted = state !== 0;
+  audioConfig.menuMusic.audio.muted = state !== 0;
   toggleAudio(state >= 2);
   localStorage.setItem(SOUND_STATE_KEY, state.toString());
 }

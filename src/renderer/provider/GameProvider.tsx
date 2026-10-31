@@ -36,7 +36,6 @@ type GameProviderProps = {
   children: ReactNode;
   initialState?: GameState;
   random?: () => number;
-  // open on the menu instead of straight into a game
   startOnMenu?: boolean;
 };
 
@@ -110,6 +109,7 @@ export default function GameProvider({
 
       play() {
         playSound("buttonClick");
+        pauseSound("menuMusic");
         cover(() => setScreen("game"));
       },
 
@@ -142,7 +142,14 @@ export default function GameProvider({
   );
 
   useEffect(() => {
-    if (ready && screen === "game") playSound("bgMusic");
+    if (!ready) return;
+
+    if (screen === "menu") {
+      playSound("menuMusic");
+    } else {
+      pauseSound("menuMusic");
+      playSound("bgMusic");
+    }
   }, [ready, screen]);
 
   const value = useMemo<GameContextValue>(
