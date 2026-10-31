@@ -30,7 +30,7 @@ export default function Game() {
         scanlineIntensity={0.03}
         scanlineCount={256}
         adaptiveIntensity={0.13}
-        brightness={1}
+        brightness={1.02}
         saturation={1}
         vignetteStrength={0.02}
         curvature={0.03}

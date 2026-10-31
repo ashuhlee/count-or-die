@@ -1267,7 +1267,7 @@ img {
   rotate: -2deg;
 }
 #game-over .rainbow-txt {
-  color: hsla(0, 0%, 100%, 0.7);
+  color: hsla(0, 0%, 100%, 0.6);
   background-image: var(--rainbow-gradient-bar);
   background-clip: text;
   background-size: 100% auto;
