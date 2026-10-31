@@ -4,12 +4,12 @@ import MenuBackground from "./MenuBackground.tsx";
 
 const COLORS = { play: "#b0a1ff", report: "#FF85E3", quit: "#CDC8EA" };
 
-const FILL = "#FCEEFB";
+const FILL = "#ffffff";
 const look = (color: string) => ({
-  color: FILL,
+  color: `color-mix(in srgb, ${color} 17%, ${FILL})`,
   outline: color,
-  highlight: `color-mix(in srgb, ${color} 10%, ${FILL})`,
-  shade: `color-mix(in srgb, ${color} 30%, ${FILL})`,
+  highlight: `color-mix(in srgb, ${color} 5%, ${FILL})`,
+  shade: `color-mix(in srgb, ${color} 45%, ${FILL})`,
 });
 
 export default function MenuScreen() {
