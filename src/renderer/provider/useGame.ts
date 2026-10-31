@@ -40,6 +40,8 @@ export type GameContextValue = {
   actions: GameActions;
   ready: boolean;
   screen: Screen;
+  // the menu is showing again after a game, not for the first time
+  cameFromGame: boolean;
 };
 
 export const GameContext = createContext<GameContextValue | null>(null);

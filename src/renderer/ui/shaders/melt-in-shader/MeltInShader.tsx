@@ -177,6 +177,8 @@ type MeltInShaderProps = {
   duration?: number;
   loop?: number;
   mode?: "in" | "out";
+  // show the image as it is, without the melt
+  instant?: boolean;
   pixelScale?: number;
   shadow?: boolean;
   colors?: Partial<MeltColors>;
@@ -209,6 +211,7 @@ export default function MeltInShader({
   duration = 1600,
   loop,
   mode = "in",
+  instant = false,
   pixelScale = 1,
   shadow = true,
   colors,
@@ -229,7 +232,9 @@ export default function MeltInShader({
   const out = mode === "out";
   // already burned away when it first shows up, so it does not burn again
   const startsGone = useRef(out && active);
-  const [phase, setPhase] = useState<Phase>(out && active ? "done" : "idle");
+  const [phase, setPhase] = useState<Phase>(
+    instant || (out && active) ? "done" : "idle",
+  );
 
   const latestOnDone = useRef(onDone);
   useEffect(() => {
@@ -243,7 +248,7 @@ export default function MeltInShader({
   const paletteKey = JSON.stringify({ ...MELT_COLORS, ...colors });
 
   useEffect(() => {
-    if (!active) return;
+    if (!active || instant) return;
     if (startsGone.current) {
       return () => {
         startsGone.current = false;
@@ -501,6 +506,7 @@ export default function MeltInShader({
     fragmentSource,
     paletteKey,
     out,
+    instant,
     pixelScale,
     shadow,
     settledBrightness,

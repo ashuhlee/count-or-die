@@ -39,6 +39,7 @@ vi.mock(
         className,
         active,
         mode,
+        instant,
         colors,
         delay,
         duration,
@@ -50,6 +51,7 @@ vi.mock(
         className?: string;
         active: boolean;
         mode?: string;
+        instant?: boolean;
         colors?: Record<string, string>;
         delay?: number;
         duration?: number;
@@ -77,6 +79,7 @@ vi.mock(
           className,
           "data-melt-active": String(active),
           "data-melt-mode": mode ?? "in",
+          "data-melt-instant": String(instant ?? false),
           "data-melt-colors": JSON.stringify(colors ?? {}),
         });
       },

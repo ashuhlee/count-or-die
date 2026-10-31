@@ -289,6 +289,21 @@ describe("the menu", () => {
     expect(sounds().filter((name) => name === "menuMusic")).toHaveLength(2);
   });
 
+  test("the title only melts in when coming back from a game", () => {
+    const title = () => game.$(".menu-title").dataset.meltInstant;
+    expect(title()).toBe("true");
+
+    game.click("#play-btn");
+    game.wait(COVERED + 600);
+    game.press("w");
+    game.wait(TIME_IS_UP);
+    game.click("#menu-btn");
+    game.wait(COVERED + 600);
+
+    expect(game.$("#menu-screen")).not.toBeNull();
+    expect(title()).toBe("false");
+  });
+
   test("going back to the menu after a game leaves a fresh game to play", () => {
     game.click("#play-btn");
     game.wait(COVERED + 600);

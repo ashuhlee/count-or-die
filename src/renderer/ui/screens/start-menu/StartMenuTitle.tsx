@@ -4,7 +4,7 @@ import { useGame } from "../../../provider/useGame.ts";
 import MeltInShader from "../../shaders/melt-in-shader/MeltInShader.tsx";
 
 export default function StartMenuTitle() {
-  const { ready } = useGame();
+  const { ready, cameFromGame } = useGame();
 
   return (
     <MeltInShader
@@ -12,7 +12,8 @@ export default function StartMenuTitle() {
       alt="Count or Die"
       className="menu-title"
       active={ready}
-      delay={100}
+      instant={!cameFromGame}
+      delay={250}
       duration={1600}
       shadow={true}
       pixelScale={2}

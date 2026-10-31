@@ -37,6 +37,7 @@ type GameProviderProps = {
   initialState?: GameState;
   random?: () => number;
   startOnMenu?: boolean;
+  startedFromGame?: boolean;
 };
 
 export default function GameProvider({
@@ -44,6 +45,7 @@ export default function GameProvider({
   initialState,
   random = () => Math.random(),
   startOnMenu = false,
+  startedFromGame = false,
 }: GameProviderProps) {
   const [bus] = useState(() => createEventBus());
   const later = useTimeouts();
@@ -53,6 +55,7 @@ export default function GameProvider({
   );
 
   const [screen, setScreen] = useState<Screen>(startOnMenu ? "menu" : "game");
+  const [cameFromGame, setCameFromGame] = useState(startedFromGame);
 
   const stateRef = useRef(state);
 
@@ -121,6 +124,7 @@ export default function GameProvider({
           dispatch({ type: "restart", music: false });
           bus.emit({ type: "pageReset" });
           setScreen("menu");
+          setCameFromGame(true);
         });
       },
 
@@ -154,8 +158,8 @@ export default function GameProvider({
   }, [ready, screen]);
 
   const value = useMemo<GameContextValue>(
-    () => ({ state, barStage, loading, actions, ready, screen }),
-    [state, barStage, loading, actions, ready, screen],
+    () => ({ state, barStage, loading, actions, ready, screen, cameFromGame }),
+    [state, barStage, loading, actions, ready, screen, cameFromGame],
   );
 
   return (
