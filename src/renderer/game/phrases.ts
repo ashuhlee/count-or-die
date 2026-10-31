@@ -1,6 +1,7 @@
 const PHRASES_REGULAR = [
   "you died lolz",
   "lol loser",
+  "lol. loser.",
   "aw, you died",
   "you died :(",
   "better luck next life..",
@@ -10,6 +11,7 @@ const PHRASES_REGULAR = [
   "you are dead",
   "another try maybe?",
   "give it another go!",
+  "what a flop!",
 ];
 
 const PHRASES_NEW_SCORE = [
