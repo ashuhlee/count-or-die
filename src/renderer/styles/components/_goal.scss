@@ -21,6 +21,20 @@
       font-family: "Silkscreen", monospace;
       font-size: 18px;
       font-weight: bold;
+
+      span {
+        position: relative;
+        display: inline-block;
+        animation: wavy-text-top var(--wave-duration, 2.5s)
+          cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--wave-delay);
+      }
+
+      &.fade-up-text span {
+        animation:
+          fade-in-up 0.2s ease-out forwards var(--delay),
+          wavy-text-top var(--wave-duration, 2.5s)
+            cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--wave-delay);
+      }
     }
   }
 

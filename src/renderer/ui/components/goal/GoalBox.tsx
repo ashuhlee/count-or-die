@@ -3,6 +3,8 @@ import { useState, type CSSProperties } from "react";
 import { useGame } from "../../../provider/useGame.ts";
 import { useGameEvent } from "../../../provider/useGameEvent.ts";
 
+const WAVE = { step: 0.1, height: 3, duration: 2 };
+
 const THEME_COLORS = ["#ff80ea", "#A193FF", "#9ad9ff", "#BEB9DC"];
 
 type Theme = {
@@ -65,29 +67,28 @@ export default function GoalBox() {
       id="next-goal"
       style={{ borderTop: `3px solid ${theme.border}` }}
     >
-      <span className="goal-text fade-up-text">
-        {letters
-          ? text.split("").map((char, index) => {
-              const delayIndex =
-                letters.direction === "reverse"
-                  ? text.length - 1 - index
-                  : index;
+      <span className={`goal-text${letters ? " fade-up-text" : ""}`}>
+        {text.split("").map((char, index) => {
+          const delayIndex =
+            letters?.direction === "reverse" ? text.length - 1 - index : index;
 
-              return (
-                <span
-                  key={`${letters.id}-${index}`}
-                  style={
-                    {
-                      "--delay": `${delayIndex * 0.05}s`,
-                      color: theme.letterColor,
-                    } as CSSProperties
-                  }
-                >
-                  {char === " " ? " " : char}
-                </span>
-              );
-            })
-          : text}
+          return (
+            <span
+              key={`${letters?.id ?? 0}-${index}`}
+              style={
+                {
+                  "--delay": `${delayIndex * 0.05}s`,
+                  "--wave-delay": `${index * WAVE.step}s`,
+                  "--wave-height": `${WAVE.height}px`,
+                  "--wave-duration": `${WAVE.duration}s`,
+                  color: theme.letterColor,
+                } as CSSProperties
+              }
+            >
+              {char === " " ? "\u00a0" : char}
+            </span>
+          );
+        })}
       </span>
     </div>
   );

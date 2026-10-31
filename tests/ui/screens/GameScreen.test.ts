@@ -43,7 +43,9 @@ describe("a fresh game", () => {
 
     expect(game.$(".game-name").textContent).toBe("count or die");
     expect(game.counter()).toBe("00");
-    expect(game.$("#next-goal").textContent).toBe("next: 30");
+    expect(game.$("#next-goal").textContent?.replace(/\u00a0/g, " ")).toBe(
+      "next: 30",
+    );
     expect(usedHearts()).toEqual([false, false, false, false]);
     expect(game.$("#no-boosts").style.display).toBe("none");
     expect(game.$("#app-ver").textContent).toContain("0.0.0-test");
@@ -334,6 +336,26 @@ describe("goals", () => {
     expect(letters[0].style.getPropertyValue("--delay")).toBe("0s");
     expect(letters[1].style.getPropertyValue("--delay")).toBe("0.05s");
     expect(sounds()).toContain("goalReached");
+  });
+
+  test("the goal text waves from the start, one letter after another", () => {
+    game = renderGame();
+
+    const letters = game.$$("#next-goal .goal-text > span");
+    expect(letters).toHaveLength("next: 30".length);
+    expect(letters[0].style.getPropertyValue("--wave-delay")).toBe("0s");
+    expect(letters[1].style.getPropertyValue("--wave-delay")).toBe("0.1s");
+    expect(letters[0].style.getPropertyValue("--wave-height")).toBe("3px");
+    expect(game.$(".goal-text").classList.contains("fade-up-text")).toBe(false);
+  });
+
+  test("a new goal's letters keep waving as they come in", () => {
+    game = renderGame({ state: nearGoal });
+    game.click("#increase-img");
+
+    expect(game.$(".goal-text").classList.contains("fade-up-text")).toBe(true);
+    const letters = game.$$("#next-goal .goal-text > span");
+    expect(letters[1].style.getPropertyValue("--wave-delay")).toBe("0.1s");
   });
 
   test("the goal box swings, and swings again for the next goal", () => {

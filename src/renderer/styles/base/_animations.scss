@@ -45,10 +45,22 @@
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(calc(var(--wave-height, 10px) * -1));
   }
   100% {
     transform: translateY(0);
+  }
+}
+
+@keyframes wavy-text-top {
+  0% {
+    top: 0;
+  }
+  50% {
+    top: calc(var(--wave-height, 10px) * -1);
+  }
+  100% {
+    top: 0;
   }
 }
 

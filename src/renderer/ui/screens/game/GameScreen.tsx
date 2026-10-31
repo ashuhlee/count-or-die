@@ -73,7 +73,6 @@ export default function GameScreen() {
       </div>
 
       <div className="buttons">
-        {/* boost button */}
         <div id="decrease-button">
           <PressButton
             button="decrease"
@@ -84,7 +83,6 @@ export default function GameScreen() {
             onClick={(event) => actions.boost(pointerOf(event))}
           />
         </div>
-        {/* increment button */}
         <div id="increase-button">
           <PressButton
             button="increase"

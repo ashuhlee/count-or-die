@@ -15,6 +15,7 @@ import quitBtnPng from "@assets/ui/buttons/quit-btn.png";
 
 import { playSound } from "../../../utils/sounds.ts";
 import { useGame } from "../../../provider/useGame.ts";
+import Letters from "../../components/letters/Letters.tsx";
 import BackToMenu from "./BackToMenu.tsx";
 import MeltInShader from "../../shaders/melt-in-shader/MeltInShader.tsx";
 import GameOverBackground, { GAME_OVER_HUE } from "./GameOverBackground.tsx";
@@ -74,12 +75,14 @@ export default function GameOver() {
           alt="game over text"
           className="go-title"
           active={view.visible}
-          delay={150}
-          duration={1650}
+          delay={200}
+          duration={1700}
         />
 
         <h2 className="final-score" id="final-score">
-          <span className={`score-text${rainbowClass}`}>{view.scoreText}</span>
+          <span className={`score-text${rainbowClass}`}>
+            <Letters text={view.scoreText} step={0.1} height={4} duration={2} />
+          </span>
         </h2>
 
         <h2 className="play-again">

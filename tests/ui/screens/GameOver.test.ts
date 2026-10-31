@@ -157,7 +157,11 @@ describe("running out of time", () => {
     fireAnimationEnd(game.$("#red-flash"));
 
     expect(game.$(".go-text-random").textContent).toBe("you died lolz");
-    expect(game.$(".score-text").textContent).toBe("Score: 01");
+    // every letter is its own span, and the space between words is a hard one
+    expect(game.$(".score-text").textContent?.replace(/\u00a0/g, " ")).toBe(
+      "Score: 01",
+    );
+    expect(game.$$(".score-text span")).toHaveLength("Score: 01".length);
     expect(game.$("#death-tracker").textContent).toBe("1");
     expect(localStorage.getItem("deathCount")).toBe("1");
   });
