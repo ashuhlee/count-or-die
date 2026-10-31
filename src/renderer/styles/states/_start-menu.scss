@@ -1,6 +1,8 @@
-@use "../base/globals";
+@use "../base/swirl-background";
 
 .menu-screen {
+  @include swirl-background.swirl-background;
+
   position: fixed;
   inset: 0;
   z-index: 2;
@@ -8,24 +10,26 @@
   align-items: center;
   justify-content: center;
 
-  .menu-bg {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
+  --saturation-start: 1.1;
 
-    &::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      background: #ffbff0 url("#{globals.$body-bg-image}") repeat 0 center;
-      background-size: 128px auto;
-      animation: slide 3s linear infinite;
-      pointer-events: none;
-    }
-    .pixel-swirl-shader {
-      opacity: 0.2;
-    }
+  &::before {
+    animation:
+      slide 4s linear infinite reverse,
+      menu-tile-in var(--hue-duration) cubic-bezier(0.215, 0.61, 0.355, 1)
+        paused;
+  }
+
+  .go-background {
+    animation: menu-swirl-in var(--hue-duration)
+      cubic-bezier(0.215, 0.61, 0.355, 1) paused;
+  }
+
+  &.hue-in::before {
+    animation-play-state: running, running;
+  }
+
+  &.hue-in .go-background {
+    animation-play-state: running;
   }
 
   .menu-buttons {
@@ -35,7 +39,7 @@
   }
 
   .menu-btn {
-    color: #3b375f;
+    color: #59517d;
     text-shadow: none;
     --shake-scale: 0.965;
     --shake-distance: -2px;

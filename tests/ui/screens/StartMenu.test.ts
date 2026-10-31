@@ -221,6 +221,30 @@ describe("the menu", () => {
     );
   });
 
+  test("the github button opens the project page in the app's browser", () => {
+    window.electron = {
+      setDiscordStatus: vi.fn(),
+      quitApp: vi.fn(),
+      openGithub: vi.fn(),
+      showGpuWarning: vi.fn(),
+    } as unknown as Window["electron"];
+    game.click("#github-btn");
+
+    expect(sounds()).toContain("buttonClick");
+    expect(window.electron.openGithub).toHaveBeenCalledTimes(1);
+  });
+
+  test("the github button opens a new tab in the browser", () => {
+    const open = vi.spyOn(window, "open").mockImplementation(() => null);
+    game.click("#github-btn");
+
+    expect(open).toHaveBeenCalledWith(
+      "https://github.com/ashuhlee/count-or-die",
+      "_blank",
+      "noopener",
+    );
+  });
+
   test("quit closes the app after a moment", () => {
     window.electron = {
       setDiscordStatus: vi.fn(),
@@ -240,6 +264,29 @@ describe("the menu", () => {
     game.click("#quit-game-btn");
 
     expect(alert).toHaveBeenCalledWith("Thank you for playing!");
+  });
+
+  test("the home button is only there during a game", () => {
+    expect(game.$("#home-btn")).toBeNull();
+
+    game.click("#play-btn");
+    game.wait(COVERED + 600);
+    expect(game.$("#home-btn")).not.toBeNull();
+  });
+
+  test("the home button leaves a game in progress for the menu", () => {
+    game.click("#play-btn");
+    game.wait(COVERED + 600);
+    game.press("w");
+    audio.pauseSound.mockClear();
+
+    game.click("#home-btn");
+    expect(stoppedSounds()).toContain("bgMusic");
+    game.wait(COVERED);
+
+    expect(game.$("#menu-screen")).not.toBeNull();
+    expect(game.$("#game-container")).toBeNull();
+    expect(sounds().filter((name) => name === "menuMusic")).toHaveLength(2);
   });
 
   test("going back to the menu after a game leaves a fresh game to play", () => {

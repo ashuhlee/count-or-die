@@ -13,10 +13,11 @@
 @use "components/power-ups";
 @use "components/pixel-panel";
 @use "components/pixel-button";
+@use "components/skull-floor";
+@use "components/fps-counter";
 
 @use "states/game-over";
 @use "states/loading";
-@use "states/menu";
-@use "states/menu-background";
-@use "states/menu-title";
+@use "states/start-menu";
+@use "states/start-menu-title";
 @use "states/startup";

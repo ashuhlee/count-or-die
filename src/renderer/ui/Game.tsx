@@ -11,6 +11,7 @@ import { useGame } from "../provider/useGame.ts";
 import { useGameEvent } from "../provider/useGameEvent.ts";
 import CursorCounts from "./components/cursor-counts/CursorCounts.tsx";
 import HighScore from "./components/high-score/HighScore.tsx";
+import FpsCounter from "./components/fps-counter/FpsCounter.tsx";
 import MenuBar from "./components/menu-bar/MenuBar.tsx";
 import PowerUps from "./components/power-ups/PowerUps.tsx";
 import SmokePopups from "./components/smoke/SmokePopups.tsx";
@@ -19,11 +20,11 @@ import LoadingScreen from "./overlays/loading/LoadingScreen.tsx";
 import GameOver from "./screens/game-over/GameOver.tsx";
 import RedFlash from "./screens/game-over/RedFlash.tsx";
 import GameScreen from "./screens/game/GameScreen.tsx";
-import MenuScreen from "./screens/start-menu/MenuScreen.tsx";
+import StartMenuScreen from "./screens/start-menu/StartMenuScreen.tsx";
 
 export default function Game() {
   useKeyboardControls();
-  const { screen, ready } = useGame();
+  const { state, screen, ready, actions, loading } = useGame();
   const [page, setPage] = useState(0);
   useGameEvent("pageReset", () => setPage((current) => current + 1));
 
@@ -56,10 +57,16 @@ export default function Game() {
 
         <MenuBar
           entrance={screen === "menu" ? (ready ? "play" : "wait") : undefined}
+          inGame={screen === "game"}
+          onHome={
+            screen === "game"
+              ? () => loading.mounted || actions.backToMenu()
+              : undefined
+          }
         />
 
         {screen === "menu" ? (
-          <MenuScreen />
+          <StartMenuScreen />
         ) : (
           <>
             <SmokePopups />
@@ -79,6 +86,8 @@ export default function Game() {
           {__APP_VERSION__}-beta
         </p>
       </Fragment>
+      {/* on the menu and in the game, but not on the game over screen */}
+      {(screen === "menu" || !state.isGameOver) && <FpsCounter />}
       <LoadingScreen />
     </>
   );

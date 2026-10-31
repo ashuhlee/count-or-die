@@ -123,6 +123,22 @@ img {
     filter: hue-rotate(0deg);
   }
 }
+@keyframes menu-tile-in {
+  from {
+    filter: hue-rotate(var(--hue-start)) saturate(var(--saturation-start));
+  }
+  to {
+    filter: hue-rotate(0deg) saturate(1);
+  }
+}
+@keyframes menu-swirl-in {
+  from {
+    filter: hue-rotate(30deg) saturate(var(--saturation-start));
+  }
+  to {
+    filter: hue-rotate(30deg) saturate(1);
+  }
+}
 @keyframes gradient {
   0% {
     color: rgba(0, 0, 0, 0);
@@ -417,6 +433,39 @@ img {
     transform: translate3d(0, 0, 0) rotate(-10deg);
   }
 }
+.bounce-in-down-rotated {
+  animation: bounceInDown-rotated-settle 0.9s both;
+}
+@keyframes bounceInDown-rotated-settle {
+  from,
+  40%,
+  55%,
+  70%,
+  85%,
+  to {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -2000px, 0) scaleY(3) rotate(-10deg);
+  }
+  40% {
+    opacity: 1;
+    transform: translate3d(0, 25px, 0) scaleY(0.7) rotate(-10deg);
+  }
+  55% {
+    transform: translate3d(0, -14px, 0) scaleY(0.95) rotate(-10deg);
+  }
+  70% {
+    transform: translate3d(0, 8px, 0) scaleY(0.985) rotate(-10deg);
+  }
+  85% {
+    transform: translate3d(0, -3px, 0) scaleY(0.995) rotate(-10deg);
+  }
+  to {
+    transform: translate3d(0, 0, 0) rotate(-10deg);
+  }
+}
 @keyframes float-up {
   0% {
     opacity: 0.4;
@@ -679,6 +728,10 @@ img {
   gap: 20px;
   justify-items: end;
   filter: drop-shadow(0px 4px 0px var(--shadow-pink-005));
+}
+.controls.left {
+  right: auto;
+  left: 30px;
 }
 .controls .round-btn {
   position: relative;
@@ -1195,6 +1248,30 @@ img {
       var(--px) no-repeat,
     var(--btn-fill);
 }
+.skull-floor {
+  transform: rotate(-8deg);
+  position: fixed;
+  width: 76px;
+  height: 76px;
+  bottom: -5px;
+  left: 18vw;
+  z-index: -1;
+  image-rendering: auto;
+}
+.fps-counter {
+  position: fixed;
+  top: 6px;
+  left: 8px;
+  z-index: 6;
+  margin: 0;
+  padding: 4px;
+  font-family: "Silkscreen", sans-serif;
+  font-size: 16px;
+  letter-spacing: -1px;
+  color: #fff;
+  opacity: 1;
+  pointer-events: none;
+}
 #game-over {
   --mask-size: 100% 200%;
   pointer-events: none;
@@ -1440,16 +1517,6 @@ img {
 #game-over .ghost canvas {
   image-rendering: auto;
 }
-#game-over .skull-floor {
-  transform: rotate(-8deg);
-  position: fixed;
-  width: 76px;
-  height: 76px;
-  bottom: -5px;
-  left: 18vw;
-  z-index: -1;
-  image-rendering: auto;
-}
 #game-over .bottom-section {
   place-items: center;
 }
@@ -1642,6 +1709,24 @@ img {
     clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
   }
 }
+.menu-screen .go-background {
+  position: absolute;
+  inset: 0;
+  z-index: -11;
+  mix-blend-mode: overlay;
+  opacity: 0.3;
+  filter: hue-rotate(30deg);
+}
+.menu-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -12;
+  background: url("../assets/ui/textures/tile-go.png") repeat 0 center;
+  background-size: 128px auto;
+  animation: slide 4s linear infinite reverse;
+  pointer-events: none;
+}
 .menu-screen {
   position: fixed;
   inset: 0;
@@ -1649,24 +1734,22 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
+  --saturation-start: 1.1;
 }
-.menu-screen .menu-bg {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
+.menu-screen::before {
+  animation:
+    slide 4s linear infinite reverse,
+    menu-tile-in var(--hue-duration) cubic-bezier(0.215, 0.61, 0.355, 1) paused;
 }
-.menu-screen .menu-bg::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: #ffbff0 url("../assets/ui/textures/tile-2.png") repeat 0 center;
-  background-size: 128px auto;
-  animation: slide 3s linear infinite;
-  pointer-events: none;
+.menu-screen .go-background {
+  animation: menu-swirl-in var(--hue-duration)
+    cubic-bezier(0.215, 0.61, 0.355, 1) paused;
 }
-.menu-screen .menu-bg .pixel-swirl-shader {
-  opacity: 0.2;
+.menu-screen.hue-in::before {
+  animation-play-state: running, running;
+}
+.menu-screen.hue-in .go-background {
+  animation-play-state: running;
 }
 .menu-screen .menu-buttons {
   display: flex;
@@ -1674,7 +1757,7 @@ img {
   gap: 20px;
 }
 .menu-screen .menu-btn {
-  color: #3b375f;
+  color: #59517d;
   text-shadow: none;
   --shake-scale: 0.965;
   --shake-distance: -2px;
@@ -1721,20 +1804,6 @@ img {
 }
 .menu-screen ~ .app-ver {
   z-index: 3;
-}
-.menu-screen .menu-bg {
-  background: #ffa4e9;
-}
-.menu-screen .menu-bg::before {
-  --stripe-period: 60px;
-  background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' shape-rendering='crispEdges'><rect x='0' y='0' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='30' y='0' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='60' y='0' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='-3' y='3' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='27' y='3' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='57' y='3' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='-6' y='6' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='24' y='6' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='54' y='6' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='-9' y='9' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='21' y='9' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='51' y='9' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='-12' y='12' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='18' y='12' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='48' y='12' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='-15' y='15' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='15' y='15' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='45' y='15' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='-18' y='18' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='12' y='18' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='42' y='18' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='-21' y='21' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='9' y='21' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='39' y='21' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='-24' y='24' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='6' y='24' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='36' y='24' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='-27' y='27' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='3' y='27' width='15' height='3' fill='white' fill-opacity='0.09'/><rect x='33' y='27' width='15' height='3' fill='white' fill-opacity='0.09'/></svg>");
-  background-size: 60px 60px;
-  image-rendering: pixelated;
-  mix-blend-mode: overlay;
-  animation: slide-stripes 3s linear infinite;
-}
-.menu-screen .menu-bg .pixel-swirl-shader {
-  opacity: 0;
 }
 .menu-screen {
   flex-direction: column;

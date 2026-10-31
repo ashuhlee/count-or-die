@@ -1,24 +1,28 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 
 import { useGame } from "../../../provider/useGame.ts";
 import Letters from "../../components/letters/Letters.tsx";
+import SkullFloor from "../../components/skull-floor/SkullFloor.tsx";
 import PixelButton from "../../components/pixel-button/PixelButton.tsx";
-import MenuBackground from "./MenuBackground.tsx";
-import MenuTitle from "./MenuTitle.tsx";
+import GameOverBackground, {
+  GAME_OVER_HUE,
+} from "../game-over/GameOverBackground.tsx";
+import StartMenuTitle from "./StartMenuTitle.tsx";
 
 export const BUTTONS_DELAY = 300;
+const HUE_DURATION = 1000;
 
 const COLORS = { play: "#b0a1ff", report: "#FF85E3", quit: "#CDC8EA" };
 
 const FILL = "#ffffff";
 const look = (color: string) => ({
-  color: `color-mix(in srgb, ${color} 17%, ${FILL})`,
+  color: `color-mix(in srgb, ${color} 15%, ${FILL})`,
   outline: color,
   highlight: `color-mix(in srgb, ${color} 5%, ${FILL})`,
-  shade: `color-mix(in srgb, ${color} 45%, ${FILL})`,
+  shade: `color-mix(in srgb, ${color} 50%, ${FILL})`,
 });
 
-export default function MenuScreen() {
+export default function StartMenuScreen() {
   const { actions, loading, ready } = useGame();
 
   const [buttonsIn, setButtonsIn] = useState(false);
@@ -31,11 +35,22 @@ export default function MenuScreen() {
 
   return (
     <div
-      className={`menu-screen${buttonsIn ? " buttons-in" : ""}`}
+      className={`menu-screen${ready ? " hue-in" : ""}${buttonsIn ? " buttons-in" : ""}`}
       id="menu-screen"
+      style={
+        {
+          "--hue-start": `${GAME_OVER_HUE.start}deg`,
+          "--hue-duration": `${HUE_DURATION}ms`,
+        } as CSSProperties
+      }
     >
-      <MenuBackground />
-      <MenuTitle />
+      <GameOverBackground
+        paused={false}
+        visible={ready}
+        hueDuration={HUE_DURATION}
+      />
+      <SkullFloor entrance={ready ? "play" : "wait"} />
+      <StartMenuTitle />
       <div className="menu-buttons">
         <PixelButton
           {...look(COLORS.play)}
