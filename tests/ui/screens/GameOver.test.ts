@@ -235,6 +235,15 @@ describe("the game over buttons", () => {
     game = renderGame({ state: { isGameOver: true } });
   });
 
+  test("the home icon goes to the menu behind the loading screen", () => {
+    game.click("#game-over-home-btn");
+
+    expect(sounds()).toContain("buttonClick");
+    expect(game.$("#menu-screen")).toBeNull();
+    game.wait(600);
+    expect(game.$("#menu-screen")).not.toBeNull();
+  });
+
   test("quit closes the app after a moment", () => {
     fakeElectron();
     game.click("#quit-btn");

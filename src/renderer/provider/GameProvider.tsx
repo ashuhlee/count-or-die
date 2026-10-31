@@ -116,6 +116,7 @@ export default function GameProvider({
       backToMenu() {
         playSound("buttonClick");
         pauseSound("gameOverMusic");
+        pauseSound("bgMusic");
         cover(() => {
           dispatch({ type: "restart", music: false });
           bus.emit({ type: "pageReset" });

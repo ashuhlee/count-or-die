@@ -5,8 +5,8 @@ import gameOverGif from "@assets/ui/deco/game_over.gif";
 import questionPng from "@assets/ui/deco/question.png";
 import exclamationPng from "@assets/ui/deco/exclamation.png";
 
+import homeBtnSvg from "@assets/ui/svg/home-button.svg";
 import ghostPng from "@assets/ui/deco/ghost.gif";
-import skullFloor from "@assets/ui/deco/skull_floor.png";
 import skullTracker from "@assets/ui/deco/skull_grey.svg";
 import starTracker from "@assets/ui/deco/star_grey.svg";
 import trophyTracker from "@assets/ui/deco/trophy_grey.svg";
@@ -17,6 +17,8 @@ import quitBtnPng from "@assets/ui/buttons/quit-btn.png";
 
 import { useGame } from "../../../provider/useGame.ts";
 import { formatCounter } from "../../../utils/formatCounter.ts";
+import RoundButton from "../../components/round-button/RoundButton.tsx";
+import SkullFloor from "../../components/skull-floor/SkullFloor.tsx";
 import BulgeFilter from "../../components/bulge/BulgeFilter.tsx";
 import Letters from "../../components/letters/Letters.tsx";
 import PixelPanel from "../../components/pixel-panel/PixelPanel.tsx";
@@ -52,7 +54,7 @@ const GHOST_COLORS: MeltColors = {
 };
 
 export default function GameOver() {
-  const { state, actions } = useGame();
+  const { state, actions, loading } = useGame();
 
   const view = useGameOverView();
 
@@ -165,7 +167,7 @@ export default function GameOver() {
         <div className="bg"></div>
       </div>
       <div className="skull-area">
-        <img src={skullFloor} alt="skull" className="skull-floor" />
+        <SkullFloor />
       </div>
       <div className="tombstone-area">
         <div className="ghost">

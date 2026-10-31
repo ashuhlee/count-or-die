@@ -4,10 +4,12 @@ import soundBtnMuted from "@assets/ui/svg/sound-button-muted.svg";
 import soundBtnNoMusic from "@assets/ui/svg/sound-button-no_music.svg";
 import soundBtnUnmuted from "@assets/ui/svg/sound-button-reg.svg";
 import optionsBtnSvg from "@assets/ui/svg/options-button.svg";
-import roundBtnPurple from "@assets/ui/buttons/round-btn-purple.png";
-import roundBtnGrey from "@assets/ui/buttons/round-btn-grey.png";
+import homeBtnSvg from "@assets/ui/svg/home-button.svg";
+import githubBtnSvg from "@assets/ui/svg/github-button.svg";
 
 import { audioConfig, toggleAudio } from "../../../utils/sounds.ts";
+import { openGithub } from "../../../utils/openGithub.ts";
+import RoundButton from "../round-button/RoundButton.tsx";
 
 const SOUND_STATE_KEY = "soundState";
 
@@ -27,9 +29,14 @@ function readSavedState(): number {
 }
 
 const ENTRANCE = { delay: 0, step: 0.14 };
-type MenuBarProps = { entrance?: "wait" | "play" };
+type MenuBarProps = {
+  entrance?: "wait" | "play";
+  onHome?: () => void;
+  // the settings menu is not ready for the game page yet
+  inGame?: boolean;
+};
 
-export default function MenuBar({ entrance }: MenuBarProps) {
+export default function MenuBar({ entrance, onHome, inGame }: MenuBarProps) {
   const [soundState, setSoundState] = useState(readSavedState);
 
   // restore saved audio settings
@@ -46,7 +53,7 @@ export default function MenuBar({ entrance }: MenuBarProps) {
   }
 
   const entering = (index: number) => ({
-    className: `round-btn${entrance ? " bounce-in-right" : ""}`,
+    className: entrance ? "bounce-in-right" : undefined,
     style: entrance
       ? ({
           animationDelay: `${ENTRANCE.delay + index * ENTRANCE.step}s`,
@@ -57,29 +64,46 @@ export default function MenuBar({ entrance }: MenuBarProps) {
 
   return (
     <div className="controls">
-      <button
-        type="button"
-        {...entering(1)}
-        onClick={() =>
-          alert("Oops! The settings menu is not available in the beta.")
-        }
-      >
-        <img className="round-btn-face" alt="" src={roundBtnPurple} />
-        <img
-          className="round-btn-icon"
-          alt="options icon"
-          src={optionsBtnSvg}
+      {onHome && (
+        <RoundButton
+          {...entering(2)}
+          variant={5}
+          icon={homeBtnSvg}
+          iconAlt="home icon"
+          id="home-btn"
+          onClick={onHome}
         />
-      </button>
-      <button type="button" {...entering(0)} onClick={onSoundClick}>
-        <img className="round-btn-face" alt="" src={roundBtnGrey} />
-        <img
-          id="soundBtn"
-          className="round-btn-icon"
-          alt="sound icon"
-          src={SOUND_ICONS[soundState] ?? soundBtnMuted}
+      )}
+      {!inGame && (
+        <RoundButton
+          {...entering(1)}
+          variant={5}
+          icon={optionsBtnSvg}
+          iconAlt="options icon"
+          onClick={() =>
+            alert("Oops! The settings menu is not available in the beta.")
+          }
         />
-      </button>
+      )}
+      <RoundButton
+        {...entering(0)}
+        variant={soundState >= 2 ? 4 : 5}
+        icon={SOUND_ICONS[soundState] ?? soundBtnMuted}
+        iconAlt="sound icon"
+        iconId="soundBtn"
+        onClick={onSoundClick}
+      />
+      {!inGame && (
+        <RoundButton
+          {...entering(2)}
+          variant={5}
+          icon={githubBtnSvg}
+          iconAlt="github icon"
+          iconSize={30}
+          id="github-btn"
+          onClick={openGithub}
+        />
+      )}
     </div>
   );
 }

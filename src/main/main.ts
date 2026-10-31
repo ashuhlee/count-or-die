@@ -40,6 +40,12 @@ ipcMain.on("bug-report", () => {
   void shell.openExternal(BUG_REPORT_URL);
 });
 
+const GITHUB_URL = "https://github.com/ashuhlee/count-or-die";
+
+ipcMain.on("open-github", () => {
+  void shell.openExternal(GITHUB_URL);
+});
+
 ipcMain.handle("gpu:warning", async () => {
   return dialog.showMessageBox({
     icon: iconPath,
