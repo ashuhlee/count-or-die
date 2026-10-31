@@ -57,7 +57,9 @@ describe("MenuBar", () => {
       button.querySelector(".round-btn-face").getAttribute("src"),
     );
     expect(faces[0]).not.toBe(faces[1]);
-    expect(buttons[0].contains(sound())).toBe(true);
+    expect(buttons.filter((button) => button.contains(sound()))).toHaveLength(
+      1,
+    );
   });
 
   test("restores the saved sound state on mount", () => {

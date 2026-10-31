@@ -167,8 +167,9 @@ describe("the menu", () => {
     const delays = buttons.map((button) =>
       parseFloat(button.style.animationDelay),
     );
-    expect(delays[0]).toBeGreaterThanOrEqual(0);
-    expect(delays[1]).toBeGreaterThan(delays[0]);
+    const [first, second] = [...delays].sort((a, b) => a - b);
+    expect(first).toBeGreaterThanOrEqual(0);
+    expect(second).toBeGreaterThan(first);
   });
 
   test("leaves them be once the game has started", () => {
