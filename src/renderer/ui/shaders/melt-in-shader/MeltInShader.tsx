@@ -366,6 +366,15 @@ export default function MeltInShader({
       image.naturalWidth / (image.clientWidth || image.naturalWidth);
 
     const draw = () => {
+      try {
+        drawFrame();
+      } catch (error) {
+        console.error("the melt could not draw, showing the picture", error);
+        setPhase("done");
+      }
+    };
+
+    const drawFrame = () => {
       const elapsed = performance.now() - started;
       const progress = Math.min(elapsed / duration, 1);
 

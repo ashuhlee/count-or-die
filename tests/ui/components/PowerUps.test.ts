@@ -354,6 +354,33 @@ describe("boost power-ups", () => {
     expect(art?.style.opacity).toBe("1");
   });
 
+  test("a melt that never finishes cannot leave a heart hidden", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    (globalThis as { __meltStuck?: boolean }).__meltStuck = true;
+    try {
+      game = renderGame({ state: { boostsAvailable: 3 } });
+      spawn(EXTRA_BOOST, 0, 0, 0);
+      game.click(".power-up-img");
+      game.wait(0);
+
+      game.wait(1000);
+      expect(hearts()[3].classList.contains("heart-restore")).toBe(true);
+      expect(warn).not.toHaveBeenCalled();
+
+      game.wait(10000);
+      expect(hearts()[3].classList.contains("heart-restore")).toBe(false);
+      expect(hearts()[3].querySelector(".heart-melt")).toBeNull();
+      expect(
+        hearts()[3].querySelector<HTMLElement>(".heart-art")?.style.opacity,
+      ).toBe("1");
+      expect(warn).toHaveBeenCalledTimes(1);
+      expect(String(warn.mock.calls[0][0])).toContain("heart 4");
+    } finally {
+      delete (globalThis as { __meltStuck?: boolean }).__meltStuck;
+      warn.mockRestore();
+    }
+  });
+
   test("a heart used while it is still melting in goes at once", () => {
     game = renderGame({ state: { boostsAvailable: 3 } });
     spawn(EXTRA_BOOST, 0, 0, 0);

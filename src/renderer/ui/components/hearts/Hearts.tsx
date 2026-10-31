@@ -21,7 +21,6 @@ export default function Hearts() {
   const { state } = useGame();
   const { slots, slotRef, finishRestoring } = useHeartSlots();
 
-  // the "no boosts left!" text flashes when a boost is tried with none left
   const [noBoostsRef, flashNoBoosts] =
     useReplayAnimation<HTMLHeadingElement>("no-boosts-flash");
   useGameEvent("noBoostsFlash", flashNoBoosts);

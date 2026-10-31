@@ -62,6 +62,7 @@ vi.mock(
         });
         useEffect(() => {
           if (!active || mode === "out") return;
+          if ((globalThis as { __meltStuck?: boolean }).__meltStuck) return;
           const timer = setTimeout(
             () => latestOnDone.current?.(),
             (delay ?? 0) + (duration ?? 1600),

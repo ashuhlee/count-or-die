@@ -6,7 +6,7 @@ import { useGame } from "../../../provider/useGame.ts";
 import { useGameEvent } from "../../../provider/useGameEvent.ts";
 
 // how long between each heart coming back from a power-up
-const RESTORE_STAGGER = 150;
+const RESTORE_STAGGER = 100;
 
 type Slots = { used: boolean[]; restoring: boolean[] };
 
