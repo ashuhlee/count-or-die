@@ -24,6 +24,7 @@ describe("PixelPanel", () => {
     expect(element.style.getPropertyValue("--panel-accent")).toBe("");
     expect(element.style.getPropertyValue("--panel-dot-opacity")).toBe("");
     expect(element.style.getPropertyValue("--panel-shade")).toBe("");
+    expect(element.style.getPropertyValue("--panel-shadow-height")).toBe("");
   });
 
   test("the dots and the inner shadow take their own opacity", () => {
@@ -36,6 +37,11 @@ describe("PixelPanel", () => {
     const element = panel({ accent: "#bcbcd6" });
     expect(element.style.getPropertyValue("--panel-border")).toBe("#bfb3ff");
     expect(element.style.getPropertyValue("--panel-accent")).toBe("#bcbcd6");
+  });
+
+  test("the shadow's height is a share of the panel's height", () => {
+    const element = panel({ shadowHeight: 0.25 });
+    expect(element.style.getPropertyValue("--panel-shadow-height")).toBe("25%");
   });
 
   test("an opacity of 0 is honoured, and other props pass through", () => {

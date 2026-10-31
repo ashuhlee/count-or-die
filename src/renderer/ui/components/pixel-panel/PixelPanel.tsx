@@ -12,6 +12,9 @@ type PixelPanelProps<T extends ElementType> = {
   accent?: string;
   dotOpacity?: number;
   shadowOpacity?: number;
+  // 0 to 1, how tall the shadow along the bottom is, as a share of the
+  // panel's height
+  shadowHeight?: number;
 } & Omit<ComponentPropsWithoutRef<T>, "as" | "border">;
 
 export default function PixelPanel<T extends ElementType = "div">({
@@ -20,6 +23,7 @@ export default function PixelPanel<T extends ElementType = "div">({
   accent,
   dotOpacity,
   shadowOpacity,
+  shadowHeight,
   className,
   style,
   ...rest
@@ -38,6 +42,9 @@ export default function PixelPanel<T extends ElementType = "div">({
           }),
           ...(shadowOpacity !== undefined && {
             "--panel-shade": `${shadowOpacity * 100}%`,
+          }),
+          ...(shadowHeight !== undefined && {
+            "--panel-shadow-height": `${shadowHeight * 100}%`,
           }),
           ...style,
         } as CSSProperties
