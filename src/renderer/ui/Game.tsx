@@ -23,7 +23,7 @@ import MenuScreen from "./screens/menu/MenuScreen.tsx";
 
 export default function Game() {
   useKeyboardControls();
-  const { screen } = useGame();
+  const { screen, ready } = useGame();
   const [page, setPage] = useState(0);
   useGameEvent("pageReset", () => setPage((current) => current + 1));
 
@@ -54,7 +54,9 @@ export default function Game() {
           <img className="cloud-b-right" alt="cloud" src={cloudBottomRight} />
         </div>
 
-        <MenuBar hidden={screen === "menu"} />
+        <MenuBar
+          entrance={screen === "menu" ? (ready ? "play" : "wait") : undefined}
+        />
 
         {screen === "menu" ? (
           <MenuScreen />

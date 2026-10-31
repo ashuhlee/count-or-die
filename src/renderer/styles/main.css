@@ -687,6 +687,12 @@ img {
   border: 0;
   background: none;
   cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.controls .round-btn:active {
+  scale: 0.9;
+  rotate: 0deg !important;
+  filter: brightness(0.97) saturate(110%);
 }
 .controls .round-btn img {
   position: absolute;

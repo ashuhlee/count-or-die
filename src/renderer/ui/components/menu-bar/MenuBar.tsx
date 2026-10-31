@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 
 import soundBtnMuted from "@assets/ui/svg/sound-button-muted.svg";
 import soundBtnNoMusic from "@assets/ui/svg/sound-button-no_music.svg";
@@ -25,7 +25,10 @@ function readSavedState(): number {
   return saved === null ? 0 : parseInt(saved);
 }
 
-export default function MenuBar({ hidden = false }: { hidden?: boolean }) {
+const ENTRANCE = { delay: 0, step: 0.14 };
+type MenuBarProps = { entrance?: "wait" | "play" };
+
+export default function MenuBar({ entrance }: MenuBarProps) {
   const [soundState, setSoundState] = useState(readSavedState);
 
   // restore saved audio settings
@@ -41,29 +44,39 @@ export default function MenuBar({ hidden = false }: { hidden?: boolean }) {
     applySoundState(next);
   }
 
+  const entering = (index: number) => ({
+    className: `round-btn${entrance ? " bounce-in-right" : ""}`,
+    style: entrance
+      ? ({
+          animationDelay: `${ENTRANCE.delay + index * ENTRANCE.step}s`,
+          animationPlayState: entrance === "play" ? "running" : "paused",
+        } as CSSProperties)
+      : undefined,
+  });
+
   return (
-    <div className="controls" style={hidden ? { display: "none" } : undefined}>
-      <button type="button" className="round-btn" onClick={onSoundClick}>
+    <div className="controls">
+      <button
+        type="button"
+        {...entering(1)}
+        onClick={() =>
+          alert("Oops! The settings menu is not available in the beta.")
+        }
+      >
         <img className="round-btn-face" alt="" src={roundBtnPurple} />
+        <img
+          className="round-btn-icon"
+          alt="options icon"
+          src={optionsBtnSvg}
+        />
+      </button>
+      <button type="button" {...entering(0)} onClick={onSoundClick}>
+        <img className="round-btn-face" alt="" src={roundBtnGrey} />
         <img
           id="soundBtn"
           className="round-btn-icon"
           alt="sound icon"
           src={SOUND_ICONS[soundState] ?? soundBtnMuted}
-        />
-      </button>
-      <button
-        type="button"
-        className="round-btn"
-        onClick={() =>
-          alert("Oops! The settings menu is not available in the beta.")
-        }
-      >
-        <img className="round-btn-face" alt="" src={roundBtnGrey} />
-        <img
-          className="round-btn-icon"
-          alt="options icon"
-          src={optionsBtnSvg}
         />
       </button>
     </div>

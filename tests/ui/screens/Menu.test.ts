@@ -51,6 +51,27 @@ describe("the menu with the startup screen up", () => {
   });
   afterEach(() => document.getElementById("startup-screen")?.remove());
 
+  test("holds the sound and settings buttons back until the screen has gone", async () => {
+    const buttons = () => game.$$<HTMLElement>(".controls .round-btn");
+    for (const button of buttons()) {
+      expect(button.style.animationPlayState).toBe("paused");
+    }
+
+    let hiding!: Promise<void>;
+    await act(async () => {
+      hiding = hideStartupScreen(100, 300);
+      await vi.advanceTimersByTimeAsync(100);
+    });
+    for (const button of buttons()) {
+      expect(button.style.animationPlayState).toBe("running");
+    }
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(300);
+      await hiding;
+    });
+  });
+
   test("brings its buttons in only once the screen has gone", async () => {
     expect(game.$("#menu-screen").classList.contains("ready")).toBe(false);
 
@@ -79,20 +100,43 @@ describe("the menu", () => {
     expect(game.$("#game-container")).toBeNull();
   });
 
-  test("has no sound or settings buttons, those are for the game", () => {
-    expect(game.$(".controls").style.display).toBe("none");
+  test("has the sound and settings buttons, as the game does", () => {
+    expect(game.$$(".controls .round-btn")).toHaveLength(2);
 
     game.click("#play-btn");
     game.wait(COVERED);
-    expect(game.$(".controls").style.display).toBe("");
+    expect(game.$$(".controls .round-btn")).toHaveLength(2);
   });
 
-  test("still follows the saved sound settings", () => {
+  test("brings the sound and settings buttons in from the right, one after the other", () => {
+    const buttons = game.$$<HTMLElement>(".controls .round-btn");
+
+    expect(buttons).toHaveLength(2);
+    for (const button of buttons) {
+      expect(button.classList.contains("bounce-in-right")).toBe(true);
+      expect(button.style.animationPlayState).toBe("running");
+    }
+    const delays = buttons.map((button) =>
+      parseFloat(button.style.animationDelay),
+    );
+    expect(delays[0]).toBeGreaterThanOrEqual(0);
+    expect(delays[1]).toBeGreaterThan(delays[0]);
+  });
+
+  test("leaves them be once the game has started", () => {
+    game.click("#play-btn");
+    game.wait(COVERED);
+
+    for (const button of game.$$(".controls .round-btn")) {
+      expect(button.classList.contains("bounce-in-right")).toBe(false);
+    }
+  });
+
+  test("follows the saved sound settings", () => {
     game.unmount();
     localStorage.setItem("soundState", "2");
     game = renderGame({ startOnMenu: true });
 
-    expect(game.$(".controls").style.display).toBe("none");
     expect(audioConfig.bgMusic.audio.muted).toBe(true);
 
     audioConfig.bgMusic.audio.muted = false;
