@@ -44,6 +44,12 @@ describe("PixelPanel", () => {
     expect(element.style.getPropertyValue("--panel-shadow-height")).toBe("25%");
   });
 
+  test("the border's thickness can be set without changing the pixel size", () => {
+    const element = panel({ borderSize: 4 });
+    expect(element.style.getPropertyValue("--panel-border-size")).toBe("4px");
+    expect(element.style.getPropertyValue("--panel-pixel")).toBe("");
+  });
+
   test("an opacity of 0 is honoured, and other props pass through", () => {
     const element = panel({
       as: "h2",

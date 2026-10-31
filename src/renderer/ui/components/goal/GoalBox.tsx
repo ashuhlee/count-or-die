@@ -9,8 +9,8 @@ const SHAKE = { step: 0.3, duration: 3 };
 
 const THEME_COLORS = ["#ff80ea", "#A193FF", "#9ad9ff", "#BEB9DC"];
 
-const FRAME = 5;
-const TIP_OVERLAP = 5;
+const FRAME = 4;
+const TIP_OVERLAP = 4;
 
 const CYCLE_BORDER_COLOR = false;
 const BORDER_COLOR = "#e4e4ed";
@@ -85,6 +85,7 @@ export default function GoalBox() {
         key={swing.id}
         border={border}
         accent={PANEL_ACCENT}
+        borderSize={FRAME}
         dotOpacity={PANEL_DOTS}
         shadowOpacity={PANEL_SHADOW}
         className={[

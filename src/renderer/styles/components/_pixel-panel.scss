@@ -9,6 +9,7 @@
   --panel-border: #fff;
   --panel-accent: var(--panel-border);
   --panel-pixel: 5px;
+  --panel-border-size: var(--panel-pixel);
   --panel-shadow: color-mix(
     in srgb,
     var(--panel-accent) var(--panel-shade),
@@ -33,9 +34,9 @@
     ),
     var(--panel-fill);
   box-shadow:
-    calc(var(--panel-pixel) * -1) 0 0 0 var(--panel-border),
-    var(--panel-pixel) 0 0 0 var(--panel-border),
-    0 calc(var(--panel-pixel) * -1) 0 0 var(--panel-border),
-    0 var(--panel-pixel) 0 0 var(--panel-border);
+    calc(var(--panel-border-size) * -1) 0 0 0 var(--panel-border),
+    var(--panel-border-size) 0 0 0 var(--panel-border),
+    0 calc(var(--panel-border-size) * -1) 0 0 var(--panel-border),
+    0 var(--panel-border-size) 0 0 var(--panel-border);
   filter: drop-shadow(0px var(--panel-pixel) 0px var(--shadow-pink-015));
 }
