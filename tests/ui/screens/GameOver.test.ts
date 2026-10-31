@@ -50,7 +50,7 @@ describe("the countdown bar", () => {
   test("starts healthy and runs for the length of the round", () => {
     game = renderGame();
 
-    expect(barColor()).toBe("rgb(180, 166, 255)");
+    expect(barColor()).toBe("rgb(173, 158, 255)");
     expect(game.$("#progress-bar").style.animation).toContain(
       "progress-anim 20s linear infinite",
     );
@@ -86,7 +86,7 @@ describe("the countdown bar", () => {
     game = renderGame();
 
     game.wait(9899);
-    expect(barColor()).toBe("rgb(180, 166, 255)");
+    expect(barColor()).toBe("rgb(173, 158, 255)");
     game.wait(1);
     expect(barColor()).toBe("rgb(255, 177, 153)");
     expect(game.$("#progress-bar").style.animation).not.toContain("blink");
@@ -117,7 +117,7 @@ describe("the countdown bar", () => {
 
     game.click("#increase-img");
 
-    expect(barColor()).toBe("rgb(180, 166, 255)");
+    expect(barColor()).toBe("rgb(173, 158, 255)");
     expect(game.$("#progress-bar").style.animation).toContain(
       "progress-anim 16.66",
     );
@@ -454,7 +454,7 @@ describe("starting over", () => {
     game.wait(15000);
     game.click("#reset-img");
 
-    expect(barColor()).toBe("rgb(180, 166, 255)");
+    expect(barColor()).toBe("rgb(173, 158, 255)");
     game.wait(TIME_IS_UP - 1);
     expect(game.$("#red-flash").className).toBe("");
   });

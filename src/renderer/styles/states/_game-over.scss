@@ -26,16 +26,17 @@
     position: absolute;
     inset: 0;
     z-index: -11;
+    mix-blend-mode: overlay;
+    opacity: 0.3;
+    filter: hue-rotate(30deg);
   }
 
   &::before {
     content: "";
     position: absolute;
     inset: 0;
-    z-index: -10;
+    z-index: -12;
     background: url("#{globals.$game-over-bg}") repeat 0 center;
-    opacity: 1;
-    mix-blend-mode: soft-light;
     background-size: 128px auto;
     animation: slide 4s linear infinite reverse;
     pointer-events: none;

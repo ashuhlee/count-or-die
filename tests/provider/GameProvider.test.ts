@@ -26,7 +26,7 @@ describe("GameProvider", () => {
     localStorage.setItem("deathCount", "5");
     game = renderGame();
 
-    expect(game.$("#high-score").textContent).toBe("high score: 70");
+    expect(game.$("#high-score").textContent).toBe("HIGH SCORE: 70");
     expect(game.$("#death-tracker").textContent).toBe("5");
   });
 
@@ -35,7 +35,7 @@ describe("GameProvider", () => {
     localStorage.setItem("deathCount", "");
     game = renderGame();
 
-    expect(game.$("#high-score").textContent).toBe("high score: 0");
+    expect(game.$("#high-score").textContent).toBe("HIGH SCORE: 0");
     expect(game.$("#death-tracker").textContent).toBe("0");
   });
 
@@ -43,7 +43,7 @@ describe("GameProvider", () => {
     localStorage.setItem("highScore", "70");
     game = renderGame({ state: { highScore: 3 } });
 
-    expect(game.$("#high-score").textContent).toBe("high score: 3");
+    expect(game.$("#high-score").textContent).toBe("HIGH SCORE: 3");
   });
 
   test("everything it started stops when the game goes away", () => {

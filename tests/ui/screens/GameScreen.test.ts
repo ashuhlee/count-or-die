@@ -567,7 +567,7 @@ describe("goals", () => {
 describe("the high score", () => {
   test("shows the saved high score", () => {
     game = renderGame({ state: { highScore: 70 } });
-    expect(game.$("#high-score").textContent).toBe("high score: 70");
+    expect(game.$("#high-score").textContent).toBe("HIGH SCORE: 70");
     expect(game.$("#high-score").classList.contains("new-score")).toBe(false);
   });
 
@@ -576,7 +576,7 @@ describe("the high score", () => {
     game.click("#increase-img");
     game.click("#increase-img");
 
-    expect(game.$("#high-score").textContent).toBe("high score: 2");
+    expect(game.$("#high-score").textContent).toBe("HIGH SCORE: 2");
     expect(game.$("#high-score").classList.contains("new-score")).toBe(true);
     expect(game.$("#high-score").classList.contains("animate__animated")).toBe(
       true,
