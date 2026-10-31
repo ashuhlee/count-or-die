@@ -5,7 +5,6 @@ const PHRASES_REGULAR = [
   "Aw, you died.",
   "You died :(",
   "Better luck next life..",
-  "Nice try!",
   "Let's aim a bit higher..",
   "Sooo close!",
   "You are dead.",
