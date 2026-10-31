@@ -22,6 +22,23 @@ const loadFont = (font: string) =>
 
 const startupScreen = () => document.getElementById("startup-screen");
 
+const STARTUP_DONE = "startup-done";
+
+export function isStartupCovering() {
+  const screen = startupScreen();
+  return !!screen && !screen.classList.contains("hiding");
+}
+
+export function whenStartupDone(callback: () => void) {
+  if (!isStartupCovering()) {
+    callback();
+    return () => {};
+  }
+
+  window.addEventListener(STARTUP_DONE, callback, { once: true });
+  return () => window.removeEventListener(STARTUP_DONE, callback);
+}
+
 export const showStartupProgress = (fraction: number) =>
   startupScreen()?.style.setProperty("--progress", String(fraction));
 
@@ -67,5 +84,6 @@ export async function hideStartupScreen(
   await new Promise((resolve) => setTimeout(resolve, fillTime));
 
   screen.classList.add("hiding");
+  window.dispatchEvent(new Event(STARTUP_DONE));
   setTimeout(() => screen.remove(), hideTime);
 }

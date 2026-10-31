@@ -17,6 +17,7 @@ import {
 import { getPowerUp } from "../game/powerUps.ts";
 import { loadSavedGame } from "../utils/savedGame.ts";
 import { useTimeouts } from "../hooks/useTimeouts.ts";
+import { useStartupDone } from "./useStartupDone.ts";
 import { createEventBus, EventBusContext } from "./eventBus.ts";
 import { performEvent } from "./performEvent.ts";
 import { useCountdown } from "./useCountdown.ts";
@@ -68,8 +69,12 @@ export default function GameProvider({
     [bus, later],
   );
 
-  const barStage = useCountdown(state, () =>
-    dispatch({ type: "timerExpired" }),
+  const ready = useStartupDone();
+
+  const barStage = useCountdown(
+    state,
+    () => dispatch({ type: "timerExpired" }),
+    ready,
   );
   const { loading, cover } = useLoadingScreen(later);
 
@@ -109,11 +114,13 @@ export default function GameProvider({
     [bus, cover, dispatch, later],
   );
 
-  useEffect(() => playSound("bgMusic"), []);
+  useEffect(() => {
+    if (ready) playSound("bgMusic");
+  }, [ready]);
 
   const value = useMemo<GameContextValue>(
-    () => ({ state, barStage, loading, actions }),
-    [state, barStage, loading, actions],
+    () => ({ state, barStage, loading, actions, ready }),
+    [state, barStage, loading, actions, ready],
   );
 
   return (

@@ -6,14 +6,13 @@ import { useGame } from "../../../provider/useGame.ts";
 import { useGameEvent } from "../../../provider/useGameEvent.ts";
 import type { Falling } from "./FallingPowerUp.tsx";
 
-// a new power-up falls every few seconds, once the last one is gone
 const MIN_WAIT = 6000;
 const MAX_WAIT = 12000;
 
 // Sends power-ups down the screen: one after a wait, then the next wait starts
-// once it has been collected or has fallen off the bottom.
+// once it has been collected or has fallen off the screen
 export function usePowerUpSpawner() {
-  const { state, actions } = useGame();
+  const { state, actions, ready } = useGame();
   const [falling, setFalling] = useState<Falling[]>([]);
 
   // the timer reads this when it fires, not when it was started
@@ -44,8 +43,6 @@ export function usePowerUpSpawner() {
     ]);
   }, []);
 
-  // (whether the game is still on is checked when the wait is over: right
-  // after a restart this has not seen the new state yet)
   const waitForNext = useCallback(() => {
     clearTimeout(timer.current);
 
@@ -58,13 +55,12 @@ export function usePowerUpSpawner() {
     );
   }, [spawn]);
 
-  // the first one, and stopping when the game goes away
   useEffect(() => {
+    if (!ready) return;
     waitForNext();
     return () => clearTimeout(timer.current);
-  }, [waitForNext]);
+  }, [waitForNext, ready]);
 
-  // a new game starts with a clean screen and a fresh wait
   useGameEvent("restarted", () => {
     setFalling([]);
     waitForNext();
@@ -79,7 +75,6 @@ export function usePowerUpSpawner() {
     collect(collected: Falling, rect: DOMRect) {
       remove(collected.id);
       actions.collectPowerUp(collected.type);
-      // a puff of smoke next to where it was
       actions.emit({
         type: "smoke",
         kind: "powerUp",

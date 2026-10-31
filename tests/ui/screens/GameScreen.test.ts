@@ -1,8 +1,10 @@
 import { afterEach, beforeEach, expect, describe, test, vi } from "vitest";
+import { act } from "react";
 import confetti from "canvas-confetti";
 
 import { renderGame } from "../../helpers/game.tsx";
 import { stubWebAnimations } from "../../helpers/dom.ts";
+import { hideStartupScreen } from "../../../src/renderer/utils/startup.ts";
 
 // the game plays sounds through this; here we only want to know which
 const audio = vi.hoisted(() => ({ playSound: vi.fn(), pauseSound: vi.fn() }));
@@ -30,6 +32,9 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
+// a round lasts 20 seconds; time is up a hair before
+const TIME_IS_UP = 19900;
+
 // the three layers the counter is drawn with
 const layers = ["#counter", "#counter-outer", "#counter-shine"];
 const hearts = () => game.$$(".hearts > div");
@@ -54,6 +59,83 @@ describe("a fresh game", () => {
   test("starts the music", () => {
     game = renderGame();
     expect(sounds()).toContain("bgMusic");
+  });
+
+  describe("with the startup screen up", () => {
+    beforeEach(() => {
+      document.body.insertAdjacentHTML(
+        "beforeend",
+        '<div id="startup-screen"></div>',
+      );
+    });
+    afterEach(() => document.getElementById("startup-screen")?.remove());
+
+    // lets the screen go, with the game told about it
+    const letScreenGo = async () => {
+      let hiding!: Promise<void>;
+      await act(async () => {
+        hiding = hideStartupScreen(100, 300);
+        await vi.advanceTimersByTimeAsync(100);
+      });
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(300);
+        await hiding;
+      });
+    };
+
+    test("keeps the music quiet until the screen goes", async () => {
+      game = renderGame();
+      expect(sounds()).not.toContain("bgMusic");
+
+      await letScreenGo();
+      expect(sounds().filter((name) => name === "bgMusic")).toHaveLength(1);
+    });
+
+    test("does not run the round until the screen goes", async () => {
+      game = renderGame();
+
+      game.wait(TIME_IS_UP * 2);
+      expect(game.$("#game-over").classList.contains("visible")).toBe(false);
+      expect(game.$("#death-tracker").textContent).toBe("0");
+
+      await letScreenGo();
+      game.wait(TIME_IS_UP);
+      expect(game.$("#death-tracker").textContent).toBe("1");
+    });
+
+    test("holds the countdown bar until the screen goes", async () => {
+      game = renderGame();
+      const bar = () => game.$("#progress-bar").style.animationPlayState;
+      expect(bar()).toBe("paused");
+      expect(game.$(".pg-lines").style.animationPlayState).toBe("paused");
+
+      await letScreenGo();
+      expect(bar()).toBe("running");
+      expect(game.$(".pg-lines").style.animationPlayState).toBe("running");
+    });
+
+    test("ignores the keys until the screen goes", async () => {
+      game = renderGame();
+
+      game.press("w");
+      game.press("Escape");
+      expect(game.counter()).toBe("00");
+
+      await letScreenGo();
+      game.press("w");
+      expect(game.counter()).toBe("01");
+    });
+
+    test("sends no power-up down until the screen goes", async () => {
+      game = renderGame({ random: () => 0 });
+
+      game.wait(60000);
+      expect(game.$$(".power-up-img")).toHaveLength(0);
+
+      await letScreenGo();
+      game.wait(13000);
+      expect(game.$$(".power-up-img").length).toBeGreaterThan(0);
+    });
   });
 });
 
