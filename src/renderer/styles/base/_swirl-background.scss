@@ -1,0 +1,23 @@
+@use "globals";
+
+@mixin swirl-background {
+  .go-background {
+    position: absolute;
+    inset: 0;
+    z-index: -11;
+    mix-blend-mode: overlay;
+    opacity: 0.3;
+    filter: hue-rotate(30deg);
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -12;
+    background: url("#{globals.$game-over-bg}") repeat 0 center;
+    background-size: 128px auto;
+    animation: slide 4s linear infinite reverse;
+    pointer-events: none;
+  }
+}

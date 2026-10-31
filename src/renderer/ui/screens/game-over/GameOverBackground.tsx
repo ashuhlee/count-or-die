@@ -2,14 +2,16 @@ import { memo } from "react";
 
 import PixelSwirlShader from "../../shaders/pixel-swirl-shader/PixelSwirlShader.tsx";
 
-export const GAME_OVER_HUE = { start: -60, duration: 900 };
+export const GAME_OVER_HUE = { start: -30, duration: 900 };
 
 export default memo(function GameOverBackground({
   paused,
   visible,
+  hueDuration = GAME_OVER_HUE.duration,
 }: {
   paused: boolean;
   visible: boolean;
+  hueDuration?: number;
 }) {
   return (
     <div className="go-background">
@@ -30,7 +32,7 @@ export default memo(function GameOverBackground({
         intro={false}
         paused={paused}
         hue={visible ? 0 : GAME_OVER_HUE.start}
-        hueDuration={GAME_OVER_HUE.duration}
+        hueDuration={hueDuration}
       />
     </div>
   );

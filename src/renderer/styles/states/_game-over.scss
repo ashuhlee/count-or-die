@@ -1,4 +1,5 @@
 @use "../base/globals";
+@use "../base/swirl-background";
 
 #game-over {
   --mask-size: 100% 200%;
@@ -22,25 +23,7 @@
     --mask-size: 200% 200%;
   }
 
-  .go-background {
-    position: absolute;
-    inset: 0;
-    z-index: -11;
-    mix-blend-mode: overlay;
-    opacity: 0.3;
-    filter: hue-rotate(30deg);
-  }
-
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -12;
-    background: url("#{globals.$game-over-bg}") repeat 0 center;
-    background-size: 128px auto;
-    animation: slide 4s linear infinite reverse;
-    pointer-events: none;
-  }
+  @include swirl-background.swirl-background;
 
   &.visible {
     transition:
@@ -260,17 +243,6 @@
       image-rendering: auto;
     }
   }
-  .skull-floor {
-    transform: rotate(-8deg);
-    position: fixed;
-    width: 76px;
-    height: 76px;
-    bottom: -5px;
-    left: 18vw;
-    z-index: -1;
-    image-rendering: auto;
-  }
-
   .bottom-section {
     place-items: center;
 

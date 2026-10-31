@@ -17,6 +17,23 @@
   }
 }
 
+@keyframes menu-tile-in {
+  from {
+    filter: hue-rotate(var(--hue-start)) saturate(var(--saturation-start));
+  }
+  to {
+    filter: hue-rotate(0deg) saturate(1);
+  }
+}
+@keyframes menu-swirl-in {
+  from {
+    filter: hue-rotate(30deg) saturate(var(--saturation-start));
+  }
+  to {
+    filter: hue-rotate(30deg) saturate(1);
+  }
+}
+
 @keyframes gradient {
   0% {
     color: transparent;
@@ -318,6 +335,43 @@
   }
   90% {
     transform: translate3d(0, 5px, 0) scaleY(0.985) rotate(-10deg);
+  }
+  to {
+    transform: translate3d(0, 0, 0) rotate(-10deg);
+  }
+}
+
+.bounce-in-down-rotated {
+  animation: bounceInDown-rotated-settle 0.9s both;
+}
+
+// the same fall as bounceInDown-rotated, in the first 0.36s of 0.9s, then a
+// longer run of smaller bounces
+@keyframes bounceInDown-rotated-settle {
+  from,
+  40%,
+  55%,
+  70%,
+  85%,
+  to {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -2000px, 0) scaleY(3) rotate(-10deg);
+  }
+  40% {
+    opacity: 1;
+    transform: translate3d(0, 25px, 0) scaleY(0.7) rotate(-10deg);
+  }
+  55% {
+    transform: translate3d(0, -14px, 0) scaleY(0.95) rotate(-10deg);
+  }
+  70% {
+    transform: translate3d(0, 8px, 0) scaleY(0.985) rotate(-10deg);
+  }
+  85% {
+    transform: translate3d(0, -3px, 0) scaleY(0.995) rotate(-10deg);
   }
   to {
     transform: translate3d(0, 0, 0) rotate(-10deg);
