@@ -20,6 +20,7 @@ import { useGame } from "../../../provider/useGame.ts";
 import { formatCounter } from "../../../utils/formatCounter.ts";
 import BulgeFilter from "../../components/bulge/BulgeFilter.tsx";
 import Letters from "../../components/letters/Letters.tsx";
+import PixelPanel from "../../components/pixel-panel/PixelPanel.tsx";
 import BackToMenu from "./BackToMenu.tsx";
 import MeltInShader, {
   type MeltColors,
@@ -29,7 +30,7 @@ import { useGameOverView } from "./useGameOverView.ts";
 
 const QUIT_DELAY = 400;
 
-const TRACKER_BULGE = { id: "tracker-bulge", strength: 12, area: 4 };
+const TRACKER_BULGE = { id: "tracker-bulge", strength: 25, area: 6 };
 
 const TRACKER_BORDERS = {
   score: "#bfb3ff",
@@ -39,11 +40,9 @@ const TRACKER_BORDERS = {
 
 const TRACKER_ENTRANCE = { delay: 0.3, step: 0.16 };
 
-const trackerStyle = (color: string, index: number) =>
-  ({
-    "--tracker-border": color,
-    animationDelay: `${TRACKER_ENTRANCE.delay + index * TRACKER_ENTRANCE.step}s`,
-  }) as CSSProperties;
+const trackerStyle = (index: number): CSSProperties => ({
+  animationDelay: `${TRACKER_ENTRANCE.delay + index * TRACKER_ENTRANCE.step}s`,
+});
 
 const GHOST_COLORS: MeltColors = {
   edge: "#605B84",
@@ -92,18 +91,20 @@ export default function GameOver() {
         </h2>
         <BulgeFilter {...TRACKER_BULGE} />
         <div className="top-right-info">
-          <div
+          <PixelPanel
+            border={TRACKER_BORDERS.score}
             className={trackerClass}
-            style={trackerStyle(TRACKER_BORDERS.score, 0)}
+            style={trackerStyle(0)}
           >
             <img src={starTracker} alt="score" className="tracker-icon" />
             <h2 className="tracker-value" id="score-tracker">
               <Letters text={view.score} step={0.2} duration={20} />
             </h2>
-          </div>
-          <div
+          </PixelPanel>
+          <PixelPanel
+            border={TRACKER_BORDERS.highScore}
             className={trackerClass}
-            style={trackerStyle(TRACKER_BORDERS.highScore, 1)}
+            style={trackerStyle(1)}
           >
             <img
               src={trophyTracker}
@@ -117,10 +118,11 @@ export default function GameOver() {
                 duration={3}
               />
             </h2>
-          </div>
-          <div
+          </PixelPanel>
+          <PixelPanel
+            border={TRACKER_BORDERS.deaths}
             className={trackerClass}
-            style={trackerStyle(TRACKER_BORDERS.deaths, 2)}
+            style={trackerStyle(2)}
           >
             <img src={skullTracker} alt="skull" className="tracker-icon" />
             <h2 className="tracker-value" id="death-tracker">
@@ -130,7 +132,7 @@ export default function GameOver() {
                 duration={3}
               />
             </h2>
-          </div>
+          </PixelPanel>
         </div>
         <div className="deco-icons">
           <img src={questionPng} alt="question mark" className="question" />

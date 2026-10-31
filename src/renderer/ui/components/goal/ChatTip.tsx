@@ -37,7 +37,13 @@ export default function ChatTip({ border, overlap }: ChatTipProps) {
         </svg>
       </div>
       <svg className="chat-tip-art" {...view}>
-        <use href="#chat-tip-shape" fill="white" />
+        <use
+          href="#chat-tip-shape"
+          // the same shade as the bottom of the goal box, where they meet
+          style={{
+            fill: "color-mix(in srgb, var(--goal-accent, var(--goal-border, white)) var(--panel-shade), var(--panel-fill))",
+          }}
+        />
       </svg>
     </div>
   );

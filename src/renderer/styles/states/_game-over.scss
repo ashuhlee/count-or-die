@@ -168,14 +168,8 @@
     align-items: center;
     justify-content: center;
     padding: 16px 10px;
-    background: #fff5fe;
-    box-shadow:
-      -5px 0 0 0 var(--tracker-border, #fff),
-      5px 0 0 0 var(--tracker-border, #fff),
-      0 -5px 0 0 var(--tracker-border, #fff),
-      0 5px 0 0 var(--tracker-border, #fff);
-    filter: drop-shadow(0px 5px 0px var(--shadow-pink-015));
     transition: transform 1s ease;
+
     .tracker-icon {
       width: 16px;
       height: 16px;

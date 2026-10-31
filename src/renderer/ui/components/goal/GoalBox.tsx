@@ -2,6 +2,7 @@ import { useState, type CSSProperties } from "react";
 
 import { useGame } from "../../../provider/useGame.ts";
 import { useGameEvent } from "../../../provider/useGameEvent.ts";
+import PixelPanel from "../pixel-panel/PixelPanel.tsx";
 import ChatTip from "./ChatTip.tsx";
 
 const SHAKE = { step: 0.3, duration: 3 };
@@ -14,13 +15,16 @@ const TIP_OVERLAP = 5;
 const CYCLE_BORDER_COLOR = false;
 const BORDER_COLOR = "#e4e4ed";
 
+const PANEL_ACCENT = "#e4e4ed";
+const PANEL_DOTS = 1;
+const PANEL_SHADOW = 0.5;
+
 type Theme = {
   next: number;
   border: string;
   letterColor: string | null;
 };
 
-// the title's entrance used the first color
 const INITIAL_THEME: Theme = {
   next: 1,
   border: THEME_COLORS[0],
@@ -64,17 +68,25 @@ export default function GoalBox() {
     setTheme((current) => pickColor(current, false)),
   );
 
+  const border = CYCLE_BORDER_COLOR ? theme.border : BORDER_COLOR;
+
   return (
     <div
       className="goal-bubble"
       style={
         {
-          "--goal-border": CYCLE_BORDER_COLOR ? theme.border : BORDER_COLOR,
+          "--goal-border": border,
+          "--goal-accent": PANEL_ACCENT,
+          "--panel-shade": `${PANEL_SHADOW * 100}%`,
         } as CSSProperties
       }
     >
-      <div
+      <PixelPanel
         key={swing.id}
+        border={border}
+        accent={PANEL_ACCENT}
+        dotOpacity={PANEL_DOTS}
+        shadowOpacity={PANEL_SHADOW}
         className={[
           "next-goal animate__animated animate__fast",
           swing.className,
@@ -107,7 +119,7 @@ export default function GoalBox() {
             );
           })}
         </span>
-      </div>
+      </PixelPanel>
       <ChatTip border={FRAME} overlap={TIP_OVERLAP} />
     </div>
   );

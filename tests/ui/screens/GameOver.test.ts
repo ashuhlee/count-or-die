@@ -265,7 +265,7 @@ describe("running out of time", () => {
 
     const borders = game
       .$$("#game-over .top-right-info > .tracker-container")
-      .map((row) => row.style.getPropertyValue("--tracker-border"));
+      .map((row) => row.style.getPropertyValue("--panel-border"));
     expect(borders).toHaveLength(3);
     for (const border of borders) expect(border).toMatch(/^#[0-9a-f]{6}$/i);
     expect(new Set(borders).size).toBe(3);
