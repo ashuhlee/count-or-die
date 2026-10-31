@@ -34,7 +34,7 @@ export default function ProgressBar() {
   return (
     <>
       <div
-        key={state.round}
+        key={`stripes-${state.round}`}
         className="pg-lines"
         style={{
           visibility: state.isGameOver ? "hidden" : "visible",
@@ -46,7 +46,7 @@ export default function ProgressBar() {
         <div className="pg-stripes"></div>
       </div>
       <div
-        key={state.round}
+        key={`fill-${state.round}`}
         className="progress-bar"
         id="progress-bar"
         style={{

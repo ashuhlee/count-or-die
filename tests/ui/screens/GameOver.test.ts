@@ -66,6 +66,15 @@ describe("the countdown bar", () => {
     expect(stripes.style.visibility).toBe("visible");
   });
 
+  test("has a single set of stripes after a goal starts a new round", () => {
+    game = renderGame({ state: { counter: 29, highScore: 999 } });
+    game.click("#increase-img");
+    game.click("#increase-img");
+
+    expect(game.$$(".pg-lines")).toHaveLength(1);
+    expect(game.$$("#progress-bar")).toHaveLength(1);
+  });
+
   test("takes its stripes away with the fill when time is up", () => {
     game = renderGame();
 
