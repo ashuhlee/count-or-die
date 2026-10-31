@@ -53,6 +53,8 @@ function createWindow() {
     maximizable: true,
     fullscreenable: true,
     backgroundColor: "#FFBDEF",
+    // shown once the page has painted, so it never opens as an empty window
+    show: false,
     icon: iconPath,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
@@ -60,6 +62,8 @@ function createWindow() {
       contextIsolation: true,
     },
   });
+
+  mainWindow.once("ready-to-show", () => mainWindow.show());
 
   if (!app.isPackaged) {
     mainWindow

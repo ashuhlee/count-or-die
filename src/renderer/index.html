@@ -5,10 +5,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Count or Die</title>
     <link rel="stylesheet" href="./styles/main.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
     <link rel="icon" href="assets/favicon/favicon.svg" />
     <link
       rel="apple-touch-icon"
@@ -19,6 +15,19 @@
     <link rel="manifest" href="assets/favicon/site.webmanifest" />
   </head>
   <body>
+    <div class="loading-screen" id="startup-screen">
+      <div class="loading-content">
+        <div class="diamond-outline"></div>
+        <div class="diamond-wrapper">
+          <div class="diamond"></div>
+          <img
+            src="assets/ui/deco/skull_gradient.png"
+            class="loading-skull"
+            alt=""
+          />
+        </div>
+      </div>
+    </div>
     <div class="main" id="main"></div>
     <script type="module" src="index.tsx"></script>
   </body>

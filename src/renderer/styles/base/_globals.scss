@@ -1,8 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap");
-@import url("https://fonts.cdnfonts.com/css/alien-cyborg");
-@import url("https://fonts.cdnfonts.com/css/serious");
-@import url("https://fonts.cdnfonts.com/css/smw-text-nc");
-
 :root {
   --shadow-pink-005: rgba(206, 42, 133, 0.05);
   --shadow-pink-010: rgba(206, 42, 133, 0.1);
@@ -30,6 +25,41 @@ $loading-bg-2: "#{$assets}/ui/textures/tile-loading-3.png";
 $melt-mask: "#{$assets}/ui/masks/drip-mask.png";
 $cursor: "#{$assets}/ui/hand.png";
 $delay-step: 0.3s;
+
+// bundled so the game never waits on the network for its fonts
+$fonts: "../assets/fonts";
+
+@font-face {
+  font-family: "Silkscreen";
+  font-weight: 400;
+  font-display: block;
+  src: url("#{$fonts}/silkscreen-400.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Silkscreen";
+  font-weight: 700;
+  font-display: block;
+  src: url("#{$fonts}/silkscreen-700.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Alien Cyborg";
+  font-display: block;
+  src: url("#{$fonts}/alien-cyborg.woff") format("woff");
+}
+
+@font-face {
+  font-family: "serious1";
+  font-display: block;
+  src: url("#{$fonts}/serious-1.woff") format("woff");
+}
+
+@font-face {
+  font-family: "SMW Text NC";
+  font-display: block;
+  src: url("#{$fonts}/smw-text-nc.woff") format("woff");
+}
 
 $rainbow-gradient: linear-gradient(
   to right,
