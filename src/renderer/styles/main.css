@@ -1436,7 +1436,7 @@ img {
   z-index: 30;
   display: grid;
   place-items: center;
-  background: #000;
+  background: #171526;
   transition: opacity 0.1s ease;
 }
 .startup-screen.hiding {
