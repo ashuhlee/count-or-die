@@ -31,8 +31,6 @@ export default function MenuBar() {
     if (localStorage.getItem(SOUND_STATE_KEY) !== null) {
       applySoundState(soundState);
     }
-    // only on mount
-    // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function onSoundClick(): void {

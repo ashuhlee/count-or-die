@@ -3,12 +3,9 @@ import { useState, type CSSProperties } from "react";
 import { useGame } from "../../../provider/useGame.ts";
 import { useGameEvent } from "../../../provider/useGameEvent.ts";
 
-// each letter animation picks the next of these; the box's top border wears
-// the color picked last
 const THEME_COLORS = ["#ff80ea", "#A193FF", "#9ad9ff", "#BEB9DC"];
 
 type Theme = {
-  // the color the next animation will use
   next: number;
   border: string;
   letterColor: string | null;
@@ -41,7 +38,6 @@ export default function GoalBox() {
     id: number;
     direction: "forward" | "reverse";
   } | null>(null);
-  // the box swings; a new key remounts it to replay the swing
   const [swing, setSwing] = useState<{
     id: number;
     className: string | null;
@@ -56,7 +52,6 @@ export default function GoalBox() {
     }));
   });
 
-  // the "no boosts left!" text also moves the color cycle along
   useGameEvent("noBoostsLeft", () =>
     setTheme((current) => pickColor(current, false)),
   );

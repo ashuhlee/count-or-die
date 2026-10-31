@@ -70,7 +70,6 @@ function FloatingCount({
   );
 }
 
-// the "+N" that floats up from wherever the player clicked
 export default function CursorCounts() {
   const [counts, setCounts] = useState<CursorCount[]>([]);
   const nextId = useRef(0);

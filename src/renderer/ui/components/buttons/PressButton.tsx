@@ -14,7 +14,6 @@ type PressButtonProps = {
   onClick: (event: MouseEvent<HTMLImageElement>) => void;
 };
 
-// the red tint that fades out after pressing a button with no boosts left
 const DISABLED_FLASH = [
   {
     filter:
@@ -32,8 +31,6 @@ export default function PressButton({
   onClick,
 }: PressButtonProps) {
   const [isPressed, setIsPressed] = useState(false);
-  // bumped each time the button is pressed while disabled, so it remounts
-  // and replays its shake; 0 means it never has
   const [shakeId, setShakeId] = useState(0);
 
   const later = useTimeouts();

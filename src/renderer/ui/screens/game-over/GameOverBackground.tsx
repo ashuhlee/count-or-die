@@ -2,7 +2,7 @@ import { memo } from "react";
 
 import PixelSwirlShader from "../../shaders/pixel-swirl-shader/PixelSwirlShader.tsx";
 
-export const GAME_OVER_HUE = { start: -50, duration: 1000 };
+export const GAME_OVER_HUE = { start: -60, duration: 1200 };
 
 export default memo(function GameOverBackground({
   paused,

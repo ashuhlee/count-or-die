@@ -16,8 +16,6 @@ export default function Counter() {
   const { state } = useGame();
   const display = formatCounter(state.counter);
 
-  // the number pops, shakes... whenever the game says so; a new key remounts
-  // the text, which replays the CSS animation
   const [animation, setAnimation] = useState<{
     name: CounterAnimation;
     id: number;

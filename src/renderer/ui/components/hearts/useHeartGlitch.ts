@@ -3,12 +3,8 @@ import { PowerGlitch, type GlitchResult } from "powerglitch";
 
 const GLITCH_INTERVAL = 6000;
 const STAGGER = 400;
-
-// each heart glitches a little after the one before it, in this order
 const ORDER = [4, 2, 1, 3];
 
-// A brief glitch on a heart every few seconds. PowerGlitch wraps the image in
-// extra elements itself, so it is set up once per heart and never remounted.
 export function useHeartGlitch(
   ref: RefObject<HTMLImageElement | null>,
   heartNumber: number,

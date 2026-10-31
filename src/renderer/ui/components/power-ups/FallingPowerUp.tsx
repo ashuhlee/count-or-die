@@ -21,7 +21,6 @@ export type Falling = {
   type: PowerUpType;
   side: "left" | "right";
   fall: "falling" | "falling-reverse";
-  // 0-1, scaled to the spawn area's width once it is on screen
   xRand: number;
 };
 

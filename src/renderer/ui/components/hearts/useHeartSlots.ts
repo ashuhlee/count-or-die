@@ -21,9 +21,6 @@ function slotsFor(boostsAvailable: number): Slots {
   };
 }
 
-// What each heart looks like: gone, coming back, or there. A heart goes when
-// a boost is used and comes back with a power-up (one after the other), both
-// with a puff of smoke.
 export function useHeartSlots() {
   const { state, actions } = useGame();
   const boosts = state.boostsAvailable;
@@ -46,15 +43,11 @@ export function useHeartSlots() {
     });
   };
 
-  // the puff goes where the heart is now: once the last boost is used, the "no
-  // boosts left!" text pushes the hearts down
   useGameEvent("boostNotification", () => smokeAt(previous.current - 1));
 
   useEffect(() => {
     const before = previous.current;
     previous.current = boosts;
-
-    // a boost was used: its heart goes
     if (boosts < before) {
       setSlots((current) => ({ ...current, used: slotsFor(boosts).used }));
       return;
@@ -75,17 +68,13 @@ export function useHeartSlots() {
         smokeAt(index, RESTORE_SMOKE_OFFSET);
       }, delay);
     }
-    // smokeAt only reads refs and emits events
-    // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, [boosts]);
 
   return {
     slots,
-    // so a heart can be asked where it is on screen
     slotRef: (index: number) => (element: HTMLDivElement | null) => {
       slotElements.current[index] = element;
     },
-    // the "coming back" animation is over
     finishRestoring: (index: number) =>
       setSlots((current) => ({
         ...current,

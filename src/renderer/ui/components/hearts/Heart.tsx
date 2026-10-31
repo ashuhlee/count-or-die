@@ -33,7 +33,6 @@ export default function Heart({
       className={[colorClass, used && "heart-use", restoring && "heart-restore"]
         .filter(Boolean)
         .join(" ")}
-      // beats the staggered delay the nth-child rules give each heart
       style={restoring ? { animationDelay: "0s" } : undefined}
       onAnimationEnd={(event) => {
         if (event.target === event.currentTarget) onRestored();
