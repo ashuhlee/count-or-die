@@ -348,11 +348,25 @@
     }
   }
   .rainbow-txt {
-    color: rgba(255, 255, 255, 0.6);
-    background-image: var(--rainbow-gradient-bar);
+    color: rgba(255, 255, 255, 0.7);
+    background-image: var(--rainbow-gradient-text);
     background-clip: text;
     background-size: 100% auto;
     background-position: 0 center;
+    filter: drop-shadow(0 3px 0 rgba(206, 42, 133, 0.15));
+  }
+
+  .score-text.rainbow-txt {
+    background-image: none;
+
+    span {
+      background-image: var(--rainbow-gradient-text);
+      background-clip: text;
+      background-repeat: no-repeat;
+      background-size: calc(var(--count) * 100%) 100%;
+      background-position: calc(var(--index) / max(var(--count) - 1, 1) * 100%)
+        0;
+    }
   }
 
   .final-score,

@@ -3,7 +3,7 @@
   place-items: center;
   transform: translateY(30px);
   height: 13px;
-  filter: drop-shadow(5px 5px 0px var(--shadow-pink-005));
+  filter: drop-shadow(5px 5px 0px var(--shadow-pink-010));
 
   .pg-lines {
     grid-area: 1 / 1;
@@ -18,8 +18,8 @@
     height: 100%;
     background: repeating-linear-gradient(
       -45deg,
-      rgba(255, 255, 255, 0.4),
-      rgba(255, 255, 255, 0.4) 5px,
+      rgba(255, 255, 255, 0.35),
+      rgba(255, 255, 255, 0.35) 5px,
       rgba(255, 255, 255, 0) 5px,
       rgba(255, 255, 255, 0) 10px
     );

@@ -33,6 +33,18 @@ describe("Letters", () => {
     expect(delays).toEqual(["0s", "0.2s", "0.4s"]);
   });
 
+  test("tells every letter its place and how many there are", () => {
+    const letters = spans({ text: "abc", step: 0.1 });
+    expect(letters.map((s) => s.style.getPropertyValue("--index"))).toEqual([
+      "0",
+      "1",
+      "2",
+    ]);
+    for (const letter of letters) {
+      expect(letter.style.getPropertyValue("--count")).toBe("3");
+    }
+  });
+
   test("leaves the wave to the stylesheet unless asked", () => {
     const [letter] = spans({ text: "a", step: 0.1 });
     expect(letter.style.getPropertyValue("--wave-height")).toBe("");

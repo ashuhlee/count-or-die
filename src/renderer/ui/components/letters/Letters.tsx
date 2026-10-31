@@ -24,6 +24,8 @@ export default function Letters({
           style={
             {
               "--delay": `${index * step}s`,
+              "--index": index,
+              "--count": text.length,
               ...(height !== undefined && { "--wave-height": `${height}px` }),
               ...(duration !== undefined && {
                 "--wave-duration": `${duration}s`,

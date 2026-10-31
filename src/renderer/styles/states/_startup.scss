@@ -35,7 +35,7 @@
     &::after {
       content: "";
       position: absolute;
-      inset: 0;
+      inset: 0 -28px 0 0;
       background: repeating-linear-gradient(
         -45deg,
         rgba(255, 255, 255, 0.3),
@@ -44,9 +44,19 @@
         rgba(255, 255, 255, 0) 20px
       );
       background-size: 28px 28px;
-      animation: move-stripes 2s linear infinite;
+      animation: startup-stripes 1.5s linear infinite;
+      will-change: transform;
       opacity: 0.5;
       mix-blend-mode: overlay;
     }
+  }
+}
+
+@keyframes startup-stripes {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-28px);
   }
 }

@@ -13,6 +13,14 @@
     #c0c3ff,
     #a7eaff
   );
+  --rainbow-gradient-text: linear-gradient(
+    to right,
+    #ffce95,
+    #ff9eea,
+    #aeb2ff,
+    #af93ff,
+    #8bd5ee
+  );
 }
 @font-face {
   font-family: "Silkscreen";
@@ -675,7 +683,7 @@ img {
   place-items: center;
   transform: translateY(30px);
   height: 13px;
-  filter: drop-shadow(5px 5px 0px var(--shadow-pink-005));
+  filter: drop-shadow(5px 5px 0px var(--shadow-pink-010));
 }
 .progress .pg-lines {
   grid-area: 1/1;
@@ -689,8 +697,8 @@ img {
   height: 100%;
   background: repeating-linear-gradient(
     -45deg,
-    rgba(255, 255, 255, 0.4),
-    rgba(255, 255, 255, 0.4) 5px,
+    rgba(255, 255, 255, 0.35),
+    rgba(255, 255, 255, 0.35) 5px,
     rgba(255, 255, 255, 0) 5px,
     rgba(255, 255, 255, 0) 10px
   );
@@ -1267,11 +1275,22 @@ img {
   rotate: -2deg;
 }
 #game-over .rainbow-txt {
-  color: hsla(0, 0%, 100%, 0.6);
-  background-image: var(--rainbow-gradient-bar);
+  color: hsla(0, 0%, 100%, 0.7);
+  background-image: var(--rainbow-gradient-text);
   background-clip: text;
   background-size: 100% auto;
   background-position: 0 center;
+  filter: drop-shadow(0 3px 0 rgba(206, 42, 133, 0.15));
+}
+#game-over .score-text.rainbow-txt {
+  background-image: none;
+}
+#game-over .score-text.rainbow-txt span {
+  background-image: var(--rainbow-gradient-text);
+  background-clip: text;
+  background-repeat: no-repeat;
+  background-size: calc(var(--count)*100%) 100%;
+  background-position: calc(var(--index)/max(var(--count) - 1, 1)*100%) 0;
 }
 #game-over .final-score,
 #game-over .play-again,
@@ -1412,7 +1431,7 @@ img {
 .startup-screen .startup-bar-fill::after {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: 0 -28px 0 0;
   background: repeating-linear-gradient(
     -45deg,
     rgba(255, 255, 255, 0.3),
@@ -1421,7 +1440,16 @@ img {
     rgba(255, 255, 255, 0) 20px
   );
   background-size: 28px 28px;
-  animation: move-stripes 2s linear infinite;
+  animation: startup-stripes 1.5s linear infinite;
+  will-change: transform;
   opacity: 0.5;
   mix-blend-mode: overlay;
+}
+@keyframes startup-stripes {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-28px);
+  }
 } /*# sourceMappingURL=main.css.map */
