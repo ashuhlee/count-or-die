@@ -1045,6 +1045,123 @@ img {
     0 var(--panel-pixel) 0 0 var(--panel-border);
   filter: drop-shadow(0px var(--panel-pixel) 0px var(--shadow-pink-015));
 }
+.pixel-btn {
+  --px: 5px;
+  --btn-pad-y: 1;
+  --btn-shade-rows: 2;
+  --btn-fill: #e8c0ff;
+  --btn-outline-color: var(
+    --btn-outline,
+    oklch(from var(--btn-fill) calc(l - 0.138) calc(c * 1.52) calc(h - 4.4))
+  );
+  --btn-highlight-color: var(
+    --btn-highlight,
+    oklch(from var(--btn-fill) calc(l + 0.037) calc(c * 0.7) calc(h - 1.2))
+  );
+  --btn-shade-color: var(
+    --btn-shade,
+    oklch(from var(--btn-fill) calc(l - 0.054) calc(c * 1.34) calc(h - 3.7))
+  );
+  --btn-text-shadow-color: var(
+    --btn-text-shadow,
+    oklch(from var(--btn-fill) calc(l - 0.028) calc(c * 1.21) h)
+  );
+  --btn-text-down: 0em;
+  --btn-text-right: 0em;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: calc(var(--px)* (11 + 2*var(--btn-pad-y)));
+  padding: 0 calc(var(--px)*5);
+  border: 0;
+  background: none;
+  color: #fff;
+  white-space: nowrap;
+  text-shadow: 0 calc(var(--px)/2) 0 var(--btn-text-shadow-color);
+}
+.pixel-btn .pixel-btn-label {
+  position: relative;
+  top: var(--btn-text-down);
+  left: var(--btn-text-right);
+}
+.pixel-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: var(--btn-outline-color);
+  clip-path: polygon(
+    calc(var(--px) * 2) 0,
+    calc(100% - var(--px) * 2) 0,
+    calc(100% - var(--px) * 2) var(--px),
+    calc(100% - var(--px)) var(--px),
+    calc(100% - var(--px)) calc(var(--px) * 2),
+    100% calc(var(--px) * 2),
+    100% calc(100% - var(--px) * 2),
+    calc(100% - var(--px)) calc(100% - var(--px) * 2),
+    calc(100% - var(--px)) calc(100% - var(--px)),
+    calc(100% - var(--px) * 2) calc(100% - var(--px)),
+    calc(100% - var(--px) * 2) 100%,
+    calc(var(--px) * 2) 100%,
+    calc(var(--px) * 2) calc(100% - var(--px)),
+    var(--px) calc(100% - var(--px)),
+    var(--px) calc(100% - var(--px) * 2),
+    0 calc(100% - var(--px) * 2),
+    0 calc(var(--px) * 2),
+    var(--px) calc(var(--px) * 2),
+    var(--px) var(--px),
+    calc(var(--px) * 2) var(--px)
+  );
+}
+.pixel-btn::after {
+  content: "";
+  position: absolute;
+  inset: var(--px);
+  z-index: -1;
+  clip-path: polygon(
+    var(--px) 0,
+    calc(100% - var(--px)) 0,
+    calc(100% - var(--px)) var(--px),
+    100% var(--px),
+    100% calc(100% - var(--px)),
+    calc(100% - var(--px)) calc(100% - var(--px)),
+    calc(100% - var(--px)) 100%,
+    var(--px) 100%,
+    var(--px) calc(100% - var(--px)),
+    0 calc(100% - var(--px)),
+    0 var(--px),
+    var(--px) var(--px)
+  );
+  background:
+    linear-gradient(var(--btn-highlight-color), var(--btn-highlight-color))
+      top/100% var(--px) no-repeat,
+    linear-gradient(var(--btn-highlight-color), var(--btn-highlight-color)) left
+      0 top var(--px)/var(--px) calc(var(--px)*4) no-repeat,
+    linear-gradient(var(--btn-highlight-color), var(--btn-highlight-color)) left
+      var(--px) top var(--px)/var(--px) var(--px) no-repeat,
+    linear-gradient(var(--btn-highlight-color), var(--btn-highlight-color))
+      right 0 top var(--px)/var(--px) calc(var(--px)*4) no-repeat,
+    linear-gradient(var(--btn-highlight-color), var(--btn-highlight-color))
+      right var(--px) top var(--px)/var(--px) var(--px) no-repeat,
+    linear-gradient(var(--btn-shade-color), var(--btn-shade-color)) bottom/100%
+      calc(var(--px)*var(--btn-shade-rows)) no-repeat,
+    linear-gradient(var(--btn-shade-color), var(--btn-shade-color)) left 0
+      bottom calc(var(--px) * var(--btn-shade-rows))/var(--px) calc(var(--px)*2)
+      no-repeat,
+    linear-gradient(var(--btn-shade-color), var(--btn-shade-color)) left
+      var(--px) bottom calc(var(--px) * var(--btn-shade-rows))/var(--px)
+      var(--px) no-repeat,
+    linear-gradient(var(--btn-shade-color), var(--btn-shade-color)) right 0
+      bottom calc(var(--px) * var(--btn-shade-rows))/var(--px) calc(var(--px)*2)
+      no-repeat,
+    linear-gradient(var(--btn-shade-color), var(--btn-shade-color)) right
+      var(--px) bottom calc(var(--px) * var(--btn-shade-rows))/var(--px)
+      var(--px) no-repeat,
+    var(--btn-fill);
+}
 #game-over {
   --mask-size: 100% 200%;
   pointer-events: none;
