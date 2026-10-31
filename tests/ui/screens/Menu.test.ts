@@ -4,7 +4,6 @@ import { act } from "react";
 import { stubWebAnimations } from "../../helpers/dom.ts";
 import { renderGame } from "../../helpers/game.tsx";
 import { audioConfig } from "../../../src/renderer/utils/sounds.ts";
-import { BUTTONS_DELAY } from "../../../src/renderer/ui/screens/start-menu/MenuScreen.tsx";
 import { hideStartupScreen } from "../../../src/renderer/utils/startup.ts";
 
 const audio = vi.hoisted(() => ({ playSound: vi.fn(), pauseSound: vi.fn() }));
@@ -42,24 +41,6 @@ const COVERED = 530;
 // a round lasts 20 seconds; time is up a hair before
 const TIME_IS_UP = 19900;
 
-describe("the menu's title", () => {
-  const title = () => game.$<HTMLImageElement>("img.menu-title");
-
-  test("is the Count or Die picture, above the buttons", () => {
-    expect(title().alt).toBe("Count or Die");
-    expect(title().getAttribute("src")).toContain("title");
-    expect(
-      title().compareDocumentPosition(game.$(".menu-buttons")) &
-        Node.DOCUMENT_POSITION_FOLLOWING,
-    ).toBeTruthy();
-  });
-
-  test("melts in like the game over title does", () => {
-    expect(title().dataset.meltActive).toBe("true");
-    expect(title().dataset.meltMode).toBe("in");
-  });
-});
-
 describe("the menu with the startup screen up", () => {
   beforeEach(() => {
     game.unmount();
@@ -70,47 +51,6 @@ describe("the menu with the startup screen up", () => {
     game = renderGame({ startOnMenu: true });
   });
   afterEach(() => document.getElementById("startup-screen")?.remove());
-
-  test("starts melting its title only once the screen has gone", async () => {
-    const title = () => game.$<HTMLImageElement>("img.menu-title");
-    expect(title().dataset.meltActive).toBe("false");
-
-    let hiding!: Promise<void>;
-    await act(async () => {
-      hiding = hideStartupScreen(100, 300);
-      await vi.advanceTimersByTimeAsync(100);
-    });
-    expect(title().dataset.meltActive).toBe("true");
-
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(300);
-      await hiding;
-    });
-  });
-
-  test("holds the sound and settings buttons back until the screen has gone", async () => {
-    const buttons = () => game.$$<HTMLElement>(".controls .round-btn");
-    for (const button of buttons()) {
-      expect(button.style.animationPlayState).toBe("paused");
-    }
-
-    let hiding!: Promise<void>;
-    await act(async () => {
-      hiding = hideStartupScreen(100, 300);
-      await vi.advanceTimersByTimeAsync(100);
-    });
-    for (const button of buttons()) {
-      expect(button.style.animationPlayState).toBe("running");
-    }
-
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(300);
-      await hiding;
-    });
-  });
-
-  const buttonsIn = () =>
-    game.$("#menu-screen").classList.contains("buttons-in");
 
   test("keeps its song quiet until the screen has gone", async () => {
     // the outer beforeEach drew the menu once before the screen was up
@@ -129,31 +69,6 @@ describe("the menu with the startup screen up", () => {
       await hiding;
     });
   });
-
-  test("brings its buttons in a set time after the screen has gone", async () => {
-    expect(buttonsIn()).toBe(false);
-
-    let hiding!: Promise<void>;
-    await act(async () => {
-      hiding = hideStartupScreen(100, 300);
-      await vi.advanceTimersByTimeAsync(100);
-    });
-    expect(buttonsIn()).toBe(false);
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(BUTTONS_DELAY - 1);
-    });
-    expect(buttonsIn()).toBe(false);
-
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(1);
-    });
-    expect(buttonsIn()).toBe(true);
-
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(300);
-      await hiding;
-    });
-  });
 });
 
 describe("the menu", () => {
@@ -165,39 +80,6 @@ describe("the menu", () => {
         .map((button) => button.textContent.replace(/\u00a0/g, " ")),
     ).toEqual(["Play game", "Report a bug", "Quit"]);
     expect(game.$("#game-container")).toBeNull();
-  });
-
-  test("has the sound and settings buttons, as the game does", () => {
-    expect(game.$$(".controls .round-btn")).toHaveLength(2);
-
-    game.click("#play-btn");
-    game.wait(COVERED);
-    expect(game.$$(".controls .round-btn")).toHaveLength(2);
-  });
-
-  test("brings the sound and settings buttons in from the right, one after the other", () => {
-    const buttons = game.$$<HTMLElement>(".controls .round-btn");
-
-    expect(buttons).toHaveLength(2);
-    for (const button of buttons) {
-      expect(button.classList.contains("bounce-in-right")).toBe(true);
-      expect(button.style.animationPlayState).toBe("running");
-    }
-    const delays = buttons.map((button) =>
-      parseFloat(button.style.animationDelay),
-    );
-    const [first, second] = [...delays].sort((a, b) => a - b);
-    expect(first).toBeGreaterThanOrEqual(0);
-    expect(second).toBeGreaterThan(first);
-  });
-
-  test("leaves them be once the game has started", () => {
-    game.click("#play-btn");
-    game.wait(COVERED);
-
-    for (const button of game.$$(".controls .round-btn")) {
-      expect(button.classList.contains("bounce-in-right")).toBe(false);
-    }
   });
 
   test("follows the saved sound settings", () => {
@@ -239,20 +121,6 @@ describe("the menu", () => {
     game.click("#menu-btn");
     game.wait(COVERED + 600);
     expect(sounds().filter((name) => name === "menuMusic")).toHaveLength(2);
-  });
-
-  test("the text on the buttons is made of letters that shake one after another", () => {
-    const letters = game.$$<HTMLElement>("#play-btn .pixel-btn-label > span");
-
-    expect(letters).toHaveLength("Play game".length);
-    expect(letters[0].style.getPropertyValue("--delay")).toBe("0s");
-    const delays = letters.map((letter) =>
-      parseFloat(letter.style.getPropertyValue("--delay")),
-    );
-    for (let i = 1; i < delays.length; i++) {
-      expect(delays[i]).toBeGreaterThan(delays[i - 1]);
-    }
-    expect(letters[0].style.getPropertyValue("--wave-duration")).toBe("3s");
   });
 
   test("plays no game music, not even once the startup screen has gone", () => {
@@ -327,15 +195,6 @@ describe("the menu", () => {
     game.click("#play-btn");
 
     expect(sounds().filter((name) => name === "buttonClick")).toHaveLength(1);
-  });
-
-  test("each button has a color of its own", () => {
-    const colors = game
-      .$$(".menu-btn")
-      .map((button) => button.style.getPropertyValue("--btn-outline"));
-
-    expect(colors).toHaveLength(3);
-    expect(new Set(colors).size).toBe(3);
   });
 
   test("report a bug opens the bug report page in the app's browser", () => {

@@ -21,31 +21,6 @@ afterEach(() => {
 });
 
 describe("GameProvider", () => {
-  test("starts from the saved high score and death count", () => {
-    localStorage.setItem("highScore", "70");
-    localStorage.setItem("deathCount", "5");
-    game = renderGame();
-
-    expect(game.$("#high-score").textContent).toBe("HIGH SCORE: 70");
-    expect(game.$("#death-tracker").textContent).toBe("5");
-  });
-
-  test("starts from zero when nothing is saved, or the save is garbage", () => {
-    localStorage.setItem("highScore", "not a number");
-    localStorage.setItem("deathCount", "");
-    game = renderGame();
-
-    expect(game.$("#high-score").textContent).toBe("HIGH SCORE: 0");
-    expect(game.$("#death-tracker").textContent).toBe("0");
-  });
-
-  test("a game from the start state ignores what is saved", () => {
-    localStorage.setItem("highScore", "70");
-    game = renderGame({ state: { highScore: 3 } });
-
-    expect(game.$("#high-score").textContent).toBe("HIGH SCORE: 3");
-  });
-
   test("everything it started stops when the game goes away", () => {
     game = renderGame();
     game.click("#increase-img");

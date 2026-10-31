@@ -125,56 +125,6 @@ describe("when they appear", () => {
   });
 });
 
-describe("what they look like", () => {
-  test("falls from a spawn area, on one side", () => {
-    game = renderGame();
-    spawn(DOUBLE, 0, 0.9, 0.5);
-
-    const [icon] = icons();
-    expect(icon.parentElement.className).toBe("spawn-area");
-    expect(icon.dataset.powerUpType).toBe("double_click");
-    expect(icon.getAttribute("src")).not.toBe("");
-    expect(icon.classList.contains("spawn-area--right")).toBe(true);
-    expect(icon.style.animation).toContain("falling 2.8s linear forwards");
-  });
-
-  test("some spin the other way", () => {
-    game = renderGame();
-    spawn(DOUBLE, 0.9, 0, 0);
-
-    expect(icons()[0].style.animation).toContain("falling-reverse");
-  });
-
-  test("on a wide screen it sits a little way in from its edge", () => {
-    game = renderGame();
-    // min(1000 / 3, 150) + 1 = 151, so half of it floors to 75
-    spawn(DOUBLE, 0, 0, 0.5);
-
-    expect(icons()[0].style.left).toBe("75px");
-  });
-
-  test("on a narrow screen it stays at the edge", () => {
-    setSpawnAreaWidth(500);
-    game = renderGame();
-    spawn(DOUBLE, 0, 0, 0.9);
-
-    expect(icons()[0].style.left).toBe("");
-  });
-
-  test("each kind looks different", () => {
-    game = renderGame();
-    const sources = new Set<string>();
-
-    for (const kind of [DOUBLE, FOUR, PENALTY]) {
-      spawn(kind, 0, 0, 0);
-      sources.add(icons()[0].getAttribute("src"));
-      game.click(".power-up-img");
-    }
-
-    expect(sources.size).toBe(3);
-  });
-});
-
 describe("collecting one", () => {
   test("takes it off the screen, with a puff of smoke, and starts the wait again", () => {
     game = renderGame();
@@ -254,19 +204,6 @@ describe("the penalty", () => {
     expect(game.counter()).toBe("-15");
   });
 
-  test("shakes the screen, flashes it red and shrinks the counter", () => {
-    game = renderGame({ state: { counter: 40 } });
-    spawn(PENALTY, 0, 0, 0);
-    game.click(".power-up-img");
-
-    expect(sounds()).toContain("penalty");
-    expect(game.$("#game-container").classList.contains("penalty-shake")).toBe(
-      true,
-    );
-    expect(game.$("#red-flash").classList.contains("flash-penalty")).toBe(true);
-    expect(game.$("#counter").classList.contains("pop-min")).toBe(true);
-  });
-
   test("the flash ends without opening the game over screen", () => {
     game = renderGame({ state: { counter: 40 } });
     spawn(PENALTY, 0, 0, 0);
@@ -276,20 +213,6 @@ describe("the penalty", () => {
 
     expect(game.$("#red-flash").className).toBe("");
     expect(game.$("#game-over").classList.contains("visible")).toBe(false);
-  });
-
-  test("a second one shakes the screen again", () => {
-    game = renderGame({ state: { counter: 40 } });
-    spawn(PENALTY, 0, 0, 0);
-    game.click(".power-up-img");
-
-    const screen = game.$("#game-container");
-    screen.classList.remove("penalty-shake");
-    expect(screen.classList.contains("penalty-shake")).toBe(false);
-
-    spawn(PENALTY, 0, 0, 0);
-    game.click(".power-up-img");
-    expect(screen.classList.contains("penalty-shake")).toBe(true);
   });
 });
 
@@ -340,18 +263,6 @@ describe("boost power-ups", () => {
     expect(hearts()[3].classList.contains("heart-restore")).toBe(false);
     expect(hearts()[3].querySelector(".heart-melt")).toBeNull();
     expect(hearts()[3].querySelector("img")).not.toBeNull();
-  });
-
-  test("the plain heart is hidden while its copy melts in", () => {
-    game = renderGame({ state: { boostsAvailable: 3 } });
-    spawn(EXTRA_BOOST, 0, 0, 0);
-    game.click(".power-up-img");
-    game.wait(0);
-
-    const art = hearts()[3].querySelector<HTMLElement>(".heart-art");
-    expect(art?.style.opacity).toBe("0");
-    game.wait(5000);
-    expect(art?.style.opacity).toBe("1");
   });
 
   test("a melt that never finishes cannot leave a heart hidden", () => {

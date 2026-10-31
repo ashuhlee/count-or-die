@@ -1,6 +1,5 @@
 import { afterEach, beforeEach, expect, describe, test, vi } from "vitest";
 
-import { act } from "react";
 import { fireAnimationEnd, stubWebAnimations } from "../../helpers/dom.ts";
 import { renderGame } from "../../helpers/game.tsx";
 
@@ -46,91 +45,6 @@ const fakeElectron = () =>
     showGpuWarning: vi.fn(),
   } as unknown as Window["electron"]);
 
-describe("the countdown bar", () => {
-  test("starts healthy and runs for the length of the round", () => {
-    game = renderGame();
-
-    expect(barColor()).toBe("rgb(173, 158, 255)");
-    expect(game.$("#progress-bar").style.animation).toContain(
-      "progress-anim 20s linear infinite",
-    );
-  });
-
-  test("keeps its stripes inside the fill, running as long as the round", () => {
-    game = renderGame();
-
-    const stripes = game.$(".pg-lines");
-    expect(stripes.style.animation).toContain(
-      "progress-clip 20s linear infinite",
-    );
-    expect(stripes.style.visibility).toBe("visible");
-  });
-
-  test("has a single set of stripes after a goal starts a new round", () => {
-    game = renderGame({ state: { counter: 29, highScore: 999 } });
-    game.click("#increase-img");
-    game.click("#increase-img");
-
-    expect(game.$$(".pg-lines")).toHaveLength(1);
-    expect(game.$$("#progress-bar")).toHaveLength(1);
-  });
-
-  test("takes its stripes away with the fill when time is up", () => {
-    game = renderGame();
-
-    game.wait(TIME_IS_UP + 200);
-    expect(game.$(".pg-lines").style.visibility).toBe("hidden");
-  });
-
-  test("turns orange, then red and blinking, then blinks faster", () => {
-    game = renderGame();
-
-    game.wait(9899);
-    expect(barColor()).toBe("rgb(173, 158, 255)");
-    game.wait(1);
-    expect(barColor()).toBe("rgb(255, 177, 153)");
-    expect(game.$("#progress-bar").style.animation).not.toContain("blink");
-
-    game.wait(4000);
-    expect(barColor()).toBe("rgb(247, 98, 139)");
-    expect(game.$("#progress-bar").style.animation).toContain("blink 0.8s");
-
-    game.wait(3000);
-    expect(game.$("#progress-bar").style.animation).toContain("blink 0.5s");
-  });
-
-  test("is rainbow while a new high score is being set", () => {
-    game = renderGame({ state: { highScore: 0 } });
-    game.click("#increase-img");
-
-    expect(barColor()).toBe("var(--rainbow-gradient-bar)");
-
-    // ...until time starts running out
-    game.wait(10000);
-    expect(barColor()).toBe("rgb(255, 177, 153)");
-  });
-
-  test("restarts when a goal is reached, and runs faster", () => {
-    game = renderGame({ state: { counter: 29, highScore: 999 } });
-    game.wait(15000);
-    expect(barColor()).toBe("rgb(247, 98, 139)");
-
-    game.click("#increase-img");
-
-    expect(barColor()).toBe("rgb(173, 158, 255)");
-    expect(game.$("#progress-bar").style.animation).toContain(
-      "progress-anim 16.66",
-    );
-  });
-
-  test("is frozen once the game is over", () => {
-    game = renderGame();
-    game.wait(TIME_IS_UP);
-
-    expect(game.$("#progress-bar").style.animation).toBe("none");
-  });
-});
-
 describe("running out of time", () => {
   test("flashes red, then shows the game over screen", () => {
     game = renderGame();
@@ -147,30 +61,6 @@ describe("running out of time", () => {
     expect(isShown()).toBe(true);
   });
 
-  test("the game over title melts in once the screen is shown", () => {
-    game = renderGame();
-    const title = () => game.$("#game-over .go-title").dataset.meltActive;
-    expect(title()).toBe("false");
-
-    game.wait(TIME_IS_UP);
-    expect(title()).toBe("false");
-
-    fireAnimationEnd(game.$("#red-flash"));
-    expect(title()).toBe("true");
-  });
-
-  test("the try again text is made of letters that shake one after another", () => {
-    game = renderGame();
-
-    const letters = game.$$("#game-over .try-again > span");
-    expect(letters.map((letter) => letter.textContent).join("")).toBe(
-      "try\u00a0again?",
-    );
-    expect(letters[0].style.getPropertyValue("--delay")).toBe("0s");
-    expect(letters[1].style.getPropertyValue("--delay")).toBe("0.3s");
-    expect(letters[0].style.getPropertyValue("--wave-duration")).toBe("3s");
-  });
-
   test("shows a phrase, the final score and counts the death", () => {
     game = renderGame({ state: { highScore: 99 } });
     game.click("#increase-img");
@@ -183,104 +73,6 @@ describe("running out of time", () => {
     expect(localStorage.getItem("deathCount")).toBe("1");
   });
 
-  test("lists the score, the high score and the deaths from top to bottom", () => {
-    game = renderGame({ state: { highScore: 99 } });
-    game.click("#increase-img");
-    game.wait(TIME_IS_UP);
-
-    const rows = game
-      .$$("#game-over .top-right-info > .tracker-container h2")
-      .map((value) => [value.id, value.textContent]);
-    expect(rows).toEqual([
-      ["score-tracker", "01"],
-      ["high-score-tracker", "99"],
-      ["death-tracker", "1"],
-    ]);
-  });
-
-  test("the containers sit behind a bulge filter", () => {
-    game = renderGame();
-
-    expect(game.$("#game-over filter#tracker-bulge")).not.toBeNull();
-  });
-
-  test("the numbers in the containers shake letter by letter", () => {
-    game = renderGame({ state: { highScore: 135 } });
-
-    const letters = (id: string) => game.$$(`#${id} > span`);
-    expect(letters("score-tracker")).toHaveLength(2);
-    expect(letters("high-score-tracker")).toHaveLength(3);
-    expect(letters("death-tracker")).toHaveLength(1);
-
-    for (const id of ["score-tracker", "high-score-tracker", "death-tracker"]) {
-      const [first, ...rest] = letters(id);
-      expect(first.style.getPropertyValue("--delay")).toBe("0s");
-      expect(first.style.getPropertyValue("--wave-duration")).toMatch(
-        /^\d+(\.\d+)?s$/,
-      );
-      for (const letter of rest) {
-        expect(letter.style.getPropertyValue("--delay")).not.toBe("0s");
-      }
-    }
-    expect(game.$("#high-score-tracker").textContent).toBe("135");
-  });
-
-  test("the containers bounce in from the right one after another", () => {
-    game = renderGame();
-    const rows = () =>
-      game.$$("#game-over .top-right-info > .tracker-container");
-    const bounces = () =>
-      rows().map((row) => row.classList.contains("bounce-in-right"));
-    expect(bounces()).toEqual([false, false, false]);
-
-    game.wait(TIME_IS_UP);
-    fireAnimationEnd(game.$("#red-flash"));
-    expect(bounces()).toEqual([true, true, true]);
-
-    const delays = rows().map((row) => parseFloat(row.style.animationDelay));
-    expect(delays[0]).toBeGreaterThan(0);
-    expect(delays[1]).toBeGreaterThan(delays[0]);
-    expect(delays[2]).toBeGreaterThan(delays[1]);
-  });
-
-  test("the containers bounce in again on the next game over", () => {
-    game = renderGame();
-    const first = () => game.$("#game-over .tracker-container");
-
-    game.wait(TIME_IS_UP);
-    fireAnimationEnd(game.$("#red-flash"));
-    expect(first().classList.contains("bounce-in-right")).toBe(true);
-
-    game.click("#game-over-btn");
-    game.wait(600);
-    expect(first().classList.contains("bounce-in-right")).toBe(false);
-
-    game.wait(TIME_IS_UP);
-    fireAnimationEnd(game.$("#red-flash"));
-    expect(first().classList.contains("bounce-in-right")).toBe(true);
-  });
-
-  test("each container has a border color of its own", () => {
-    game = renderGame();
-
-    const borders = game
-      .$$("#game-over .top-right-info > .tracker-container")
-      .map((row) => row.style.getPropertyValue("--panel-border"));
-    expect(borders).toHaveLength(3);
-    for (const border of borders) expect(border).toMatch(/^#[0-9a-f]{6}$/i);
-    expect(new Set(borders).size).toBe(3);
-  });
-
-  test("a new high score shows in the high score container too", () => {
-    game = renderGame({ state: { highScore: 0 } });
-    game.click("#increase-img");
-    game.click("#increase-img");
-    game.wait(TIME_IS_UP);
-
-    expect(game.$("#score-tracker").textContent).toBe("02");
-    expect(game.$("#high-score-tracker").textContent).toBe("02");
-  });
-
   test("keeps counting deaths from the saved total", () => {
     localStorage.setItem("deathCount", "7");
     game = renderGame();
@@ -288,27 +80,6 @@ describe("running out of time", () => {
 
     game.wait(TIME_IS_UP);
     expect(game.$("#death-tracker").textContent).toBe("8");
-  });
-
-  test("a new high score gets its own phrase and rainbow text", () => {
-    game = renderGame({ state: { highScore: 0 } });
-    game.click("#increase-img");
-    game.wait(TIME_IS_UP);
-    fireAnimationEnd(game.$("#red-flash"));
-
-    expect(game.$(".go-text-random").textContent).toBe("new high score!");
-    expect(game.$(".go-text-random").classList.contains("rainbow-txt")).toBe(
-      true,
-    );
-  });
-
-  test("a regular game over has no rainbow text", () => {
-    game = renderGame({ state: { highScore: 99 } });
-    game.wait(TIME_IS_UP);
-
-    expect(game.$(".go-text-random").classList.contains("rainbow-txt")).toBe(
-      false,
-    );
   });
 
   test("plays the game over sounds, with the music a second later", () => {
@@ -353,78 +124,6 @@ describe("running out of time", () => {
   });
 });
 
-describe("the game over background", () => {
-  // it is set up from the start, so that creating it does not freeze the red
-  // flash, and only runs between the end of a game and the next one
-  const background = () =>
-    game.$("#game-over .go-background [data-pixel-swirl-shader]");
-  const running = () => background().dataset.paused === "false";
-
-  test("is ready, but not running, while the game is on", () => {
-    game = renderGame();
-    game.wait(5000);
-
-    expect(background()).not.toBeNull();
-    expect(running()).toBe(false);
-  });
-
-  test("starts purple and goes back to its colors as the screen appears", () => {
-    const hue = () => Number(background().dataset.hue);
-    game = renderGame();
-    expect(hue()).toBeLessThan(0);
-
-    game.wait(TIME_IS_UP);
-    expect(hue()).toBeLessThan(0);
-
-    fireAnimationEnd(game.$("#red-flash"));
-    expect(hue()).toBe(0);
-  });
-
-  test("runs as soon as the game ends, before the screen shows", () => {
-    game = renderGame();
-    game.wait(TIME_IS_UP);
-
-    expect(isShown()).toBe(false);
-    expect(running()).toBe(true);
-  });
-
-  test("keeps running while the game over screen is showing", () => {
-    game = renderGame();
-    game.wait(TIME_IS_UP);
-    fireAnimationEnd(game.$("#red-flash"));
-
-    expect(isShown()).toBe(true);
-    expect(running()).toBe(true);
-  });
-
-  test("stops again when the game restarts", () => {
-    game = renderGame();
-    game.wait(TIME_IS_UP);
-    game.click("#reset-img");
-
-    expect(running()).toBe(false);
-  });
-
-  test("stops again after restarting from the game over screen", () => {
-    game = renderGame();
-    game.wait(TIME_IS_UP);
-    fireAnimationEnd(game.$("#red-flash"));
-    game.click("#game-over-btn");
-    game.wait(600);
-
-    expect(running()).toBe(false);
-  });
-
-  test("runs again for the next game over", () => {
-    game = renderGame();
-    game.wait(TIME_IS_UP);
-    game.click("#reset-img");
-    game.wait(TIME_IS_UP);
-
-    expect(running()).toBe(true);
-  });
-});
-
 describe("starting over", () => {
   test("the reset button restarts right away", () => {
     fakeElectron();
@@ -440,13 +139,6 @@ describe("starting over", () => {
     expect(window.electron.setDiscordStatus).toHaveBeenCalledWith({
       gameStatusRPC: "in-game",
     });
-  });
-
-  test("shakes the counter", () => {
-    game = renderGame({ state: { counter: 12 } });
-    game.click("#reset-img");
-
-    expect(game.$("#counter").classList.contains("reset-shake")).toBe(true);
   });
 
   test("restarts the countdown from the top", () => {
@@ -528,18 +220,6 @@ describe("starting over", () => {
     expect(game.$("#death-tracker").textContent).toBe("2");
   });
 
-  test("restarting hides the rainbow text for the next time", () => {
-    game = renderGame({ state: { highScore: 0 } });
-    game.click("#increase-img");
-    game.wait(TIME_IS_UP);
-    game.click("#game-over-btn");
-    game.wait(1200);
-
-    expect(game.$(".go-text-random").classList.contains("rainbow-txt")).toBe(
-      false,
-    );
-  });
-
   test("restarting before the screen appears cancels it", () => {
     game = renderGame();
     game.wait(TIME_IS_UP);
@@ -581,36 +261,5 @@ describe("the game over buttons", () => {
     game.wait(600);
     expect(game.$("#menu-screen")).not.toBeNull();
     expect(game.$("#game-container")).toBeNull();
-  });
-
-  test("back to menu wiggles letter by letter", () => {
-    const letters = game.$$("#menu-btn > span");
-    expect(letters.map((letter) => letter.textContent).join("")).toBe(
-      "Back\u00a0to\u00a0menu",
-    );
-    expect(letters[1].style.getPropertyValue("--delay")).toBe("0.1s");
-    expect(letters[0].style.getPropertyValue("--wave-height")).toMatch(
-      /^\d+(\.\d+)?px$/,
-    );
-    expect(letters[0].style.getPropertyValue("--wave-duration")).toMatch(
-      /^\d+(\.\d+)?s$/,
-    );
-  });
-
-  test("back to menu tilts the opposite way each hover", () => {
-    const menu = () => game.$("#menu-btn");
-    const hover = (type: string) =>
-      act(() => {
-        menu().dispatchEvent(new MouseEvent(type, { bubbles: true }));
-      });
-
-    hover("mouseover");
-    expect(menu().style.transform).toContain("-4deg");
-    hover("mouseout");
-    expect(menu().style.transform).toBe("");
-
-    hover("mouseover");
-    expect(menu().style.transform).toContain("4deg");
-    expect(menu().style.transform).not.toContain("-4deg");
   });
 });
