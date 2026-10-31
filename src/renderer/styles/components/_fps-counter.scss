@@ -1,0 +1,14 @@
+.fps-counter {
+  position: fixed;
+  top: 6px;
+  left: 8px;
+  z-index: 6;
+  margin: 0;
+  padding: 4px;
+  font-family: "Silkscreen", sans-serif;
+  font-size: 16px;
+  letter-spacing: -1px;
+  color: white;
+  opacity: 1;
+  pointer-events: none;
+}
