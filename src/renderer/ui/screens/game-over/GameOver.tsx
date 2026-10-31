@@ -37,7 +37,7 @@ const TRACKER_BORDERS = {
   deaths: "#E3E0EF",
 };
 
-const TRACKER_ENTRANCE = { delay: 0.5, step: 0.16 };
+const TRACKER_ENTRANCE = { delay: 0.3, step: 0.16 };
 
 const trackerStyle = (color: string, index: number) =>
   ({
