@@ -230,7 +230,7 @@ describe("running out of time", () => {
     const rows = () =>
       game.$$("#game-over .top-right-info > .tracker-container");
     const bounces = () =>
-      rows().map((row) => row.classList.contains("tracker-enter"));
+      rows().map((row) => row.classList.contains("bounce-in-right"));
     expect(bounces()).toEqual([false, false, false]);
 
     game.wait(TIME_IS_UP);
@@ -249,15 +249,15 @@ describe("running out of time", () => {
 
     game.wait(TIME_IS_UP);
     fireAnimationEnd(game.$("#red-flash"));
-    expect(first().classList.contains("tracker-enter")).toBe(true);
+    expect(first().classList.contains("bounce-in-right")).toBe(true);
 
     game.click("#game-over-btn");
     game.wait(600);
-    expect(first().classList.contains("tracker-enter")).toBe(false);
+    expect(first().classList.contains("bounce-in-right")).toBe(false);
 
     game.wait(TIME_IS_UP);
     fireAnimationEnd(game.$("#red-flash"));
-    expect(first().classList.contains("tracker-enter")).toBe(true);
+    expect(first().classList.contains("bounce-in-right")).toBe(true);
   });
 
   test("each container has a border color of its own", () => {

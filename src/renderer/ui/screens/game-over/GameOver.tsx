@@ -57,7 +57,7 @@ export default function GameOver() {
   const view = useGameOverView();
 
   const rainbowClass = view.rainbow ? " rainbow-txt" : "";
-  const trackerClass = `tracker-container${view.visible ? " tracker-enter" : ""}`;
+  const trackerClass = `tracker-container${view.visible ? " bounce-in-right" : ""}`;
 
   return (
     <div

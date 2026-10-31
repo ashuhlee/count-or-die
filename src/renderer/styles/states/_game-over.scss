@@ -157,10 +157,6 @@
     gap: 28px;
     filter: url(#tracker-bulge);
   }
-  .tracker-container.tracker-enter {
-    --bounce: 16px;
-    animation: bounce-in-right-soft 1s both;
-  }
   .tracker-container {
     height: 30px;
     width: fit-content;
