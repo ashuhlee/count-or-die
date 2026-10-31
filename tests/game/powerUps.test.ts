@@ -58,11 +58,11 @@ describe("choosePowerUp", () => {
 
 describe("game over phrases", () => {
   test("a regular game over", () => {
-    expect(pickGameOverPhrase(false, 0)).toBe("you died lolz");
+    expect(pickGameOverPhrase(false, 0)).toBe("You died lolz");
 
     const last = pickGameOverPhrase(false, 0.99);
     expect(last).toBeTruthy();
-    expect(last).not.toBe("you died lolz");
+    expect(last).not.toBe("You died lolz");
   });
 
   test("every roll gets a regular phrase, and several are in use", () => {

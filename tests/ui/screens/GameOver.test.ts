@@ -177,7 +177,7 @@ describe("running out of time", () => {
     game.wait(TIME_IS_UP);
     fireAnimationEnd(game.$("#red-flash"));
 
-    expect(game.$(".go-text-random").textContent).toBe("you died lolz");
+    expect(game.$(".go-text-random").textContent).toBe("You died lolz");
     expect(game.$("#score-tracker").textContent).toBe("01");
     expect(game.$("#death-tracker").textContent).toBe("1");
     expect(localStorage.getItem("deathCount")).toBe("1");
