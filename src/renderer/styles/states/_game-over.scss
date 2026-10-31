@@ -87,7 +87,6 @@
     }
     .ghost {
       opacity: 1;
-      transition: opacity 0.3s ease 0.9s;
       animation: hover-ghost 3s infinite ease-in-out;
     }
     .skull-floor {
@@ -245,6 +244,11 @@
     left: calc(50% + 90px);
     z-index: 2;
     image-rendering: auto;
+
+    img,
+    canvas {
+      image-rendering: auto;
+    }
   }
   .skull-floor {
     transform: rotate(-8deg);
@@ -263,7 +267,7 @@
     .back-to-menu {
       z-index: -5;
       position: relative;
-      padding: 5px;
+      padding: 6px;
       margin-top: 30px;
       font-family: "serious1", sans-serif;
       font-size: 20px;
@@ -304,7 +308,7 @@
         height: 19px;
         left: 0px;
         opacity: 0.8;
-        background-color: #ababff;
+        background-color: #a1a1ff;
         border-radius: 2px;
         transition: all 0.3s ease-out;
       }

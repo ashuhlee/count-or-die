@@ -159,6 +159,50 @@ describe("running out of time", () => {
     expect(title()).toBe("true");
   });
 
+  test("the try again text is made of letters that shake one after another", () => {
+    game = renderGame();
+
+    const letters = game.$$("#game-over .try-again > span");
+    expect(letters.map((letter) => letter.textContent).join("")).toBe(
+      "try\u00a0again?",
+    );
+    expect(letters[0].style.getPropertyValue("--delay")).toBe("0s");
+    expect(letters[1].style.getPropertyValue("--delay")).toBe("0.3s");
+    expect(letters[0].style.getPropertyValue("--wave-duration")).toBe("3s");
+  });
+
+  test("the score shakes the same way, one letter after another", () => {
+    game = renderGame();
+
+    const letters = game.$$("#game-over .score-text > span");
+    expect(letters.length).toBeGreaterThan(1);
+    expect(letters[1].style.getPropertyValue("--delay")).toBe("0.3s");
+    expect(letters[0].style.getPropertyValue("--wave-duration")).toBe("3s");
+    expect(letters[0].style.getPropertyValue("--wave-height")).toBe("");
+  });
+
+  test("the ghost melts in with the title, and keeps hovering", () => {
+    game = renderGame();
+    const ghost = () => game.$("#game-over .ghost img").dataset.meltActive;
+    expect(ghost()).toBe("false");
+
+    game.wait(TIME_IS_UP);
+    fireAnimationEnd(game.$("#red-flash"));
+    expect(ghost()).toBe("true");
+    expect(game.$("#game-over .ghost").querySelectorAll("img")).toHaveLength(1);
+  });
+
+  test("the ghost brings its own colors for the melt", () => {
+    game = renderGame();
+    const colors = JSON.parse(
+      game.$("#game-over .ghost img").dataset.meltColors,
+    );
+    expect(Object.keys(colors).sort()).toEqual(
+      ["cinder", "edge", "ember", "flash", "shadow", "sparkA", "sparkB"].sort(),
+    );
+    expect(game.$("#game-over .go-title").dataset.meltColors).toBe("{}");
+  });
+
   test("shows a phrase, the final score and counts the death", () => {
     game = renderGame({ state: { highScore: 99 } });
     game.click("#increase-img");
@@ -474,6 +518,20 @@ describe("the game over buttons", () => {
 
     game.wait(500);
     expect(alert).toHaveBeenCalledTimes(1);
+  });
+
+  test("back to menu wiggles letter by letter", () => {
+    const letters = game.$$("#menu-btn > span");
+    expect(letters.map((letter) => letter.textContent).join("")).toBe(
+      "back\u00a0to\u00a0menu",
+    );
+    expect(letters[1].style.getPropertyValue("--delay")).toBe("0.1s");
+    expect(letters[0].style.getPropertyValue("--wave-height")).toMatch(
+      /^\d+(\.\d+)?px$/,
+    );
+    expect(letters[0].style.getPropertyValue("--wave-duration")).toMatch(
+      /^\d+(\.\d+)?s$/,
+    );
   });
 
   test("back to menu tilts the opposite way each hover", () => {

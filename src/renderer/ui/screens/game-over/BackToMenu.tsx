@@ -1,6 +1,7 @@
 import { useRef, useState, type CSSProperties } from "react";
 
 import { playSound } from "../../../utils/sounds.ts";
+import Letters from "../../components/letters/Letters.tsx";
 
 const MENU_DELAY = 500;
 
@@ -35,7 +36,7 @@ export default function BackToMenu() {
           : undefined
       }
     >
-      back to menu
+      <Letters text="back to menu" step={0.1} height={0.5} duration={1} />
     </h2>
   );
 }

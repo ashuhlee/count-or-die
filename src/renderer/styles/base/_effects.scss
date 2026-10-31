@@ -71,13 +71,6 @@
     cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--delay);
 }
 
-.score-text span {
-  position: relative;
-  display: inline-block;
-  animation: wavy-text-top var(--wave-duration, 2.5s)
-    cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--delay);
-}
-
 .pop {
   animation: pop 0.3s cubic-bezier(0.2, 1.56, 0.7, 1);
   transform-origin: center;
@@ -106,9 +99,21 @@
   transform-origin: center;
 }
 
-.no-boost-text span {
+.no-boost-text span,
+.try-again span,
+.score-text span {
   display: inline-block;
-  animation: shake 2s ease infinite var(--delay);
+  animation: shake var(--wave-duration, 2s) ease infinite var(--delay);
+}
+
+.back-to-menu span {
+  position: relative;
+  display: inline-block;
+  animation: wavy-text-top var(--wave-duration, 2.5s)
+    cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--delay);
+}
+.back-to-menu:hover span {
+  animation: none;
 }
 .no-boosts-shake {
   animation: no-boosts-shake 0.25s ease-out;

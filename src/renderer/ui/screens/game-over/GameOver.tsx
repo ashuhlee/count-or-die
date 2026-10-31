@@ -17,11 +17,23 @@ import { playSound } from "../../../utils/sounds.ts";
 import { useGame } from "../../../provider/useGame.ts";
 import Letters from "../../components/letters/Letters.tsx";
 import BackToMenu from "./BackToMenu.tsx";
-import MeltInShader from "../../shaders/melt-in-shader/MeltInShader.tsx";
+import MeltInShader, {
+  type MeltColors,
+} from "../../shaders/melt-in-shader/MeltInShader.tsx";
 import GameOverBackground, { GAME_OVER_HUE } from "./GameOverBackground.tsx";
 import { useGameOverView } from "./useGameOverView.ts";
 
 const QUIT_DELAY = 400;
+
+const GHOST_COLORS: MeltColors = {
+  edge: "#605B84",
+  flash: "#ffffff",
+  ember: "#9875ff",
+  cinder: "#ff8ae0",
+  sparkA: "#ff8ae0",
+  sparkB: "#605B84",
+  shadow: "#ce2a85",
+};
 
 function onQuit() {
   playSound("buttonClick");
@@ -79,14 +91,16 @@ export default function GameOver() {
           duration={1700}
         />
 
-        <h2 className="final-score" id="final-score">
-          <span className={`score-text${rainbowClass}`}>
-            <Letters text={view.scoreText} step={0.1} height={4} duration={2} />
-          </span>
-        </h2>
+        {/*<h2 className="final-score" id="final-score">*/}
+        {/*  <span className={`score-text${rainbowClass}`}>*/}
+        {/*    <Letters text={view.scoreText} step={0.3} duration={3} />*/}
+        {/*  </span>*/}
+        {/*</h2>*/}
 
         <h2 className="play-again">
-          <span className="try-again">try again?</span>
+          <span className="try-again">
+            <Letters text="try again?" step={0.3} duration={3} />
+          </span>
         </h2>
         <div className="bottom-section">
           <div className="game-over-btns">
@@ -116,7 +130,19 @@ export default function GameOver() {
         <img src={skullFloor} alt="skull" className="skull-floor" />
       </div>
       <div className="tombstone-area">
-        <img src={ghostPng} alt="ghost" className="ghost" />
+        <div className="ghost">
+          <MeltInShader
+            src={ghostPng}
+            alt="ghost"
+            active={view.visible}
+            delay={500}
+            duration={1800}
+            pixelScale={2.5}
+            shadow={false}
+            settledBrightness={1}
+            colors={GHOST_COLORS}
+          />
+        </div>
         <img src={tombstonePng} alt="tombstone" className="tombstone" />
       </div>
     </div>

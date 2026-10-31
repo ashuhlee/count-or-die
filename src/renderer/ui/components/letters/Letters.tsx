@@ -6,7 +6,8 @@ type LettersProps = {
   step: number;
   // how far a wavy letter rises, in pixels (read as --wave-height)
   height?: number;
-  // seconds for a wavy letter to rise and fall once (read as --wave-duration)
+  // seconds for a wavy or shaking letter to go through its motion once
+  // (read as --wave-duration)
   duration?: number;
 };
 

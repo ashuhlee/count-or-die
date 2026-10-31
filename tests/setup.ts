@@ -39,6 +39,7 @@ vi.mock(
         className,
         active,
         mode,
+        colors,
       }: {
         ref?: React.Ref<HTMLImageElement>;
         src: string;
@@ -46,6 +47,7 @@ vi.mock(
         className?: string;
         active: boolean;
         mode?: string;
+        colors?: Record<string, string>;
       }) =>
         createElement("img", {
           ref,
@@ -54,6 +56,7 @@ vi.mock(
           className,
           "data-melt-active": String(active),
           "data-melt-mode": mode ?? "in",
+          "data-melt-colors": JSON.stringify(colors ?? {}),
         }),
     };
   },
