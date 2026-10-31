@@ -33,21 +33,27 @@ vi.mock(
     const { createElement } = await import("react");
     return {
       default: ({
+        ref,
         src,
         alt,
         className,
         active,
+        mode,
       }: {
+        ref?: React.Ref<HTMLImageElement>;
         src: string;
         alt: string;
-        className: string;
+        className?: string;
         active: boolean;
+        mode?: string;
       }) =>
         createElement("img", {
+          ref,
           src,
           alt,
           className,
           "data-melt-active": String(active),
+          "data-melt-mode": mode ?? "in",
         }),
     };
   },

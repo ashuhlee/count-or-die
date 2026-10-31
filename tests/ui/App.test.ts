@@ -50,6 +50,32 @@ describe("App", () => {
     expect(main.querySelectorAll(".hearts > div").length).toBe(4);
   });
 
+  describe("the melt debug view", () => {
+    // it only exists when the address asks for it, so tuning the effect never
+    // shows up in the real game
+    const render = (address: string) => {
+      act(() => root.unmount());
+      window.history.pushState({}, "", address);
+      root = createRoot(main);
+      act(() => root.render(createElement(App)));
+    };
+    afterEach(() => window.history.pushState({}, "", "/"));
+
+    test("is not there by default", () => {
+      expect(main.querySelector(".melt-in-debug")).toBeNull();
+    });
+
+    test("shows up with ?debug=melt", () => {
+      render("/?debug=melt");
+      expect(main.querySelector(".melt-in-debug")).not.toBeNull();
+    });
+
+    test("ignores other debug values", () => {
+      render("/?debug=something-else");
+      expect(main.querySelector(".melt-in-debug")).toBeNull();
+    });
+  });
+
   test("keeps the order the CSS expects", () => {
     const children = Array.from(main.children).map(
       (el) => el.id || el.className,

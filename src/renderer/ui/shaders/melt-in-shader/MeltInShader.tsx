@@ -1,11 +1,50 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type Ref } from "react";
 import "./MeltInShader.css";
 
 // how many points the burn starts from
 const SEEDS = 6;
 
 const BRIGHTNESS_END = 1.02;
-const SHADOW = { offset: 6, color: [206, 42, 133], alpha: 0.15 } as const;
+const SHADOW = { offset: 6, alpha: 0.15 } as const;
+
+export type MeltColors = {
+  edge: string;
+  flash: string;
+  ember: string;
+  cinder: string;
+  sparkA: string;
+  sparkB: string;
+  shadow: string;
+};
+
+export const MELT_COLORS: MeltColors = {
+  edge: "#ff8ae0",
+  flash: "#ffffff",
+  ember: "#9875ff",
+  cinder: "#ffffff",
+  sparkA: "#ff8ae0",
+  sparkB: "#a8e6ff",
+  shadow: "#ce2a85",
+};
+
+// #rgb, #rrggbb or #rrggbbaa, as 0 to 1; the opacity is only there when given
+const parseHex = (hex: string) => {
+  let digits = hex.trim().replace(/^#/, "");
+  if (digits.length === 3 || digits.length === 4) {
+    digits = [...digits].map((digit) => digit + digit).join("");
+  }
+  if (!/^([0-9a-f]{6}|[0-9a-f]{8})$/i.test(digits)) return undefined;
+  const channel = (at: number) => parseInt(digits.slice(at, at + 2), 16) / 255;
+  return {
+    r: channel(0),
+    g: channel(2),
+    b: channel(4),
+    alpha: digits.length === 8 ? channel(6) : undefined,
+  };
+};
+
+const resolveColor = (palette: MeltColors, name: keyof MeltColors) =>
+  parseHex(palette[name]) ?? parseHex(MELT_COLORS[name])!;
 
 const ZOOM = { start: 0.1, spin: -50, duration: 300 };
 const SHAKE = { distance: 25, tilt: 2, step: 20, duration: 400 };
@@ -25,21 +64,28 @@ precision highp float;
 varying vec2 uv;
 uniform sampler2D image;
 uniform vec2 size;
+uniform vec2 canvasSize;
 uniform float progress;
 uniform float time;
 uniform vec2 seeds[SEEDS];
 uniform float starts[SEEDS];
 uniform vec2 shadowOffset;
 uniform vec4 shadowColor;
+uniform float outward;
+uniform float blockScale;
+uniform float brightnessEnd;
+uniform vec3 edgeColor;
+uniform vec3 flashColor;
+uniform vec3 emberColor;
+uniform vec3 cinderColor;
+uniform vec3 sparkA;
+uniform vec3 sparkB;
 
 const float EDGE_BLOCK = 8.0;
 
 const float BRIGHTNESS_START = 2.0;
 const float BRIGHTNESS_FADE = 0.2;
-const float BRIGHTNESS_END = ${BRIGHTNESS_END.toFixed(2)};
 
-const vec3 SPARK_A = vec3(1.0, 0.541, 0.878);
-const vec3 SPARK_B = vec3(0.659, 0.902, 1.0);
 
 float hash(vec2 p) {
   p = fract(p * vec2(123.34, 456.21));
@@ -64,7 +110,8 @@ float fbm(vec2 p) {
 
 // the image as it looks at a spot with the burn on it, premultiplied
 vec4 burn(vec2 px) {
-  vec2 cell = (floor(px / EDGE_BLOCK) + 0.5) * EDGE_BLOCK;
+  float edge = max(1.0, EDGE_BLOCK * blockScale);
+  vec2 cell = (floor(px / edge) + 0.5) * edge;
 
   float flicker = fbm(cell / size * 7.0 + time * 0.35);
   float depth = -1.0;
@@ -75,33 +122,42 @@ vec4 burn(vec2 px) {
       depth = max(depth, local * 1.25 - dist + (flicker - 0.5) * 0.16);
     }
   }
+  if (outward > 0.5) depth = -depth;
 
   // a spark now and then, just ahead of the edge
   bool spark = depth > -0.025 && depth <= 0.0
     && hash(cell + floor(time * 8.0)) > 0.9;
   if (spark) {
-    return vec4(hash(cell + 3.7) > 0.5 ? SPARK_A : SPARK_B, 1.0);
+    return vec4(hash(cell + 3.7) > 0.5 ? sparkA : sparkB, 1.0);
   }
   if (depth <= 0.0) {
     return vec4(0.0);
   }
 
-  float block = depth < 0.035 ? 16.0 : depth < 0.07 ? 8.0 : depth < 0.12 ? 4.0 : 1.0;
+  float block = depth < 0.035 ? 16.0 * blockScale
+    : depth < 0.07 ? 8.0 * blockScale
+    : depth < 0.12 ? 4.0 * blockScale
+    : 1.0;
   vec2 snapped = (floor(px / block) + 0.5) * block;
+  // the canvas is a little bigger than the image so the shadow has room
+  if (snapped.x < 0.0 || snapped.y < 0.0 || snapped.x >= size.x || snapped.y >= size.y) {
+    return vec4(0.0);
+  }
   vec4 color = texture2D(image, snapped / size);
 
-  float brightness = mix(BRIGHTNESS_START, BRIGHTNESS_END, min(progress / BRIGHTNESS_FADE, 1.0));
+  float life = outward > 0.5 ? 1.0 - progress : progress;
+  float brightness = mix(BRIGHTNESS_START, brightnessEnd, min(life / BRIGHTNESS_FADE, 1.0));
   vec3 rgb = min(color.rgb * brightness, 1.0);
-  if (depth < 0.02) rgb = vec3(1.0, 0.541, 0.878);
-  else if (depth < 0.04) rgb = vec3(1.0);
-  else if (depth < 0.065) rgb = mix(rgb, vec3(0.596, 0.459, 1.0), 0.7);
-  else if (depth < 0.1) rgb = mix(rgb, vec3(1.0), 0.35);
+  if (depth < 0.02) rgb = edgeColor;
+  else if (depth < 0.04) rgb = flashColor;
+  else if (depth < 0.065) rgb = mix(rgb, emberColor, 0.7);
+  else if (depth < 0.1) rgb = mix(rgb, cinderColor, 0.35);
 
   return vec4(rgb * color.a, color.a);
 }
 
 void main() {
-  vec2 px = uv * size;
+  vec2 px = uv * canvasSize;
   vec4 top = burn(px);
 
   // the shadow is the same picture, further down and right, in one color
@@ -112,6 +168,7 @@ void main() {
 }`.replace(/SEEDS/g, String(SEEDS));
 
 type MeltInShaderProps = {
+  ref?: Ref<HTMLImageElement>;
   src: string;
   alt: string;
   className?: string;
@@ -119,7 +176,14 @@ type MeltInShaderProps = {
   delay?: number;
   duration?: number;
   loop?: number;
+  mode?: "in" | "out";
+  pixelScale?: number;
+  shadow?: boolean;
+  colors?: Partial<MeltColors>;
+  settledBrightness?: number;
 };
+
+type Phase = "idle" | "melting" | "done";
 
 const compile = (gl: WebGLRenderingContext, type: number, source: string) => {
   const shader = gl.createShader(type);
@@ -135,6 +199,7 @@ const compile = (gl: WebGLRenderingContext, type: number, source: string) => {
 };
 
 export default function MeltInShader({
+  ref,
   src,
   alt,
   className,
@@ -142,16 +207,39 @@ export default function MeltInShader({
   delay = 0,
   duration = 1600,
   loop,
+  mode = "in",
+  pixelScale = 1,
+  shadow = true,
+  colors,
+  settledBrightness = BRIGHTNESS_END,
 }: MeltInShaderProps) {
-  const imageRef = useRef<HTMLImageElement>(null);
+  const imageRef = useRef<HTMLImageElement | null>(null);
+  const setImage = useCallback(
+    (node: HTMLImageElement | null) => {
+      imageRef.current = node;
+      if (typeof ref === "function") ref(node);
+      else if (ref) ref.current = node;
+    },
+    [ref],
+  );
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [melted, setMelted] = useState(false);
+  const out = mode === "out";
+  // already burned away when it first shows up, so it does not burn again
+  const startsGone = useRef(out && active);
+  const [phase, setPhase] = useState<Phase>(out && active ? "done" : "idle");
 
   const fragmentSource = FRAGMENT;
+  const paletteKey = JSON.stringify({ ...MELT_COLORS, ...colors });
 
   useEffect(() => {
     if (!active) return;
+    if (startsGone.current) {
+      return () => {
+        startsGone.current = false;
+        setPhase("idle");
+      };
+    }
 
     const image = imageRef.current;
     const canvas = canvasRef.current;
@@ -176,8 +264,8 @@ export default function MeltInShader({
 
     // without WebGL the image just appears
     if (!gl || !vertex || !fragment || !program) {
-      setMelted(true);
-      return () => setMelted(false);
+      setPhase("done");
+      return () => setPhase("idle");
     }
 
     gl.attachShader(program, vertex);
@@ -188,8 +276,8 @@ export default function MeltInShader({
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
       console.error(gl.getProgramInfoLog(program));
       gl.deleteProgram(program);
-      setMelted(true);
-      return () => setMelted(false);
+      setPhase("done");
+      return () => setPhase("idle");
     }
     gl.useProgram(program);
 
@@ -214,10 +302,20 @@ export default function MeltInShader({
 
     const uniform = {
       size: gl.getUniformLocation(program, "size"),
+      canvasSize: gl.getUniformLocation(program, "canvasSize"),
       progress: gl.getUniformLocation(program, "progress"),
       time: gl.getUniformLocation(program, "time"),
       shadowOffset: gl.getUniformLocation(program, "shadowOffset"),
       shadowColor: gl.getUniformLocation(program, "shadowColor"),
+      outward: gl.getUniformLocation(program, "outward"),
+      blockScale: gl.getUniformLocation(program, "blockScale"),
+      brightnessEnd: gl.getUniformLocation(program, "brightnessEnd"),
+      edgeColor: gl.getUniformLocation(program, "edgeColor"),
+      flashColor: gl.getUniformLocation(program, "flashColor"),
+      emberColor: gl.getUniformLocation(program, "emberColor"),
+      cinderColor: gl.getUniformLocation(program, "cinderColor"),
+      sparkA: gl.getUniformLocation(program, "sparkA"),
+      sparkB: gl.getUniformLocation(program, "sparkB"),
       seeds: gl.getUniformLocation(program, "seeds"),
       starts: gl.getUniformLocation(program, "starts"),
     };
@@ -227,6 +325,22 @@ export default function MeltInShader({
     const frame = document.createElement("canvas");
     const frameContext = frame.getContext("2d");
 
+    const palette: MeltColors = JSON.parse(paletteKey);
+    const setColor = (
+      location: WebGLUniformLocation | null,
+      name: keyof MeltColors,
+    ) => {
+      const { r, g, b } = resolveColor(palette, name);
+      gl.uniform3f(location, r, g, b);
+    };
+    setColor(uniform.edgeColor, "edge");
+    setColor(uniform.flashColor, "flash");
+    setColor(uniform.emberColor, "ember");
+    setColor(uniform.cinderColor, "cinder");
+    setColor(uniform.sparkA, "sparkA");
+    setColor(uniform.sparkB, "sparkB");
+    const shadowColor = resolveColor(palette, "shadow");
+
     // where the burn starts, and how soon after the first one each point catches
     const seeds = new Float32Array(SEEDS * 2);
     const starts = new Float32Array(SEEDS);
@@ -234,6 +348,12 @@ export default function MeltInShader({
     let raf = 0;
     let timer: ReturnType<typeof setTimeout> | undefined;
     let started = 0;
+    let showing = false;
+
+    // image pixels per screen pixel; the image is always laid out, the
+    // canvas is not while it waits
+    const shadowScale = () =>
+      image.naturalWidth / (image.clientWidth || image.naturalWidth);
 
     const draw = () => {
       const elapsed = performance.now() - started;
@@ -244,15 +364,25 @@ export default function MeltInShader({
         const x = Math.sin(tick * 127.1 + n * 311.7) * 43758.5453;
         return (x - Math.floor(x)) * 2 - 1;
       };
-      // the zoom and the spin finish together, well before the burn does
-      const arrived = 1 - (1 - Math.min(elapsed / ZOOM.duration, 1)) ** 3;
+      // the zoom, spin and shake run backwards when it melts out, and their
+      // distances follow the size it is drawn at
+      const t = out ? duration - elapsed : elapsed;
+      const motion = (image.clientWidth || 390) / 390;
+      const arrived =
+        1 - (1 - Math.max(0, Math.min(t / ZOOM.duration, 1))) ** 3;
       const zoom = ZOOM.start + (1 - ZOOM.start) * arrived;
       const spin = ZOOM.spin * (1 - arrived);
-      const shake = Math.max(0, 1 - elapsed / SHAKE.duration) ** 2;
+      const shake = Math.max(0, 1 - t / SHAKE.duration) ** 2;
+      const reach = SHAKE.distance * motion * shake;
       wrapper.style.transform =
         progress < 1
-          ? `translate(${jolt(1) * SHAKE.distance * shake}px, ${jolt(2) * SHAKE.distance * shake}px) rotate(${spin + jolt(3) * SHAKE.tilt * shake}deg) scale(${zoom})`
+          ? `translate(${jolt(1) * reach}px, ${jolt(2) * reach}px) rotate(${spin + jolt(3) * SHAKE.tilt * shake}deg) scale(${zoom})`
           : "";
+
+      if (!showing) {
+        showing = true;
+        setPhase("melting");
+      }
 
       frameContext?.clearRect(0, 0, frame.width, frame.height);
       frameContext?.drawImage(image, 0, 0);
@@ -266,22 +396,21 @@ export default function MeltInShader({
       );
 
       gl.uniform2f(uniform.size, frame.width, frame.height);
+      gl.uniform2f(uniform.canvasSize, canvas.width, canvas.height);
       gl.uniform1f(uniform.progress, progress);
       gl.uniform1f(uniform.time, elapsed / 1000);
+      gl.uniform1f(uniform.outward, out ? 1 : 0);
+      gl.uniform1f(uniform.blockScale, pixelScale);
+      gl.uniform1f(uniform.brightnessEnd, settledBrightness);
       // the shadow is measured on screen, the canvas is drawn at image size
-      const scale = canvas.width / (canvas.clientWidth || canvas.width);
-      gl.uniform2f(
-        uniform.shadowOffset,
-        SHADOW.offset * scale,
-        SHADOW.offset * scale,
-      );
-      const [r, g, b] = SHADOW.color;
+      const offset = SHADOW.offset * shadowScale();
+      gl.uniform2f(uniform.shadowOffset, offset, offset);
       gl.uniform4f(
         uniform.shadowColor,
-        r / 255,
-        g / 255,
-        b / 255,
-        SHADOW.alpha,
+        shadowColor.r,
+        shadowColor.g,
+        shadowColor.b,
+        shadow ? (shadowColor.alpha ?? SHADOW.alpha) : 0,
       );
       gl.uniform2fv(uniform.seeds, seeds);
       gl.uniform1fv(uniform.starts, starts);
@@ -292,27 +421,34 @@ export default function MeltInShader({
       if (progress < 1) {
         raf = requestAnimationFrame(draw);
       } else {
-        setMelted(true);
+        setPhase("done");
         if (loop !== undefined) timer = setTimeout(replay, loop);
       }
     };
 
     const replay = () => {
-      setMelted(false);
+      setPhase("idle");
       play();
     };
 
     const begin = () => {
-      frame.width = canvas.width = image.naturalWidth;
-      frame.height = canvas.height = image.naturalHeight;
+      frame.width = image.naturalWidth;
+      frame.height = image.naturalHeight;
+      // room past the right and bottom edges for the shadow to fall into
+      const room = shadow ? Math.ceil(SHADOW.offset * shadowScale()) : 0;
+      canvas.width = frame.width + room;
+      canvas.height = frame.height + room;
+      canvas.style.width = `${(canvas.width / frame.width) * 100}%`;
+      canvas.style.height = `${(canvas.height / frame.height) * 100}%`;
       gl.viewport(0, 0, canvas.width, canvas.height);
       play();
     };
 
     const play = () => {
+      showing = false;
       for (let i = 0; i < SEEDS; i++) {
-        seeds[i * 2] = (0.15 + Math.random() * 0.7) * canvas.width;
-        seeds[i * 2 + 1] = (0.2 + Math.random() * 0.6) * canvas.height;
+        seeds[i * 2] = (0.15 + Math.random() * 0.7) * frame.width;
+        seeds[i * 2 + 1] = (0.2 + Math.random() * 0.6) * frame.height;
         starts[i] = i === 0 ? 0 : Math.random() * 0.25;
       }
 
@@ -331,36 +467,57 @@ export default function MeltInShader({
       cancelAnimationFrame(raf);
       wrapper.style.transform = "";
       image.removeEventListener("load", begin);
-      setMelted(false);
+      setPhase("idle");
       if (!gl.isContextLost()) {
         gl.deleteTexture(texture);
         gl.deleteBuffer(buffer);
         gl.deleteProgram(program);
       }
     };
-  }, [active, delay, duration, loop, fragmentSource]);
+  }, [
+    active,
+    delay,
+    duration,
+    loop,
+    fragmentSource,
+    paletteKey,
+    out,
+    pixelScale,
+    shadow,
+    settledBrightness,
+  ]);
+
+  const settled = resolveColor(JSON.parse(paletteKey), "shadow");
+  const plainShowing = out ? phase === "idle" : phase === "done";
+  const filters = [
+    settledBrightness !== 1 && `brightness(${settledBrightness})`,
+    shadow &&
+      `drop-shadow(${SHADOW.offset}px ${SHADOW.offset}px 0px rgba(${[settled.r, settled.g, settled.b].map((c) => Math.round(c * 255)).join(", ")}, ${settled.alpha ?? SHADOW.alpha}))`,
+  ].filter(Boolean);
 
   return (
     <div
       ref={wrapperRef}
       className={`melt-in-shader${className ? ` ${className}` : ""}`}
     >
-      <img
-        ref={imageRef}
-        src={src}
-        alt={alt}
-        className="melt-in-shader__image"
+      <div
         style={{
-          opacity: melted ? 1 : 0.001,
-          filter: melted
-            ? `brightness(${BRIGHTNESS_END}) drop-shadow(${SHADOW.offset}px ${SHADOW.offset}px 0px rgba(${SHADOW.color.join(", ")}, ${SHADOW.alpha}))`
-            : undefined,
+          opacity: plainShowing ? 1 : 0.001,
+          filter:
+            plainShowing && filters.length ? filters.join(" ") : undefined,
         }}
-      />
+      >
+        <img
+          ref={setImage}
+          src={src}
+          alt={alt}
+          className="melt-in-shader__image"
+        />
+      </div>
       <canvas
         ref={canvasRef}
         className="melt-in-shader__canvas"
-        style={{ display: melted ? "none" : "block" }}
+        style={{ display: phase === "melting" ? "block" : "none" }}
         aria-hidden="true"
       />
     </div>

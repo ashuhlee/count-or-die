@@ -74,8 +74,8 @@ export default function GameOver() {
           alt="game over text"
           className="go-title"
           active={view.visible}
-          delay={200}
-          duration={1600}
+          delay={150}
+          duration={1650}
         />
 
         <h2 className="final-score" id="final-score">

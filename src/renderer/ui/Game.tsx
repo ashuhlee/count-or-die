@@ -8,6 +8,7 @@ import cloudMini from "@assets/ui/deco/clouds/cloud_5.png";
 
 import { useKeyboardControls } from "../hooks/useKeyboardControls.ts";
 import { useGameEvent } from "../provider/useGameEvent.ts";
+import MeltInDebug, { isMeltDebug } from "./debug/MeltInDebug.tsx";
 import CursorCounts from "./components/cursor-counts/CursorCounts.tsx";
 import HighScore from "./components/high-score/HighScore.tsx";
 import MenuBar from "./components/menu-bar/MenuBar.tsx";
@@ -68,6 +69,7 @@ export default function Game() {
         <PowerUps />
       </Fragment>
       <LoadingScreen />
+      {isMeltDebug() && <MeltInDebug />}
     </>
   );
 }
