@@ -1,6 +1,7 @@
 :root {
   --shadow-pink-005: rgba(206, 42, 133, 0.05);
   --shadow-pink-010: rgba(206, 42, 133, 0.1);
+  --shadow-pink-012: rgba(206, 42, 133, 0.12);
   --shadow-pink-015: rgba(206, 42, 133, 0.15);
   --shadow-pink-020: rgba(206, 42, 133, 0.2);
 
@@ -35,7 +36,6 @@ $melt-mask: "#{$assets}/ui/masks/drip-mask.png";
 $cursor: "#{$assets}/ui/hand.png";
 $delay-step: 0.3s;
 
-// bundled so the game never waits on the network for its fonts
 $fonts: "../assets/fonts";
 
 @font-face {

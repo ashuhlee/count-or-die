@@ -7,7 +7,9 @@ import exclamationPng from "@assets/ui/deco/exclamation.png";
 
 import ghostPng from "@assets/ui/deco/ghost.gif";
 import skullFloor from "@assets/ui/deco/skull_floor.png";
-import skullTracker from "@assets/ui/deco/skull_grey.png";
+import skullTracker from "@assets/ui/deco/skull_grey.svg";
+import starTracker from "@assets/ui/deco/star_grey.svg";
+import trophyTracker from "@assets/ui/deco/trophy_grey.svg";
 import tombstonePng from "@assets/ui/deco/tombstone.png";
 
 import resetBtnPng from "@assets/ui/buttons/reset-btn.png";
@@ -15,6 +17,8 @@ import quitBtnPng from "@assets/ui/buttons/quit-btn.png";
 
 import { playSound } from "../../../utils/sounds.ts";
 import { useGame } from "../../../provider/useGame.ts";
+import { formatCounter } from "../../../utils/formatCounter.ts";
+import BulgeFilter from "../../components/bulge/BulgeFilter.tsx";
 import Letters from "../../components/letters/Letters.tsx";
 import BackToMenu from "./BackToMenu.tsx";
 import MeltInShader, {
@@ -24,6 +28,22 @@ import GameOverBackground, { GAME_OVER_HUE } from "./GameOverBackground.tsx";
 import { useGameOverView } from "./useGameOverView.ts";
 
 const QUIT_DELAY = 400;
+
+const TRACKER_BULGE = { id: "tracker-bulge", strength: 12, area: 4 };
+
+const TRACKER_BORDERS = {
+  score: "#bfb3ff",
+  highScore: "#FFB9F0",
+  deaths: "#E3E0EF",
+};
+
+const TRACKER_ENTRANCE = { delay: 0.5, step: 0.16 };
+
+const trackerStyle = (color: string, index: number) =>
+  ({
+    "--tracker-border": color,
+    animationDelay: `${TRACKER_ENTRANCE.delay + index * TRACKER_ENTRANCE.step}s`,
+  }) as CSSProperties;
 
 const GHOST_COLORS: MeltColors = {
   edge: "#605B84",
@@ -51,6 +71,7 @@ export default function GameOver() {
   const view = useGameOverView();
 
   const rainbowClass = view.rainbow ? " rainbow-txt" : "";
+  const trackerClass = `tracker-container${view.visible ? " tracker-enter" : ""}`;
 
   return (
     <div
@@ -69,11 +90,45 @@ export default function GameOver() {
         <h2 className="you-died">
           <span className={`go-text-random${rainbowClass}`}>{view.phrase}</span>
         </h2>
+        <BulgeFilter {...TRACKER_BULGE} />
         <div className="top-right-info">
-          <div className="tracker-container">
-            <img src={skullTracker} alt="skull" className="skull-tracker" />
-            <h2 className="death-tracker" id="death-tracker">
-              {state.deathCount}
+          <div
+            className={trackerClass}
+            style={trackerStyle(TRACKER_BORDERS.score, 0)}
+          >
+            <img src={starTracker} alt="score" className="tracker-icon" />
+            <h2 className="tracker-value" id="score-tracker">
+              <Letters text={view.score} step={0.2} duration={20} />
+            </h2>
+          </div>
+          <div
+            className={trackerClass}
+            style={trackerStyle(TRACKER_BORDERS.highScore, 1)}
+          >
+            <img
+              src={trophyTracker}
+              alt="high score"
+              className="tracker-icon"
+            />
+            <h2 className="tracker-value" id="high-score-tracker">
+              <Letters
+                text={formatCounter(state.highScore)}
+                step={0.3}
+                duration={3}
+              />
+            </h2>
+          </div>
+          <div
+            className={trackerClass}
+            style={trackerStyle(TRACKER_BORDERS.deaths, 2)}
+          >
+            <img src={skullTracker} alt="skull" className="tracker-icon" />
+            <h2 className="tracker-value" id="death-tracker">
+              <Letters
+                text={String(state.deathCount)}
+                step={0.3}
+                duration={3}
+              />
             </h2>
           </div>
         </div>
@@ -90,12 +145,6 @@ export default function GameOver() {
           delay={200}
           duration={1700}
         />
-
-        {/*<h2 className="final-score" id="final-score">*/}
-        {/*  <span className={`score-text${rainbowClass}`}>*/}
-        {/*    <Letters text={view.scoreText} step={0.3} duration={3} />*/}
-        {/*  </span>*/}
-        {/*</h2>*/}
 
         <h2 className="play-again">
           <span className="try-again">

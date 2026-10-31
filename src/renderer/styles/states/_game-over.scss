@@ -59,9 +59,6 @@
       opacity: 0;
     }
 
-    .final-score {
-      animation: jackInTheBox 0.5s ease 0.7s forwards;
-    }
     .play-again {
       animation: bounceIn 0.7s ease 0.9s forwards;
     }
@@ -139,15 +136,8 @@
     color: #ffffff;
     text-shadow: 0 3px 0 var(--shadow-pink-020);
   }
-  .final-score {
-    font-size: 32px;
-    color: #ffffff;
-    font-weight: bold;
-    margin: 12px;
-    font-family: "serious1", sans-serif;
-  }
   .you-died {
-    font-size: 24px;
+    font-size: 26px;
     padding-top: 20px;
     top: 50px;
     font-weight: bold;
@@ -157,49 +147,48 @@
   .top-right-info {
     z-index: -3;
     position: absolute;
-    top: 0;
+    top: 10px;
     right: 0;
     margin: 30px;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 8px;
-    transform: perspective(200px) rotateY(-4deg);
-    transition: transform 0.2s ease-in;
-    &:hover {
-      transform: perspective(200px) rotateY(0deg);
-    }
+    gap: 26px;
+    filter: url(#tracker-bulge);
+  }
+  .tracker-container.tracker-enter {
+    --bounce: 16px;
+    animation: bounce-in-right-soft 0.8s both;
   }
   .tracker-container {
-    height: 30px;
+    height: 28px;
     width: fit-content;
     display: flex;
-    gap: 8px;
+    gap: 14px;
     align-items: center;
     justify-content: center;
-    padding: 6px 8px;
-    background: white;
-    border-radius: 2px;
+    padding: 16px 10px;
+    background: #fff5fe;
+    box-shadow:
+      -5px 0 0 0 var(--tracker-border, #fff),
+      5px 0 0 0 var(--tracker-border, #fff),
+      0 -5px 0 0 var(--tracker-border, #fff),
+      0 5px 0 0 var(--tracker-border, #fff);
+    filter: drop-shadow(0px 5px 0px var(--shadow-pink-015));
     transition: transform 1s ease;
-    &:hover {
-      .skull-tracker,
-      .death-tracker {
-        animation: flash 0.4s;
-      }
-    }
-    .skull-tracker {
-      width: 17px;
-      height: 17px;
-      will-change: transform;
-      transform: translateZ(0);
+    .tracker-icon {
+      width: 16px;
+      height: 16px;
     }
 
-    .death-tracker {
+    .tracker-value {
+      --shake-scale: 0.965;
+      --shake-distance: -2px;
       font-weight: bold;
       font-family: "serious1", sans-serif;
-      font-size: 23px;
+      font-size: 24px;
       text-shadow: none;
-      color: #4b4d5a;
+      color: #3b375f;
     }
   }
 
@@ -268,11 +257,12 @@
       z-index: -5;
       position: relative;
       padding: 6px;
-      margin-top: 30px;
+      margin-top: 34px;
       font-family: "serious1", sans-serif;
-      font-size: 20px;
+      font-size: 22px;
       text-shadow: none;
       transition: all 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.85);
+      filter: drop-shadow(0px 4px 0px var(--shadow-pink-015));
 
       &:active {
         scale: 0.8;
@@ -282,7 +272,7 @@
     h2 {
       &::before {
         content: ">";
-        margin-right: 2px;
+        margin-right: 5px;
         transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.85);
       }
       &:hover {
@@ -290,7 +280,7 @@
         color: #fff2fd;
       }
       &:hover::before {
-        margin-right: 7px;
+        margin-right: 10px;
         color: var(--arr-color);
       }
       &:active::before {
@@ -305,7 +295,7 @@
         z-index: -3;
         width: 98%;
         transform: scaleX(1);
-        height: 19px;
+        height: 20px;
         left: 0px;
         opacity: 0.8;
         background-color: #a1a1ff;
@@ -360,20 +350,6 @@
     filter: drop-shadow(0 3px 0 rgba(206, 42, 133, 0.15));
   }
 
-  .score-text.rainbow-txt {
-    background-image: none;
-
-    span {
-      background-image: var(--rainbow-gradient-text);
-      background-clip: text;
-      background-repeat: no-repeat;
-      background-size: calc(var(--count) * 100%) 100%;
-      background-position: calc(var(--index) / max(var(--count) - 1, 1) * 100%)
-        0;
-    }
-  }
-
-  .final-score,
   .play-again,
   .play-again-btn,
   .play-again-btn-2,

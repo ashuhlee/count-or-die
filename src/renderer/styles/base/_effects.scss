@@ -101,7 +101,7 @@
 
 .no-boost-text span,
 .try-again span,
-.score-text span {
+.tracker-value span {
   display: inline-block;
   animation: shake var(--wave-duration, 2s) ease infinite var(--delay);
 }

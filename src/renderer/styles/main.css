@@ -1,6 +1,7 @@
 :root {
   --shadow-pink-005: rgba(206, 42, 133, 0.05);
   --shadow-pink-010: rgba(206, 42, 133, 0.1);
+  --shadow-pink-012: rgba(206, 42, 133, 0.12);
   --shadow-pink-015: rgba(206, 42, 133, 0.15);
   --shadow-pink-020: rgba(206, 42, 133, 0.2);
   --shadow-purple-005: rgba(181, 121, 255, 0.15);
@@ -174,10 +175,37 @@ img {
     transform: scale(1) translateX(0);
   }
   50% {
-    transform: scale(0.95) translateX(-3px);
+    transform: scale(var(--shake-scale, 0.95))
+      translateX(var(--shake-distance, -3px));
   }
   100% {
     transform: scale(1) translateX(0);
+  }
+}
+@keyframes bounce-in-right-soft {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  from {
+    opacity: 0;
+    transform: translate3d(3000px, 0, 0) scaleX(3);
+  }
+  60% {
+    opacity: 1;
+    transform: translate3d(calc(var(--bounce, 8px) * -1), 0, 0) scaleX(1);
+  }
+  75% {
+    transform: translate3d(calc(var(--bounce, 8px) * 0.4), 0, 0) scaleX(0.99);
+  }
+  90% {
+    transform: translate3d(calc(var(--bounce, 8px) * -0.2), 0, 0) scaleX(0.998);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
   }
 }
 @keyframes move-stripes {
@@ -584,7 +612,7 @@ img {
 }
 .no-boost-text span,
 .try-again span,
-.score-text span {
+.tracker-value span {
   display: inline-block;
   animation: shake var(--wave-duration, 2s) ease infinite var(--delay);
 }
@@ -1014,9 +1042,6 @@ img {
 #game-over.visible #red-overlay {
   opacity: 0;
 }
-#game-over.visible .final-score {
-  animation: jackInTheBox 0.5s ease 0.7s forwards;
-}
 #game-over.visible .play-again {
   animation: bounceIn 0.7s ease 0.9s forwards;
 }
@@ -1089,15 +1114,8 @@ img {
   color: #fff;
   text-shadow: 0 3px 0 var(--shadow-pink-020);
 }
-#game-over .final-score {
-  font-size: 32px;
-  color: #fff;
-  font-weight: bold;
-  margin: 12px;
-  font-family: "serious1", sans-serif;
-}
 #game-over .you-died {
-  font-size: 24px;
+  font-size: 26px;
   padding-top: 20px;
   top: 50px;
   font-weight: bold;
@@ -1107,47 +1125,48 @@ img {
 #game-over .top-right-info {
   z-index: -3;
   position: absolute;
-  top: 0;
+  top: 10px;
   right: 0;
   margin: 30px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 8px;
-  transform: perspective(200px) rotateY(-4deg);
-  transition: transform 0.2s ease-in;
+  gap: 26px;
+  filter: url(#tracker-bulge);
 }
-#game-over .top-right-info:hover {
-  transform: perspective(200px) rotateY(0deg);
+#game-over .tracker-container.tracker-enter {
+  --bounce: 16px;
+  animation: bounce-in-right-soft 0.8s both;
 }
 #game-over .tracker-container {
-  height: 30px;
+  height: 28px;
   width: fit-content;
   display: flex;
-  gap: 8px;
+  gap: 14px;
   align-items: center;
   justify-content: center;
-  padding: 6px 8px;
-  background: #fff;
-  border-radius: 2px;
+  padding: 16px 10px;
+  background: #fff5fe;
+  box-shadow:
+    -5px 0 0 0 var(--tracker-border, #fff),
+    5px 0 0 0 var(--tracker-border, #fff),
+    0 -5px 0 0 var(--tracker-border, #fff),
+    0 5px 0 0 var(--tracker-border, #fff);
+  filter: drop-shadow(0px 5px 0px var(--shadow-pink-015));
   transition: transform 1s ease;
 }
-#game-over .tracker-container:hover .skull-tracker,
-#game-over .tracker-container:hover .death-tracker {
-  animation: flash 0.4s;
+#game-over .tracker-container .tracker-icon {
+  width: 16px;
+  height: 16px;
 }
-#game-over .tracker-container .skull-tracker {
-  width: 17px;
-  height: 17px;
-  will-change: transform;
-  transform: translateZ(0);
-}
-#game-over .tracker-container .death-tracker {
+#game-over .tracker-container .tracker-value {
+  --shake-scale: 0.965;
+  --shake-distance: -2px;
   font-weight: bold;
   font-family: "serious1", sans-serif;
-  font-size: 23px;
+  font-size: 24px;
   text-shadow: none;
-  color: #4b4d5a;
+  color: #3b375f;
 }
 #game-over .play-again {
   font-size: 30px;
@@ -1212,11 +1231,12 @@ img {
   z-index: -5;
   position: relative;
   padding: 6px;
-  margin-top: 30px;
+  margin-top: 34px;
   font-family: "serious1", sans-serif;
-  font-size: 20px;
+  font-size: 22px;
   text-shadow: none;
   transition: all 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.85);
+  filter: drop-shadow(0px 4px 0px var(--shadow-pink-015));
 }
 #game-over .bottom-section .back-to-menu:active {
   scale: 0.8;
@@ -1224,7 +1244,7 @@ img {
 }
 #game-over .bottom-section h2::before {
   content: ">";
-  margin-right: 2px;
+  margin-right: 5px;
   transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.85);
 }
 #game-over .bottom-section h2:hover {
@@ -1232,7 +1252,7 @@ img {
   color: #fff2fd;
 }
 #game-over .bottom-section h2:hover::before {
-  margin-right: 7px;
+  margin-right: 10px;
   color: var(--arr-color);
 }
 #game-over .bottom-section h2:active::before {
@@ -1245,7 +1265,7 @@ img {
   z-index: -3;
   width: 98%;
   transform: scaleX(1);
-  height: 19px;
+  height: 20px;
   left: 0px;
   opacity: 0.8;
   background-color: #a1a1ff;
@@ -1290,17 +1310,6 @@ img {
   background-position: 0 center;
   filter: drop-shadow(0 3px 0 rgba(206, 42, 133, 0.15));
 }
-#game-over .score-text.rainbow-txt {
-  background-image: none;
-}
-#game-over .score-text.rainbow-txt span {
-  background-image: var(--rainbow-gradient-text);
-  background-clip: text;
-  background-repeat: no-repeat;
-  background-size: calc(var(--count)*100%) 100%;
-  background-position: calc(var(--index)/max(var(--count) - 1, 1)*100%) 0;
-}
-#game-over .final-score,
 #game-over .play-again,
 #game-over .play-again-btn,
 #game-over .play-again-btn-2,

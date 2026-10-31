@@ -10,7 +10,7 @@ export function useGameOverView() {
     background: false,
     phrase: "you died lolz",
     rainbow: false,
-    scoreText: "score: 0",
+    score: formatCounter(0),
   });
   const waitingForFlash = useRef(false);
 
@@ -21,7 +21,7 @@ export function useGameOverView() {
       background: true,
       phrase: pickGameOverPhrase(isHighScore, Math.random()),
       rainbow: current.rainbow || isHighScore,
-      scoreText: `Score: ${formatCounter(score)}`,
+      score: formatCounter(score),
     }));
   });
 

@@ -171,38 +171,6 @@ describe("running out of time", () => {
     expect(letters[0].style.getPropertyValue("--wave-duration")).toBe("3s");
   });
 
-  test("the score shakes the same way, one letter after another", () => {
-    game = renderGame();
-
-    const letters = game.$$("#game-over .score-text > span");
-    expect(letters.length).toBeGreaterThan(1);
-    expect(letters[1].style.getPropertyValue("--delay")).toBe("0.3s");
-    expect(letters[0].style.getPropertyValue("--wave-duration")).toBe("3s");
-    expect(letters[0].style.getPropertyValue("--wave-height")).toBe("");
-  });
-
-  test("the ghost melts in with the title, and keeps hovering", () => {
-    game = renderGame();
-    const ghost = () => game.$("#game-over .ghost img").dataset.meltActive;
-    expect(ghost()).toBe("false");
-
-    game.wait(TIME_IS_UP);
-    fireAnimationEnd(game.$("#red-flash"));
-    expect(ghost()).toBe("true");
-    expect(game.$("#game-over .ghost").querySelectorAll("img")).toHaveLength(1);
-  });
-
-  test("the ghost brings its own colors for the melt", () => {
-    game = renderGame();
-    const colors = JSON.parse(
-      game.$("#game-over .ghost img").dataset.meltColors,
-    );
-    expect(Object.keys(colors).sort()).toEqual(
-      ["cinder", "edge", "ember", "flash", "shadow", "sparkA", "sparkB"].sort(),
-    );
-    expect(game.$("#game-over .go-title").dataset.meltColors).toBe("{}");
-  });
-
   test("shows a phrase, the final score and counts the death", () => {
     game = renderGame({ state: { highScore: 99 } });
     game.click("#increase-img");
@@ -210,13 +178,107 @@ describe("running out of time", () => {
     fireAnimationEnd(game.$("#red-flash"));
 
     expect(game.$(".go-text-random").textContent).toBe("you died lolz");
-    // every letter is its own span, and the space between words is a hard one
-    expect(game.$(".score-text").textContent?.replace(/\u00a0/g, " ")).toBe(
-      "Score: 01",
-    );
-    expect(game.$$(".score-text span")).toHaveLength("Score: 01".length);
+    expect(game.$("#score-tracker").textContent).toBe("01");
     expect(game.$("#death-tracker").textContent).toBe("1");
     expect(localStorage.getItem("deathCount")).toBe("1");
+  });
+
+  test("lists the score, the high score and the deaths from top to bottom", () => {
+    game = renderGame({ state: { highScore: 99 } });
+    game.click("#increase-img");
+    game.wait(TIME_IS_UP);
+
+    const rows = game
+      .$$("#game-over .top-right-info > .tracker-container h2")
+      .map((value) => [value.id, value.textContent]);
+    expect(rows).toEqual([
+      ["score-tracker", "01"],
+      ["high-score-tracker", "99"],
+      ["death-tracker", "1"],
+    ]);
+  });
+
+  test("the containers sit behind a bulge filter", () => {
+    game = renderGame();
+
+    expect(game.$("#game-over filter#tracker-bulge")).not.toBeNull();
+  });
+
+  test("the numbers in the containers shake letter by letter", () => {
+    game = renderGame({ state: { highScore: 135 } });
+
+    const letters = (id: string) => game.$$(`#${id} > span`);
+    expect(letters("score-tracker")).toHaveLength(2);
+    expect(letters("high-score-tracker")).toHaveLength(3);
+    expect(letters("death-tracker")).toHaveLength(1);
+
+    for (const id of ["score-tracker", "high-score-tracker", "death-tracker"]) {
+      const [first, ...rest] = letters(id);
+      expect(first.style.getPropertyValue("--delay")).toBe("0s");
+      expect(first.style.getPropertyValue("--wave-duration")).toMatch(
+        /^\d+(\.\d+)?s$/,
+      );
+      for (const letter of rest) {
+        expect(letter.style.getPropertyValue("--delay")).not.toBe("0s");
+      }
+    }
+    expect(game.$("#high-score-tracker").textContent).toBe("135");
+  });
+
+  test("the containers bounce in from the right one after another", () => {
+    game = renderGame();
+    const rows = () =>
+      game.$$("#game-over .top-right-info > .tracker-container");
+    const bounces = () =>
+      rows().map((row) => row.classList.contains("tracker-enter"));
+    expect(bounces()).toEqual([false, false, false]);
+
+    game.wait(TIME_IS_UP);
+    fireAnimationEnd(game.$("#red-flash"));
+    expect(bounces()).toEqual([true, true, true]);
+
+    const delays = rows().map((row) => parseFloat(row.style.animationDelay));
+    expect(delays[0]).toBeGreaterThan(0);
+    expect(delays[1]).toBeGreaterThan(delays[0]);
+    expect(delays[2]).toBeGreaterThan(delays[1]);
+  });
+
+  test("the containers bounce in again on the next game over", () => {
+    game = renderGame();
+    const first = () => game.$("#game-over .tracker-container");
+
+    game.wait(TIME_IS_UP);
+    fireAnimationEnd(game.$("#red-flash"));
+    expect(first().classList.contains("tracker-enter")).toBe(true);
+
+    game.click("#game-over-btn");
+    game.wait(600);
+    expect(first().classList.contains("tracker-enter")).toBe(false);
+
+    game.wait(TIME_IS_UP);
+    fireAnimationEnd(game.$("#red-flash"));
+    expect(first().classList.contains("tracker-enter")).toBe(true);
+  });
+
+  test("each container has a border color of its own", () => {
+    game = renderGame();
+
+    const borders = game
+      .$$("#game-over .top-right-info > .tracker-container")
+      .map((row) => row.style.getPropertyValue("--tracker-border"));
+    expect(borders).toHaveLength(3);
+    for (const border of borders) expect(border).toMatch(/^#[0-9a-f]{6}$/i);
+    expect(new Set(borders).size).toBe(3);
+  });
+
+  test("a new high score shows in the high score container too", () => {
+    game = renderGame({ state: { highScore: 0 } });
+    game.click("#increase-img");
+    game.click("#increase-img");
+    game.wait(TIME_IS_UP);
+
+    expect(game.$("#score-tracker").textContent).toBe("02");
+    expect(game.$("#high-score-tracker").textContent).toBe("02");
   });
 
   test("keeps counting deaths from the saved total", () => {
@@ -238,7 +300,6 @@ describe("running out of time", () => {
     expect(game.$(".go-text-random").classList.contains("rainbow-txt")).toBe(
       true,
     );
-    expect(game.$(".score-text").classList.contains("rainbow-txt")).toBe(true);
   });
 
   test("a regular game over has no rainbow text", () => {
