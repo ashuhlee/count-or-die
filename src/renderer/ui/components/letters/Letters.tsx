@@ -22,6 +22,8 @@ export default function Letters({
       {text.split("").map((char, index) => (
         <span
           key={index}
+          // lets the CSS draw a copy of the letter, for gradients and the like
+          data-char={char === " " ? "\u00a0" : char}
           style={
             {
               "--delay": `${index * step}s`,

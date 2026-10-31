@@ -471,6 +471,16 @@ img {
     visibility: hidden;
   }
 }
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 @keyframes pop-thingie {
   0% {
     transform: scale(0.9) rotate(-6deg);
@@ -1091,10 +1101,10 @@ img {
   animation: bounceIn 0.7s ease 0.9s forwards;
 }
 #game-over.visible .play-again-btn {
-  animation: jackInTheBox 0.4s 1s forwards;
+  animation: scale-in 0.15s ease-out 1s both;
 }
 #game-over.visible .play-again-btn-2 {
-  animation: jackInTheBox 0.4s 1.25s forwards;
+  animation: scale-in 0.15s ease-out 1.25s both;
 }
 #game-over.visible .tombstone {
   animation: swing 1s ease forwards 0.2s;
@@ -1160,9 +1170,8 @@ img {
   text-shadow: 0 3px 0 var(--shadow-pink-020);
 }
 #game-over .you-died {
-  font-size: 26px;
+  font-size: 24px;
   font-family: "Enter the Gungeon Small", sans-serif;
-  letter-spacing: 1.5px;
   padding-top: 20px;
   text-transform: none;
   top: 50px;
@@ -1211,10 +1220,35 @@ img {
   margin-right: calc(-0.2em - 1.2px);
 }
 #game-over .play-again {
-  font-size: 30px;
+  margin: 32px;
+  font-size: 28px;
+  font-family: "Enter the Gungeon Small", sans-serif;
+  letter-spacing: 1.7px;
   -webkit-text-stroke: 9px #595480;
   filter: drop-shadow(4px 4px 0px var(--shadow-pink-015));
   paint-order: stroke fill;
+}
+#game-over .try-again {
+  display: inline-block;
+}
+#game-over .try-again span {
+  position: relative;
+}
+#game-over .try-again span::after {
+  content: attr(data-char);
+  position: absolute;
+  inset: 0;
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+  color: rgba(0, 0, 0, 0);
+  background: linear-gradient(
+    to bottom,
+    transparent 0.22em,
+    #fff 0.22em,
+    #fff 0.5em,
+    #e6e5ec 0.5em
+  );
+  background-clip: text;
 }
 #game-over .go-title {
   width: 80vw;

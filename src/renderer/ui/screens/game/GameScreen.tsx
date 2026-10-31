@@ -46,7 +46,7 @@ export default function GameScreen() {
             className={`boost-notif-text${boostNotification > 0 ? " boost-notification" : ""}`}
             key={boostNotification}
           >
-            boost!
+            BOOST!
           </span>
         </div>
 

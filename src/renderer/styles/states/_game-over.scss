@@ -63,10 +63,10 @@
       animation: bounceIn 0.7s ease 0.9s forwards;
     }
     .play-again-btn {
-      animation: jackInTheBox 0.4s 1s forwards;
+      animation: scale-in 0.15s ease-out 1s both;
     }
     .play-again-btn-2 {
-      animation: jackInTheBox 0.4s 1.25s forwards;
+      animation: scale-in 0.15s ease-out 1.25s both;
     }
     .tombstone {
       animation: swing 1s ease forwards 0.2s;
@@ -137,9 +137,8 @@
     text-shadow: 0 3px 0 var(--shadow-pink-020);
   }
   .you-died {
-    font-size: 26px;
+    font-size: 24px;
     font-family: "Enter the Gungeon Small", sans-serif;
-    letter-spacing: 1.5px;
     padding-top: 20px;
     text-transform: none;
     top: 50px;
@@ -191,10 +190,37 @@
   }
 
   .play-again {
-    font-size: 30px;
+    margin: 32px;
+    font-size: 28px;
+    font-family: "Enter the Gungeon Small", sans-serif;
+    letter-spacing: 1.7px;
     -webkit-text-stroke: 9px #595480;
     filter: drop-shadow(4px 4px 0px var(--shadow-pink-015));
     paint-order: stroke fill;
+  }
+
+  .try-again {
+    display: inline-block;
+  }
+  .try-again span {
+    position: relative;
+
+    &::after {
+      content: attr(data-char);
+      position: absolute;
+      inset: 0;
+      -webkit-text-stroke: 0;
+      text-shadow: none;
+      color: transparent;
+      background: linear-gradient(
+        to bottom,
+        transparent 0.22em,
+        #fff 0.22em,
+        #fff 0.5em,
+        #e6e5ec 0.5em
+      );
+      background-clip: text;
+    }
   }
 
   .go-title {

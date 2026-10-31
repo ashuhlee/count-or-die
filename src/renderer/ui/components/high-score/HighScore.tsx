@@ -8,7 +8,7 @@ export default function HighScore() {
       id="high-score"
       className={`animate__animated${state.isHighScore ? " new-score" : ""}`}
     >
-      {`high score: ${state.highScore}`}
+      {`HIGH SCORE: ${state.highScore}`}
     </h1>
   );
 }
