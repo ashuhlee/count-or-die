@@ -1670,7 +1670,7 @@ img {
 .menu-screen .menu-buttons {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
 }
 .menu-screen .menu-btn {
   color: #3b375f;
@@ -1707,13 +1707,13 @@ img {
   outline: 3px solid #595480;
   outline-offset: 3px;
 }
-.menu-screen.ready .menu-btn {
+.menu-screen.buttons-in .menu-btn {
   animation: jackInTheBox 0.4s both;
 }
-.menu-screen.ready .menu-btn + .menu-btn {
+.menu-screen.buttons-in .menu-btn + .menu-btn {
   animation-delay: 0.2s;
 }
-.menu-screen.ready .menu-btn + .menu-btn + .menu-btn {
+.menu-screen.buttons-in .menu-btn + .menu-btn + .menu-btn {
   animation-delay: 0.3s;
 }
 .menu-screen ~ .app-ver {
@@ -1732,6 +1732,13 @@ img {
 }
 .menu-screen .menu-bg .pixel-swirl-shader {
   opacity: 0;
+}
+.menu-screen {
+  flex-direction: column;
+  gap: 60px;
+}
+.menu-screen .menu-title {
+  width: 22vw;
 }
 .startup-screen {
   --progress: 0;

@@ -19,7 +19,7 @@ import LoadingScreen from "./overlays/loading/LoadingScreen.tsx";
 import GameOver from "./screens/game-over/GameOver.tsx";
 import RedFlash from "./screens/game-over/RedFlash.tsx";
 import GameScreen from "./screens/game/GameScreen.tsx";
-import MenuScreen from "./screens/menu/MenuScreen.tsx";
+import MenuScreen from "./screens/start-menu/MenuScreen.tsx";
 
 export default function Game() {
   useKeyboardControls();

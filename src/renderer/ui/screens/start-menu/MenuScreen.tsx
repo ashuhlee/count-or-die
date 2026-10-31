@@ -1,6 +1,11 @@
+import { useEffect, useState } from "react";
+
 import { useGame } from "../../../provider/useGame.ts";
 import PixelButton from "../../components/pixel-button/PixelButton.tsx";
 import MenuBackground from "./MenuBackground.tsx";
+import MenuTitle from "./MenuTitle.tsx";
+
+export const BUTTONS_DELAY = 400;
 
 const COLORS = { play: "#b0a1ff", report: "#FF85E3", quit: "#CDC8EA" };
 
@@ -15,9 +20,21 @@ const look = (color: string) => ({
 export default function MenuScreen() {
   const { actions, loading, ready } = useGame();
 
+  const [buttonsIn, setButtonsIn] = useState(false);
+  useEffect(() => {
+    if (!ready) return;
+
+    const timer = setTimeout(() => setButtonsIn(true), BUTTONS_DELAY);
+    return () => clearTimeout(timer);
+  }, [ready]);
+
   return (
-    <div className={`menu-screen${ready ? " ready" : ""}`} id="menu-screen">
+    <div
+      className={`menu-screen${buttonsIn ? " buttons-in" : ""}`}
+      id="menu-screen"
+    >
       <MenuBackground />
+      <MenuTitle />
       <div className="menu-buttons">
         <PixelButton
           {...look(COLORS.play)}

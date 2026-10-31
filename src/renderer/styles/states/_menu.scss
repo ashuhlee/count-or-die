@@ -31,7 +31,7 @@
   .menu-buttons {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 20px;
   }
 
   .menu-btn {
@@ -71,7 +71,7 @@
       outline-offset: 3px;
     }
   }
-  &.ready .menu-btn {
+  &.buttons-in .menu-btn {
     animation: jackInTheBox 0.4s both;
 
     & + .menu-btn {
