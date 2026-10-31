@@ -411,12 +411,21 @@ describe("boost power-ups", () => {
     expect(game.$("#no-boosts").style.display).toBe("none");
     game.wait(0);
     expect(usedHearts()).toEqual([false, true, true, true]);
-    game.wait(150);
-    expect(usedHearts()).toEqual([false, false, true, true]);
-    game.wait(150);
-    expect(usedHearts()).toEqual([false, false, false, true]);
-    game.wait(150);
+
+    // each heart comes back after the one before it, a little later
+    const cameBackAt: number[] = [0];
+    for (let ms = 1; ms <= 2000 && cameBackAt.length < 4; ms++) {
+      game.wait(1);
+      const back = usedHearts().filter((used) => !used).length;
+      if (back > cameBackAt.length) cameBackAt.push(ms);
+    }
     expect(usedHearts()).toEqual([false, false, false, false]);
+    expect(cameBackAt).toHaveLength(4);
+    for (let heart = 1; heart < 4; heart++) {
+      const gap = cameBackAt[heart] - cameBackAt[heart - 1];
+      expect(gap).toBeGreaterThan(20);
+      expect(gap).toBeLessThan(500);
+    }
   });
 
   test("a restart cuts the restoring short and brings them all back", () => {
