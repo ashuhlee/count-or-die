@@ -12,6 +12,9 @@ import {
 
 import type { IpcMainEvent, MenuItemConstructorOptions } from "electron";
 
+import { lockDown } from "./lockDown.ts";
+import { createViewMenu } from "./menu.ts";
+
 const isMac = process.platform === "darwin";
 const iconPath = isMac
   ? path.join(__dirname, "../../resources/icons/icon.icns")
@@ -58,10 +61,13 @@ function createWindow() {
     icon: iconPath,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
-      nodeIntegration: true,
+      nodeIntegration: false,
       contextIsolation: true,
+      devTools: !app.isPackaged,
     },
   });
+
+  lockDown(mainWindow.webContents, app.isPackaged);
 
   mainWindow.once("ready-to-show", () => mainWindow.show());
 
@@ -125,20 +131,7 @@ const fileMenu: MenuItemConstructorOptions = {
   submenu: [{ role: isMac ? "close" : "quit" }],
 };
 
-const viewMenu: MenuItemConstructorOptions = {
-  label: "View",
-  submenu: [
-    { role: "reload" },
-    { role: "forceReload" },
-    { role: "toggleDevTools" },
-    { type: "separator" },
-    { role: "resetZoom" },
-    { role: "zoomIn" },
-    { role: "zoomOut" },
-    { type: "separator" },
-    { role: "togglefullscreen" },
-  ],
-};
+const viewMenu = createViewMenu(app.isPackaged);
 
 const windowMenu: MenuItemConstructorOptions = {
   label: "Window",
