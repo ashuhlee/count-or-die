@@ -31,7 +31,6 @@ type FallingPowerUpProps = {
   onMiss: (falling: Falling) => void;
 };
 
-// one power-up on its way down the screen
 export default function FallingPowerUp({
   falling,
   gameOver,
@@ -74,8 +73,8 @@ export default function FallingPowerUp({
           className="power-up-melt"
           active={gameOver}
           mode="out"
-          duration={900}
-          pixelScale={0.5}
+          duration={700}
+          pixelScale={2}
           shadow={false}
           settledBrightness={1}
         />
