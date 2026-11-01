@@ -4,13 +4,17 @@ import decreaseBtn from "@assets/ui/buttons/decrease.png";
 import decreaseBtnPress from "@assets/ui/buttons/decrease-press.png";
 import increaseBtn from "@assets/ui/buttons/increase.png";
 import increaseBtnPress from "@assets/ui/buttons/increase-press.png";
-import resetBtn from "@assets/ui/buttons/reset-btn.png";
 
 import Counter from "../../components/counter/Counter.tsx";
 import GoalBox from "../../components/goal/GoalBox.tsx";
 import Hearts from "../../components/hearts/Hearts.tsx";
 import Letters from "../../components/letters/Letters.tsx";
 import PressButton from "../../components/buttons/PressButton.tsx";
+import PixelButton from "../../components/pixel-button/PixelButton.tsx";
+import {
+  BUTTON_LOOK,
+  RESTART_COLORS,
+} from "../../components/pixel-button/buttonLooks.ts";
 import ProgressBar from "../../components/progress-bar/ProgressBar.tsx";
 import { useGame } from "../../../provider/useGame.ts";
 import { useGameEvent } from "../../../provider/useGameEvent.ts";
@@ -93,13 +97,16 @@ export default function GameScreen() {
       </div>
 
       <div className="reset" id="reset">
-        <img
-          src={resetBtn}
+        <PixelButton
+          {...BUTTON_LOOK}
+          {...RESTART_COLORS}
           id="reset-img"
-          className="btn-hover"
-          alt="increase-reg"
+          className="wide-btn"
+          aria-label="restart"
           onClick={actions.reset}
-        />
+        >
+          <Letters text="RESTART" step={0.1} height={0.7} duration={1} />
+        </PixelButton>
       </div>
     </div>
   );

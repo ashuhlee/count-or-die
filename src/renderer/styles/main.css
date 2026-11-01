@@ -48,6 +48,11 @@
   src: url("../assets/fonts/teeny-tiny-pixls.otf") format("opentype");
 }
 @font-face {
+  font-family: "Mem Prop 5x6";
+  font-display: block;
+  src: url("../assets/fonts/mem-prop-5x6.ttf") format("truetype");
+}
+@font-face {
   font-family: "Enter the Gungeon Small";
   font-display: block;
   src: url("../assets/fonts/enter-the-gungeon-small.ttf") format("truetype");
@@ -729,8 +734,7 @@ img {
   justify-content: center;
   filter: drop-shadow(0px 7px 0px var(--shadow-pink-020));
 }
-.reset img {
-  width: 190px;
+.reset .pixel-btn {
   filter: drop-shadow(0px 7px 0px var(--shadow-pink-020));
 }
 .reset {
@@ -756,7 +760,7 @@ img {
 }
 .controls.bottom {
   top: auto;
-  bottom: 18px;
+  bottom: 10px;
 }
 .controls .round-btn {
   position: relative;
@@ -1277,6 +1281,26 @@ img {
       var(--px) no-repeat,
     var(--btn-fill);
 }
+.wide-btn {
+  width: calc(var(--px)*34);
+  padding: 0;
+  color: #fdfffe;
+  font-family: "Mem Prop 5x6", sans-serif;
+  font-size: 24px;
+  letter-spacing: 0;
+  cursor: pointer;
+  text-shadow: 0 calc(var(--px)/2/0.9) 0 var(--btn-text-shadow-color);
+  --btn-text-down: -3px;
+  --btn-text-right: 0;
+}
+.wide-btn .pixel-btn-label {
+  transform: scaleY(0.8);
+}
+.wide-btn:hover .pixel-btn-label span {
+  position: relative;
+  animation: wavy-text-top var(--wave-duration, 2.5s)
+    cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--delay);
+}
 .skull-floor {
   transform: rotate(-8deg);
   position: fixed;
@@ -1311,9 +1335,9 @@ img {
   z-index: 1000;
   pointer-events: none;
   white-space: nowrap;
-  font-family: "Teeny Tiny Pixls", sans-serif;
-  font-size: 16px;
-  letter-spacing: -0.7px;
+  font-family: "Mem Prop 5x6", sans-serif;
+  font-size: 20px;
+  letter-spacing: 3px;
   text-transform: none;
 }
 .tooltip > span > span,
@@ -1515,8 +1539,8 @@ img {
   transition: transform 1s ease;
 }
 #game-over .tracker-container .tracker-icon {
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
 }
 #game-over .tracker-container .tracker-value {
   --shake-scale: 0.965;
@@ -1673,11 +1697,10 @@ img {
   gap: 22px;
   filter: drop-shadow(0px 7px 0px var(--shadow-pink-015));
 }
-#game-over .bottom-section .game-over-btns img {
-  width: 190px;
+#game-over .bottom-section .game-over-btns .wide-btn {
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-#game-over .bottom-section .game-over-btns img:hover {
+#game-over .bottom-section .game-over-btns .wide-btn:hover {
   scale: 1.05;
 }
 #game-over .bottom-section .game-over-btns .play-again-btn:active,

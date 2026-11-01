@@ -12,13 +12,16 @@ import starTracker from "@assets/ui/deco/star_grey.svg";
 import trophyTracker from "@assets/ui/deco/trophy_grey.svg";
 import tombstonePng from "@assets/ui/deco/tombstone.png";
 
-import resetBtnPng from "@assets/ui/buttons/reset-btn.png";
-import quitBtnPng from "@assets/ui/buttons/quit-btn.png";
-
 import { useGame } from "../../../provider/useGame.ts";
 import { formatCounter } from "../../../utils/formatCounter.ts";
 import { openGithub } from "../../../utils/openGithub.ts";
 import RoundButton from "../../components/round-button/RoundButton.tsx";
+import PixelButton from "../../components/pixel-button/PixelButton.tsx";
+import {
+  BUTTON_LOOK,
+  QUIT_COLORS,
+  RESTART_COLORS,
+} from "../../components/pixel-button/buttonLooks.ts";
 import Tooltip from "../../components/tooltip/Tooltip.tsx";
 import SkullFloor from "../../components/skull-floor/SkullFloor.tsx";
 import BulgeFilter from "../../components/bulge/BulgeFilter.tsx";
@@ -158,20 +161,26 @@ export default function GameOver() {
         </h2>
         <div className="bottom-section">
           <div className="game-over-btns">
-            <img
-              src={resetBtnPng}
+            <PixelButton
+              {...BUTTON_LOOK}
+              {...RESTART_COLORS}
               id="game-over-btn"
-              className="play-again-btn btn-hover"
-              alt="game over reset button"
+              className="wide-btn play-again-btn"
+              aria-label="retry"
               onClick={actions.restartFromGameOver}
-            />
-            <img
-              src={quitBtnPng}
+            >
+              <Letters text="NEW RUN" step={0.1} height={1.5} duration={1} />
+            </PixelButton>
+            <PixelButton
+              {...BUTTON_LOOK}
+              {...QUIT_COLORS}
               id="quit-btn"
-              className="play-again-btn-2 btn-hover"
-              alt="rage quit button"
+              className="wide-btn play-again-btn-2"
+              aria-label="rage quit"
               onClick={actions.quit}
-            />
+            >
+              <Letters text="RAGE QUIT" step={0.1} height={1.5} duration={1} />
+            </PixelButton>
           </div>
           <div className="menu-anim">
             <BackToMenu />

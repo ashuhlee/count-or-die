@@ -67,6 +67,12 @@ $fonts: "../assets/fonts";
 }
 
 @font-face {
+  font-family: "Mem Prop 5x6";
+  font-display: block;
+  src: url("#{$fonts}/mem-prop-5x6.ttf") format("truetype");
+}
+
+@font-face {
   font-family: "Enter the Gungeon Small";
   font-display: block;
   src: url("#{$fonts}/enter-the-gungeon-small.ttf") format("truetype");

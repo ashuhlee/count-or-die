@@ -152,8 +152,8 @@
     transition: transform 1s ease;
 
     .tracker-icon {
-      width: 18px;
-      height: 18px;
+      width: 17px;
+      height: 17px;
     }
 
     .tracker-value {
@@ -327,8 +327,7 @@
       gap: 22px;
       filter: drop-shadow(0px 7px 0px var(--shadow-pink-015));
 
-      img {
-        width: 190px;
+      .wide-btn {
         transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 
         &:hover {

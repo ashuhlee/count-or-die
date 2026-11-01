@@ -18,8 +18,7 @@
 }
 
 .reset {
-  img {
-    width: 190px;
+  .pixel-btn {
     filter: drop-shadow(0px 7px 0px var(--shadow-pink-020));
   }
   transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -47,9 +46,8 @@
 
   &.bottom {
     top: auto;
-    bottom: 18px;
+    bottom: 10px;
   }
-
   .round-btn {
     position: relative;
     width: 64px;
