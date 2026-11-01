@@ -248,6 +248,36 @@ img {
   --bounce: 16px;
   animation: bounce-in-right-soft 1s both;
 }
+@keyframes bounce-in-left-soft {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  from {
+    opacity: 0;
+    transform: translate3d(-3000px, 0, 0) scaleX(3);
+  }
+  60% {
+    opacity: 1;
+    transform: translate3d(var(--bounce, 8px), 0, 0) scaleX(1);
+  }
+  75% {
+    transform: translate3d(calc(var(--bounce, 8px) * -0.4), 0, 0) scaleX(0.99);
+  }
+  90% {
+    transform: translate3d(calc(var(--bounce, 8px) * 0.2), 0, 0) scaleX(0.998);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+.bounce-in-left {
+  --bounce: 16px;
+  animation: bounce-in-left-soft 1s both;
+}
 @keyframes point {
   0% {
     transform: translateY(0);
@@ -984,7 +1014,7 @@ img {
 .goal-chatbox .next-goal .goal-text {
   --shake-scale: 0.97;
   --shake-distance: -1.5px;
-  color: #4b4d5a;
+  color: #4a475e;
   font-family: "Silkscreen", monospace;
   font-size: 20px;
   letter-spacing: -1.5px;
@@ -1515,6 +1545,17 @@ img {
   text-transform: none;
   top: 50px;
   max-width: 250px;
+}
+#game-over .top-left-info {
+  z-index: -3;
+  position: absolute;
+  top: 10px;
+  left: 0;
+  margin: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  filter: url(#tracker-bulge);
 }
 #game-over .top-right-info {
   z-index: -3;

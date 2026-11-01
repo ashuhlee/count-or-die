@@ -9,6 +9,7 @@ import githubBtnSvg from "@assets/ui/svg/github-button.svg";
 import ghostPng from "@assets/ui/deco/ghost.gif";
 import skullTracker from "@assets/ui/deco/skull_grey.svg";
 import starTracker from "@assets/ui/deco/star_grey.svg";
+import redoTracker from "@assets/ui/deco/redo_grey.svg";
 import trophyTracker from "@assets/ui/deco/trophy_grey.svg";
 import tombstonePng from "@assets/ui/deco/tombstone.png";
 
@@ -96,13 +97,28 @@ export default function GameOver() {
           <span className={`go-text-random${rainbowClass}`}>{view.phrase}</span>
         </h2>
         <BulgeFilter {...TRACKER_BULGE} />
+        {view.newBest && (
+          <div className="top-left-info">
+            <PixelPanel
+              border={TRACKER_BORDERS.highScore}
+              className={`tracker-container${view.visible ? " bounce-in-left" : ""}`}
+              style={trackerStyle(0)}
+              id="new-best"
+            >
+              <img src={trophyTracker} alt="trophy" className="tracker-icon" />
+              <h2 className="tracker-value">
+                <Letters text="new best score!" step={0.2} duration={3} />
+              </h2>
+            </PixelPanel>
+          </div>
+        )}
         <div className="top-right-info">
           <PixelPanel
             border={TRACKER_BORDERS.score}
             className={trackerClass}
             style={trackerStyle(0)}
           >
-            <img src={starTracker} alt="score" className="tracker-icon" />
+            <img src={redoTracker} alt="score" className="tracker-icon" />
             <h2 className="tracker-value" id="score-tracker">
               <Letters text={view.score} step={0.4} duration={3} />
             </h2>
@@ -112,11 +128,7 @@ export default function GameOver() {
             className={trackerClass}
             style={trackerStyle(1)}
           >
-            <img
-              src={trophyTracker}
-              alt="high score"
-              className="tracker-icon"
-            />
+            <img src={starTracker} alt="high score" className="tracker-icon" />
             <h2 className="tracker-value" id="high-score-tracker">
               <Letters
                 text={formatCounter(state.highScore)}
