@@ -2,22 +2,12 @@ import confetti from "canvas-confetti";
 
 export function playConfetti(): void {
   confetti({
-    particleCount: 100,
-    spread: 400,
+    particleCount: 80,
+    spread: 800,
     startVelocity: 30,
     scalar: 1.4,
     ticks: 100,
     origin: { x: 0.5, y: 0.2 },
-    colors: [
-      "#ffacad",
-      "#ffd5a5",
-      "#fdffb6",
-      "#cbffbf",
-      "#9bf6ff",
-      "#a0c4ff",
-      "#bdb2ff",
-      "#ffc6ff",
-      "#ff95ea",
-    ],
+    colors: ["#ffa1fd", "#af97ff", "#a8e6ff", "#ffc6ff", "#ff95ea", "#FFEEFC"],
   });
 }
