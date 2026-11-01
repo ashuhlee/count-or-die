@@ -8,8 +8,7 @@ const PHRASES_REGULAR = [
   "Let's aim a bit higher..",
   "Sooo close!",
   "You are dead.",
-  "Another try maybe?",
-  "Give it another go!",
+  "Huh, you suck!",
   "What a flop!",
 ];
 

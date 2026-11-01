@@ -26,7 +26,7 @@ type AudioTrack = {
   volume: number;
   loop?: boolean;
 };
-// every sound the game can ask for has to be here, and nothing else
+
 export const audioConfig: Record<SoundName, AudioTrack> = {
   bgMusic: {
     audio: new Audio(bgMusicFile),
@@ -56,7 +56,7 @@ export const audioConfig: Record<SoundName, AudioTrack> = {
   },
   goalReached: {
     audio: new Audio(goalReachedFxFile),
-    volume: 0.4,
+    volume: 0.2,
   },
   gameOver: {
     audio: new Audio(gameOverFxFile),

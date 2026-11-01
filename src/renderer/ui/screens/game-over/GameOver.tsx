@@ -153,7 +153,7 @@ export default function GameOver() {
 
         <h2 className="play-again">
           <span className="try-again">
-            <Letters text="try again?" step={0.3} duration={3} />
+            <Letters text="play again?" step={0.3} duration={3} />
           </span>
         </h2>
         <div className="bottom-section">
