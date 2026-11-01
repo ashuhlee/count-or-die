@@ -371,3 +371,30 @@ describe("missing one", () => {
     expect(icons()).toHaveLength(1);
   });
 });
+
+describe("when the time runs out", () => {
+  // a round lasts 20 seconds; time is up a hair before
+  const TIME_IS_UP = 19900;
+  const melting = () => game.$(".power-up-melt").dataset;
+
+  test("the one falling melts away where it is", () => {
+    game = renderGame();
+    spawn(DOUBLE, 0, 0, 0);
+    expect(melting().meltActive).toBe("false");
+
+    game.wait(TIME_IS_UP - 6000);
+    expect(melting().meltMode).toBe("out");
+    expect(melting().meltActive).toBe("true");
+    expect(icons()[0].style.animationPlayState).toBe("paused");
+  });
+
+  test("it can no longer be collected", () => {
+    game = renderGame();
+    spawn(DOUBLE, 0, 0, 0);
+    game.wait(TIME_IS_UP - 6000);
+    game.click(".power-up-img");
+
+    expect(sounds()).not.toContain("powerUp");
+    expect(game.$$(".smoke-puff")).toHaveLength(0);
+  });
+});

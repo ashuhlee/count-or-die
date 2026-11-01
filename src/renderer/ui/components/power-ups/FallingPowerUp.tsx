@@ -3,6 +3,7 @@ import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { candy, donut, badDonut, star, superstar } from "@assets/ui/power-ups";
 
 import type { PowerUpType } from "../../../game/powerUps.ts";
+import MeltInShader from "../../shaders/melt-in-shader/MeltInShader.tsx";
 
 const ICONS: Record<PowerUpType, string> = {
   double_click: candy,
@@ -12,7 +13,6 @@ const ICONS: Record<PowerUpType, string> = {
   replenish_boosts: superstar,
 };
 
-// on wide screens the icon is nudged in from the edge by a random amount
 const WIDE_SCREEN = 600;
 const MAX_NUDGE = 150;
 
@@ -26,6 +26,7 @@ export type Falling = {
 
 type FallingPowerUpProps = {
   falling: Falling;
+  gameOver: boolean;
   onCollect: (falling: Falling, rect: DOMRect) => void;
   onMiss: (falling: Falling) => void;
 };
@@ -33,6 +34,7 @@ type FallingPowerUpProps = {
 // one power-up on its way down the screen
 export default function FallingPowerUp({
   falling,
+  gameOver,
   onCollect,
   onMiss,
 }: FallingPowerUpProps) {
@@ -49,21 +51,35 @@ export default function FallingPowerUp({
 
   const style: CSSProperties = {
     animation: `${fall} 2.8s linear forwards`,
+    animationPlayState: gameOver ? "paused" : "running",
+    pointerEvents: gameOver ? "none" : undefined,
     ...(nudge !== null && { [side]: `${nudge}px` }),
   };
 
   return (
     <div className="spawn-area" ref={areaRef}>
-      <img
+      <div
         className={`power-up-img spawn-area--${side}`}
-        src={ICONS[type]}
         data-power-up-type={type}
         style={style}
         onClick={(event) =>
+          gameOver ||
           onCollect(falling, event.currentTarget.getBoundingClientRect())
         }
         onAnimationEnd={() => onMiss(falling)}
-      />
+      >
+        <MeltInShader
+          src={ICONS[type]}
+          alt={type}
+          className="power-up-melt"
+          active={gameOver}
+          mode="out"
+          duration={900}
+          pixelScale={0.5}
+          shadow={false}
+          settledBrightness={1}
+        />
+      </div>
     </div>
   );
 }
