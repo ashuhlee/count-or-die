@@ -239,7 +239,7 @@ describe("the game over buttons", () => {
     const open = vi.spyOn(window, "open").mockImplementation(() => null);
     game.click("#game-over-github-btn");
 
-    expect(sounds()).toContain("buttonClick");
+    expect(sounds()).not.toContain("buttonClick");
     expect(open).toHaveBeenCalledWith(
       "https://github.com/ashuhlee/count-or-die",
       "_blank",

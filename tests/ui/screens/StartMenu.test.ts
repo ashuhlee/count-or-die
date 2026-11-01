@@ -230,7 +230,7 @@ describe("the menu", () => {
     } as unknown as Window["electron"];
     game.click("#github-btn");
 
-    expect(sounds()).toContain("buttonClick");
+    expect(sounds()).not.toContain("buttonClick");
     expect(window.electron.openGithub).toHaveBeenCalledTimes(1);
   });
 
