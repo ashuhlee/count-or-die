@@ -670,12 +670,25 @@ img {
   display: inline-block;
   animation: wavy-text-top var(--wave-duration, 2.5s)
     cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--delay);
-  transition: scale 0.1s cubic-bezier(0.34, 1.56, 0.64, 1);
-  transition-delay: calc(var(--index)*0.03s);
 }
 .back-to-menu:hover span {
-  animation: none;
-  scale: 1.05;
+  animation: back-letter-pop 2.6s ease-in-out infinite calc(var(--index)*0.075s);
+}
+@keyframes back-letter-pop {
+  0% {
+    scale: 1;
+    rotate: 0deg;
+  }
+  2.6923076923%,
+  2.8846153846% {
+    scale: 1.15;
+    rotate: 6deg;
+  }
+  10.5769230769%,
+  100% {
+    scale: 1;
+    rotate: 0deg;
+  }
 }
 .no-boosts-shake {
   animation: no-boosts-shake 0.25s ease-out;
@@ -1531,8 +1544,8 @@ img {
     to bottom,
     transparent 0.22em,
     #fff 0.22em,
-    #fff 0.5em,
-    #e6e5ec 0.5em
+    #fff 0.4em,
+    #d7d7f1 0.4em
   );
   background-clip: text;
 }
@@ -1583,7 +1596,7 @@ img {
   --back-border: #a1a1ff;
   z-index: -5;
   position: relative;
-  padding: 2px 10px;
+  padding: 4px 10px 2px;
   margin-top: 40px;
   font-family: "Enter the Gungeon Small", sans-serif;
   font-size: 18px;
@@ -1614,7 +1627,7 @@ img {
 }
 #game-over .bottom-section h2:active::before {
   margin-right: 3px;
-  color: #c8e1ff;
+  color: #b9efff;
 }
 #game-over .bottom-section .underline::after {
   content: "";
@@ -1623,13 +1636,22 @@ img {
   inset: 0;
   transform: scaleX(1);
   opacity: 0.8;
+  --stripe-period: 18px;
+  background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' shape-rendering='crispEdges'><rect x='0' y='0' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='12' y='0' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='24' y='0' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='-2' y='2' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='10' y='2' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='22' y='2' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='-4' y='4' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='8' y='4' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='20' y='4' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='-6' y='6' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='6' y='6' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='18' y='6' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='-8' y='8' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='4' y='8' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='16' y='8' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='-10' y='10' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='2' y='10' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='14' y='10' width='6' height='2' fill='white' fill-opacity='0.2'/></svg>");
+  background-size: 18px 18px;
+  image-rendering: pixelated;
   background-color: #a1a1ff;
+  background-blend-mode: overlay;
+  animation: slide-stripes 2.7s linear infinite;
   box-shadow:
     -3px 0 0 0 var(--back-border),
     3px 0 0 0 var(--back-border),
     0 -3px 0 0 var(--back-border),
     0 3px 0 0 var(--back-border);
   transition: all 0.3s ease-out;
+}
+#game-over .bottom-section .underline:hover::after {
+  background-color: #a1a1ff;
 }
 #game-over .bottom-section .underline.left::after {
   transform-origin: bottom left;

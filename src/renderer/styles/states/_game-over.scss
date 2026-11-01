@@ -1,5 +1,6 @@
 @use "../base/globals";
 @use "../base/swirl-background";
+@use "../base/pixel-stripes" as stripes;
 
 #game-over {
   --mask-size: 100% 200%;
@@ -196,8 +197,8 @@
         to bottom,
         transparent 0.22em,
         #fff 0.22em,
-        #fff 0.5em,
-        #e6e5ec 0.5em
+        #fff 0.4em,
+        #d7d7f1 0.4em
       );
       background-clip: text;
     }
@@ -250,7 +251,7 @@
       --back-border: #a1a1ff;
       z-index: -5;
       position: relative;
-      padding: 2px 10px;
+      padding: 4px 10px 2px;
       margin-top: 40px;
       font-family: "Enter the Gungeon Small", sans-serif;
       font-size: 18px;
@@ -283,7 +284,7 @@
       }
       &:active::before {
         margin-right: 3px;
-        color: #c8e1ff;
+        color: #b9efff;
       }
     }
     .underline {
@@ -294,13 +295,27 @@
         inset: 0;
         transform: scaleX(1);
         opacity: 0.8;
+
+        @include stripes.stripes(
+          $stripe-period: 12px,
+          $stripe-width: 6px,
+          $stripe-step: 2px,
+          $stripe-opacity: 0.2,
+          $stripe-pixel-size: 1.5
+        );
         background-color: #a1a1ff;
+        background-blend-mode: overlay;
+        animation: slide-stripes 2.7s linear infinite;
         box-shadow:
           -3px 0 0 0 var(--back-border),
           3px 0 0 0 var(--back-border),
           0 -3px 0 0 var(--back-border),
           0 3px 0 0 var(--back-border);
         transition: all 0.3s ease-out;
+      }
+
+      &:hover::after {
+        background-color: #a1a1ff;
       }
       &.left::after {
         transform-origin: bottom left;
