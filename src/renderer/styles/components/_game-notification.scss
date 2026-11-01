@@ -1,0 +1,40 @@
+.game-notification {
+  height: 30px;
+  width: fit-content;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 12px;
+
+  .game-notification-icon {
+    width: 17px;
+    height: 17px;
+  }
+
+  .game-notification-text {
+    --shake-scale: 0.965;
+    --shake-distance: -2px;
+    font-family: "Teeny Tiny Pixls", sans-serif;
+    font-size: 15px;
+    text-shadow: none;
+    text-transform: uppercase;
+    color: #3b375f;
+    position: relative;
+    top: 0.1em;
+    margin-right: calc(-0.2em - 1.2px);
+  }
+}
+
+.notices {
+  z-index: 100;
+  position: absolute;
+  top: 30px;
+  left: 0;
+  margin: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 28px;
+  filter: url(#tracker-bulge);
+}

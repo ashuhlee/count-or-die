@@ -73,6 +73,26 @@ describe("running out of time", () => {
     expect(localStorage.getItem("deathCount")).toBe("1");
   });
 
+  test("celebrates a new best score", () => {
+    game = renderGame();
+    game.click("#increase-img");
+    game.wait(TIME_IS_UP);
+    fireAnimationEnd(game.$("#red-flash"));
+
+    expect(game.$("#new-best").textContent.replace(/\u00a0/g, " ")).toBe(
+      "new best score!",
+    );
+  });
+
+  test("says nothing about the best score when it was not beaten", () => {
+    game = renderGame({ state: { highScore: 99 } });
+    game.click("#increase-img");
+    game.wait(TIME_IS_UP);
+    fireAnimationEnd(game.$("#red-flash"));
+
+    expect(game.$("#new-best")).toBeNull();
+  });
+
   test("keeps counting deaths from the saved total", () => {
     localStorage.setItem("deathCount", "7");
     game = renderGame();

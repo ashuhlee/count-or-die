@@ -17,6 +17,7 @@
 @use "components/skull-floor";
 @use "components/fps-counter";
 @use "components/tooltip";
+@use "components/game-notification";
 
 @use "states/game-over";
 @use "states/loading";

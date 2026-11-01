@@ -10,6 +10,7 @@ export function useGameOverView() {
     background: false,
     phrase: "you died lolz",
     rainbow: false,
+    newBest: false,
     score: formatCounter(0),
   });
   const waitingForFlash = useRef(false);
@@ -21,6 +22,7 @@ export function useGameOverView() {
       background: true,
       phrase: pickGameOverPhrase(isHighScore, Math.random()),
       rainbow: current.rainbow || isHighScore,
+      newBest: isHighScore,
       score: formatCounter(score),
     }));
   });
@@ -39,6 +41,7 @@ export function useGameOverView() {
       visible: false,
       background: false,
       rainbow: false,
+      newBest: false,
       phrase: pickGameOverPhrase(false, Math.random()),
     }));
   });

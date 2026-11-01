@@ -13,10 +13,9 @@ const PHRASES_REGULAR = [
 ];
 
 const PHRASES_NEW_SCORE = [
-  "new high score!",
-  "you beat your best score!",
-  "you're getting better!",
-  "oooh, a new record!",
+  "You're getting better!",
+  "Oooh, a new record!",
+  "Maybe you aren't so bad.",
 ];
 
 export function pickGameOverPhrase(

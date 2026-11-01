@@ -139,6 +139,44 @@
   animation: bounce-in-right-soft 1s both;
 }
 
+// the same, coming in from the left
+@keyframes bounce-in-left-soft {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  from {
+    opacity: 0;
+    transform: translate3d(-3000px, 0, 0) scaleX(3);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate3d(var(--bounce, 8px), 0, 0) scaleX(1);
+  }
+
+  75% {
+    transform: translate3d(calc(var(--bounce, 8px) * -0.4), 0, 0) scaleX(0.99);
+  }
+
+  90% {
+    transform: translate3d(calc(var(--bounce, 8px) * 0.2), 0, 0) scaleX(0.998);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.bounce-in-left {
+  --bounce: 16px;
+  animation: bounce-in-left-soft 1s both;
+}
+
 @keyframes point {
   0% {
     transform: translateY(0);

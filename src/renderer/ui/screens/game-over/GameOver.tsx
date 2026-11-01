@@ -10,7 +10,6 @@ import ghostPng from "@assets/ui/deco/ghost.gif";
 import skullTracker from "@assets/ui/deco/skull_grey.svg";
 import starTracker from "@assets/ui/deco/star_grey.svg";
 import redoTracker from "@assets/ui/deco/redo_grey.svg";
-import trophyTracker from "@assets/ui/deco/trophy_grey.svg";
 import tombstonePng from "@assets/ui/deco/tombstone.png";
 
 import { useGame } from "../../../provider/useGame.ts";
@@ -27,6 +26,7 @@ import Tooltip from "../../components/tooltip/Tooltip.tsx";
 import SkullFloor from "../../components/skull-floor/SkullFloor.tsx";
 import BulgeFilter from "../../components/bulge/BulgeFilter.tsx";
 import Letters from "../../components/letters/Letters.tsx";
+import GameNotification from "../../components/game-notification/GameNotification.tsx";
 import PixelPanel from "../../components/pixel-panel/PixelPanel.tsx";
 import BackToMenu from "./BackToMenu.tsx";
 import MeltInShader, {
@@ -42,6 +42,8 @@ const TRACKER_BORDERS = {
   highScore: "#FFB9F0",
   deaths: "#E3E0EF",
 };
+
+const NOTIFICATION_COLORS = { blue: "#a6d7ff" };
 
 const TRACKER_ENTRANCE = { delay: 0.3, step: 0.16 };
 
@@ -98,18 +100,15 @@ export default function GameOver() {
         </h2>
         <BulgeFilter {...TRACKER_BULGE} />
         {view.newBest && (
-          <div className="top-left-info">
-            <PixelPanel
-              border={TRACKER_BORDERS.highScore}
-              className={`tracker-container${view.visible ? " bounce-in-left" : ""}`}
-              style={trackerStyle(0)}
+          <div className="notices">
+            <GameNotification
+              icon={starTracker}
+              iconAlt="star"
+              text="new best score!"
+              border={NOTIFICATION_COLORS.blue}
+              visible={view.visible}
               id="new-best"
-            >
-              <img src={trophyTracker} alt="trophy" className="tracker-icon" />
-              <h2 className="tracker-value">
-                <Letters text="new best score!" step={0.2} duration={3} />
-              </h2>
-            </PixelPanel>
+            />
           </div>
         )}
         <div className="top-right-info">
