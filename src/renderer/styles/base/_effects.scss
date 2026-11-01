@@ -112,9 +112,12 @@
   display: inline-block;
   animation: wavy-text-top var(--wave-duration, 2.5s)
     cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--delay);
+  transition: scale 0.1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition-delay: calc(var(--index) * 0.03s);
 }
 .back-to-menu:hover span {
   animation: none;
+  scale: 1.05;
 }
 .no-boosts-shake {
   animation: no-boosts-shake 0.25s ease-out;

@@ -5,9 +5,10 @@
   --shadow-pink-012: rgba(206, 42, 133, 0.12);
   --shadow-pink-015: rgba(206, 42, 133, 0.15);
   --shadow-pink-020: rgba(206, 42, 133, 0.2);
-  --shadow-purple-005: rgba(181, 121, 255, 0.15);
-  --shadow-purple-015: rgba(181, 121, 255, 0.25);
-  --shadow-purple-020: rgba(181, 121, 255, 0.3);
+  --shadow-purple-010: rgba(94, 40, 255, 0.1);
+  --shadow-purple-015: rgba(94, 40, 255, 0.15);
+  --shadow-purple-025: rgba(94, 40, 255, 0.25);
+  --shadow-purple-030: rgba(94, 40, 255, 0.3);
   --rainbow-gradient-bar: linear-gradient(
     to right,
     #ffd5a5,
@@ -669,9 +670,12 @@ img {
   display: inline-block;
   animation: wavy-text-top var(--wave-duration, 2.5s)
     cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--delay);
+  transition: scale 0.1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition-delay: calc(var(--index)*0.03s);
 }
 .back-to-menu:hover span {
   animation: none;
+  scale: 1.05;
 }
 .no-boosts-shake {
   animation: no-boosts-shake 0.25s ease-out;
@@ -1079,6 +1083,10 @@ img {
   transform: rotate(0);
   padding: 10px;
 }
+.power-up-melt .melt-in-shader__image {
+  width: auto;
+  height: 64px;
+}
 @keyframes falling {
   to {
     top: 100%;
@@ -1271,6 +1279,52 @@ img {
   color: #fff;
   opacity: 1;
   pointer-events: none;
+}
+.tooltip-anchor {
+  position: relative;
+  display: inline-block;
+}
+.tooltip {
+  --tooltip-gap: 8px;
+  position: absolute;
+  z-index: 20;
+  pointer-events: none;
+  white-space: nowrap;
+  color: var(--tooltip-color, #59517d);
+  font-family: "Enter the Gungeon Small", sans-serif;
+  font-size: 16px;
+  text-transform: none;
+  text-shadow: none;
+}
+.tooltip--top {
+  bottom: calc(100% + var(--tooltip-gap));
+  left: 50%;
+  translate: -50% 0;
+}
+.tooltip--bottom {
+  top: calc(100% + var(--tooltip-gap));
+  left: 50%;
+  translate: -50% 0;
+}
+.tooltip--left {
+  right: calc(100% + var(--tooltip-gap));
+  top: 50%;
+  translate: 0 -50%;
+}
+.tooltip--right {
+  left: calc(100% + var(--tooltip-gap));
+  top: 50%;
+  translate: 0 -50%;
+}
+.tooltip span > span {
+  display: inline-block;
+  scale: 0;
+  transition: scale 0.1s ease-in;
+}
+.tooltip-anchor:hover .tooltip span > span,
+.tooltip-anchor:focus-within .tooltip span > span {
+  scale: 1;
+  transition: scale 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) var(--delay);
 }
 #game-over {
   --mask-size: 100% 200%;
@@ -1521,6 +1575,7 @@ img {
   place-items: center;
 }
 #game-over .bottom-section .back-to-menu {
+  --back-border: #a1a1ff;
   z-index: -5;
   position: relative;
   padding: 2px 10px;
@@ -1528,7 +1583,7 @@ img {
   font-family: "Enter the Gungeon Small", sans-serif;
   font-size: 18px;
   text-transform: none;
-  text-shadow: none;
+  text-shadow: 0 3px 0 var(--shadow-purple-015);
   transition: all 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.85);
   filter: drop-shadow(0px 4px 0px var(--shadow-pink-015));
 }
@@ -1564,11 +1619,12 @@ img {
   transform: scaleX(1);
   opacity: 0.8;
   background-color: #a1a1ff;
-  border-radius: 2px;
+  box-shadow:
+    -3px 0 0 0 var(--back-border),
+    3px 0 0 0 var(--back-border),
+    0 -3px 0 0 var(--back-border),
+    0 3px 0 0 var(--back-border);
   transition: all 0.3s ease-out;
-}
-#game-over .bottom-section .underline:hover::after {
-  background-color: #9191ff;
 }
 #game-over .bottom-section .underline.left::after {
   transform-origin: bottom left;

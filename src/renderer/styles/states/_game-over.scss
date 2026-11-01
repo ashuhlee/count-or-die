@@ -247,6 +247,7 @@
     place-items: center;
 
     .back-to-menu {
+      --back-border: #a1a1ff;
       z-index: -5;
       position: relative;
       padding: 2px 10px;
@@ -254,7 +255,7 @@
       font-family: "Enter the Gungeon Small", sans-serif;
       font-size: 18px;
       text-transform: none;
-      text-shadow: none;
+      text-shadow: 0 3px 0 var(--shadow-purple-015);
       transition: all 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.85);
       filter: drop-shadow(0px 4px 0px var(--shadow-pink-015));
 
@@ -294,12 +295,12 @@
         transform: scaleX(1);
         opacity: 0.8;
         background-color: #a1a1ff;
-        border-radius: 2px;
+        box-shadow:
+          -3px 0 0 0 var(--back-border),
+          3px 0 0 0 var(--back-border),
+          0 -3px 0 0 var(--back-border),
+          0 3px 0 0 var(--back-border);
         transition: all 0.3s ease-out;
-      }
-
-      &:hover::after {
-        background-color: #9191ff;
       }
       &.left::after {
         transform-origin: bottom left;

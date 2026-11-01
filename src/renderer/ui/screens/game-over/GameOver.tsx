@@ -98,7 +98,7 @@ export default function GameOver() {
           >
             <img src={starTracker} alt="score" className="tracker-icon" />
             <h2 className="tracker-value" id="score-tracker">
-              <Letters text={view.score} step={0.2} duration={20} />
+              <Letters text={view.score} step={0.4} duration={3} />
             </h2>
           </PixelPanel>
           <PixelPanel
@@ -114,7 +114,7 @@ export default function GameOver() {
             <h2 className="tracker-value" id="high-score-tracker">
               <Letters
                 text={formatCounter(state.highScore)}
-                step={0.3}
+                step={0.4}
                 duration={3}
               />
             </h2>
@@ -128,7 +128,7 @@ export default function GameOver() {
             <h2 className="tracker-value" id="death-tracker">
               <Letters
                 text={String(state.deathCount)}
-                step={0.3}
+                step={0.4}
                 duration={3}
               />
             </h2>
