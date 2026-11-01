@@ -24,10 +24,19 @@
     top: 0.1em;
     margin-right: calc(-0.2em - 1.2px);
   }
+
+  // no shake of the letters
+  .game-notification-text--still span {
+    animation: none;
+  }
+
+  .game-notification-unit {
+    font-size: 12px;
+  }
 }
 
 .notices {
-  z-index: 100;
+  z-index: 12;
   position: absolute;
   top: 30px;
   left: 0;

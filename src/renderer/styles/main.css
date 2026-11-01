@@ -278,6 +278,19 @@ img {
   --bounce: 16px;
   animation: bounce-in-left-soft 1s both;
 }
+@keyframes slide-out-left {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(calc(-100% - 60px), 0, 0);
+  }
+}
+.slide-out-left {
+  animation: slide-out-left 0.2s ease-in both;
+}
 @keyframes point {
   0% {
     transform: translateY(0);
@@ -1432,8 +1445,14 @@ img {
   top: 0.1em;
   margin-right: calc(-0.2em - 1.2px);
 }
+.game-notification .game-notification-text--still span {
+  animation: none;
+}
+.game-notification .game-notification-unit {
+  font-size: 12px;
+}
 .notices {
-  z-index: 100;
+  z-index: 12;
   position: absolute;
   top: 30px;
   left: 0;
