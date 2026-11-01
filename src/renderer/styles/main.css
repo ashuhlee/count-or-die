@@ -1767,7 +1767,6 @@ img {
   font-size: 24px;
   letter-spacing: 0;
   text-transform: uppercase;
-  padding: 30px 32px;
   cursor: pointer;
   filter: drop-shadow(0 6px 0 var(--shadow-pink-010));
   opacity: 0;
