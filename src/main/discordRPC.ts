@@ -10,7 +10,7 @@ type GameStatus = "Locked in" | "Deceased";
 
 export type Presence = {
   highScoreRPC?: number;
-  gameStatusRPC?: "in-game" | "game-over";
+  gameStatusRPC?: "menu" | "in-game" | "game-over";
 };
 
 const CLIENT_ID = "1471053459905052694";
@@ -22,7 +22,7 @@ const client = new Client({
 const playTime = Date.now();
 const displayRank = true;
 
-let currentPresence: Presence = { highScoreRPC: 0, gameStatusRPC: "in-game" };
+let currentPresence: Presence = { highScoreRPC: 0, gameStatusRPC: "menu" };
 
 client.on("ready", () => {
   console.log(green.bold("✔"), "RPC connected");
@@ -70,7 +70,8 @@ async function updateActivity(): Promise<void> {
   try {
     await client.setActivity({
       type: ActivityType.Playing,
-      details: `Nerd Out Mode · ${statusInfo}`,
+      details:
+        status === "menu" ? "Main Menu" : `Nerd Out Mode · ${statusInfo}`,
       state: undefined,
 
       timestamps: {

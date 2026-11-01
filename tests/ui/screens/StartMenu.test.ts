@@ -304,6 +304,33 @@ describe("the menu", () => {
     expect(title()).toBe("false");
   });
 
+  test("Discord shows the main menu, and the game once it has started", () => {
+    game.unmount();
+    const setDiscordStatus = vi.fn();
+    window.electron = {
+      setDiscordStatus,
+      quitApp: vi.fn(),
+      showGpuWarning: vi.fn(),
+    } as unknown as Window["electron"];
+    game = renderGame({ startOnMenu: true });
+    expect(setDiscordStatus).toHaveBeenLastCalledWith({
+      gameStatusRPC: "menu",
+    });
+
+    game.click("#play-btn");
+    game.wait(COVERED);
+    expect(setDiscordStatus).toHaveBeenLastCalledWith({
+      gameStatusRPC: "in-game",
+    });
+
+    game.wait(TIME_IS_UP);
+    game.click("#menu-btn");
+    game.wait(COVERED + 600);
+    expect(setDiscordStatus).toHaveBeenLastCalledWith({
+      gameStatusRPC: "menu",
+    });
+  });
+
   test("going back to the menu after a game leaves a fresh game to play", () => {
     game.click("#play-btn");
     game.wait(COVERED + 600);

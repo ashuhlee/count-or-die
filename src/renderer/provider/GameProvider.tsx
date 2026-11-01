@@ -147,6 +147,12 @@ export default function GameProvider({
   );
 
   useEffect(() => {
+    void window.electron?.setDiscordStatus({
+      gameStatusRPC: screen === "menu" ? "menu" : "in-game",
+    });
+  }, [screen]);
+
+  useEffect(() => {
     if (!ready) return;
 
     if (screen === "menu") {
