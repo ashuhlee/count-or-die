@@ -10,6 +10,7 @@ import githubBtnSvg from "@assets/ui/svg/github-button.svg";
 import { audioConfig, toggleAudio } from "../../../utils/sounds.ts";
 import { openGithub } from "../../../utils/openGithub.ts";
 import RoundButton from "../round-button/RoundButton.tsx";
+import Tooltip from "../tooltip/Tooltip.tsx";
 
 const SOUND_STATE_KEY = "soundState";
 
@@ -97,15 +98,17 @@ export default function MenuBar({ entrance, onHome, inGame }: MenuBarProps) {
         onClick={onSoundClick}
       />
       {!inGame && (
-        <RoundButton
-          {...entering(2)}
-          variant={5}
-          icon={githubBtnSvg}
-          iconAlt="github icon"
-          iconSize={30}
-          id="github-btn"
-          onClick={openGithub}
-        />
+        <Tooltip text="Contribute" placement="cursor">
+          <RoundButton
+            {...entering(2)}
+            variant={5}
+            icon={githubBtnSvg}
+            iconAlt="github icon"
+            iconSize={30}
+            id="github-btn"
+            onClick={openGithub}
+          />
+        </Tooltip>
       )}
     </div>
   );

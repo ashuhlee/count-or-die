@@ -19,6 +19,7 @@ import { useGame } from "../../../provider/useGame.ts";
 import { formatCounter } from "../../../utils/formatCounter.ts";
 import { openGithub } from "../../../utils/openGithub.ts";
 import RoundButton from "../../components/round-button/RoundButton.tsx";
+import Tooltip from "../../components/tooltip/Tooltip.tsx";
 import SkullFloor from "../../components/skull-floor/SkullFloor.tsx";
 import BulgeFilter from "../../components/bulge/BulgeFilter.tsx";
 import Letters from "../../components/letters/Letters.tsx";
@@ -75,14 +76,16 @@ export default function GameOver() {
     >
       <GameOverBackground paused={!view.background} visible={view.visible} />
       <div className="controls bottom">
-        <RoundButton
-          variant={5}
-          icon={githubBtnSvg}
-          iconAlt="github icon"
-          iconSize={30}
-          id="game-over-github-btn"
-          onClick={openGithub}
-        />
+        <Tooltip text="Contribute" placement="cursor">
+          <RoundButton
+            variant={5}
+            icon={githubBtnSvg}
+            iconAlt="github icon"
+            iconSize={30}
+            id="game-over-github-btn"
+            onClick={openGithub}
+          />
+        </Tooltip>
       </div>
       <div className="go-content">
         <div id="red-overlay"></div>

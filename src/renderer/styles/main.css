@@ -1284,47 +1284,52 @@ img {
   position: relative;
   display: inline-block;
 }
-.tooltip {
-  --tooltip-gap: 8px;
-  position: absolute;
-  z-index: 20;
+.tooltip,
+.tooltip-shadow {
+  position: fixed;
+  z-index: 1000;
   pointer-events: none;
   white-space: nowrap;
-  color: var(--tooltip-color, #59517d);
-  font-family: "Enter the Gungeon Small", sans-serif;
+  font-family: "Teeny Tiny Pixls", sans-serif;
   font-size: 16px;
+  letter-spacing: -0.7px;
   text-transform: none;
-  text-shadow: none;
 }
-.tooltip--top {
-  bottom: calc(100% + var(--tooltip-gap));
-  left: 50%;
-  translate: -50% 0;
-}
-.tooltip--bottom {
-  top: calc(100% + var(--tooltip-gap));
-  left: 50%;
-  translate: -50% 0;
-}
-.tooltip--left {
-  right: calc(100% + var(--tooltip-gap));
-  top: 50%;
-  translate: 0 -50%;
-}
-.tooltip--right {
-  left: calc(100% + var(--tooltip-gap));
-  top: 50%;
-  translate: 0 -50%;
-}
-.tooltip span > span {
+.tooltip > span > span,
+.tooltip-shadow > span > span {
   display: inline-block;
   scale: 0;
-  transition: scale 0.1s ease-in;
+  rotate: var(--tooltip-spin, 40deg);
+  transition: none;
 }
-.tooltip-anchor:hover .tooltip span > span,
-.tooltip-anchor:focus-within .tooltip span > span {
+.tooltip.tooltip--open > span > span,
+.tooltip-shadow.tooltip--open > span > span {
   scale: 1;
-  transition: scale 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) var(--delay);
+  rotate: 0deg;
+  animation: tooltip-letter-in 0.15s ease-out var(--delay) both;
+}
+@keyframes tooltip-letter-in {
+  0% {
+    scale: 0;
+    rotate: var(--tooltip-spin, 40deg);
+  }
+  60% {
+    scale: 1.2;
+    rotate: 0deg;
+  }
+  100% {
+    scale: 1;
+    rotate: 0deg;
+  }
+}
+.tooltip {
+  color: var(--tooltip-color, white);
+}
+.tooltip-shadow {
+  color: var(--tooltip-shadow, black);
+  mix-blend-mode: overlay;
+  opacity: 0.2;
+  translate: 0 3px;
 }
 #game-over {
   --mask-size: 100% 200%;
