@@ -9,6 +9,7 @@ type GameNotificationProps = {
   accent?: string;
   visible?: boolean;
   delay?: number;
+  shine?: boolean;
   id?: string;
 };
 
@@ -20,6 +21,7 @@ export default function GameNotification({
   accent,
   visible = true,
   delay = 0,
+  shine = false,
   id,
 }: GameNotificationProps) {
   return (
@@ -27,7 +29,7 @@ export default function GameNotification({
       border={border}
       accent={accent}
       id={id}
-      className={`game-notification${visible ? " bounce-in-left" : ""}`}
+      className={`game-notification${visible ? " bounce-in-left" : ""}${shine ? " shine" : ""}`}
       style={{ animationDelay: `${delay}s` }}
     >
       <img src={icon} alt={iconAlt} className="game-notification-icon" />

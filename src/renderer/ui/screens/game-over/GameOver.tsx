@@ -10,6 +10,7 @@ import ghostPng from "@assets/ui/deco/ghost.gif";
 import skullTracker from "@assets/ui/deco/skull_grey.svg";
 import starTracker from "@assets/ui/deco/star_grey.svg";
 import redoTracker from "@assets/ui/deco/redo_grey.svg";
+import trophyTracker from "@assets/ui/deco/trophy_grey.svg";
 import tombstonePng from "@assets/ui/deco/tombstone.png";
 
 import { useGame } from "../../../provider/useGame.ts";
@@ -43,12 +44,17 @@ const TRACKER_BORDERS = {
   deaths: "#E3E0EF",
 };
 
-const NOTIFICATION_COLORS = { blue: "#a6d7ff" };
+const NOTIFICATION_COLORS = { blue: "#a6d7ff", purple: "#d0a4ff" };
 
-const TRACKER_ENTRANCE = { delay: 0.3, step: 0.16 };
+const NOTIFICATION_ENTRANCE = { step: 0.2 };
+const TRACKER_ENTRANCE = {
+  delay: 0.2,
+  delayWithNotifications: 0.5,
+  step: 0.16,
+};
 
-const trackerStyle = (index: number): CSSProperties => ({
-  animationDelay: `${TRACKER_ENTRANCE.delay + index * TRACKER_ENTRANCE.step}s`,
+const trackerStyle = (index: number, delay: number): CSSProperties => ({
+  animationDelay: `${delay + index * TRACKER_ENTRANCE.step}s`,
 });
 
 const GHOST_COLORS: MeltColors = {
@@ -68,6 +74,11 @@ export default function GameOver() {
 
   const rainbowClass = view.rainbow ? " rainbow-txt" : "";
   const trackerClass = `tracker-container${view.visible ? " bounce-in-right" : ""}`;
+  const notifications = [view.newBest, view.newRank].filter(Boolean).length;
+
+  const trackerDelay = notifications
+    ? TRACKER_ENTRANCE.delayWithNotifications
+    : TRACKER_ENTRANCE.delay;
 
   return (
     <div
@@ -99,23 +110,37 @@ export default function GameOver() {
           <span className={`go-text-random${rainbowClass}`}>{view.phrase}</span>
         </h2>
         <BulgeFilter {...TRACKER_BULGE} />
-        {view.newBest && (
+        {(view.newBest || view.newRank) && (
           <div className="notices">
-            <GameNotification
-              icon={starTracker}
-              iconAlt="star"
-              text="new best score!"
-              border={NOTIFICATION_COLORS.blue}
-              visible={view.visible}
-              id="new-best"
-            />
+            {view.newBest && (
+              <GameNotification
+                icon={starTracker}
+                iconAlt="star"
+                text="new best score!"
+                border={NOTIFICATION_COLORS.blue}
+                visible={view.visible}
+                id="new-best"
+              />
+            )}
+            {view.newRank && (
+              <GameNotification
+                icon={trophyTracker}
+                iconAlt="trophy"
+                text={`new rank: ${view.newRank}`}
+                border={NOTIFICATION_COLORS.purple}
+                visible={view.visible}
+                delay={NOTIFICATION_ENTRANCE.step}
+                shine
+                id="new-rank"
+              />
+            )}
           </div>
         )}
         <div className="top-right-info">
           <PixelPanel
             border={TRACKER_BORDERS.score}
             className={trackerClass}
-            style={trackerStyle(0)}
+            style={trackerStyle(0, trackerDelay)}
           >
             <img src={redoTracker} alt="score" className="tracker-icon" />
             <h2 className="tracker-value" id="score-tracker">
@@ -125,7 +150,7 @@ export default function GameOver() {
           <PixelPanel
             border={TRACKER_BORDERS.highScore}
             className={trackerClass}
-            style={trackerStyle(1)}
+            style={trackerStyle(1, trackerDelay)}
           >
             <img src={starTracker} alt="high score" className="tracker-icon" />
             <h2 className="tracker-value" id="high-score-tracker">
@@ -139,7 +164,7 @@ export default function GameOver() {
           <PixelPanel
             border={TRACKER_BORDERS.deaths}
             className={trackerClass}
-            style={trackerStyle(2)}
+            style={trackerStyle(2, trackerDelay)}
           >
             <img src={skullTracker} alt="skull" className="tracker-icon" />
             <h2 className="tracker-value" id="death-tracker">

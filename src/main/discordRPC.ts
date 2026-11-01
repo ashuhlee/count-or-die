@@ -1,10 +1,7 @@
 import { Client, ActivityType } from "simple-discord-rpc";
 import { green, red } from "console-log-colors";
 
-type BadgeInfo = {
-  badge: string | undefined;
-  label: string;
-};
+import { getRank } from "../shared/ranks.ts";
 
 type GameStatus = "Locked in" | "Deceased";
 
@@ -37,22 +34,6 @@ client.login().catch((err) => {
   console.warn("Discord not detected:", err.message);
 });
 
-function getTierInfo(highScore: number): BadgeInfo {
-  if (highScore >= 400) {
-    return { badge: "tier_four", label: "Legend" };
-  }
-  if (highScore >= 300) {
-    return { badge: "tier_three", label: "Speed Demon" };
-  }
-  if (highScore >= 200) {
-    return { badge: "tier_two", label: "Finger Breaker" };
-  }
-  if (highScore >= 100) {
-    return { badge: "tier_one", label: "Slow Fingers" };
-  }
-  return { badge: undefined, label: "Rookie" };
-}
-
 function getGameStatus(status: Presence["gameStatusRPC"]): GameStatus {
   if (status === "game-over") {
     return "Deceased";
@@ -64,7 +45,7 @@ async function updateActivity(): Promise<void> {
   const score = currentPresence.highScoreRPC;
   const status = currentPresence.gameStatusRPC;
 
-  const tier = getTierInfo(score);
+  const tier = getRank(score);
   const statusInfo = getGameStatus(status);
 
   try {
@@ -81,7 +62,7 @@ async function updateActivity(): Promise<void> {
         large_image: "main_icon",
         large_text: "Count or Die",
         small_image: displayRank ? tier.badge : undefined,
-        small_text: displayRank ? tier.label : undefined,
+        small_text: displayRank ? tier.name : undefined,
       },
       buttons: [
         { label: "Play Count or Die", url: "https://www.countordie.gg" },

@@ -33,6 +33,11 @@ export type GameEvent =
   | { type: "boostNotification" }
   | { type: "noBoostsFlash" }
   | { type: "noBoostsLeft" }
-  | { type: "gameOver"; isHighScore: boolean; score: number }
+  | {
+      type: "gameOver";
+      isHighScore: boolean;
+      score: number;
+      newRank?: string;
+    }
   | { type: "restarted" }
   | { type: "penalty" };

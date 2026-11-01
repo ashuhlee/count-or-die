@@ -79,9 +79,35 @@ describe("running out of time", () => {
     game.wait(TIME_IS_UP);
     fireAnimationEnd(game.$("#red-flash"));
 
-    expect(game.$("#new-best").textContent.replace(/\u00a0/g, " ")).toBe(
-      "new best score!",
-    );
+    // the wording can change, what it is about cannot
+    expect(game.$("#new-best").textContent).toMatch(/new\s*best\s*score/i);
+  });
+
+  test("celebrates reaching a new rank", () => {
+    game = renderGame({
+      state: {
+        highScore: 99,
+        highScoreAtStart: 99,
+        counter: 99,
+        currentGoal: 1000,
+      },
+    });
+    game.click("#increase-img");
+    game.wait(TIME_IS_UP);
+    fireAnimationEnd(game.$("#red-flash"));
+
+    expect(game.$("#new-rank").textContent).toMatch(/new\s*rank/i);
+    expect(game.$("#new-rank").textContent).toContain("Slow");
+  });
+
+  test("a new best score in the same rank is not a new rank", () => {
+    game = renderGame();
+    game.click("#increase-img");
+    game.wait(TIME_IS_UP);
+    fireAnimationEnd(game.$("#red-flash"));
+
+    expect(game.$("#new-best")).not.toBeNull();
+    expect(game.$("#new-rank")).toBeNull();
   });
 
   test("says nothing about the best score when it was not beaten", () => {

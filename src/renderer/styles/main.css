@@ -18,11 +18,11 @@
   );
   --rainbow-gradient-text: linear-gradient(
     to right,
-    #ffce95,
-    #ff9eea,
-    #aeb2ff,
-    #af93ff,
-    #8bd5ee
+    #ffb45d,
+    #ff78df,
+    #868cff,
+    #9c79ff,
+    #72ceee
   );
 }
 @font-face {
@@ -716,19 +716,19 @@ img {
     cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--delay);
 }
 .back-to-menu:hover span {
-  animation: back-letter-pop 2.6s ease-in-out infinite calc(var(--index)*0.075s);
+  animation: back-letter-pop 2.18s ease-in-out infinite calc(var(--index)*0.04s);
 }
 @keyframes back-letter-pop {
   0% {
     scale: 1;
     rotate: 0deg;
   }
-  2.6923076923%,
-  2.8846153846% {
+  3.2110091743%,
+  1.8348623853% {
     scale: 1.15;
     rotate: 6deg;
   }
-  10.5769230769%,
+  11.0091743119%,
   100% {
     scale: 1;
     rotate: 0deg;
@@ -1399,7 +1399,7 @@ img {
   }
 }
 .tooltip {
-  color: var(--tooltip-color, white);
+  color: var(--tooltip-color, #fff2fc);
 }
 .tooltip-shadow {
   color: var(--tooltip-shadow, black);
@@ -1417,14 +1417,14 @@ img {
   padding: 16px 12px;
 }
 .game-notification .game-notification-icon {
-  width: 17px;
-  height: 17px;
+  width: 16px;
+  height: 16px;
 }
 .game-notification .game-notification-text {
   --shake-scale: 0.965;
   --shake-distance: -2px;
   font-family: "Teeny Tiny Pixls", sans-serif;
-  font-size: 15px;
+  font-size: 14px;
   text-shadow: none;
   text-transform: uppercase;
   color: #3b375f;
@@ -1441,8 +1441,48 @@ img {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 28px;
+  gap: 32px;
   filter: url(#tracker-bulge);
+}
+.shine {
+  --shine-opacity: 0.6;
+  --shine-duration: 5.6s;
+  --shine-delay: 3s;
+  --shine-ratio: 1.9090909091;
+  --shine-frames: 7;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.shine::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  aspect-ratio: var(--shine-ratio);
+  pointer-events: none;
+  background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 21 11' preserveAspectRatio='none' shape-rendering='crispEdges'><rect x='12' y='0' width='6' height='1' fill='white'/><rect x='19' y='0' width='2' height='1' fill='white'/><rect x='11' y='1' width='6' height='1' fill='white'/><rect x='18' y='1' width='2' height='1' fill='white'/><rect x='10' y='2' width='6' height='1' fill='white'/><rect x='17' y='2' width='2' height='1' fill='white'/><rect x='9' y='3' width='6' height='1' fill='white'/><rect x='16' y='3' width='2' height='1' fill='white'/><rect x='8' y='4' width='6' height='1' fill='white'/><rect x='15' y='4' width='2' height='1' fill='white'/><rect x='7' y='5' width='6' height='1' fill='white'/><rect x='14' y='5' width='2' height='1' fill='white'/><rect x='6' y='6' width='6' height='1' fill='white'/><rect x='13' y='6' width='2' height='1' fill='white'/><rect x='5' y='7' width='6' height='1' fill='white'/><rect x='12' y='7' width='2' height='1' fill='white'/><rect x='4' y='8' width='6' height='1' fill='white'/><rect x='11' y='8' width='2' height='1' fill='white'/><rect x='3' y='9' width='6' height='1' fill='white'/><rect x='10' y='9' width='2' height='1' fill='white'/><rect x='2' y='10' width='6' height='1' fill='white'/><rect x='9' y='10' width='2' height='1' fill='white'/></svg>")
+    0 0/100% 100% no-repeat;
+  image-rendering: pixelated;
+  mix-blend-mode: overlay;
+  opacity: var(--shine-opacity);
+  transform: translateX(-100%);
+  animation: shine-sweep var(--shine-duration) steps(var(--shine-frames))
+    var(--shine-delay) infinite;
+}
+@keyframes shine-sweep {
+  0% {
+    left: 0;
+    transform: translateX(-100%);
+  }
+  10.7142857143%,
+  100% {
+    left: calc(100%*var(--shine-frames)/ (var(--shine-frames) - 1));
+    transform: translateX(
+      calc(100% * (0.65 * var(--shine-frames) / (var(--shine-frames) - 1) - 1))
+    );
+  }
 }
 #game-over {
   --mask-size: 100% 200%;
@@ -1706,7 +1746,7 @@ img {
   font-size: 18px;
   text-transform: none;
   text-shadow: 0 3px 0 var(--shadow-purple-015);
-  transition: all 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.85);
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.85);
   filter: drop-shadow(0px 4px 0px var(--shadow-pink-015));
 }
 #game-over .bottom-section .back-to-menu:active {
@@ -1784,12 +1824,11 @@ img {
   rotate: -2deg;
 }
 #game-over .rainbow-txt {
-  color: hsla(0, 0%, 100%, 0.7);
+  color: hsla(0, 0%, 100%, 0.9);
   background-image: var(--rainbow-gradient-text);
   background-clip: text;
   background-size: 100% auto;
   background-position: 0 center;
-  filter: drop-shadow(0 3px 0 rgba(206, 42, 133, 0.15));
 }
 #game-over .play-again,
 #game-over .play-again-btn,

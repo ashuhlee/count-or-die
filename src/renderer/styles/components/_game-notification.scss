@@ -8,15 +8,15 @@
   padding: 16px 12px;
 
   .game-notification-icon {
-    width: 17px;
-    height: 17px;
+    width: 16px;
+    height: 16px;
   }
 
   .game-notification-text {
     --shake-scale: 0.965;
     --shake-distance: -2px;
     font-family: "Teeny Tiny Pixls", sans-serif;
-    font-size: 15px;
+    font-size: 14px;
     text-shadow: none;
     text-transform: uppercase;
     color: #3b375f;
@@ -35,6 +35,6 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 34px;
+  gap: 32px;
   filter: url(#tracker-bulge);
 }

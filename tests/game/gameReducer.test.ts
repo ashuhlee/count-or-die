@@ -313,6 +313,44 @@ describe("running out of time", () => {
     ]);
   });
 
+  // a round far from its goal, so the timer can end it
+  const nearRank = (highScore: number, counter: number) => ({
+    ...createInitialState({ highScore }),
+    counter,
+    currentGoal: 1000,
+  });
+  const gameOverOf = (events: GameEvent[]) =>
+    events.find((e) => e.type === "gameOver") as Extract<
+      GameEvent,
+      { type: "gameOver" }
+    >;
+
+  test("tells which rank a new best score has reached, when it is a higher one", () => {
+    const { events } = play(nearRank(99, 99), increase(), {
+      type: "timerExpired",
+    });
+
+    expect(gameOverOf(events)).toMatchObject({
+      isHighScore: true,
+      newRank: "Slow Fingers",
+    });
+  });
+
+  test("a new best score within the same rank is not a new rank", () => {
+    const { events } = play(nearRank(150, 150), increase(), {
+      type: "timerExpired",
+    });
+
+    expect(gameOverOf(events).isHighScore).toBe(true);
+    expect(gameOverOf(events).newRank).toBeUndefined();
+  });
+
+  test("a round that did not beat the best earns no rank", () => {
+    const { events } = play(nearRank(50, 40), { type: "timerExpired" });
+
+    expect(gameOverOf(events).newRank).toBeUndefined();
+  });
+
   test("tells whether it was a new high score", () => {
     const { events } = play(createInitialState(), increase(), {
       type: "timerExpired",

@@ -11,11 +11,12 @@ export function useGameOverView() {
     phrase: "you died lolz",
     rainbow: false,
     newBest: false,
+    newRank: null as string | null,
     score: formatCounter(0),
   });
   const waitingForFlash = useRef(false);
 
-  useGameEvent("gameOver", ({ isHighScore, score }) => {
+  useGameEvent("gameOver", ({ isHighScore, score, newRank }) => {
     waitingForFlash.current = true;
     setView((current) => ({
       ...current,
@@ -23,6 +24,7 @@ export function useGameOverView() {
       phrase: pickGameOverPhrase(isHighScore, Math.random()),
       rainbow: current.rainbow || isHighScore,
       newBest: isHighScore,
+      newRank: newRank ?? null,
       score: formatCounter(score),
     }));
   });
@@ -42,6 +44,7 @@ export function useGameOverView() {
       background: false,
       rainbow: false,
       newBest: false,
+      newRank: null,
       phrase: pickGameOverPhrase(false, Math.random()),
     }));
   });

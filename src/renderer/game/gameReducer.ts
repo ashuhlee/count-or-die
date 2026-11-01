@@ -1,4 +1,5 @@
 import type { CounterAnimation, GameEvent } from "./events.ts";
+import { getRank } from "../../shared/ranks.ts";
 import { getPowerUp, type PowerUpType } from "./powerUps.ts";
 
 export const MAX_BOOSTS = 4;
@@ -20,6 +21,8 @@ export type GameState = {
   trueGoalsReached: number;
 
   highScore: number;
+  // the best score when this round started, to tell if it earned a rank
+  highScoreAtStart: number;
   // a new high score has been set in this game
   isHighScore: boolean;
   highScoreFxPlayed: boolean;
@@ -55,6 +58,7 @@ export function createInitialState(
     trueGoalsReached: 0,
 
     highScore: saved.highScore ?? 0,
+    highScoreAtStart: saved.highScore ?? 0,
     isHighScore: false,
     highScoreFxPlayed: false,
     confettiPlayed: false,
@@ -185,6 +189,7 @@ function restart(state: GameState, music = true): Update {
       boostsAvailable: MAX_BOOSTS,
       currentGoal: FIRST_GOAL,
       trueGoalsReached: 0,
+      highScoreAtStart: state.highScore,
       isHighScore: false,
       highScoreFxPlayed: false,
       confettiPlayed: false,
@@ -220,6 +225,10 @@ function timerExpired(state: GameState): Update {
         type: "gameOver",
         isHighScore: state.isHighScore,
         score: state.counter,
+        newRank:
+          getRank(state.highScore).min > getRank(state.highScoreAtStart).min
+            ? getRank(state.highScore).name
+            : undefined,
       },
     ],
   };

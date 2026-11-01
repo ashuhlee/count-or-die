@@ -257,7 +257,7 @@
       font-size: 18px;
       text-transform: none;
       text-shadow: 0 3px 0 var(--shadow-purple-015);
-      transition: all 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.85);
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.85);
       filter: drop-shadow(0px 4px 0px var(--shadow-pink-015));
 
       &:active {
@@ -352,12 +352,11 @@
     }
   }
   .rainbow-txt {
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 0.9);
     background-image: var(--rainbow-gradient-text);
     background-clip: text;
     background-size: 100% auto;
     background-position: 0 center;
-    filter: drop-shadow(0 3px 0 rgba(206, 42, 133, 0.15));
   }
 
   .play-again,
