@@ -14,7 +14,6 @@
 
   .next-goal {
     padding: 6px 12px;
-    // the bubble already casts the shadow, for the box and the tip together
     filter: none;
     text-align: center;
     image-rendering: pixelated;
@@ -25,7 +24,7 @@
     .goal-text {
       --shake-scale: 0.97;
       --shake-distance: -1.5px;
-      color: #4b4d5a;
+      color: #4a475e;
       font-family: "Silkscreen", monospace;
       font-size: 20px;
       letter-spacing: -1.5px;
