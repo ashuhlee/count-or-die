@@ -36,7 +36,7 @@
 
     &::before {
       animation:
-        slide 4s linear infinite reverse,
+        slide-tile 4s linear infinite reverse,
         hue-rotate-in var(--hue-duration) cubic-bezier(0.215, 0.61, 0.355, 1);
     }
 
@@ -389,7 +389,7 @@
   }
   &.flash-penalty {
     --flash-opacity: 0.4;
-    --flash-duration: 0.4s;
+    --flash-duration: 0.3s;
     animation: flash-overlay var(--flash-duration) ease forwards;
   }
 }

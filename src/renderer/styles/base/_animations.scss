@@ -8,6 +8,14 @@
     background-position: -128px -128px;
   }
 }
+@keyframes slide-tile {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: calc(var(--tile-size) * -1) calc(var(--tile-size) * -1);
+  }
+}
 @keyframes hue-rotate-in {
   from {
     filter: hue-rotate(var(--hue-start));

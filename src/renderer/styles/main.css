@@ -116,6 +116,14 @@ img {
     background-position: -128px -128px;
   }
 }
+@keyframes slide-tile {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: calc(var(--tile-size)*-1) calc(var(--tile-size)*-1);
+  }
+}
 @keyframes hue-rotate-in {
   from {
     filter: hue-rotate(var(--hue-start));
@@ -1366,6 +1374,9 @@ img {
     --mask-size: 200% 200%;
   }
 }
+#game-over {
+  --tile-size: 112px;
+}
 #game-over .go-background {
   position: absolute;
   inset: 0;
@@ -1380,8 +1391,9 @@ img {
   inset: 0;
   z-index: -12;
   background: url("../assets/ui/textures/tile-go.png") repeat 0 center;
-  background-size: 128px auto;
-  animation: slide 4s linear infinite reverse;
+  background-size: var(--tile-size) auto;
+  image-rendering: pixelated;
+  animation: slide-tile 4s linear infinite reverse;
   pointer-events: none;
 }
 #game-over.visible {
@@ -1394,7 +1406,7 @@ img {
 }
 #game-over.visible::before {
   animation:
-    slide 4s linear infinite reverse,
+    slide-tile 4s linear infinite reverse,
     hue-rotate-in var(--hue-duration) cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 #game-over.visible #red-overlay {
@@ -1715,7 +1727,7 @@ img {
 }
 #red-flash.flash-penalty {
   --flash-opacity: 0.4;
-  --flash-duration: 0.4s;
+  --flash-duration: 0.3s;
   animation: flash-overlay var(--flash-duration) ease forwards;
 }
 .loading-screen {
@@ -1792,6 +1804,9 @@ img {
     clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
   }
 }
+.menu-screen {
+  --tile-size: 112px;
+}
 .menu-screen .go-background {
   position: absolute;
   inset: 0;
@@ -1806,8 +1821,9 @@ img {
   inset: 0;
   z-index: -12;
   background: url("../assets/ui/textures/tile-go.png") repeat 0 center;
-  background-size: 128px auto;
-  animation: slide 4s linear infinite reverse;
+  background-size: var(--tile-size) auto;
+  image-rendering: pixelated;
+  animation: slide-tile 4s linear infinite reverse;
   pointer-events: none;
 }
 .menu-screen {
@@ -1821,7 +1837,7 @@ img {
 }
 .menu-screen::before {
   animation:
-    slide 4s linear infinite reverse,
+    slide-tile 4s linear infinite reverse,
     menu-tile-in var(--hue-duration) cubic-bezier(0.215, 0.61, 0.355, 1) paused;
 }
 .menu-screen .go-background {

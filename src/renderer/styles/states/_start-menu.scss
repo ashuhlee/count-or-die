@@ -14,7 +14,7 @@
 
   &::before {
     animation:
-      slide 4s linear infinite reverse,
+      slide-tile 4s linear infinite reverse,
       menu-tile-in var(--hue-duration) cubic-bezier(0.215, 0.61, 0.355, 1)
         paused;
   }
