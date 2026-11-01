@@ -1,17 +1,8 @@
 import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 
-import { candy, donut, badDonut, star, superstar } from "@assets/ui/power-ups";
-
 import type { PowerUpType } from "../../../game/powerUps.ts";
 import MeltInShader from "../../shaders/melt-in-shader/MeltInShader.tsx";
-
-const ICONS: Record<PowerUpType, string> = {
-  double_click: candy,
-  four_click: donut,
-  minus_25: badDonut,
-  extra_boost: star,
-  replenish_boosts: superstar,
-};
+import { POWER_UP_ICONS } from "./powerUpIcons.ts";
 
 const WIDE_SCREEN = 600;
 const MAX_NUDGE = 150;
@@ -68,7 +59,7 @@ export default function FallingPowerUp({
         onAnimationEnd={() => onMiss(falling)}
       >
         <MeltInShader
-          src={ICONS[type]}
+          src={POWER_UP_ICONS[type]}
           alt={type}
           className="power-up-melt"
           active={gameOver}
