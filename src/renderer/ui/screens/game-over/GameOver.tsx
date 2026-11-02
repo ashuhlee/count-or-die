@@ -93,7 +93,7 @@ export default function GameOver() {
     >
       <GameOverBackground paused={!view.background} visible={view.visible} />
       <div className="controls bottom">
-        <Tooltip text="Contribute" placement="cursor">
+        <Tooltip text="Contribute" placement="cursor-left">
           <RoundButton
             variant={5}
             icon={githubBtnSvg}

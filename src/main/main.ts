@@ -46,6 +46,12 @@ ipcMain.on("open-github", () => {
   void shell.openExternal(GITHUB_URL);
 });
 
+const CHANGELOG_URL = "https://github.com/ashuhlee/count-or-die/releases";
+
+ipcMain.on("open-changelog", () => {
+  void shell.openExternal(CHANGELOG_URL);
+});
+
 ipcMain.handle("gpu:warning", async () => {
   return dialog.showMessageBox({
     icon: iconPath,

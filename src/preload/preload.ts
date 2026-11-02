@@ -7,6 +7,7 @@ export interface ElectronAPI {
   quitApp: () => void;
   reportBug: () => void;
   openGithub: () => void;
+  openChangelog: () => void;
   showGpuWarning: () => Promise<MessageBoxReturnValue>;
 }
 
@@ -16,5 +17,6 @@ contextBridge.exposeInMainWorld("electron", {
   quitApp: () => ipcRenderer.send("close"),
   reportBug: () => ipcRenderer.send("bug-report"),
   openGithub: () => ipcRenderer.send("open-github"),
+  openChangelog: () => ipcRenderer.send("open-changelog"),
   showGpuWarning: () => ipcRenderer.invoke("gpu:warning"),
 } satisfies ElectronAPI);

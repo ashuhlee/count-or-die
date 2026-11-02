@@ -258,6 +258,29 @@ describe("the menu", () => {
     );
   });
 
+  test("the welcome notice opens the changelog in the app's browser", () => {
+    window.electron = {
+      setDiscordStatus: vi.fn(),
+      quitApp: vi.fn(),
+      openChangelog: vi.fn(),
+      showGpuWarning: vi.fn(),
+    } as unknown as Window["electron"];
+    game.click("#welcome-notice");
+
+    expect(window.electron.openChangelog).toHaveBeenCalledTimes(1);
+  });
+
+  test("the welcome notice opens the changelog in a new tab in the browser", () => {
+    const open = vi.spyOn(window, "open").mockImplementation(() => null);
+    game.click("#welcome-notice");
+
+    expect(open).toHaveBeenCalledWith(
+      "https://github.com/ashuhlee/count-or-die/releases",
+      "_blank",
+      "noopener",
+    );
+  });
+
   test("quit closes the app after a moment", () => {
     window.electron = {
       setDiscordStatus: vi.fn(),

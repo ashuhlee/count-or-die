@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 
 import Letters from "../../components/text/letters/Letters.tsx";
 
-type Placement = "top" | "bottom" | "left" | "right" | "bottom-left" | "cursor";
+type Placement = "cursor-left" | "cursor-right";
 
 type TooltipProps = {
   text: string;
@@ -13,18 +13,31 @@ type TooltipProps = {
   className?: string;
 };
 
-const GAP = 8;
-
-const CURSOR_OFFSET = { x: 10, aboveX: 2, beside: 24, above: 10, below: 20 };
-const ZONE_SPLIT = { above: 0.25, below: 0.6 };
-
 type Zone = "above" | "beside" | "below";
+
+const SPOTS: Record<
+  Placement,
+  Record<Zone, { gap: number; down: number; lift: number }>
+> = {
+  "cursor-left": {
+    above: { gap: 2, down: -10, lift: 1 },
+    beside: { gap: 24, down: 0, lift: 0.5 },
+    below: { gap: 16, down: 20, lift: 0 },
+  },
+  "cursor-right": {
+    above: { gap: 8, down: -4, lift: 1 },
+    beside: { gap: 14, down: 4, lift: 1 },
+    below: { gap: 36, down: 20, lift: 0 },
+  },
+};
+const ZONE_SPLIT = { above: 0.25, below: 0.6 };
+const FOCUS_BELOW = 20;
 const SCREEN_EDGE = 8;
 
 export default function Tooltip({
   text,
   children,
-  placement = "top",
+  placement = "cursor-left",
   step = 0.014,
   className,
 }: TooltipProps) {
@@ -43,54 +56,22 @@ export default function Tooltip({
     if (!box || !width || !height) return;
 
     const x = pointer?.x ?? box.left + box.width / 2;
-    const y = pointer?.y ?? box.bottom - CURSOR_OFFSET.below;
-    const spots: Record<Placement, { left: number; top: number }> = {
-      top: {
-        left: box.left + (box.width - width) / 2,
-        top: box.top - GAP - height,
-      },
-      bottom: {
-        left: box.left + (box.width - width) / 2,
-        top: box.bottom + GAP,
-      },
-      left: {
-        left: box.left - GAP - width,
-        top: box.top + (box.height - height) / 2,
-      },
-      right: {
-        left: box.right + GAP,
-        top: box.top + (box.height - height) / 2,
-      },
-      "bottom-left": { left: box.right - width, top: box.bottom + GAP },
-      cursor: {
-        left:
-          x -
-          width -
-          {
-            above: CURSOR_OFFSET.aboveX,
-            beside: CURSOR_OFFSET.beside,
-            below: CURSOR_OFFSET.x,
-          }[zone.current],
-        top: {
-          above: y - CURSOR_OFFSET.above - height,
-          beside: y - height / 2,
-          below: y + CURSOR_OFFSET.below,
-        }[zone.current],
-      },
-    };
-    const spot = spots[placement];
+    const y = pointer?.y ?? box.bottom - FOCUS_BELOW;
+
+    const { gap, down, lift } = SPOTS[placement][zone.current];
+
+    const spotLeft = placement === "cursor-left" ? x - width - gap : x + gap;
+    const spotTop = y + down - height * lift;
 
     const left = Math.max(
       SCREEN_EDGE,
-      Math.min(spot.left, window.innerWidth - width - SCREEN_EDGE),
+      Math.min(spotLeft, window.innerWidth - width - SCREEN_EDGE),
     );
     const top = Math.max(
       SCREEN_EDGE,
-      Math.min(spot.top, window.innerHeight - height - SCREEN_EDGE),
+      Math.min(spotTop, window.innerHeight - height - SCREEN_EDGE),
     );
-    const aboveText =
-      placement === "top" ||
-      (placement === "cursor" && zone.current === "above");
+    const aboveText = zone.current === "above";
     for (const layer of [label.current, shadow.current]) {
       if (!layer) continue;
       layer.style.left = `${left}px`;
@@ -121,16 +102,13 @@ export default function Tooltip({
         place({ x: event.clientX, y: event.clientY });
         setOpen(true);
       }}
-      onPointerMove={
-        placement === "cursor"
-          ? (event) => place({ x: event.clientX, y: event.clientY })
-          : undefined
-      }
+      onPointerMove={(event) => place({ x: event.clientX, y: event.clientY })}
       onPointerLeave={() => {
         hovering.current = false;
         setOpen(false);
       }}
       onFocus={() => {
+        if (hovering.current) return;
         zone.current = "below";
         place();
         setOpen(true);

@@ -1,11 +1,11 @@
-import { Fragment, useLayoutEffect, useRef } from "react";
+import { Fragment, useLayoutEffect, useRef, type KeyboardEvent } from "react";
 
 import PixelPanel from "../../components/hud/pixel-panel/PixelPanel.tsx";
 import Letters from "../../components/text/letters/Letters.tsx";
 
 type GameNotificationProps = {
-  icon: string;
-  iconAlt: string;
+  icon?: string;
+  iconAlt?: string;
   iconSize?: number;
   text: string;
   border: string;
@@ -16,6 +16,8 @@ type GameNotificationProps = {
   leaving?: boolean;
   shine?: boolean;
   id?: string;
+  // makes the whole notification a button
+  onClick?: () => void;
 };
 
 export default function GameNotification({
@@ -31,6 +33,7 @@ export default function GameNotification({
   leaving = false,
   shine = false,
   id,
+  onClick,
 }: GameNotificationProps) {
   const textRef = useRef<HTMLSpanElement>(null);
 
@@ -70,13 +73,23 @@ export default function GameNotification({
       id={id}
       className={`game-notification${visible ? (leaving ? " slide-out-left" : " bounce-in-left") : ""}${shine ? " shine" : ""}`}
       style={{ animationDelay: `${leaving ? 0 : delay}s` }}
+      {...(onClick && {
+        role: "button",
+        tabIndex: 0,
+        onClick,
+        onKeyDown: (event: KeyboardEvent<HTMLElement>) => {
+          if (event.key === "Enter" || event.key === " ") onClick();
+        },
+      })}
     >
-      <img
-        src={icon}
-        alt={iconAlt}
-        className="game-notification-icon"
-        style={iconSize ? { width: iconSize, height: iconSize } : undefined}
-      />
+      {icon && (
+        <img
+          src={icon}
+          alt={iconAlt}
+          className="game-notification-icon"
+          style={iconSize ? { width: iconSize, height: iconSize } : undefined}
+        />
+      )}
       <span
         ref={textRef}
         className={`game-notification-text${still ? " game-notification-text--still" : ""}`}

@@ -82,7 +82,9 @@ button *,
 .power-up-img,
 .power-up-img *,
 .back-to-menu,
-.back-to-menu * {
+.back-to-menu *,
+[role="button"],
+[role="button"] * {
   --cursor-kind: hand;
   cursor:
     url("../assets/ui/hand.svg") 11 2,

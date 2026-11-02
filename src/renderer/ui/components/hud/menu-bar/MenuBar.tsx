@@ -7,8 +7,10 @@ import optionsBtnSvg from "@assets/ui/svg/options-button.svg";
 import homeBtnSvg from "@assets/ui/svg/home-button.svg";
 import githubBtnSvg from "@assets/ui/svg/github-button.svg";
 import lockIcon from "@assets/ui/deco/lock_grey.svg";
+import skullIcon from "@assets/ui/deco/skull_grey.svg";
 
 import { audioConfig, toggleAudio } from "../../../../utils/app/sounds.ts";
+import { openChangelog } from "../../../../utils/app/openChangelog.ts";
 import { openGithub } from "../../../../utils/app/openGithub.ts";
 import {
   onSettingsRequested,
@@ -37,6 +39,7 @@ function readSavedState(): number {
 }
 
 const ENTRANCE = { delay: 0, step: 0.14 };
+const WELCOME_DELAY = 0.2;
 type MenuBarProps = {
   entrance?: "wait" | "play";
   onHome?: () => void;
@@ -61,6 +64,8 @@ export default function MenuBar({ entrance, onHome, inGame }: MenuBarProps) {
     setSoundState(next);
     applySoundState(next);
   }
+
+  const welcome = !inGame && entrance === "play";
 
   const entering = (index: number) => ({
     className: entrance ? "bounce-in-right" : undefined,
@@ -106,7 +111,7 @@ export default function MenuBar({ entrance, onHome, inGame }: MenuBarProps) {
           onClick={onSoundClick}
         />
         {!inGame && (
-          <Tooltip text="Contribute" placement="cursor">
+          <Tooltip text="Contribute" placement="cursor-left">
             <RoundButton
               {...entering(2)}
               variant={5}
@@ -119,19 +124,35 @@ export default function MenuBar({ entrance, onHome, inGame }: MenuBarProps) {
           </Tooltip>
         )}
       </div>
-      {options.shown && (
+      {(welcome || options.shown) && (
         <div className="notices">
-          <GameNotification
-            key={options.shown.id}
-            icon={lockIcon}
-            iconAlt="lock"
-            iconSize={20}
-            text="The options menu isn't available in the beta."
-            border="#ffb9f0"
-            still
-            leaving={options.shown.leaving}
-            id="options-notice"
-          />
+          {welcome && (
+            <Tooltip text="Changelog" placement="cursor-right">
+              <GameNotification
+                icon={skullIcon}
+                iconAlt="skull"
+                text="Welcome to the beta!"
+                border="#B0A1FF"
+                still
+                delay={WELCOME_DELAY}
+                id="welcome-notice"
+                onClick={openChangelog}
+              />
+            </Tooltip>
+          )}
+          {options.shown && (
+            <GameNotification
+              key={options.shown.id}
+              icon={lockIcon}
+              iconAlt="lock"
+              iconSize={20}
+              text="The options menu isn't available in the beta."
+              border="#ffb9f0"
+              still
+              leaving={options.shown.leaving}
+              id="options-notice"
+            />
+          )}
         </div>
       )}
     </>
