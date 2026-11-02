@@ -103,15 +103,21 @@ describe("high scores", () => {
     ).toHaveLength(1);
   });
 
+  // a record from an earlier run, that one point beats
+  const withRecord = () => ({
+    ...createInitialState({ highScore: 1 }),
+    counter: 1,
+  });
+
   test("a click that sets a high score pops to the right", () => {
-    const { events } = play(createInitialState(), increase());
+    const { events } = play(withRecord(), increase());
     expect(has(events, { type: "counterAnimation", name: "pop-right" })).toBe(
       true,
     );
   });
 
   test("the clicks after it pop as usual", () => {
-    const first = play(createInitialState(), increase());
+    const first = play(withRecord(), increase());
     const { events } = play(first.state, increase());
 
     expect(types(events)).toContain("highScore");
@@ -119,6 +125,39 @@ describe("high scores", () => {
     expect(has(events, { type: "counterAnimation", name: "pop-right" })).toBe(
       false,
     );
+  });
+
+  test("the very first run has no record to celebrate, but saves its score", () => {
+    const { state, events } = play(
+      createInitialState(),
+      increase(),
+      increase(),
+    );
+
+    expect(state.highScore).toBe(2);
+    expect(types(events).filter((type) => type === "highScore")).toHaveLength(
+      2,
+    );
+    expect(state.isHighScore).toBe(false);
+    expect(types(events)).not.toContain("confetti");
+    expect(has(events, { type: "sound", name: "highScore" })).toBe(false);
+    expect(has(events, { type: "counterAnimation", name: "pop-right" })).toBe(
+      false,
+    );
+  });
+
+  test("the second run does celebrate beating the first", () => {
+    const first = play(createInitialState(), increase(), increase());
+    const second = play(
+      reduce(first.state, { type: "restart" }).state,
+      increase(),
+      increase(),
+      increase(),
+    );
+
+    expect(second.state.isHighScore).toBe(true);
+    expect(types(second.events)).toContain("confetti");
+    expect(has(second.events, { type: "sound", name: "highScore" })).toBe(true);
   });
 
   test("tying the high score does not count", () => {
@@ -363,13 +402,25 @@ describe("running out of time", () => {
   });
 
   test("tells whether it was a new high score", () => {
+    const { events } = play(
+      { ...createInitialState({ highScore: 1 }), counter: 1 },
+      increase(),
+      { type: "timerExpired" },
+    );
+
+    expect(has(events, { type: "gameOver", isHighScore: true, score: 2 })).toBe(
+      true,
+    );
+  });
+
+  test("the first run is not called a new high score", () => {
     const { events } = play(createInitialState(), increase(), {
       type: "timerExpired",
     });
 
-    expect(has(events, { type: "gameOver", isHighScore: true, score: 1 })).toBe(
-      true,
-    );
+    expect(
+      has(events, { type: "gameOver", isHighScore: false, score: 1 }),
+    ).toBe(true);
   });
 
   test("does nothing if the game is already over", () => {

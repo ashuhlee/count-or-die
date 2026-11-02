@@ -73,8 +73,11 @@ describe("running out of time", () => {
     expect(localStorage.getItem("deathCount")).toBe("1");
   });
 
+  // an earlier run left a record that one click beats
+  const WITH_RECORD = { highScore: 1, highScoreAtStart: 1, counter: 1 };
+
   test("celebrates a new best score", () => {
-    game = renderGame();
+    game = renderGame({ state: WITH_RECORD });
     game.click("#increase-img");
     game.wait(TIME_IS_UP);
     fireAnimationEnd(game.$("#red-flash"));
@@ -100,8 +103,21 @@ describe("running out of time", () => {
     expect(game.$("#new-rank").textContent).toContain("Slow");
   });
 
-  test("a new best score in the same rank is not a new rank", () => {
+  test("the very first run celebrates nothing", () => {
     game = renderGame();
+    game.click("#increase-img");
+    // the bar keeps its usual color instead of turning rainbow
+    expect(barColor()).toBe("rgb(173, 158, 255)");
+
+    game.wait(TIME_IS_UP);
+    fireAnimationEnd(game.$("#red-flash"));
+
+    expect(game.$("#new-best")).toBeNull();
+    expect(game.$("#new-rank")).toBeNull();
+  });
+
+  test("a new best score in the same rank is not a new rank", () => {
+    game = renderGame({ state: WITH_RECORD });
     game.click("#increase-img");
     game.wait(TIME_IS_UP);
     fireAnimationEnd(game.$("#red-flash"));

@@ -74,6 +74,11 @@ function pickGoalStep(steps: number[], random: number): number {
   return steps[Math.floor(random * steps.length)];
 }
 
+// there was a high score to beat when the run started
+function hadHighScore(state: GameState): boolean {
+  return state.highScoreAtStart > 0;
+}
+
 function scoreAndGoal(
   state: GameState,
   animation: CounterAnimation,
@@ -85,15 +90,16 @@ function scoreAndGoal(
   let counterAnimation = animation;
 
   if (next.counter > next.highScore) {
-    next = { ...next, highScore: next.counter, isHighScore: true };
+    const celebrate = hadHighScore(next);
+    next = { ...next, highScore: next.counter, isHighScore: celebrate };
     events.push({ type: "highScore", score: next.highScore });
 
-    if (!next.highScoreFxPlayed) {
+    if (celebrate && !next.highScoreFxPlayed) {
       if (!boosted) counterAnimation = "pop-right";
       events.push({ type: "sound", name: "highScore" });
       next = { ...next, highScoreFxPlayed: true };
     }
-    if (!next.confettiPlayed) {
+    if (celebrate && !next.confettiPlayed) {
       events.push({ type: "confetti" });
       next = { ...next, confettiPlayed: true };
     }
@@ -219,6 +225,7 @@ function timerExpired(state: GameState): Update {
         isHighScore: state.isHighScore,
         score: state.counter,
         newRank:
+          hadHighScore(state) &&
           getRank(state.highScore).min > getRank(state.highScoreAtStart).min
             ? getRank(state.highScore).name
             : undefined,
