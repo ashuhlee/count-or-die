@@ -1,4 +1,10 @@
-import { useId, useRef, useState, type ReactNode } from "react";
+import {
+  useId,
+  useRef,
+  useState,
+  type PointerEvent,
+  type ReactNode,
+} from "react";
 import { createPortal } from "react-dom";
 
 import Letters from "../../components/text/letters/Letters.tsx";
@@ -80,6 +86,19 @@ export default function Tooltip({
     }
   }
 
+  function enter(event: PointerEvent<HTMLSpanElement>) {
+    const box = event.currentTarget.getBoundingClientRect();
+    const down = (event.clientY - box.top) / box.height;
+    zone.current =
+      down < ZONE_SPLIT.above
+        ? "above"
+        : down < ZONE_SPLIT.below
+          ? "beside"
+          : "below";
+    hovering.current = true;
+    setOpen(true);
+  }
+
   const layerClass = open ? " tooltip--open" : "";
 
   return (
@@ -88,21 +107,13 @@ export default function Tooltip({
       className={className ? `tooltip-anchor ${className}` : "tooltip-anchor"}
       aria-describedby={id}
       onPointerEnter={(event) => {
-        if (!hovering.current) {
-          const box = event.currentTarget.getBoundingClientRect();
-          const down = (event.clientY - box.top) / box.height;
-          zone.current =
-            down < ZONE_SPLIT.above
-              ? "above"
-              : down < ZONE_SPLIT.below
-                ? "beside"
-                : "below";
-        }
-        hovering.current = true;
+        if (!hovering.current) enter(event);
         place({ x: event.clientX, y: event.clientY });
-        setOpen(true);
       }}
-      onPointerMove={(event) => place({ x: event.clientX, y: event.clientY })}
+      onPointerMove={(event) => {
+        if (!hovering.current) enter(event);
+        place({ x: event.clientX, y: event.clientY });
+      }}
       onPointerLeave={() => {
         hovering.current = false;
         setOpen(false);
