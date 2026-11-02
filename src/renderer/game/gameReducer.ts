@@ -260,13 +260,6 @@ function collectPowerUp(state: GameState, type: PowerUpType): Update {
   }
 
   const events: GameEvent[] = [{ type: "sound", name: powerUp.sound }];
-  if (powerUp.duration !== null) {
-    events.push({
-      type: "powerUpStarted",
-      powerUp: type,
-      duration: powerUp.duration,
-    });
-  }
   if (powerUp.effect === "bad") {
     events.push({ type: "penalty" });
     events.push({ type: "counterAnimation", name: "pop-min" });

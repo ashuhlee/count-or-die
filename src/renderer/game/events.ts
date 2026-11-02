@@ -1,5 +1,3 @@
-import type { PowerUpType } from "./powerUps.ts";
-
 export type SoundName =
   | "bgMusic"
   | "menuMusic"
@@ -41,6 +39,5 @@ export type GameEvent =
       score: number;
       newRank?: string;
     }
-  | { type: "powerUpStarted"; powerUp: PowerUpType; duration: number }
   | { type: "restarted" }
   | { type: "penalty" };
