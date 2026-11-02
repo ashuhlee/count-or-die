@@ -39,6 +39,8 @@
   }
 
   .menu-btn {
+    min-width: 240px;
+
     color: #59517d;
     text-shadow: none;
     --shake-scale: 0.965;
@@ -46,7 +48,7 @@
     --btn-text-down: 0em;
     --btn-text-right: 0.07em;
     font-family: "Enter the Gungeon Small", sans-serif;
-    font-size: 24px;
+    font-size: 22px;
     letter-spacing: 0;
     text-transform: uppercase;
     cursor: pointer;
@@ -56,18 +58,10 @@
 
     &:hover {
       scale: 1.05;
-      rotate: 2deg;
     }
 
-    & + .menu-btn:hover {
-      rotate: -2deg;
-    }
-    & + .menu-btn + .menu-btn:hover {
-      rotate: 2deg;
-    }
     &:active {
       scale: 0.75;
-      rotate: 0deg !important;
       filter: drop-shadow(0 5px 0 var(--shadow-pink-015)) brightness(0.97)
         saturate(110%);
     }

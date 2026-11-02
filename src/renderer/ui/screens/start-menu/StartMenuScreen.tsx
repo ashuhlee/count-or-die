@@ -56,15 +56,17 @@ export default function StartMenuScreen() {
           {...look(COLORS.play)}
           className="menu-btn"
           id="play-btn"
+          shine
           shadeRows={2.5}
           onClick={loading.mounted ? undefined : actions.play}
         >
-          <Letters text="Play game" step={0.2} duration={3} />
+          <Letters text="Start game" step={0.2} duration={3} />
         </PixelButton>
         <PixelButton
           {...look(COLORS.report)}
           className="menu-btn"
           id="report-bug-btn"
+          shine
           shadeRows={2.5}
           onClick={actions.reportBug}
         >
@@ -74,6 +76,7 @@ export default function StartMenuScreen() {
           {...look(COLORS.quit)}
           className="menu-btn"
           id="quit-game-btn"
+          shine
           shadeRows={2.5}
           onClick={actions.quit}
         >

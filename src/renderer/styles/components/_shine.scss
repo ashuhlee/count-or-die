@@ -74,3 +74,4 @@ $shine-columns: 21;
 }
 
 @include sweep-keyframes(shine-sweep, $shine-sweep + $shine-rest);
+@include sweep-keyframes(shine-sweep-once, $shine-sweep);

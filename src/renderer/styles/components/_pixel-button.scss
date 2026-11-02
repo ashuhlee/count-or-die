@@ -1,3 +1,5 @@
+@use "shine";
+
 .pixel-btn {
   --px: 5px;
   --btn-pad-y: 1;
@@ -119,5 +121,35 @@
         var(--px) bottom calc(var(--px) * var(--btn-shade-rows)) / var(--px)
         var(--px) no-repeat,
       var(--btn-fill);
+  }
+
+  .pixel-btn-shine {
+    position: absolute;
+    inset: var(--px);
+    pointer-events: none;
+    --shine-opacity: 0.4;
+    clip-path: polygon(
+      var(--px) 0,
+      calc(100% - var(--px)) 0,
+      calc(100% - var(--px)) var(--px),
+      100% var(--px),
+      100% calc(100% - var(--px)),
+      calc(100% - var(--px)) calc(100% - var(--px)),
+      calc(100% - var(--px)) 100%,
+      var(--px) 100%,
+      var(--px) calc(100% - var(--px)),
+      0 calc(100% - var(--px)),
+      0 var(--px),
+      var(--px) var(--px)
+    );
+  }
+
+  .pixel-btn-shine::after {
+    animation: none;
+  }
+
+  &:hover .pixel-btn-shine::after {
+    animation: shine-sweep-once #{shine.$shine-sweep} steps(var(--shine-frames))
+      1 both;
   }
 }

@@ -1163,6 +1163,19 @@ img {
     );
   }
 }
+@keyframes shine-sweep-once {
+  0% {
+    left: 0;
+    transform: translateX(-100%);
+  }
+  100%,
+  100% {
+    left: calc(100%*var(--shine-frames)/ (var(--shine-frames) - 1));
+    transform: translateX(
+      calc(100% * (0.65 * var(--shine-frames) / (var(--shine-frames) - 1) - 1))
+    );
+  }
+}
 .hearts {
   display: flex;
   gap: 18px;
@@ -1541,6 +1554,32 @@ img {
       var(--px) bottom calc(var(--px) * var(--btn-shade-rows))/var(--px)
       var(--px) no-repeat,
     var(--btn-fill);
+}
+.pixel-btn .pixel-btn-shine {
+  position: absolute;
+  inset: var(--px);
+  pointer-events: none;
+  --shine-opacity: 0.4;
+  clip-path: polygon(
+    var(--px) 0,
+    calc(100% - var(--px)) 0,
+    calc(100% - var(--px)) var(--px),
+    100% var(--px),
+    100% calc(100% - var(--px)),
+    calc(100% - var(--px)) calc(100% - var(--px)),
+    calc(100% - var(--px)) 100%,
+    var(--px) 100%,
+    var(--px) calc(100% - var(--px)),
+    0 calc(100% - var(--px)),
+    0 var(--px),
+    var(--px) var(--px)
+  );
+}
+.pixel-btn .pixel-btn-shine::after {
+  animation: none;
+}
+.pixel-btn:hover .pixel-btn-shine::after {
+  animation: shine-sweep-once 0.6s steps(var(--shine-frames)) 1 both;
 }
 .wide-btn {
   width: calc(var(--px)*34);
@@ -2343,6 +2382,7 @@ img {
   gap: 20px;
 }
 .menu-screen .menu-btn {
+  min-width: 240px;
   color: #59517d;
   text-shadow: none;
   --shake-scale: 0.965;
@@ -2350,7 +2390,7 @@ img {
   --btn-text-down: 0em;
   --btn-text-right: 0.07em;
   font-family: "Enter the Gungeon Small", sans-serif;
-  font-size: 24px;
+  font-size: 22px;
   letter-spacing: 0;
   text-transform: uppercase;
   cursor: pointer;
@@ -2360,17 +2400,9 @@ img {
 }
 .menu-screen .menu-btn:hover {
   scale: 1.05;
-  rotate: 2deg;
-}
-.menu-screen .menu-btn + .menu-btn:hover {
-  rotate: -2deg;
-}
-.menu-screen .menu-btn + .menu-btn + .menu-btn:hover {
-  rotate: 2deg;
 }
 .menu-screen .menu-btn:active {
   scale: 0.75;
-  rotate: 0deg !important;
   filter: drop-shadow(0 5px 0 var(--shadow-pink-015)) brightness(0.97)
     saturate(110%);
 }
