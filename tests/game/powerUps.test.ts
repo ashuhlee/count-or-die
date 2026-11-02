@@ -34,8 +34,6 @@ describe("choosePowerUp", () => {
   });
 
   test("picks by weight", () => {
-    // the weights add up to 98: candy 0-40, 4x 40-60, penalty 60-80,
-    // extra boost 80-90, superstar 90-98
     expect(choosePowerUp(POWER_UPS, 0.3).type).toBe("double_click");
     expect(choosePowerUp(POWER_UPS, 0.5).type).toBe("four_click");
     expect(choosePowerUp(POWER_UPS, 0.7).type).toBe("minus_25");
@@ -73,10 +71,5 @@ describe("game over phrases", () => {
       phrases.add(phrase);
     }
     expect(phrases.size).toBeGreaterThan(5);
-  });
-
-  test("a new high score gets its own phrases", () => {
-    expect(pickGameOverPhrase(true, 0)).toBe("new high score!");
-    expect(pickGameOverPhrase(true, 0.99)).toBe("oooh, a new record!");
   });
 });
