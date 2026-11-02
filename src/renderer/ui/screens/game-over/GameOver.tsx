@@ -35,6 +35,7 @@ import MeltInShader, {
 } from "../../shaders/melt-in-shader/MeltInShader.tsx";
 import GameOverBackground, { GAME_OVER_HUE } from "./GameOverBackground.tsx";
 import { useGameOverView } from "./useGameOverView.ts";
+import { useSpaceToRestart } from "./useSpaceToRestart.ts";
 
 const TRACKER_BULGE = { id: "tracker-bulge", strength: 25, area: 6 };
 
@@ -71,6 +72,7 @@ export default function GameOver() {
   const { state, actions } = useGame();
 
   const view = useGameOverView();
+  useSpaceToRestart(view.visible);
 
   const rainbowClass = view.rainbow ? " rainbow-txt" : "";
   const trackerClass = `tracker-container${view.visible ? " bounce-in-right" : ""}`;

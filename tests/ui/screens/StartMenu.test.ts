@@ -157,12 +157,34 @@ describe("the menu", () => {
 
   test("does not run a game behind it", () => {
     game.wait(TIME_IS_UP * 2);
-    game.press(" ");
     game.press("w");
+    game.press("ArrowUp");
 
     expect(game.$("#menu-screen")).not.toBeNull();
     expect(sounds()).not.toContain("gameOver");
     expect(game.$("#counter")).toBeNull();
+  });
+
+  test("space starts a game, like play does", () => {
+    game.press(" ");
+
+    expect(sounds()).toContain("buttonClick");
+    expect(game.$("#loading-screen")).not.toBeNull();
+
+    game.wait(COVERED);
+    expect(game.$("#menu-screen")).toBeNull();
+    expect(game.counter()).toBe("00");
+  });
+
+  test("space again while the game is starting does not start it twice", () => {
+    game.press(" ");
+    const clicks = () => sounds().filter((name) => name === "buttonClick");
+    expect(clicks()).toHaveLength(1);
+
+    game.press(" ");
+    game.wait(COVERED);
+    expect(clicks()).toHaveLength(1);
+    expect(game.counter()).toBe("00");
   });
 
   test("Escape says the settings are not there yet", () => {

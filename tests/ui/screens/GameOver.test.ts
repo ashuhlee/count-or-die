@@ -233,6 +233,36 @@ describe("starting over", () => {
     expect(game.$("#red-flash").className).toBe("");
   });
 
+  test("space starts a new run once the screen has been up a moment", () => {
+    game = renderGame({ state: { counter: 12 } });
+    game.wait(TIME_IS_UP);
+    fireAnimationEnd(game.$("#red-flash"));
+
+    // still pressing it from the run
+    game.press(" ");
+    game.wait(799);
+    game.press(" ");
+    expect(game.$("#loading-screen")).toBeNull();
+
+    game.wait(1);
+    game.press(" ");
+    expect(sounds()).toContain("buttonClick");
+    expect(game.$("#loading-screen")).not.toBeNull();
+
+    game.wait(530);
+    expect(isShown()).toBe(false);
+    expect(game.counter()).toBe("00");
+  });
+
+  test("space does not start a new run before the game over screen shows", () => {
+    game = renderGame({ state: { counter: 12 } });
+    game.wait(TIME_IS_UP + 2000);
+    expect(isShown()).toBe(false);
+
+    game.press(" ");
+    expect(game.$("#loading-screen")).toBeNull();
+  });
+
   test("the game over button goes through the loading screen", () => {
     game = renderGame({ state: { counter: 12 } });
     game.wait(TIME_IS_UP);

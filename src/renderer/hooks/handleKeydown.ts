@@ -3,6 +3,7 @@ import { requestSettings } from "../utils/events/settingsNotice.ts";
 type KeyBinds = {
   onIncrease: () => void;
   onBoost: () => void;
+  onStart: () => void;
 };
 
 export function handleKeydown(event: KeyboardEvent, handlers: KeyBinds): void {
@@ -27,6 +28,7 @@ export function handleKeydown(event: KeyboardEvent, handlers: KeyBinds): void {
 
     case " ":
       handlers.onBoost();
+      handlers.onStart();
       break;
   }
 }
