@@ -5,7 +5,7 @@ export function playConfetti(): void {
     particleCount: 80,
     spread: 800,
     startVelocity: 30,
-    scalar: 1.4,
+    scalar: 1.5,
     ticks: 100,
     origin: { x: 0.5, y: 0.2 },
     colors: ["#ffa1fd", "#af97ff", "#a8e6ff", "#ffc6ff", "#ff95ea", "#FFEEFC"],
