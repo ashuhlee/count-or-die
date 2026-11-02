@@ -67,9 +67,29 @@
 }
 
 .game-name span {
+  position: relative;
   display: inline-block;
   animation: wavy-text var(--wave-duration, 2.5s)
     cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--delay);
+
+  // an inner shadow, drawn over each letter like on the game over text
+  &::after {
+    content: attr(data-char);
+    position: absolute;
+    inset: 0;
+    text-shadow: none;
+    color: transparent;
+    background: linear-gradient(
+      to bottom,
+      transparent 0.22em,
+      #fff 0.22em,
+      #fff 0.42em,
+      #fff7fd 0.42em,
+      #ffebfa 0.78em,
+      #ffe3f7 0.78em
+    );
+    background-clip: text;
+  }
 }
 
 .pop {
