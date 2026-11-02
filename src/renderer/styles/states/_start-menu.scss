@@ -1,0 +1,93 @@
+@use "../base/swirl-background";
+
+.menu-screen {
+  @include swirl-background.swirl-background;
+
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  --saturation-start: 1.1;
+
+  &::before {
+    animation:
+      slide-tile 4s linear infinite reverse,
+      menu-tile-in var(--hue-duration) cubic-bezier(0.215, 0.61, 0.355, 1)
+        paused;
+  }
+
+  .go-background {
+    animation: menu-swirl-in var(--hue-duration)
+      cubic-bezier(0.215, 0.61, 0.355, 1) paused;
+  }
+
+  &.hue-in::before {
+    animation-play-state: running, running;
+  }
+
+  &.hue-in .go-background {
+    animation-play-state: running;
+  }
+
+  .menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .menu-btn {
+    color: #59517d;
+    text-shadow: none;
+    --shake-scale: 0.965;
+    --shake-distance: -2px;
+    --btn-text-down: 0em;
+    --btn-text-right: 0.07em;
+    font-family: "Enter the Gungeon Small", sans-serif;
+    font-size: 24px;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    cursor: pointer;
+    filter: drop-shadow(0 6px 0 var(--shadow-pink-010));
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    &:hover {
+      scale: 1.05;
+      rotate: 2deg;
+    }
+
+    & + .menu-btn:hover {
+      rotate: -2deg;
+    }
+    & + .menu-btn + .menu-btn:hover {
+      rotate: 2deg;
+    }
+    &:active {
+      scale: 0.75;
+      rotate: 0deg !important;
+      filter: drop-shadow(0 5px 0 var(--shadow-pink-015)) brightness(0.97)
+        saturate(110%);
+    }
+    &:focus-visible {
+      outline: 3px solid #595480;
+      outline-offset: 3px;
+    }
+  }
+  &.buttons-in .menu-btn {
+    animation: jackInTheBox 0.4s both;
+
+    & + .menu-btn {
+      animation-delay: 0.2s;
+    }
+    & + .menu-btn + .menu-btn {
+      animation-delay: 0.3s;
+    }
+  }
+}
+
+.menu-screen ~ .app-ver {
+  z-index: 3;
+}

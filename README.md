@@ -139,9 +139,40 @@ npm install
 ## Tech Stack
 
 - **Electron:** Framework for cross-platform desktop application development
+- **React:** Runs the game and renders its interface
 - **Vite:** Build tool for fast development and bundling
+- **Vite+:** Toolchain for linting, formatting and testing (`vp check`, `vp test`)
 - **Discord Integration:** Discord Rich Presence support [(simple-discord-rpc)](https://www.npmjs.com/package/simple-discord-rpc)
 - **Electron Forge:** For packaging and distributing Electron apps
+
+## Project Structure
+
+```
+src/
+├── main/              Electron main process (window, Discord Rich Presence)
+├── preload/           Bridge between Electron and the game
+└── renderer/
+    ├── index.html, index.tsx, App.tsx   The page and where React starts
+    ├── preload.d.ts   Types for what the preload exposes on `window`
+    ├── assets/        Images and audio files
+    ├── styles/        SCSS and the compiled main.css
+    ├── game/          The game rules: plain functions, no React or DOM
+    ├── provider/      Runs the game in React: GameProvider (state, timers,
+    │                  sounds, saving), useGame and the event bus
+    ├── hooks/         Shared hooks
+    ├── utils/         Sound, confetti, saving and other small helpers
+    └── ui/            What is drawn
+        ├── screens/      Full screens: game, game over
+        ├── overlays/     Drawn over the whole screen: loading screen
+        ├── shaders/      WebGL effects: PixelSwirlShader, CRTShader, MeltInShader
+        └── components/   One folder per feature (counter, hearts, goal, ...)
+tests/
+├── game/              The rules
+├── provider/          Running the game: saving, timers, errors
+├── ui/                The game played like a person would: clicks, keys, time
+│                      (one file per component or screen, named after it)
+└── helpers/           Shared test utilities
+```
 
 ## Contributing
 

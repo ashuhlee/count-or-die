@@ -1,0 +1,10 @@
+.skull-floor {
+  transform: rotate(-8deg);
+  position: fixed;
+  width: 76px;
+  height: 76px;
+  bottom: -5px;
+  left: 18vw;
+  z-index: -1;
+  image-rendering: auto;
+}

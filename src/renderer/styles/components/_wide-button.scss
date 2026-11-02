@@ -1,0 +1,22 @@
+.wide-btn {
+  width: calc(var(--px) * 34);
+  padding: 0;
+  color: #fdfffe;
+  font-family: "Mem Prop 5x6", sans-serif;
+  font-size: 24px;
+  letter-spacing: 0;
+  cursor: pointer;
+  text-shadow: 0 calc(var(--px) / 2 / 0.9) 0 var(--btn-text-shadow-color);
+  --btn-text-down: -3px;
+  --btn-text-right: 0;
+
+  .pixel-btn-label {
+    transform: scaleY(0.8);
+  }
+
+  &:hover .pixel-btn-label span {
+    position: relative;
+    animation: wavy-text-top var(--wave-duration, 2.5s)
+      cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--delay);
+  }
+}

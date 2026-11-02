@@ -1,0 +1,54 @@
+.tooltip-anchor {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip,
+.tooltip-shadow {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  white-space: nowrap;
+  font-family: "Mem Prop 5x6", sans-serif;
+  font-size: 20px;
+  letter-spacing: 3px;
+  text-transform: none;
+
+  > span > span {
+    display: inline-block;
+    scale: 0;
+    rotate: var(--tooltip-spin, 40deg);
+    transition: none;
+  }
+
+  &.tooltip--open > span > span {
+    scale: 1;
+    rotate: 0deg;
+    animation: tooltip-letter-in 0.15s ease-out var(--delay) both;
+  }
+}
+
+@keyframes tooltip-letter-in {
+  0% {
+    scale: 0;
+    rotate: var(--tooltip-spin, 40deg);
+  }
+  60% {
+    scale: 1.2;
+    rotate: 0deg;
+  }
+  100% {
+    scale: 1;
+    rotate: 0deg;
+  }
+}
+
+.tooltip {
+  color: var(--tooltip-color, #fff2fc);
+}
+.tooltip-shadow {
+  color: var(--tooltip-shadow, black);
+  mix-blend-mode: overlay;
+  opacity: 0.2;
+  translate: 0 3px;
+}

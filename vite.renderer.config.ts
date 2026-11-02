@@ -1,8 +1,10 @@
 import { defineConfig } from "vite-plus";
+import react from "@vitejs/plugin-react";
 import path from "path";
 import pkg from "./package.json";
 
 export default defineConfig({
+  plugins: [react()],
   base: "./",
   root: path.resolve(__dirname, "src/renderer"),
   resolve: {

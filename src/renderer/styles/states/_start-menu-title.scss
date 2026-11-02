@@ -1,0 +1,8 @@
+.menu-screen {
+  flex-direction: column;
+  gap: 60px;
+
+  .menu-title {
+    width: max(26vw, 300px);
+  }
+}

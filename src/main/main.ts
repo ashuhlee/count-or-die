@@ -12,6 +12,9 @@ import {
 
 import type { IpcMainEvent, MenuItemConstructorOptions } from "electron";
 
+import { lockDown } from "./lockDown.ts";
+import { createViewMenu } from "./menu.ts";
+
 const isMac = process.platform === "darwin";
 const iconPath = isMac
   ? path.join(__dirname, "../../resources/icons/icon.icns")
@@ -28,6 +31,19 @@ ipcMain.on("discord:update", async (_event: IpcMainEvent, data) => {
 
 ipcMain.on("close", () => {
   app.quit();
+});
+
+// the page is fixed here, so the game can never ask for any other one to open
+const BUG_REPORT_URL = "https://github.com/ashuhlee/count-or-die/issues/new";
+
+ipcMain.on("bug-report", () => {
+  void shell.openExternal(BUG_REPORT_URL);
+});
+
+const GITHUB_URL = "https://github.com/ashuhlee/count-or-die";
+
+ipcMain.on("open-github", () => {
+  void shell.openExternal(GITHUB_URL);
 });
 
 ipcMain.handle("gpu:warning", async () => {
@@ -53,13 +69,20 @@ function createWindow() {
     maximizable: true,
     fullscreenable: true,
     backgroundColor: "#FFBDEF",
+    // shown once the page has painted, so it never opens as an empty window
+    show: false,
     icon: iconPath,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
-      nodeIntegration: true,
+      nodeIntegration: false,
       contextIsolation: true,
+      devTools: !app.isPackaged,
     },
   });
+
+  lockDown(mainWindow.webContents, app.isPackaged);
+
+  mainWindow.once("ready-to-show", () => mainWindow.show());
 
   if (!app.isPackaged) {
     mainWindow
@@ -121,20 +144,7 @@ const fileMenu: MenuItemConstructorOptions = {
   submenu: [{ role: isMac ? "close" : "quit" }],
 };
 
-const viewMenu: MenuItemConstructorOptions = {
-  label: "View",
-  submenu: [
-    { role: "reload" },
-    { role: "forceReload" },
-    { role: "toggleDevTools" },
-    { type: "separator" },
-    { role: "resetZoom" },
-    { role: "zoomIn" },
-    { role: "zoomOut" },
-    { type: "separator" },
-    { role: "togglefullscreen" },
-  ],
-};
+const viewMenu = createViewMenu(app.isPackaged);
 
 const windowMenu: MenuItemConstructorOptions = {
   label: "Window",

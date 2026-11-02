@@ -7,5 +7,6 @@ old_code/
 .vite/
 .DS_Store
 .editorconfig
-eslint.config.ts
-.prettierrc
+.archive/
+
+debug/

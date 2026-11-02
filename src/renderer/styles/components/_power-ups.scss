@@ -29,6 +29,11 @@
   padding: 10px;
 }
 
+.power-up-melt .melt-in-shader__image {
+  width: auto;
+  height: 64px;
+}
+
 @keyframes falling {
   to {
     top: 100%;

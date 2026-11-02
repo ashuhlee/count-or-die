@@ -1,0 +1,225 @@
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+
+import { pauseSound, playSound } from "../utils/app/sounds.ts";
+import {
+  createInitialState,
+  reduce,
+  type GameAction,
+  type GameState,
+} from "../game/gameLogic.ts";
+import { createGameClock } from "../game/gameClock.ts";
+import { getPowerUp } from "../game/powerUps.ts";
+import { loadSavedGame } from "../utils/storage/savedGame.ts";
+import { quitGame } from "../utils/app/quitGame.ts";
+import { reportBug } from "../utils/app/reportBug.ts";
+import { useTimeouts } from "../hooks/useTimeouts.ts";
+import { useStartupDone } from "./useStartupDone.ts";
+import { createEventBus, EventBusContext } from "./eventBus.ts";
+import { performEvent } from "./performEvent.ts";
+import { useCountdown } from "./useCountdown.ts";
+import {
+  GameContext,
+  type GameActions,
+  type GameContextValue,
+  type Pointer,
+  type Screen,
+} from "./useGame.ts";
+import { useLoadingScreen } from "./useLoadingScreen.ts";
+
+type GameProviderProps = {
+  children: ReactNode;
+  initialState?: GameState;
+  random?: () => number;
+  startOnMenu?: boolean;
+  startedFromGame?: boolean;
+};
+
+export default function GameProvider({
+  children,
+  initialState,
+  random = () => Math.random(),
+  startOnMenu = false,
+  startedFromGame = false,
+}: GameProviderProps) {
+  const [bus] = useState(() => createEventBus());
+  const later = useTimeouts();
+
+  const [state, setState] = useState<GameState>(
+    () => initialState ?? createInitialState(loadSavedGame()),
+  );
+
+  const [screen, setScreen] = useState<Screen>(startOnMenu ? "menu" : "game");
+  const [cameFromGame, setCameFromGame] = useState(startedFromGame);
+
+  const stateRef = useRef(state);
+
+  // everything that counts game time goes through this, so a pause is one call
+  const [clock] = useState(() => createGameClock());
+  useEffect(() => () => clock.clear(), [clock]);
+
+  const [paused, setPaused] = useState(false);
+  const pausedRef = useRef(false);
+
+  // lets the style sheet pause the animations that keep game time
+  useEffect(() => {
+    document.documentElement.toggleAttribute("data-paused", paused);
+    return () => document.documentElement.removeAttribute("data-paused");
+  }, [paused]);
+
+  const randomRef = useRef(random);
+  useEffect(() => {
+    randomRef.current = random;
+  });
+
+  const dispatch = useCallback(
+    (action: GameAction, pointer?: Pointer) => {
+      const update = reduce(stateRef.current, action);
+
+      stateRef.current = update.state;
+      setState(update.state);
+
+      const { deathCount } = update.state;
+      update.events.forEach((event) =>
+        performEvent(event, { bus, later, deathCount, pointer }),
+      );
+    },
+    [bus, later],
+  );
+
+  const ready = useStartupDone();
+
+  const barStage = useCountdown(
+    state,
+    () => dispatch({ type: "timerExpired" }),
+    clock,
+    ready && screen === "game",
+  );
+  const { loading, cover } = useLoadingScreen(later);
+
+  const actions = useMemo<GameActions>(
+    () => ({
+      increase: (pointer) =>
+        pausedRef.current ||
+        dispatch({ type: "increase", random: randomRef.current() }, pointer),
+
+      boost: (pointer) =>
+        pausedRef.current ||
+        dispatch({ type: "boost", random: randomRef.current() }, pointer),
+
+      reset() {
+        dispatch({ type: "restart" });
+        playSound("mouseClick");
+      },
+
+      restartFromGameOver() {
+        playSound("buttonClick");
+        pauseSound("gameOverMusic");
+        cover(() => {
+          dispatch({ type: "restart" });
+          bus.emit({ type: "pageReset" });
+        });
+      },
+
+      play() {
+        playSound("buttonClick");
+        pauseSound("menuMusic");
+        cover(() => setScreen("game"));
+      },
+
+      backToMenu() {
+        playSound("buttonClick");
+        pauseSound("gameOverMusic");
+        pauseSound("bgMusic");
+        cover(() => {
+          dispatch({ type: "restart", music: false });
+          bus.emit({ type: "pageReset" });
+          setScreen("menu");
+          setCameFromGame(true);
+        });
+      },
+
+      quit: quitGame,
+
+      reportBug,
+
+      collectPowerUp(type) {
+        dispatch({ type: "collectPowerUp", powerUp: type });
+
+        const { duration } = getPowerUp(type);
+        if (duration !== null) {
+          clock.after(() => dispatch({ type: "powerUpEnded" }), duration);
+        }
+      },
+
+      pause() {
+        pausedRef.current = true;
+        setPaused(true);
+        clock.pause();
+      },
+
+      resume() {
+        pausedRef.current = false;
+        setPaused(false);
+        clock.resume();
+      },
+
+      emit: bus.emit,
+    }),
+    [bus, clock, cover, dispatch],
+  );
+
+  useEffect(() => {
+    void window.electron?.setDiscordStatus({
+      gameStatusRPC: screen === "menu" ? "menu" : "in-game",
+    });
+  }, [screen]);
+
+  useEffect(() => {
+    if (!ready) return;
+
+    if (screen === "menu") {
+      playSound("menuMusic");
+    } else {
+      pauseSound("menuMusic");
+      playSound("bgMusic");
+    }
+  }, [ready, screen]);
+
+  const value = useMemo<GameContextValue>(
+    () => ({
+      state,
+      barStage,
+      loading,
+      actions,
+      ready,
+      paused,
+      clock,
+      screen,
+      cameFromGame,
+    }),
+    [
+      state,
+      barStage,
+      loading,
+      actions,
+      ready,
+      paused,
+      clock,
+      screen,
+      cameFromGame,
+    ],
+  );
+
+  return (
+    <EventBusContext.Provider value={bus}>
+      <GameContext.Provider value={value}>{children}</GameContext.Provider>
+    </EventBusContext.Provider>
+  );
+}

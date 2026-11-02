@@ -2,6 +2,7 @@
 @use "base/globals";
 @use "base/animations";
 @use "base/effects";
+@use "base/paused";
 
 @use "components/buttons";
 @use "components/counter";
@@ -11,6 +12,19 @@
 @use "components/goal";
 @use "components/hearts";
 @use "components/power-ups";
+@use "components/diamond-notice";
+@use "components/pixel-panel";
+@use "components/pixel-button";
+@use "components/wide-button";
+@use "components/skull-floor";
+@use "components/fps-counter";
+@use "components/tooltip";
+@use "components/game-notification";
+@use "components/alert-popup";
+@use "components/shine";
 
 @use "states/game-over";
 @use "states/loading";
+@use "states/start-menu";
+@use "states/start-menu-title";
+@use "states/startup";

@@ -1,4 +1,6 @@
 @use "../base/globals";
+@use "../base/swirl-background";
+@use "../base/pixel-stripes" as stripes;
 
 #game-over {
   --mask-size: 100% 200%;
@@ -12,9 +14,6 @@
   height: 100%;
   place-items: center;
   font-family: "Silkscreen", sans-serif;
-  background: #ff4d88 url("#{globals.$game-over-bg}") repeat 0 center;
-  background-size: 128px auto;
-  animation: slide 4s linear infinite reverse;
   z-index: 10;
 
   mask: url("#{globals.$melt-mask}") no-repeat 0% 200% / var(--mask-size);
@@ -25,32 +24,34 @@
     --mask-size: 200% 200%;
   }
 
+  @include swirl-background.swirl-background;
+
   &.visible {
     transition:
-      mask-position 1s ease,
-      -webkit-mask-position 1s ease;
+      mask-position 0.8s ease,
+      -webkit-mask-position 0.8s ease;
     mask-position: 0 0;
     -webkit-mask-position: 0 0;
     pointer-events: all;
+
+    &::before {
+      animation:
+        slide-tile 4s linear infinite reverse,
+        hue-rotate-in var(--hue-duration) cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
 
     #red-overlay {
       opacity: 0;
     }
 
-    .go-title {
-      animation: bounceIn 0.5s ease 0.3s forwards;
-    }
-    .final-score {
-      animation: jackInTheBox 0.5s ease 0.7s forwards;
-    }
     .play-again {
       animation: bounceIn 0.7s ease 0.9s forwards;
     }
     .play-again-btn {
-      animation: jackInTheBox 0.4s 1s forwards;
+      animation: scale-in 0.15s ease-out 1s both;
     }
     .play-again-btn-2 {
-      animation: jackInTheBox 0.4s 1.25s forwards;
+      animation: scale-in 0.15s ease-out 1.25s both;
     }
     .tombstone {
       animation: swing 1s ease forwards 0.2s;
@@ -68,7 +69,6 @@
     }
     .ghost {
       opacity: 1;
-      transition: opacity 0.3s ease 0.9s;
       animation: hover-ghost 3s infinite ease-in-out;
     }
     .skull-floor {
@@ -92,10 +92,10 @@
     height: 100%;
     top: 0;
     left: 0;
-    background: #ff3282;
+    background: #ee1f6e;
     opacity: 1;
     pointer-events: none;
-    transition: opacity 0.4s ease 0.15s;
+    transition: opacity 0.5s ease 0.2s;
   }
 
   .deco-icons {
@@ -119,84 +119,94 @@
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color: #ffffff;
-    text-shadow: 0 5px 0 var(--shadow-pink-015);
-  }
-  .final-score {
-    color: #ffffff;
-    font-weight: bold;
-    margin: 18px;
-    font-family: "serious1", sans-serif;
+    text-shadow: 0 3px 0 var(--shadow-pink-020);
   }
   .you-died {
     font-size: 24px;
+    font-family: "Enter the Gungeon Small", sans-serif;
     padding-top: 20px;
+    text-transform: none;
     top: 50px;
-    font-weight: bold;
-    font-family: "serious1", sans-serif;
     max-width: 250px;
   }
   .top-right-info {
     z-index: -3;
     position: absolute;
-    top: 0;
+    top: 10px;
     right: 0;
     margin: 30px;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 8px;
-    transform: perspective(200px) rotateY(-13deg);
-    transition: transform 0.2s ease-in;
-    &:hover {
-      transform: perspective(200px) rotateY(0deg);
-    }
+    gap: 28px;
+    filter: url(#tracker-bulge);
   }
-  .tracker-container,
-  .leaderboard-container {
+  .tracker-container {
     height: 30px;
     width: fit-content;
     display: flex;
-    gap: 8px;
+    gap: 14px;
     align-items: center;
     justify-content: center;
-    padding: 6px 8px;
-    background: white;
-    border-radius: 5px;
+    padding: 16px 12px;
     transition: transform 1s ease;
-    &:hover {
-      .skull-tracker,
-      .death-tracker {
-        animation: flash 0.6s;
-      }
-    }
-    .skull-tracker {
+
+    .tracker-icon {
       width: 17px;
       height: 17px;
-      will-change: transform;
-      transform: translateZ(0);
     }
 
-    .death-tracker,
-    .leaderboard {
-      font-weight: bold;
-      font-family: "serious1", sans-serif;
-      font-size: 23px;
+    .tracker-value {
+      --shake-scale: 0.965;
+      --shake-distance: -2px;
+      font-family: "Teeny Tiny Pixls", sans-serif;
+      font-size: 16px;
+      letter-spacing: 1.2px;
       text-shadow: none;
-      color: #4b4d5a;
+      color: #3b375f;
+      position: relative;
+      top: 0.1em;
+      margin-right: calc(-0.2em - 1.2px);
     }
   }
 
   .play-again {
-    font-size: 30px;
-    -webkit-text-stroke: 10px #696491;
+    margin: 32px;
+    font-size: 28px;
+    font-family: "Enter the Gungeon Small", sans-serif;
+    letter-spacing: 1.7px;
+    -webkit-text-stroke: 9px #595480;
     filter: drop-shadow(4px 4px 0px var(--shadow-pink-015));
     paint-order: stroke fill;
+  }
+
+  .try-again {
+    display: inline-block;
+  }
+  .try-again span {
+    position: relative;
+
+    &::after {
+      content: attr(data-char);
+      position: absolute;
+      inset: 0;
+      -webkit-text-stroke: 0;
+      text-shadow: none;
+      color: transparent;
+      background: linear-gradient(
+        to bottom,
+        transparent 0.22em,
+        #fff 0.22em,
+        #fff 0.4em,
+        #d7d7f1 0.4em
+      );
+      background-clip: text;
+    }
   }
 
   .go-title {
     width: 80vw;
     max-width: 380px;
-    filter: drop-shadow(5px 5px 0px var(--shadow-pink-005));
   }
   img {
     image-rendering: pixelated;
@@ -228,30 +238,27 @@
     left: calc(50% + 90px);
     z-index: 2;
     image-rendering: auto;
-  }
-  .skull-floor {
-    transform: rotate(-8deg);
-    position: fixed;
-    width: 76px;
-    height: 76px;
-    bottom: -5px;
-    left: 18vw;
-    z-index: -1;
-    image-rendering: auto;
-  }
 
+    img,
+    canvas {
+      image-rendering: auto;
+    }
+  }
   .bottom-section {
     place-items: center;
 
     .back-to-menu {
+      --back-border: #a1a1ff;
       z-index: -5;
       position: relative;
-      padding: 5px;
-      margin-top: 30px;
-      font-family: "serious1", sans-serif;
-      font-size: 20px;
-      text-shadow: none;
-      transition: all 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.85);
+      padding: 4px 10px 2px;
+      margin-top: 40px;
+      font-family: "Enter the Gungeon Small", sans-serif;
+      font-size: 18px;
+      text-transform: none;
+      text-shadow: 0 3px 0 var(--shadow-purple-015);
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.85);
+      filter: drop-shadow(0px 4px 0px var(--shadow-pink-015));
 
       &:active {
         scale: 0.8;
@@ -261,20 +268,23 @@
     h2 {
       &::before {
         content: ">";
-        margin-right: 2px;
+        font-family: "Teeny Tiny Pixls", sans-serif;
+        font-size: 13px;
+        margin-right: 6px;
+        position: relative;
+        top: 0.1em;
         transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.85);
       }
       &:hover {
         transform: translateY(4px);
-        color: #fff2fd;
       }
       &:hover::before {
-        margin-right: 7px;
+        margin-right: 11px;
         color: var(--arr-color);
       }
       &:active::before {
-        margin-right: 2px;
-        color: #c8e1ff;
+        margin-right: 3px;
+        color: #b9efff;
       }
     }
     .underline {
@@ -282,18 +292,30 @@
         content: "";
         position: absolute;
         z-index: -3;
-        width: 98%;
+        inset: 0;
         transform: scaleX(1);
-        height: 19px;
-        left: 0px;
         opacity: 0.8;
-        background-color: #ababff;
-        border-radius: 2px;
+
+        @include stripes.stripes(
+          $stripe-period: 12px,
+          $stripe-width: 6px,
+          $stripe-step: 2px,
+          $stripe-opacity: 0.2,
+          $stripe-pixel-size: 1.5
+        );
+        background-color: #a1a1ff;
+        background-blend-mode: overlay;
+        animation: slide-stripes 2.7s linear infinite;
+        box-shadow:
+          -3px 0 0 0 var(--back-border),
+          3px 0 0 0 var(--back-border),
+          0 -3px 0 0 var(--back-border),
+          0 3px 0 0 var(--back-border);
         transition: all 0.3s ease-out;
       }
 
       &:hover::after {
-        background-color: #9191ff;
+        background-color: #a1a1ff;
       }
       &.left::after {
         transform-origin: bottom left;
@@ -303,10 +325,9 @@
     .game-over-btns {
       display: flex;
       gap: 22px;
-      filter: drop-shadow(0px 7px 0px var(--shadow-pink-010));
+      filter: drop-shadow(0px 7px 0px var(--shadow-pink-015));
 
-      img {
-        width: 190px;
+      .wide-btn {
         transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 
         &:hover {
@@ -331,15 +352,13 @@
     }
   }
   .rainbow-txt {
-    color: rgba(255, 255, 255, 0.7);
-    background-image: var(--rainbow-gradient-bar);
+    color: rgba(255, 255, 255, 0.9);
+    background-image: var(--rainbow-gradient-text);
     background-clip: text;
     background-size: 100% auto;
     background-position: 0 center;
   }
 
-  .go-title,
-  .final-score,
   .play-again,
   .play-again-btn,
   .play-again-btn-2,
@@ -368,7 +387,7 @@
   }
   &.flash-penalty {
     --flash-opacity: 0.4;
-    --flash-duration: 0.4s;
+    --flash-duration: 0.3s;
     animation: flash-overlay var(--flash-duration) ease forwards;
   }
 }

@@ -1,4 +1,5 @@
 import { defineConfig } from "vite-plus";
+import path from "path";
 
 export default defineConfig({
   staged: {
@@ -21,12 +22,17 @@ export default defineConfig({
     sortPackageJson: false,
     ignorePatterns: ["dist/", ".vite/", "node_modules/"],
   },
+  resolve: {
+    alias: {
+      "@assets": path.resolve(__dirname, "src/renderer/assets"),
+    },
+  },
   test: {
     globals: true,
     environment: "jsdom",
     include: ["tests/**/*.test.ts", "src/**/*.test.ts"],
     exclude: ["node_modules/**", "out/**", ".vite/**"],
-    setupFiles: ["vitest-localstorage-mock"],
+    setupFiles: ["vitest-localstorage-mock", "tests/setup.ts"],
     mockReset: false,
     restoreMocks: true,
   },

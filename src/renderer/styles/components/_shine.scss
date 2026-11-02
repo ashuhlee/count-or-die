@@ -1,0 +1,68 @@
+@use "sass:math";
+
+//   --shine-duration  how long one sweep and the rest after it take; the sweep is
+//   --shine-delay     how long to wait before the first sweep
+//   --shine-ratio     how wide the bands are against the element's height
+//   --shine-frames    how many steps the sweep takes, like the frames of a gif
+
+$shine-sweep: 0.6s; // how long the sweep takes
+$shine-rest: 5s; // delay until next sweep
+
+$shine-rows: 11;
+$shine-columns: 21;
+
+@function shine-tile() {
+  $svg: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 #{$shine-columns} #{$shine-rows}' preserveAspectRatio='none' shape-rendering='crispEdges'>";
+
+  @for $row from 0 to $shine-rows {
+    $lean: $shine-rows - 1 - $row;
+    $svg: $svg +
+      "<rect x='#{2 + $lean}' y='#{$row}' width='6' height='1' fill='white'/>" +
+      "<rect x='#{9 + $lean}' y='#{$row}' width='2' height='1' fill='white'/>";
+  }
+
+  @return url("data:image/svg+xml,#{$svg}</svg>");
+}
+
+.shine {
+  --shine-opacity: 0.6;
+  --shine-duration: #{$shine-sweep + $shine-rest};
+  --shine-delay: 3s;
+  --shine-ratio: #{math.div($shine-columns, $shine-rows)};
+  --shine-frames: 7;
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    aspect-ratio: var(--shine-ratio);
+    pointer-events: none;
+    background: shine-tile() 0 0 / 100% 100% no-repeat;
+    image-rendering: pixelated;
+    mix-blend-mode: overlay;
+    opacity: var(--shine-opacity);
+    transform: translateX(-100%);
+    animation: shine-sweep var(--shine-duration) steps(var(--shine-frames))
+      var(--shine-delay) infinite;
+  }
+}
+
+@keyframes shine-sweep {
+  0% {
+    left: 0;
+    transform: translateX(-100%);
+  }
+  #{math.div($shine-sweep, $shine-sweep + $shine-rest) * 100%},
+  100% {
+    left: calc(100% * var(--shine-frames) / (var(--shine-frames) - 1));
+    transform: translateX(
+      calc(100% * (0.65 * var(--shine-frames) / (var(--shine-frames) - 1) - 1))
+    );
+  }
+}

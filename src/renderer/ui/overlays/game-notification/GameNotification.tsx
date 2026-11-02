@@ -1,0 +1,102 @@
+import { Fragment, useLayoutEffect, useRef } from "react";
+
+import PixelPanel from "../../components/hud/pixel-panel/PixelPanel.tsx";
+import Letters from "../../components/text/letters/Letters.tsx";
+
+type GameNotificationProps = {
+  icon: string;
+  iconAlt: string;
+  iconSize?: number;
+  text: string;
+  border: string;
+  accent?: string;
+  visible?: boolean;
+  delay?: number;
+  still?: boolean;
+  leaving?: boolean;
+  shine?: boolean;
+  id?: string;
+};
+
+export default function GameNotification({
+  icon,
+  iconAlt,
+  iconSize,
+  text,
+  border,
+  accent,
+  visible = true,
+  delay = 0,
+  still = false,
+  leaving = false,
+  shine = false,
+  id,
+}: GameNotificationProps) {
+  const textRef = useRef<HTMLSpanElement>(null);
+
+  useLayoutEffect(() => {
+    const element = textRef.current;
+    if (!element) return;
+
+    const panel = element.closest(".game-notification");
+    const parts = () =>
+      element.querySelectorAll<HTMLElement>(".game-notification-word");
+    const longestLine = () => {
+      element.style.width = "";
+      return Math.max(
+        ...Array.from(parts(), (part) => part.offsetLeft + part.offsetWidth),
+      );
+    };
+
+    const fit = () => {
+      panel?.classList.remove("game-notification--long");
+      longestLine();
+      const lines =
+        element.offsetHeight / parseFloat(getComputedStyle(element).lineHeight);
+      panel?.classList.toggle("game-notification--long", lines > 1.5);
+
+      const longest = longestLine();
+      if (longest > 0) element.style.width = `${Math.ceil(longest) + 1}px`;
+    };
+
+    fit();
+    void document.fonts?.ready.then(fit);
+  }, [text, iconSize, visible, leaving, shine]);
+
+  return (
+    <PixelPanel
+      border={border}
+      accent={accent}
+      id={id}
+      className={`game-notification${visible ? (leaving ? " slide-out-left" : " bounce-in-left") : ""}${shine ? " shine" : ""}`}
+      style={{ animationDelay: `${leaving ? 0 : delay}s` }}
+    >
+      <img
+        src={icon}
+        alt={iconAlt}
+        className="game-notification-icon"
+        style={iconSize ? { width: iconSize, height: iconSize } : undefined}
+      />
+      <span
+        ref={textRef}
+        className={`game-notification-text${still ? " game-notification-text--still" : ""}`}
+      >
+        {text.split(" ").map((word, index, words) => (
+          <Fragment key={index}>
+            {index > 0 && " "}
+            <span className="game-notification-word">
+              <Letters
+                text={word}
+                step={0.2}
+                duration={3}
+                offset={
+                  words.slice(0, index).join(" ").length + (index ? 1 : 0)
+                }
+              />
+            </span>
+          </Fragment>
+        ))}
+      </span>
+    </PixelPanel>
+  );
+}

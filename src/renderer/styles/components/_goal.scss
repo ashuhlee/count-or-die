@@ -5,11 +5,16 @@
   animation: hover 2s infinite ease-in-out;
   position: relative;
 
+  .goal-bubble {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    filter: drop-shadow(0px 5px 0px var(--shadow-pink-008));
+  }
+
   .next-goal {
-    background: white;
-    padding: 8px 12px;
-    filter: drop-shadow(0px 6px 0px rgba(255, 163, 231, 0.5));
-    border-radius: 2px;
+    padding: 6px 12px;
+    filter: none;
     text-align: center;
     image-rendering: pixelated;
     white-space: nowrap;
@@ -17,44 +22,37 @@
     position: relative;
 
     .goal-text {
-      color: #4b4d5a;
+      --shake-scale: 0.97;
+      --shake-distance: -1.5px;
+      color: #4a475e;
       font-family: "Silkscreen", monospace;
-      font-size: 18px;
+      font-size: 20px;
+      letter-spacing: -1.5px;
       font-weight: bold;
+
+      > span {
+        display: inline-block;
+
+        > span {
+          display: inline-block;
+          animation: shake var(--wave-duration, 2s) ease infinite
+            var(--wave-delay);
+        }
+      }
     }
   }
 
   .chat-tip {
-    width: 32px;
-    height: 16px;
-    margin-top: -6px;
-    z-index: 1;
-    animation: point 2s infinite ease-in-out;
-    filter: drop-shadow(0px 6px 0px rgba(255, 163, 231, 0.4));
-  }
-  .notifications {
     position: relative;
-    display: flex;
-    justify-content: center;
+    z-index: 1;
   }
-  .boost-notif-text,
-  .theme-switch-notif-text,
-  .score-notif-text {
+  .chat-tip-frame {
     position: absolute;
-    white-space: nowrap;
-    color: white;
-    font-family: "serious1", sans-serif;
-    font-size: 20px;
-    opacity: 0;
+    inset: 0;
   }
-  .boost-notif-text {
-    font-weight: bold;
-    font-size: 22px;
-    filter: drop-shadow(0px 1.8px 0px #ababff);
-    text-shadow:
-      2px 2px 0 #ffa2e2,
-      -2px -2px 0 #ffa2e2,
-      2px -2px 0 #ffa2e2,
-      -2px 2px 0 #ffa2e2;
+  .chat-tip-art {
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 }
