@@ -51,8 +51,7 @@ async function updateActivity(): Promise<void> {
   try {
     await client.setActivity({
       type: ActivityType.Playing,
-      details:
-        status === "menu" ? "Main Menu" : `Nerd Out Mode · ${statusInfo}`,
+      details: status === "menu" ? "Main menu" : `Regular mode · ${statusInfo}`,
       state: undefined,
 
       timestamps: {

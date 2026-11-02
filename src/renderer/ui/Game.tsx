@@ -32,7 +32,6 @@ export default function Game() {
   const [page, setPage] = useState(0);
   useGameEvent("pageReset", () => setPage((current) => current + 1));
 
-  // asking before the home button ends the run
   const [endingRun, setEndingRun] = useState(false);
   useGameEvent("gameOver", () => setEndingRun(false));
   useGameEvent("restarted", () => setEndingRun(false));
@@ -77,7 +76,11 @@ export default function Game() {
           inGame={screen === "game"}
           onHome={
             screen === "game"
-              ? () => loading.mounted || setEndingRun(true)
+              ? () => {
+                  if (loading.mounted) return;
+                  if (state.counter === 0) actions.backToMenu();
+                  else setEndingRun(true);
+                }
               : undefined
           }
         />

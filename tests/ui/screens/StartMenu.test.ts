@@ -321,10 +321,22 @@ describe("the menu", () => {
     expect(game.counter()).toBe("01");
   });
 
+  test("the home button does not ask when there is no score", () => {
+    game.click("#play-btn");
+    game.wait(COVERED + 600);
+
+    game.click("#home-btn");
+    expect(game.$("#alert-popup")).toBeNull();
+    game.wait(COVERED);
+    expect(game.$("#menu-screen")).not.toBeNull();
+  });
+
   describe("while the home button asks", () => {
     beforeEach(() => {
       game.click("#play-btn");
       game.wait(COVERED + 600);
+      // it only asks when there is a score to lose
+      game.press("w");
     });
 
     test("the time stands still, and goes on where it was after no", () => {
@@ -382,11 +394,11 @@ describe("the menu", () => {
       game.press("w");
       game.press(" ");
       game.click("#increase-img");
-      expect(game.counter()).toBe("00");
+      expect(game.counter()).toBe("01");
 
       game.click("#alert-no");
       game.press("w");
-      expect(game.counter()).toBe("01");
+      expect(game.counter()).toBe("02");
     });
 
     test("no power-up comes, until the wait that was left is over", () => {

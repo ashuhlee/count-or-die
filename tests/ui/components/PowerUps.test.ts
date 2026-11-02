@@ -169,7 +169,8 @@ describe("collecting one", () => {
   });
 
   test("2x holds its time while the home button asks", () => {
-    game = renderGame({ state: { highScore: 999 } });
+    // with a score, or the home button would not ask
+    game = renderGame({ state: { highScore: 999, counter: 1 } });
     spawn(DOUBLE, 0, 0, 0);
     game.click(".power-up-img");
     game.wait(1000);
@@ -181,10 +182,10 @@ describe("collecting one", () => {
     // two of its three seconds are left
     game.wait(1999);
     game.click("#increase-img");
-    expect(game.counter()).toBe("02");
+    expect(game.counter()).toBe("03");
     game.wait(1);
     game.click("#increase-img");
-    expect(game.counter()).toBe("03");
+    expect(game.counter()).toBe("04");
   });
 
   test("4x quadruples them", () => {
