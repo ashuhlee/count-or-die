@@ -249,6 +249,8 @@ describe("boosting", () => {
     expect(has(events, { type: "sound", name: "goalReached" })).toBe(false);
     expect(has(events, { type: "sound", name: "useBoost" })).toBe(true);
     expect(types(events)).toContain("boostNotification");
+    // it says how much the boost added
+    expect(has(events, { type: "boostNotification", points: 30 })).toBe(true);
     expect(has(events, { type: "counterAnimation", name: "pop-dec" })).toBe(
       true,
     );

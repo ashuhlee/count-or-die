@@ -180,6 +180,10 @@ describe("the keyboard", () => {
 
     game.press(" ");
     expect(game.$("#boost-notice")).not.toBeNull();
+    // it says how many the boost added
+    expect(game.$("#boost-notice .diamond-notice--text").textContent).toContain(
+      "+30",
+    );
 
     game.wait(2500);
     expect(game.$("#boost-notice")).toBeNull();

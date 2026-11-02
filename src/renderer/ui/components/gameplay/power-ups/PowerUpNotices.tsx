@@ -20,13 +20,15 @@ export default function PowerUpNotices() {
   const [picked, setPicked] = useState<PowerUpType | null>(null);
   const [powerUpTurn, setPowerUpTurn] = useState(0);
   const [boostTurn, setBoostTurn] = useState(0);
+  const [boostPoints, setBoostPoints] = useState(0);
 
   useGameEvent("powerUpPicked", (event) => {
     setPicked(event.powerUp);
     setPowerUpTurn(nextShapeTurn());
     powerUpNotice.show();
   });
-  useGameEvent("boostNotification", () => {
+  useGameEvent("boostNotification", (event) => {
+    setBoostPoints(event.points);
     setBoostTurn(nextShapeTurn());
     boostNotice.show();
   });
@@ -49,7 +51,7 @@ export default function PowerUpNotices() {
         <DiamondNotice
           key={boostNotice.shown.id}
           id="boost-notice"
-          text="Boost!"
+          text={`+${boostPoints}\nCount!`}
           fill={BOOST}
           place="right"
           turn={boostTurn}

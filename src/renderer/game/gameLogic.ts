@@ -164,7 +164,7 @@ function boost(state: GameState, random: number): Update {
 
   const events: GameEvent[] = [
     { type: "pressed", button: "decrease", disabled: false },
-    { type: "boostNotification" },
+    { type: "boostNotification", points: pointsAdded },
     { type: "sound", name: "useBoost" },
   ];
   if (boostsAvailable === 0) events.push({ type: "noBoostsLeft" });

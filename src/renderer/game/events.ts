@@ -30,7 +30,7 @@ export type GameEvent =
   | { type: "goalChanged"; direction: "forward" | "reverse" }
   | { type: "highScore"; score: number }
   | { type: "confetti" }
-  | { type: "boostNotification" }
+  | { type: "boostNotification"; points: number }
   | { type: "noBoostsFlash" }
   | { type: "noBoostsLeft" }
   | {
