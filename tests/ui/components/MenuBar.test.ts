@@ -1,8 +1,19 @@
-import { afterEach, beforeEach, expect, describe, test } from "vite-plus/test";
+import {
+  afterEach,
+  beforeEach,
+  expect,
+  describe,
+  test,
+  vi,
+} from "vite-plus/test";
 import { act, type ComponentType, type ReactElement } from "react";
 
 import { renderInto } from "../../helpers/dom.ts";
 
+import {
+  EXIT,
+  SHOWN_FOR,
+} from "../../../src/renderer/ui/components/game-notification/useTimedNotification.ts";
 import MenuBar from "../../../src/renderer/ui/components/menu-bar/MenuBar.tsx";
 import { audioConfig } from "../../../src/renderer/utils/sounds.ts";
 
@@ -53,5 +64,29 @@ describe("MenuBar", () => {
 
     expect(audioConfig.bgMusic.audio.muted).toBe(true);
     expect(audioConfig.bgMusic.audio.volume).toBe(0);
+  });
+
+  test("the options button says the settings are not in the beta, for a moment", () => {
+    vi.useFakeTimers();
+    const alert = vi.spyOn(window, "alert").mockImplementation(() => {});
+    const options = container
+      .querySelector('img[alt="options icon"]')
+      .closest("button");
+    const notice = () => container.querySelector("#options-notice");
+
+    expect(notice()).toBeNull();
+    act(() => {
+      options.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    expect(notice().textContent.replace(/\u00a0/g, " ")).toMatch(/beta/i);
+    expect(alert).not.toHaveBeenCalled();
+
+    act(() => vi.advanceTimersByTime(SHOWN_FOR));
+    expect(notice().classList.contains("slide-out-left")).toBe(true);
+    act(() => vi.advanceTimersByTime(EXIT));
+    expect(notice()).toBeNull();
+
+    vi.useRealTimers();
+    vi.restoreAllMocks();
   });
 });

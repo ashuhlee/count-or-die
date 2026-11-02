@@ -1,3 +1,5 @@
+import { requestSettings } from "../utils/settingsNotice.ts";
+
 type KeyBinds = {
   onIncrease: () => void;
   onBoost: () => void;
@@ -5,7 +7,7 @@ type KeyBinds = {
 
 export function handleKeydown(event: KeyboardEvent, handlers: KeyBinds): void {
   if (event.key === "Escape") {
-    alert("Oops! The settings menu is not available in the beta.");
+    requestSettings();
     return;
   }
   if (event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) {

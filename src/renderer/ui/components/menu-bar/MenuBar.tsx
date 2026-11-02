@@ -6,9 +6,16 @@ import soundBtnUnmuted from "@assets/ui/svg/sound-button-reg.svg";
 import optionsBtnSvg from "@assets/ui/svg/options-button.svg";
 import homeBtnSvg from "@assets/ui/svg/home-button.svg";
 import githubBtnSvg from "@assets/ui/svg/github-button.svg";
+import lockIcon from "@assets/ui/deco/lock_grey.svg";
 
 import { audioConfig, toggleAudio } from "../../../utils/sounds.ts";
 import { openGithub } from "../../../utils/openGithub.ts";
+import {
+  onSettingsRequested,
+  requestSettings,
+} from "../../../utils/settingsNotice.ts";
+import GameNotification from "../game-notification/GameNotification.tsx";
+import { useTimedNotification } from "../game-notification/useTimedNotification.ts";
 import RoundButton from "../round-button/RoundButton.tsx";
 import Tooltip from "../tooltip/Tooltip.tsx";
 
@@ -38,6 +45,8 @@ type MenuBarProps = {
 };
 
 export default function MenuBar({ entrance, onHome, inGame }: MenuBarProps) {
+  const options = useTimedNotification();
+  useEffect(() => onSettingsRequested(options.show), [options.show]);
   const [soundState, setSoundState] = useState(readSavedState);
 
   // restore saved audio settings
@@ -64,52 +73,67 @@ export default function MenuBar({ entrance, onHome, inGame }: MenuBarProps) {
   });
 
   return (
-    <div className="controls">
-      {onHome && (
-        <RoundButton
-          {...entering(2)}
-          variant={5}
-          icon={homeBtnSvg}
-          iconAlt="home icon"
-          iconSize={28}
-          id="home-btn"
-          onClick={onHome}
-        />
-      )}
-      {!inGame && (
-        <RoundButton
-          {...entering(1)}
-          variant={5}
-          icon={optionsBtnSvg}
-          iconAlt="options icon"
-          iconSize={24}
-          onClick={() =>
-            alert("Oops! The settings menu is not available in the beta.")
-          }
-        />
-      )}
-      <RoundButton
-        {...entering(0)}
-        variant={soundState >= 2 ? 4 : 5}
-        icon={SOUND_ICONS[soundState] ?? soundBtnMuted}
-        iconAlt="sound icon"
-        iconSize={28}
-        iconId="soundBtn"
-        onClick={onSoundClick}
-      />
-      {!inGame && (
-        <Tooltip text="Contribute" placement="cursor">
+    <>
+      <div className="controls">
+        {onHome && (
           <RoundButton
             {...entering(2)}
             variant={5}
-            icon={githubBtnSvg}
-            iconAlt="github icon"
-            iconSize={30}
-            id="github-btn"
-            onClick={openGithub}
+            icon={homeBtnSvg}
+            iconAlt="home icon"
+            iconSize={28}
+            id="home-btn"
+            onClick={onHome}
           />
-        </Tooltip>
+        )}
+        {!inGame && (
+          <RoundButton
+            {...entering(1)}
+            variant={5}
+            icon={optionsBtnSvg}
+            iconAlt="options icon"
+            iconSize={24}
+            onClick={requestSettings}
+          />
+        )}
+        <RoundButton
+          {...entering(0)}
+          variant={soundState >= 2 ? 4 : 5}
+          icon={SOUND_ICONS[soundState] ?? soundBtnMuted}
+          iconAlt="sound icon"
+          iconSize={28}
+          iconId="soundBtn"
+          onClick={onSoundClick}
+        />
+        {!inGame && (
+          <Tooltip text="Contribute" placement="cursor">
+            <RoundButton
+              {...entering(2)}
+              variant={5}
+              icon={githubBtnSvg}
+              iconAlt="github icon"
+              iconSize={30}
+              id="github-btn"
+              onClick={openGithub}
+            />
+          </Tooltip>
+        )}
+      </div>
+      {options.shown && (
+        <div className="notices">
+          <GameNotification
+            key={options.shown.id}
+            icon={lockIcon}
+            iconAlt="lock"
+            iconSize={20}
+            text="The options menu isn't available in the beta."
+            border="#ffb9f0"
+            still
+            leaving={options.shown.leaving}
+            id="options-notice"
+          />
+        </div>
       )}
-    </div>
+    </>
   );
 }

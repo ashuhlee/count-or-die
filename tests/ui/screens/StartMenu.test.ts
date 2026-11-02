@@ -159,6 +159,13 @@ describe("the menu", () => {
     expect(game.$("#counter")).toBeNull();
   });
 
+  test("Escape says the settings are not there yet", () => {
+    expect(game.$("#options-notice")).toBeNull();
+
+    game.press("Escape");
+    expect(game.$("#options-notice")).not.toBeNull();
+  });
+
   test("play covers the menu, then starts a game", () => {
     game.click("#play-btn");
 

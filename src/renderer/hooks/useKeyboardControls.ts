@@ -7,12 +7,14 @@ export function useKeyboardControls(): void {
   const { actions, ready, screen } = useGame();
 
   useEffect(() => {
-    if (!ready || screen !== "game") return;
+    if (!ready) return;
 
+    // only Escape works outside of the game
+    const playing = screen === "game";
     const onKeyDown = (event: KeyboardEvent) =>
       handleKeydown(event, {
-        onIncrease: () => actions.increase(),
-        onBoost: () => actions.boost(),
+        onIncrease: () => playing && actions.increase(),
+        onBoost: () => playing && actions.boost(),
       });
 
     document.addEventListener("keydown", onKeyDown);

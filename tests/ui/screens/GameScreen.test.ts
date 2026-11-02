@@ -189,12 +189,14 @@ describe("the keyboard", () => {
     },
   );
 
-  test("Escape shows the settings message", () => {
+  test("Escape says the settings are not there yet, in a notification", () => {
     const alert = vi.spyOn(window, "alert").mockImplementation(() => {});
     game = renderGame();
-    game.press("Escape");
+    expect(game.$("#options-notice")).toBeNull();
 
-    expect(alert).toHaveBeenCalledTimes(1);
+    game.press("Escape");
+    expect(game.$("#options-notice")).not.toBeNull();
+    expect(alert).not.toHaveBeenCalled();
   });
 
   test("keys do nothing once the game is over", () => {
