@@ -1,4 +1,4 @@
-$fade: 0.1s;
+$fade: 0.06s;
 $pop-from: 0.4;
 $pop-time: 0.3s;
 $pop-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -9,20 +9,27 @@ $pop-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
   z-index: 18;
   display: grid;
   place-items: center;
-  background: rgba(46, 43, 71, 0.5);
+  background: rgba(46, 43, 71, 0.4);
   animation: alert-fade-in $fade both;
 
   .alert-popup-panel {
     --panel-shadow-height: var(--panel-border-size);
     --panel-fill: #fffafe;
+    filter: drop-shadow(0 5px 0 var(--shadow-overlay-010));
 
     width: fit-content;
-    max-width: 360px;
+    max-width: 420px;
     display: grid;
     justify-items: center;
-    gap: 18px;
-    padding: 16px 16px 28px;
+    gap: 24px;
+    padding: 24px 28px;
     animation: alert-pop-in $pop-time $pop-easing both;
+  }
+
+  .alert-popup-skull {
+    width: 28px;
+    height: 28px;
+    image-rendering: pixelated;
   }
 
   .alert-popup-line {
@@ -84,7 +91,6 @@ $pop-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
     transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     filter: drop-shadow(0px 4px 0px var(--shadow-overlay-010));
 
-    // zooms in on hover and out on a press, like the restart button
     &:hover {
       scale: 1.05;
     }
@@ -146,10 +152,6 @@ $pop-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
 .alert-popup--leaving {
   animation: alert-fade-out $fade both;
   pointer-events: none;
-
-  .alert-popup-panel {
-    animation: alert-pop-out $pop-time $pop-easing both;
-  }
 }
 
 @keyframes alert-fade-in {
@@ -166,12 +168,6 @@ $pop-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
 
 @keyframes alert-pop-in {
   from {
-    scale: $pop-from;
-  }
-}
-
-@keyframes alert-pop-out {
-  to {
     scale: $pop-from;
   }
 }

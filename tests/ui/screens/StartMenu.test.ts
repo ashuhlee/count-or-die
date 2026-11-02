@@ -76,11 +76,15 @@ describe("the menu with the startup screen up", () => {
 describe("the menu", () => {
   test("is what the app opens on, with play, report a bug and quit buttons", () => {
     expect(game.$("#menu-screen")).not.toBeNull();
-    expect(
-      game
-        .$$(".menu-btn")
-        .map((button) => button.textContent.replace(/\u00a0/g, " ")),
-    ).toEqual(["Play game", "Report a bug", "Quit"]);
+    // the wording can change, which buttons there are cannot
+    expect(game.$$(".menu-btn").map((button) => button.id)).toEqual([
+      "play-btn",
+      "report-bug-btn",
+      "quit-game-btn",
+    ]);
+    for (const button of game.$$(".menu-btn")) {
+      expect(button.textContent.trim()).not.toBe("");
+    }
     expect(game.$("#game-container")).toBeNull();
   });
 

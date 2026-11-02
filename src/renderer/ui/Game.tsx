@@ -107,7 +107,7 @@ export default function Game() {
         <AlertPopup
           leaving={!asking}
           text={
-            "End this run and go back to the main menu?\nYour score will be saved."
+            "Are you sure you want to end this run?\nYour score will be saved."
           }
           border="#bfb3ff"
           onYes={() => {
