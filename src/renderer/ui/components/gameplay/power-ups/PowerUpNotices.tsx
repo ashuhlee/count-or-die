@@ -2,26 +2,34 @@ import { useState } from "react";
 
 import { getPowerUp, type PowerUpType } from "../../../../game/powerUps.ts";
 import { useGameEvent } from "../../../../provider/useGameEvent.ts";
-import DiamondNotice from "../../hud/diamond-notice/DiamondNotice.tsx";
+import DiamondNotice, {
+  nextShapeTurn,
+} from "../../hud/diamond-notice/DiamondNotice.tsx";
 import { useTimedNotification } from "../../../overlays/game-notification/useTimedNotification.ts";
 import { POWER_UP_LABELS } from "./powerUpLabels.ts";
 
 const SHOWN_FOR = 500;
 
-const GOOD = "#98E5FF";
-const BAD = "#ff68a0";
-const BOOST = "#FC92E0";
+const GOOD = "#93E5FF";
+const BAD = "#ff618b";
+const BOOST = "#FF93E1";
 
 export default function PowerUpNotices() {
   const powerUpNotice = useTimedNotification(SHOWN_FOR, 0);
   const boostNotice = useTimedNotification(SHOWN_FOR, 0);
   const [picked, setPicked] = useState<PowerUpType | null>(null);
+  const [powerUpTurn, setPowerUpTurn] = useState(0);
+  const [boostTurn, setBoostTurn] = useState(0);
 
   useGameEvent("powerUpPicked", (event) => {
     setPicked(event.powerUp);
+    setPowerUpTurn(nextShapeTurn());
     powerUpNotice.show();
   });
-  useGameEvent("boostNotification", boostNotice.show);
+  useGameEvent("boostNotification", () => {
+    setBoostTurn(nextShapeTurn());
+    boostNotice.show();
+  });
 
   const bad = picked !== null && getPowerUp(picked).effect === "bad";
 
@@ -34,6 +42,7 @@ export default function PowerUpNotices() {
           text={POWER_UP_LABELS[picked]}
           fill={bad ? BAD : GOOD}
           place="left"
+          turn={powerUpTurn}
         />
       )}
       {boostNotice.shown && (
@@ -43,6 +52,7 @@ export default function PowerUpNotices() {
           text="Boost!"
           fill={BOOST}
           place="right"
+          turn={boostTurn}
         />
       )}
     </>

@@ -1332,13 +1332,13 @@ img {
 }
 .diamond-notice .diamond-notice-shape {
   display: block;
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
 }
 .diamond-notice .diamond-notice-shape {
   animation:
-    diamond-scale 0.55s cubic-bezier(0, 1.019, 0.211, 1.006) 0.05s both,
-    diamond-spin 0.55s linear 0.05s both;
+    diamond-scale 0.53s cubic-bezier(0, 1.019, 0.211, 1.006) 0.04s both,
+    diamond-spin 0.53s linear 0.04s both;
 }
 .diamond-notice .diamond-notice-text {
   white-space: pre;
@@ -1373,7 +1373,7 @@ img {
     scale: 0;
   }
   100% {
-    scale: 1.2;
+    scale: 1.3;
   }
 }
 @keyframes diamond-fade {
@@ -1400,7 +1400,7 @@ img {
 }
 .diamond-notice--shadow .diamond-notice-text {
   color: #000;
-  translate: 0 4px;
+  translate: 0 3px;
 }
 .diamond-notice--text {
   z-index: 5;

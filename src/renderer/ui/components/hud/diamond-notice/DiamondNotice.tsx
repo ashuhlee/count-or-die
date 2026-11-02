@@ -4,10 +4,24 @@ import Letters from "../../text/letters/Letters.tsx";
 const STEP = 0.014;
 const TILT = 8;
 
+const SHAPE_TURN = 15;
+const MIN_CHANGE = 10;
+let lastTurn = 0;
+
+export function nextShapeTurn(): number {
+  const turns: number[] = [];
+  for (let turn = -SHAPE_TURN; turn <= SHAPE_TURN; turn++) {
+    if (Math.abs(turn - lastTurn) >= MIN_CHANGE) turns.push(turn);
+  }
+  lastTurn = turns[Math.floor(Math.random() * turns.length)];
+  return lastTurn;
+}
+
 type DiamondNoticeProps = {
   text: string;
   fill: string;
   place: "left" | "right";
+  turn: number;
   id?: string;
 };
 
@@ -15,12 +29,14 @@ export default function DiamondNotice({
   text,
   fill,
   place,
+  turn,
   id,
 }: DiamondNoticeProps) {
   const style = {
     "--fill": fill,
     "--tilt": `${place === "left" ? -TILT : TILT}deg`,
   } as CSSProperties;
+  const shapeStyle = { ...style, "--tilt": `${turn}deg` } as CSSProperties;
 
   const lines = text.split("\n");
   const letters = (
@@ -40,7 +56,7 @@ export default function DiamondNotice({
   const layer = (name: string, children: ReactNode) => (
     <div
       className={`diamond-notice diamond-notice--${place} diamond-notice--${name}`}
-      style={style}
+      style={name === "shape" ? shapeStyle : style}
       aria-hidden={name === "shadow" || undefined}
     >
       <div className="diamond-notice-body">{children}</div>
@@ -56,7 +72,7 @@ export default function DiamondNotice({
           viewBox="0 0 128 128"
           aria-hidden="true"
         >
-          <polygon points="64,0 128,64 64,128 0,64" fill="var(--fill)" />
+          <rect width="128" height="128" fill="var(--fill)" />
         </svg>,
       )}
       {layer("shadow", letters)}
