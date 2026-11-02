@@ -1911,7 +1911,7 @@ img {
 }
 .cursor-intro-art {
   transform-origin: 0 0;
-  animation: cursor-intro-in 0.3s cubic-bezier(0, 1.019, 0.211, 1.006) both;
+  animation: cursor-intro-in 0.15s cubic-bezier(0, 1.019, 0.211, 1.006) both;
 }
 .cursor-intro-art img {
   display: block;
