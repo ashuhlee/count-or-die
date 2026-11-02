@@ -1,4 +1,7 @@
+import { useRef } from "react";
+
 import { useGame, type BarStage } from "../../../../provider/useGame.ts";
+import { useProgressSparkles } from "./useProgressSparkles.ts";
 
 const COLORS = {
   highScore: "var(--rainbow-gradient-bar)",
@@ -29,7 +32,19 @@ function getAnimation(
 }
 
 export default function ProgressBar() {
-  const { state, barStage, ready } = useGame();
+  const { state, barStage, ready, paused } = useGame();
+
+  const fill = useRef<HTMLDivElement>(null);
+  const sparkles = useRef<HTMLDivElement>(null);
+  useProgressSparkles(
+    fill,
+    sparkles,
+    state.isHighScore &&
+      barStage === 0 &&
+      !state.isGameOver &&
+      ready &&
+      !paused,
+  );
 
   return (
     <>
@@ -48,6 +63,7 @@ export default function ProgressBar() {
       </div>
       <div
         key={`fill-${state.round}`}
+        ref={fill}
         className="progress-bar"
         id="progress-bar"
         style={{
@@ -63,6 +79,11 @@ export default function ProgressBar() {
         }}
       ></div>
       <div className="progress-bg"></div>
+      <div
+        ref={sparkles}
+        className="pg-sparkles"
+        style={{ opacity: barStage === 0 ? 1 : 0 }}
+      ></div>
     </>
   );
 }

@@ -20,10 +20,10 @@
   --shadow-overlay-050: rgba(0, 0, 0, 0.5);
   --rainbow-gradient-bar: linear-gradient(
     to right,
-    #ffd5a5,
-    #ffb2ee,
-    #c0c3ff,
-    #a7eaff
+    #ffa7eb,
+    #b8abff,
+    #bde4ff,
+    #d9dfff
   );
   --rainbow-gradient-text: linear-gradient(
     to right,
@@ -768,6 +768,7 @@ img {
 }
 [data-paused] .pg-lines,
 [data-paused] .progress-bar,
+[data-paused] .pg-sparkle,
 [data-paused] .power-up-img {
   animation-play-state: paused !important;
 }
@@ -896,20 +897,56 @@ img {
   grid-area: 1/1;
   height: 13px;
   width: 140px;
-  z-index: 2;
+  z-index: 3;
   mix-blend-mode: overlay;
 }
 .progress .pg-stripes {
   width: 100%;
   height: 100%;
   --stripe-period: 18px;
-  background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' shape-rendering='crispEdges'><rect x='0' y='0' width='6' height='2' fill='white' fill-opacity='0.225'/><rect x='12' y='0' width='6' height='2' fill='white' fill-opacity='0.225'/><rect x='24' y='0' width='6' height='2' fill='white' fill-opacity='0.225'/><rect x='-2' y='2' width='6' height='2' fill='white' fill-opacity='0.225'/><rect x='10' y='2' width='6' height='2' fill='white' fill-opacity='0.225'/><rect x='22' y='2' width='6' height='2' fill='white' fill-opacity='0.225'/><rect x='-4' y='4' width='6' height='2' fill='white' fill-opacity='0.225'/><rect x='8' y='4' width='6' height='2' fill='white' fill-opacity='0.225'/><rect x='20' y='4' width='6' height='2' fill='white' fill-opacity='0.225'/><rect x='-6' y='6' width='6' height='2' fill='white' fill-opacity='0.225'/><rect x='6' y='6' width='6' height='2' fill='white' fill-opacity='0.225'/><rect x='18' y='6' width='6' height='2' fill='white' fill-opacity='0.225'/><rect x='-8' y='8' width='6' height='2' fill='white' fill-opacity='0.225'/><rect x='4' y='8' width='6' height='2' fill='white' fill-opacity='0.225'/><rect x='16' y='8' width='6' height='2' fill='white' fill-opacity='0.225'/><rect x='-10' y='10' width='6' height='2' fill='white' fill-opacity='0.225'/><rect x='2' y='10' width='6' height='2' fill='white' fill-opacity='0.225'/><rect x='14' y='10' width='6' height='2' fill='white' fill-opacity='0.225'/></svg>");
+  background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' shape-rendering='crispEdges'><rect x='0' y='0' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='12' y='0' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='24' y='0' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='-2' y='2' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='10' y='2' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='22' y='2' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='-4' y='4' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='8' y='4' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='20' y='4' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='-6' y='6' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='6' y='6' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='18' y='6' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='-8' y='8' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='4' y='8' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='16' y='8' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='-10' y='10' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='2' y='10' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='14' y='10' width='6' height='2' fill='white' fill-opacity='0.2'/></svg>");
   background-size: 18px 18px;
   image-rendering: pixelated;
   animation: slide-stripes 1.15s linear infinite;
 }
+.progress .pg-sparkles {
+  grid-area: 1/1;
+  position: relative;
+  height: 13px;
+  width: 140px;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease-out;
+}
+.progress .pg-sparkle {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--size);
+  height: var(--size);
+  background: url("../assets/ui/deco/sparkle.svg") center/100% 100% no-repeat;
+  rotate: var(--rot);
+  animation:
+    pg-sparkle-burst 0.4s ease-out forwards,
+    pg-sparkle-fade 0.4s linear forwards;
+}
+.progress .progress-bar {
+  position: relative;
+  z-index: 2;
+}
+.progress .progress-bar::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 5px;
+  background: #000;
+  mix-blend-mode: overlay;
+  opacity: 0.3;
+}
 .progress .progress-bg {
   grid-area: 1/1;
+  z-index: 0;
   height: 13px;
   width: 140px;
   background: #59527c;
@@ -918,6 +955,23 @@ img {
     4px 0 0 0 #fff2fc,
     0 -4px 0 0 #fff2fc,
     0 4px 0 0 #fff2fc;
+}
+@keyframes pg-sparkle-burst {
+  to {
+    translate: var(--dx) var(--dy);
+  }
+}
+@keyframes pg-sparkle-fade {
+  from {
+    opacity: 0;
+  }
+  12%,
+  35% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 .title,
 .no-boosts {
@@ -1565,6 +1619,9 @@ img {
   align-items: flex-start;
   gap: 32px;
   filter: url(#tracker-bulge);
+}
+#options-notice.bounce-in-left {
+  animation-duration: 0.7s;
 }
 .alert-popup {
   position: fixed;

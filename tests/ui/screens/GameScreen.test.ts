@@ -244,6 +244,74 @@ describe("the keyboard", () => {
     expect(alert).not.toHaveBeenCalled();
   });
 
+  describe("the sparkles on the end of the progress bar", () => {
+    // jsdom lays nothing out: the bar is half full, on a 140 wide track
+    beforeEach(() => {
+      vi.spyOn(Element.prototype, "getBoundingClientRect").mockImplementation(
+        function (this: Element) {
+          const width = this.classList.contains("progress-bar") ? 70 : 140;
+          return {
+            left: 0,
+            right: width,
+            width,
+            top: 0,
+            bottom: 13,
+            height: 13,
+          } as DOMRect;
+        },
+      );
+    });
+
+    const sparkles = () => game.$$(".pg-sparkle");
+
+    test("come off the end of it while a high score is on", () => {
+      game = renderGame({ state: { highScore: 1, highScoreAtStart: 1 } });
+      expect(sparkles()).toHaveLength(0);
+
+      game.click("#increase-img");
+      game.click("#increase-img");
+      game.wait(300);
+      expect(sparkles().length).toBeGreaterThan(0);
+
+      // they are gone again a moment after it ends
+      game.wait(TIME_IS_UP);
+      game.wait(1000);
+      expect(sparkles()).toHaveLength(0);
+    });
+
+    test("stop when the bar starts to warn that time is running out", () => {
+      game = renderGame({ state: { highScore: 1, highScoreAtStart: 1 } });
+      game.click("#increase-img");
+      game.click("#increase-img");
+      game.wait(300);
+      expect(sparkles().length).toBeGreaterThan(0);
+
+      // the bar changes color about half way through the round
+      game.wait(10000);
+      expect((game.$(".pg-sparkles") as HTMLElement).style.opacity).toBe("0");
+
+      // none are made any more, the last ones go
+      game.wait(1000);
+      expect(sparkles()).toHaveLength(0);
+    });
+
+    test("do not come before a record is beaten", () => {
+      game = renderGame({ state: { highScore: 50, highScoreAtStart: 50 } });
+      game.click("#increase-img");
+      game.wait(500);
+
+      expect(sparkles()).toHaveLength(0);
+    });
+
+    test("do not come on the first run, which has no record", () => {
+      game = renderGame();
+      game.click("#increase-img");
+      game.wait(500);
+
+      expect(sparkles()).toHaveLength(0);
+    });
+  });
+
   test("keys do nothing once the game is over", () => {
     game = renderGame({ state: { isGameOver: true } });
     game.press("w");

@@ -1,8 +1,7 @@
-// while the game is paused, the animations that keep its time hold still and
-// what falls cannot be picked up. See the clock in the game provider.
 [data-paused] {
   .pg-lines,
   .progress-bar,
+  .pg-sparkle,
   .power-up-img {
     animation-play-state: paused !important;
   }
