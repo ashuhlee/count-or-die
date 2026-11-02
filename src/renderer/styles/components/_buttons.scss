@@ -29,7 +29,11 @@
 
   &:active {
     transform: scale(0.75);
-    filter: brightness(0.97) saturate(110%);
+    filter: brightness(0.95) saturate(110%);
+
+    .pixel-btn {
+      filter: none;
+    }
   }
 }
 
@@ -61,7 +65,7 @@
     &:active {
       scale: 0.9;
       rotate: 0deg !important;
-      filter: brightness(0.97) saturate(110%);
+      filter: brightness(0.95) saturate(110%);
     }
 
     img {

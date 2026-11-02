@@ -325,9 +325,9 @@
     .game-over-btns {
       display: flex;
       gap: 22px;
-      filter: drop-shadow(0px 7px 0px var(--shadow-pink-015));
 
       .wide-btn {
+        filter: drop-shadow(0px 7px 0px var(--shadow-pink-015));
         transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 
         &:hover {
@@ -340,7 +340,7 @@
         &:active {
           scale: 0.75;
           rotate: 0deg !important;
-          filter: brightness(0.97) saturate(110%);
+          filter: brightness(0.95) saturate(110%);
         }
       }
       .play-again-btn:hover {

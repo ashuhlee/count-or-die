@@ -62,8 +62,7 @@
 
     &:active {
       scale: 0.75;
-      filter: drop-shadow(0 5px 0 var(--shadow-pink-015)) brightness(0.97)
-        saturate(110%);
+      filter: brightness(0.95) saturate(110%);
     }
     &:focus-visible {
       outline: 3px solid #595480;

@@ -817,7 +817,10 @@ img {
 }
 .reset:active {
   transform: scale(0.75);
-  filter: brightness(0.97) saturate(110%);
+  filter: brightness(0.95) saturate(110%);
+}
+.reset:active .pixel-btn {
+  filter: none;
 }
 .controls {
   position: absolute;
@@ -847,7 +850,7 @@ img {
 .controls .round-btn:active {
   scale: 0.9;
   rotate: 0deg !important;
-  filter: brightness(0.97) saturate(110%);
+  filter: brightness(0.95) saturate(110%);
 }
 .controls .round-btn img {
   position: absolute;
@@ -2246,9 +2249,9 @@ img {
 #game-over .bottom-section .game-over-btns {
   display: flex;
   gap: 22px;
-  filter: drop-shadow(0px 7px 0px var(--shadow-pink-015));
 }
 #game-over .bottom-section .game-over-btns .wide-btn {
+  filter: drop-shadow(0px 7px 0px var(--shadow-pink-015));
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 #game-over .bottom-section .game-over-btns .wide-btn:hover {
@@ -2258,7 +2261,7 @@ img {
 #game-over .bottom-section .game-over-btns .play-again-btn-2:active {
   scale: 0.75;
   rotate: 0deg !important;
-  filter: brightness(0.97) saturate(110%);
+  filter: brightness(0.95) saturate(110%);
 }
 #game-over .bottom-section .game-over-btns .play-again-btn:hover {
   rotate: 2deg;
@@ -2467,8 +2470,7 @@ img {
 }
 .menu-screen .menu-btn:active {
   scale: 0.75;
-  filter: drop-shadow(0 5px 0 var(--shadow-pink-015)) brightness(0.97)
-    saturate(110%);
+  filter: brightness(0.95) saturate(110%);
 }
 .menu-screen .menu-btn:focus-visible {
   outline: 3px solid #595480;
