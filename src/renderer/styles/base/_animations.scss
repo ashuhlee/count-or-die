@@ -180,12 +180,10 @@
 // back out the way it came in, to the left
 @keyframes slide-out-left {
   from {
-    opacity: 1;
     transform: translate3d(0, 0, 0);
   }
 
   to {
-    opacity: 0;
     transform: translate3d(calc(-100% - 60px), 0, 0);
   }
 }

@@ -1,18 +1,37 @@
 .game-notification {
-  height: 30px;
+  min-height: 32px;
   width: fit-content;
+  max-width: var(--notification-max-width, 340px);
   display: flex;
   gap: 16px;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 16px 12px;
+  padding: 8px 12px;
+
+  &.game-notification--long {
+    padding: 12px 16px;
+
+    // more room between the lines
+    .game-notification-text {
+      line-height: 1.7;
+    }
+  }
 
   .game-notification-icon {
     width: 16px;
     height: 16px;
+    flex-shrink: 0;
+  }
+
+  .game-notification-word {
+    display: inline-block;
+    white-space: nowrap;
   }
 
   .game-notification-text {
+    min-width: 0;
+    text-align: left;
+    line-height: 1.3;
     --shake-scale: 0.965;
     --shake-distance: -2px;
     font-family: "Teeny Tiny Pixls", sans-serif;
@@ -28,10 +47,6 @@
   // no shake of the letters
   .game-notification-text--still span {
     animation: none;
-  }
-
-  .game-notification-unit {
-    font-size: 12px;
   }
 }
 
