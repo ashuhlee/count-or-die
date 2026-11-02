@@ -1122,13 +1122,55 @@ img {
   top: 0;
   left: 0;
 }
+.shine {
+  --shine-opacity: 0.6;
+  --shine-duration: 5.6s;
+  --shine-delay: 3s;
+  --shine-ratio: 1.9090909091;
+  --shine-frames: 7;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.shine::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  aspect-ratio: var(--shine-ratio);
+  pointer-events: none;
+  background: var(--shine-color, #fff);
+  mask: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 21 11' preserveAspectRatio='none' shape-rendering='crispEdges'><rect x='12' y='0' width='6' height='1' fill='white'/><rect x='19' y='0' width='2' height='1' fill='white'/><rect x='11' y='1' width='6' height='1' fill='white'/><rect x='18' y='1' width='2' height='1' fill='white'/><rect x='10' y='2' width='6' height='1' fill='white'/><rect x='17' y='2' width='2' height='1' fill='white'/><rect x='9' y='3' width='6' height='1' fill='white'/><rect x='16' y='3' width='2' height='1' fill='white'/><rect x='8' y='4' width='6' height='1' fill='white'/><rect x='15' y='4' width='2' height='1' fill='white'/><rect x='7' y='5' width='6' height='1' fill='white'/><rect x='14' y='5' width='2' height='1' fill='white'/><rect x='6' y='6' width='6' height='1' fill='white'/><rect x='13' y='6' width='2' height='1' fill='white'/><rect x='5' y='7' width='6' height='1' fill='white'/><rect x='12' y='7' width='2' height='1' fill='white'/><rect x='4' y='8' width='6' height='1' fill='white'/><rect x='11' y='8' width='2' height='1' fill='white'/><rect x='3' y='9' width='6' height='1' fill='white'/><rect x='10' y='9' width='2' height='1' fill='white'/><rect x='2' y='10' width='6' height='1' fill='white'/><rect x='9' y='10' width='2' height='1' fill='white'/></svg>")
+    0 0/100% 100% no-repeat;
+  image-rendering: pixelated;
+  mix-blend-mode: overlay;
+  opacity: var(--shine-opacity);
+  transform: translateX(-100%);
+  animation: shine-sweep var(--shine-duration) steps(var(--shine-frames))
+    var(--shine-delay) infinite;
+}
+@keyframes shine-sweep {
+  0% {
+    left: 0;
+    transform: translateX(-100%);
+  }
+  10.7142857143%,
+  100% {
+    left: calc(100%*var(--shine-frames)/ (var(--shine-frames) - 1));
+    transform: translateX(
+      calc(100% * (0.65 * var(--shine-frames) / (var(--shine-frames) - 1) - 1))
+    );
+  }
+}
 .hearts {
   display: flex;
-  gap: 15px;
+  gap: 18px;
   height: 64px;
   justify-content: center;
   flex-direction: row;
   align-items: center;
+  filter: drop-shadow(0 4px 0 var(--shadow-pink-010));
 }
 .hearts .heart-pink,
 .hearts .heart-purple,
@@ -1150,7 +1192,37 @@ img {
   visibility: visible;
 }
 .heart-art {
+  position: relative;
   display: block;
+}
+.heart-art img {
+  display: block;
+}
+.hearts .heart-shine {
+  position: absolute;
+  inset: 0;
+  mask: var(--heart-mask) center/100% 100% no-repeat;
+  --shine-duration: 5.5s;
+}
+.hearts .heart-shine img {
+  width: 100%;
+  height: 100%;
+}
+.hearts .heart-shine::after {
+  animation-name: heart-shine-sweep;
+}
+@keyframes heart-shine-sweep {
+  0% {
+    left: 0;
+    transform: translateX(-100%);
+  }
+  10.9090909091%,
+  100% {
+    left: calc(100%*var(--shine-frames)/ (var(--shine-frames) - 1));
+    transform: translateX(
+      calc(100% * (0.65 * var(--shine-frames) / (var(--shine-frames) - 1) - 1))
+    );
+  }
 }
 .hearts > div > .heart-melt {
   position: absolute;
@@ -1767,46 +1839,6 @@ img {
 @keyframes alert-pop-out {
   to {
     scale: 0.4;
-  }
-}
-.shine {
-  --shine-opacity: 0.6;
-  --shine-duration: 5.6s;
-  --shine-delay: 3s;
-  --shine-ratio: 1.9090909091;
-  --shine-frames: 7;
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-}
-.shine::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  aspect-ratio: var(--shine-ratio);
-  pointer-events: none;
-  background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 21 11' preserveAspectRatio='none' shape-rendering='crispEdges'><rect x='12' y='0' width='6' height='1' fill='white'/><rect x='19' y='0' width='2' height='1' fill='white'/><rect x='11' y='1' width='6' height='1' fill='white'/><rect x='18' y='1' width='2' height='1' fill='white'/><rect x='10' y='2' width='6' height='1' fill='white'/><rect x='17' y='2' width='2' height='1' fill='white'/><rect x='9' y='3' width='6' height='1' fill='white'/><rect x='16' y='3' width='2' height='1' fill='white'/><rect x='8' y='4' width='6' height='1' fill='white'/><rect x='15' y='4' width='2' height='1' fill='white'/><rect x='7' y='5' width='6' height='1' fill='white'/><rect x='14' y='5' width='2' height='1' fill='white'/><rect x='6' y='6' width='6' height='1' fill='white'/><rect x='13' y='6' width='2' height='1' fill='white'/><rect x='5' y='7' width='6' height='1' fill='white'/><rect x='12' y='7' width='2' height='1' fill='white'/><rect x='4' y='8' width='6' height='1' fill='white'/><rect x='11' y='8' width='2' height='1' fill='white'/><rect x='3' y='9' width='6' height='1' fill='white'/><rect x='10' y='9' width='2' height='1' fill='white'/><rect x='2' y='10' width='6' height='1' fill='white'/><rect x='9' y='10' width='2' height='1' fill='white'/></svg>")
-    0 0/100% 100% no-repeat;
-  image-rendering: pixelated;
-  mix-blend-mode: overlay;
-  opacity: var(--shine-opacity);
-  transform: translateX(-100%);
-  animation: shine-sweep var(--shine-duration) steps(var(--shine-frames))
-    var(--shine-delay) infinite;
-}
-@keyframes shine-sweep {
-  0% {
-    left: 0;
-    transform: translateX(-100%);
-  }
-  10.7142857143%,
-  100% {
-    left: calc(100%*var(--shine-frames)/ (var(--shine-frames) - 1));
-    transform: translateX(
-      calc(100% * (0.65 * var(--shine-frames) / (var(--shine-frames) - 1) - 1))
-    );
   }
 }
 #game-over {
