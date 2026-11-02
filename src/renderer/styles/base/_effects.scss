@@ -157,6 +157,3 @@ $pop-total: $pop-letters * $pop-step + $pop-fall + $pop-pause;
   transform-box: fill-box;
   transform-origin: center;
 }
-.boost-notification {
-  animation: float-up 1.6s cubic-bezier(0.68, -0.6, 0.32, 1.6) forwards;
-}

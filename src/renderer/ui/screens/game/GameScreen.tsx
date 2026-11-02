@@ -36,24 +36,9 @@ export default function GameScreen() {
   const [run, setRun] = useState(0);
   useGameEvent("restarted", () => setRun((current) => current + 1));
 
-  const [boostNotification, setBoostNotification] = useState(0);
-  useGameEvent("boostNotification", () =>
-    setBoostNotification((current) => current + 1),
-  );
-
   return (
     <div id="game-container" ref={screenRef}>
       <div className="goal-chatbox" id="goal-chatbox">
-        <div className="notifications">
-          <span
-            id="boost-notif-text"
-            className={`boost-notif-text${boostNotification > 0 ? " boost-notification" : ""}`}
-            key={boostNotification}
-          >
-            BOOST!
-          </span>
-        </div>
-
         <GoalBox />
       </div>
 

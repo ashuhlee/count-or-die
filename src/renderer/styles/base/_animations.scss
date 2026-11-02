@@ -406,8 +406,6 @@
   animation: bounceInDown-rotated-settle 0.9s both;
 }
 
-// the same fall as bounceInDown-rotated, in the first 0.36s of 0.9s, then a
-// longer run of smaller bounces
 @keyframes bounceInDown-rotated-settle {
   from,
   40%,
@@ -436,24 +434,6 @@
   }
   to {
     transform: translate3d(0, 0, 0) rotate(-10deg);
-  }
-}
-
-@keyframes float-up {
-  0% {
-    opacity: 0.4;
-    transform: translateY(-36px) scale(0);
-  }
-  30% {
-    opacity: 1;
-    transform: translateY(-36px) scale(1);
-  }
-  95% {
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(20px) scale(0.6) rotate(-80deg);
-    transform-origin: bottom right;
   }
 }
 
