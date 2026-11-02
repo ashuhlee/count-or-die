@@ -9,10 +9,8 @@ export function useKeyboardControls(): void {
   useEffect(() => {
     if (!ready) return;
 
-    // only Escape works outside of the game
     const playing = screen === "game";
     const onKeyDown = (event: KeyboardEvent) => {
-      // while the game waits for an answer, Escape is that answer's to use
       if (paused && event.key === "Escape") return;
 
       handleKeydown(event, {

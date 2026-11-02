@@ -6,6 +6,8 @@ type KeyBinds = {
 };
 
 export function handleKeydown(event: KeyboardEvent, handlers: KeyBinds): void {
+  if (event.repeat && !import.meta.env.DEV) return;
+
   if (event.key === "Escape") {
     requestSettings();
     return;

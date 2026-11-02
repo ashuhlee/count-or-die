@@ -31,6 +31,7 @@ afterEach(() => {
   delete window.electron;
   vi.useRealTimers();
   vi.restoreAllMocks();
+  vi.unstubAllEnvs();
 });
 
 // a round lasts 20 seconds; time is up a hair before
@@ -182,6 +183,37 @@ describe("the keyboard", () => {
 
     game.wait(2500);
     expect(game.$("#boost-notice")).toBeNull();
+  });
+
+  test("holding a key down scores once, not over and over", () => {
+    vi.stubEnv("DEV", false);
+    game = renderGame();
+    game.press("w");
+    for (let i = 0; i < 5; i++) game.press("w", { repeat: true });
+
+    expect(game.counter()).toBe("01");
+
+    // letting go and pressing again scores again
+    game.press("w");
+    expect(game.counter()).toBe("02");
+  });
+
+  test("holding a key keeps scoring while developing, to test with", () => {
+    vi.stubEnv("DEV", true);
+    game = renderGame();
+    game.press("w");
+    for (let i = 0; i < 5; i++) game.press("w", { repeat: true });
+
+    expect(game.counter()).toBe("06");
+  });
+
+  test("holding space boosts once", () => {
+    vi.stubEnv("DEV", false);
+    game = renderGame();
+    game.press(" ");
+    for (let i = 0; i < 5; i++) game.press(" ", { repeat: true });
+
+    expect(usedHearts()).toEqual([false, false, false, true]);
   });
 
   test("other keys do nothing", () => {
