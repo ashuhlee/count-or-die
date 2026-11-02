@@ -47,8 +47,11 @@
   .loading-skull {
     position: relative;
     z-index: 10;
+    display: block;
     width: 80px;
     height: 80px;
+    background: linear-gradient(to bottom, #846d8c, #3c385f);
+    mask: var(--skull) center / 100% 100% no-repeat;
     animation: jackInTheBox 1.2s ease -0.2s forwards;
   }
 

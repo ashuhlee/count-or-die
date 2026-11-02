@@ -73,7 +73,9 @@
 }
 * {
   box-sizing: border-box;
-  cursor: url("../assets/ui/hand.png"), auto !important;
+  cursor:
+    url("../assets/ui/hand.svg") 14 2,
+    auto !important;
 }
 ::-webkit-scrollbar {
   display: none;
@@ -2295,14 +2297,17 @@ img {
   content: "";
   position: absolute;
   inset: 0;
-  background: url("../assets/ui/textures/tile-loading-2.png") repeat 0 center;
+  background: url("../assets/ui/textures/tile-loading-1.png") repeat 0 center;
   animation: slide 4s linear infinite reverse;
 }
 .loading-screen .loading-skull {
   position: relative;
   z-index: 10;
+  display: block;
   width: 80px;
   height: 80px;
+  background: linear-gradient(to bottom, #846d8c, #3c385f);
+  mask: var(--skull) center/100% 100% no-repeat;
   animation: jackInTheBox 1.2s ease -0.2s forwards;
 }
 .loading-screen.hiding .diamond-wrapper {
@@ -2310,7 +2315,7 @@ img {
 }
 .loading-screen.hiding .diamond-outline {
   animation: shrink-clip 0.5s ease-out forwards 0.05s;
-  background: url("../assets/ui/textures/tile-loading-3.png") repeat 0 center;
+  background: url("../assets/ui/textures/tile-loading-2.png") repeat 0 center;
 }
 @keyframes expand-clip {
   0% {

@@ -42,10 +42,10 @@
 $assets: "../assets";
 $body-bg-image: "#{$assets}/ui/textures/tile-2.png";
 $game-over-bg: "#{$assets}/ui/textures/tile-go.png";
-$loading-bg: "#{$assets}/ui/textures/tile-loading-2.png";
-$loading-bg-2: "#{$assets}/ui/textures/tile-loading-3.png";
+$loading-bg: "#{$assets}/ui/textures/tile-loading-1.png";
+$loading-bg-2: "#{$assets}/ui/textures/tile-loading-2.png";
 $melt-mask: "#{$assets}/ui/masks/drip-mask.png";
-$cursor: "#{$assets}/ui/hand.png";
+$cursor: "#{$assets}/ui/hand.svg";
 $delay-step: 0.3s;
 
 $fonts: "../assets/fonts";
