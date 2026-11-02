@@ -398,3 +398,68 @@ describe("when the time runs out", () => {
     expect(game.$$(".smoke-puff")).toHaveLength(0);
   });
 });
+
+describe("the notice of a collected one", () => {
+  const notice = () => game.$("#power-up-notice")?.textContent ?? null;
+
+  test("says what it did, for a moment", () => {
+    game = renderGame();
+    spawn(DOUBLE, 0, 0, 0);
+    expect(notice()).toBeNull();
+
+    game.click(".power-up-img");
+    expect(notice()).toMatch(/2/);
+
+    game.wait(100);
+    expect(notice()).not.toBeNull();
+
+    game.wait(1000);
+    expect(notice()).toBeNull();
+  });
+
+  test("comes up on the left, wherever it fell from", () => {
+    game = renderGame();
+    spawn(DOUBLE, 0, 0, 0);
+    game.click(".power-up-img");
+    expect(game.$("#power-up-notice .diamond-notice--left")).not.toBeNull();
+    game.wait(2500);
+
+    nextPowerUp(PENALTY, 0, 0.9, 0);
+    game.wait(6000);
+    game.click(".power-up-img");
+    expect(game.$("#power-up-notice .diamond-notice--left")).not.toBeNull();
+  });
+
+  test("tells how many points the penalty took", () => {
+    game = renderGame();
+    spawn(PENALTY, 0, 0, 0);
+    game.click(".power-up-img");
+
+    expect(notice()).toMatch(/25/);
+  });
+
+  test("the penalty notice goes away too", () => {
+    game = renderGame();
+    spawn(PENALTY, 0, 0, 0);
+    game.click(".power-up-img");
+    expect(notice()).not.toBeNull();
+
+    game.wait(2500);
+    expect(notice()).toBeNull();
+  });
+
+  test("tells how many boosts it gave", () => {
+    game = renderGame({ state: { boostsAvailable: 0 } });
+    spawn(EXTRA_BOOST, 0, 0, 0);
+    game.click(".power-up-img");
+    expect(notice()).toMatch(/\+1/);
+  });
+
+  test("a missed one says nothing", () => {
+    game = renderGame();
+    spawn(DOUBLE, 0, 0, 0);
+    game.wait(3000);
+
+    expect(notice()).toBeNull();
+  });
+});

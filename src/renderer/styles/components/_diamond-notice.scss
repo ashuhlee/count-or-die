@@ -1,0 +1,124 @@
+$shown-for: 0.5s;
+$fade-out: 0.07s;
+$diamond-delay: 0.05s;
+$diamond-time: $shown-for + 0.05s;
+
+.diamond-notice-group {
+  display: contents;
+}
+
+.diamond-notice {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+
+  .diamond-notice-body {
+    display: grid;
+    place-items: center;
+    rotate: var(--tilt);
+    animation: diamond-fade $fade-out linear ($shown-for - $fade-out) both;
+  }
+
+  .diamond-notice-shape {
+    display: block;
+    width: 120px;
+    height: 120px;
+  }
+
+  .diamond-notice-shape {
+    animation:
+      diamond-scale $diamond-time cubic-bezier(0, 1.019, 0.211, 1.006)
+        $diamond-delay both,
+      diamond-spin $diamond-time linear $diamond-delay both;
+  }
+
+  .diamond-notice-text {
+    white-space: pre;
+    text-align: center;
+    font-family: "Mem Prop 5x6", sans-serif;
+    font-size: 30px;
+    letter-spacing: 5px;
+  }
+
+  .diamond-notice-line {
+    display: block;
+  }
+
+  .diamond-notice-line > span {
+    display: inline-block;
+    scale: 0;
+    animation: diamond-letter 0.2s ease-out var(--delay) both;
+  }
+}
+
+@keyframes diamond-letter {
+  0% {
+    scale: 0;
+    translate: -8px 0;
+  }
+  60% {
+    scale: 1.2;
+  }
+  100% {
+    scale: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes diamond-scale {
+  0% {
+    scale: 0;
+  }
+  100% {
+    scale: 1.2;
+  }
+}
+
+@keyframes diamond-fade {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes diamond-spin {
+  from {
+    rotate: -3deg;
+  }
+  to {
+    rotate: 0deg;
+  }
+}
+
+.diamond-notice--shape {
+  z-index: 3;
+  opacity: 0.75;
+}
+
+.diamond-notice--shadow {
+  z-index: 4;
+  mix-blend-mode: overlay;
+  opacity: 0.15;
+
+  .diamond-notice-text {
+    color: black;
+    translate: 0 4px;
+  }
+}
+
+.diamond-notice--text {
+  z-index: 5;
+
+  .diamond-notice-text {
+    color: #fff2fc;
+  }
+}
+
+.diamond-notice--left {
+  left: max(120px, calc(50% - 340px));
+  top: 38%;
+}
+
+.diamond-notice--right {
+  left: min(calc(100% - 120px), calc(50% + 324px));
+  top: 53%;
+}

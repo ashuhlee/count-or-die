@@ -76,6 +76,10 @@ export function usePowerUpSpawner() {
       remove(collected.id);
       actions.collectPowerUp(collected.type);
       actions.emit({
+        type: "powerUpPicked",
+        powerUp: collected.type,
+      });
+      actions.emit({
         type: "smoke",
         x: rect.left + 20,
         y: rect.top + 30,

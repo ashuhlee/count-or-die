@@ -14,6 +14,7 @@ import HighScore from "./components/high-score/HighScore.tsx";
 import FpsCounter from "./components/fps-counter/FpsCounter.tsx";
 import MenuBar from "./components/menu-bar/MenuBar.tsx";
 import PowerUps from "./components/power-ups/PowerUps.tsx";
+import PowerUpNotices from "./components/power-ups/PowerUpNotices.tsx";
 import SmokePopups from "./components/smoke/SmokePopups.tsx";
 import CRTShader from "./shaders/crt-shader/CRTShader.tsx";
 import LoadingScreen from "./overlays/loading/LoadingScreen.tsx";
@@ -80,6 +81,7 @@ export default function Game() {
 
             <CursorCounts />
             <PowerUps />
+            <PowerUpNotices />
           </>
         )}
         <p id="app-ver" className="app-ver">

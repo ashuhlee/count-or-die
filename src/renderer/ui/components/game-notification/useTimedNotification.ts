@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 export const SHOWN_FOR = 4000;
 export const EXIT = 200;
 
-export function useTimedNotification(shownFor = SHOWN_FOR) {
+export function useTimedNotification(shownFor = SHOWN_FOR, exit = EXIT) {
   const [shown, setShown] = useState<{ id: number; leaving: boolean } | null>(
     null,
   );
@@ -24,9 +24,9 @@ export function useTimedNotification(shownFor = SHOWN_FOR) {
         () => setShown((current) => current && { ...current, leaving: true }),
         shownFor,
       ),
-      setTimeout(() => setShown(null), shownFor + EXIT),
+      setTimeout(() => setShown(null), shownFor + exit),
     ];
-  }, [clear, shownFor]);
+  }, [clear, shownFor, exit]);
 
   return { shown, show };
 }

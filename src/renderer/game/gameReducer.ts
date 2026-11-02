@@ -5,25 +5,20 @@ import { getPowerUp, type PowerUpType } from "./powerUps.ts";
 export const MAX_BOOSTS = 4;
 const FIRST_GOAL = 30;
 const ROUND_SECONDS = 20;
-const PENALTY_POINTS = 25;
+export const PENALTY_POINTS = 25;
 
 export const DEFAULT_GOAL_STEPS = [10, 15, 20, 25, 30];
 
 export type GameState = {
   counter: number;
   boostsAvailable: number;
-  // how many points one click is worth (power-ups change it for a while)
   countIncrement: number;
   currentGoal: number;
-  // the goal grows by one of these each time it is reached
   goalSteps: number[];
-  // goals reached without using a boost; they speed the countdown up
   trueGoalsReached: number;
 
   highScore: number;
-  // the best score when this round started, to tell if it earned a rank
   highScoreAtStart: number;
-  // a new high score has been set in this game
   isHighScore: boolean;
   highScoreFxPlayed: boolean;
   confettiPlayed: boolean;
@@ -31,7 +26,6 @@ export type GameState = {
   isGameOver: boolean;
   deathCount: number;
 
-  // bumped whenever the countdown restarts
   round: number;
   roundSeconds: number;
 };

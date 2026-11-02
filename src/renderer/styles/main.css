@@ -9,6 +9,15 @@
   --shadow-purple-015: rgba(94, 40, 255, 0.15);
   --shadow-purple-025: rgba(94, 40, 255, 0.25);
   --shadow-purple-030: rgba(94, 40, 255, 0.3);
+  --shadow-overlay-010: rgba(0, 0, 0, 0.1);
+  --shadow-overlay-015: rgba(0, 0, 0, 0.15);
+  --shadow-overlay-020: rgba(0, 0, 0, 0.2);
+  --shadow-overlay-025: rgba(0, 0, 0, 0.25);
+  --shadow-overlay-030: rgba(0, 0, 0, 0.3);
+  --shadow-overlay-035: rgba(0, 0, 0, 0.35);
+  --shadow-overlay-040: rgba(0, 0, 0, 0.4);
+  --shadow-overlay-045: rgba(0, 0, 0, 0.45);
+  --shadow-overlay-050: rgba(0, 0, 0, 0.5);
   --rainbow-gradient-bar: linear-gradient(
     to right,
     #ffd5a5,
@@ -1122,6 +1131,106 @@ img {
     top: 100%;
     transform: rotate(-360deg);
   }
+}
+.diamond-notice-group {
+  display: contents;
+}
+.diamond-notice {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.diamond-notice .diamond-notice-body {
+  display: grid;
+  place-items: center;
+  rotate: var(--tilt);
+  animation: diamond-fade 0.07s linear 0.43s both;
+}
+.diamond-notice .diamond-notice-shape {
+  display: block;
+  width: 120px;
+  height: 120px;
+}
+.diamond-notice .diamond-notice-shape {
+  animation:
+    diamond-scale 0.55s cubic-bezier(0, 1.019, 0.211, 1.006) 0.05s both,
+    diamond-spin 0.55s linear 0.05s both;
+}
+.diamond-notice .diamond-notice-text {
+  white-space: pre;
+  text-align: center;
+  font-family: "Mem Prop 5x6", sans-serif;
+  font-size: 30px;
+  letter-spacing: 5px;
+}
+.diamond-notice .diamond-notice-line {
+  display: block;
+}
+.diamond-notice .diamond-notice-line > span {
+  display: inline-block;
+  scale: 0;
+  animation: diamond-letter 0.2s ease-out var(--delay) both;
+}
+@keyframes diamond-letter {
+  0% {
+    scale: 0;
+    translate: -8px 0;
+  }
+  60% {
+    scale: 1.2;
+  }
+  100% {
+    scale: 1;
+    translate: 0 0;
+  }
+}
+@keyframes diamond-scale {
+  0% {
+    scale: 0;
+  }
+  100% {
+    scale: 1.2;
+  }
+}
+@keyframes diamond-fade {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes diamond-spin {
+  from {
+    rotate: -3deg;
+  }
+  to {
+    rotate: 0deg;
+  }
+}
+.diamond-notice--shape {
+  z-index: 3;
+  opacity: 0.75;
+}
+.diamond-notice--shadow {
+  z-index: 4;
+  mix-blend-mode: overlay;
+  opacity: 0.15;
+}
+.diamond-notice--shadow .diamond-notice-text {
+  color: #000;
+  translate: 0 4px;
+}
+.diamond-notice--text {
+  z-index: 5;
+}
+.diamond-notice--text .diamond-notice-text {
+  color: #fff2fc;
+}
+.diamond-notice--left {
+  left: max(120px, 50% - 340px);
+  top: 38%;
+}
+.diamond-notice--right {
+  left: min(100% - 120px, 50% + 324px);
+  top: 53%;
 }
 :root {
   --panel-fill: #fff5fe;

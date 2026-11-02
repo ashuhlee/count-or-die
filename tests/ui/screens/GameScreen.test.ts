@@ -171,6 +171,17 @@ describe("the keyboard", () => {
     expect(usedHearts()).toEqual([false, false, false, true]);
   });
 
+  test("a boost says so, for a moment", () => {
+    game = renderGame();
+    expect(game.$("#boost-notice")).toBeNull();
+
+    game.press(" ");
+    expect(game.$("#boost-notice")).not.toBeNull();
+
+    game.wait(2500);
+    expect(game.$("#boost-notice")).toBeNull();
+  });
+
   test("other keys do nothing", () => {
     game = renderGame();
     for (const key of ["x", "Enter", "a", "ArrowDown"]) game.press(key);

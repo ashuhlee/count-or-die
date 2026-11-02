@@ -1,5 +1,6 @@
 import { createContext } from "react";
 import type { GameEvent } from "../game/events.ts";
+import type { PowerUpType } from "../game/powerUps.ts";
 
 export type AppEvent =
   | Exclude<GameEvent, { type: "cursorCount" }>
@@ -11,6 +12,7 @@ export type AppEvent =
       y: number;
     }
   | { type: "smoke"; x: number; y: number }
+  | { type: "powerUpPicked"; powerUp: PowerUpType }
   | { type: "flashEnded" } // the red flash finished playing
   | { type: "pageReset" }; // the whole page starts over, behind the loading screen
 
