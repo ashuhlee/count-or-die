@@ -5,10 +5,12 @@ import { renderGame } from "../../helpers/game.tsx";
 import { stubWebAnimations } from "../../helpers/dom.ts";
 import GameScreen from "../../../src/renderer/ui/screens/game/GameScreen.tsx";
 import { useGame } from "../../../src/renderer/provider/useGame.ts";
-import { liveSlots } from "../../../src/renderer/ui/components/hearts/useHeartSlots.ts";
+import { liveSlots } from "../../../src/renderer/ui/components/gameplay/hearts/useHeartSlots.ts";
 
-vi.mock("../../../src/renderer/utils/sounds.ts", async (original) => ({
-  ...(await original<typeof import("../../../src/renderer/utils/sounds.ts")>()),
+vi.mock("../../../src/renderer/utils/app/sounds.ts", async (original) => ({
+  ...(await original<
+    typeof import("../../../src/renderer/utils/app/sounds.ts")
+  >()),
   playSound: vi.fn(),
   pauseSound: vi.fn(),
 }));

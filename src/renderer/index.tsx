@@ -4,10 +4,9 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
 import App from "./App.tsx";
-import { checkHardwareAcceleration } from "./utils/hardwareAcceleration.ts";
-import { afterPaint, hideStartupScreen, preload } from "./utils/startup.ts";
+import { checkHardwareAcceleration } from "./utils/app/hardwareAcceleration.ts";
+import { afterPaint, hideStartupScreen, preload } from "./utils/app/startup.ts";
 
-// every picture, so the first screen never waits on one
 const pictures = import.meta.glob("@assets/**/*.{png,gif,svg}", {
   eager: true,
   import: "default",

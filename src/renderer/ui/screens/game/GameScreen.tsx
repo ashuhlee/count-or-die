@@ -5,17 +5,17 @@ import decreaseBtnPress from "@assets/ui/buttons/decrease-press.png";
 import increaseBtn from "@assets/ui/buttons/increase.png";
 import increaseBtnPress from "@assets/ui/buttons/increase-press.png";
 
-import Counter from "../../components/counter/Counter.tsx";
-import GoalBox from "../../components/goal/GoalBox.tsx";
-import Hearts from "../../components/hearts/Hearts.tsx";
-import Letters from "../../components/letters/Letters.tsx";
-import PressButton from "../../components/buttons/PressButton.tsx";
-import PixelButton from "../../components/pixel-button/PixelButton.tsx";
+import Counter from "../../components/gameplay/counter/Counter.tsx";
+import GoalBox from "../../components/gameplay/goal/GoalBox.tsx";
+import Hearts from "../../components/gameplay/hearts/Hearts.tsx";
+import Letters from "../../components/text/letters/Letters.tsx";
+import PressButton from "../../components/buttons/press-button/PressButton.tsx";
+import PixelButton from "../../components/buttons/pixel-button/PixelButton.tsx";
 import {
   BUTTON_LOOK,
   RESTART_COLORS,
-} from "../../components/pixel-button/buttonLooks.ts";
-import ProgressBar from "../../components/progress-bar/ProgressBar.tsx";
+} from "../../components/buttons/pixel-button/buttonLooks.ts";
+import ProgressBar from "../../components/gameplay/progress-bar/ProgressBar.tsx";
 import { useGame } from "../../../provider/useGame.ts";
 import { useGameEvent } from "../../../provider/useGameEvent.ts";
 import { useReplayAnimation } from "../../../hooks/useReplayAnimation.ts";

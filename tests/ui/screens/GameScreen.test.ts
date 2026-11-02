@@ -3,13 +3,15 @@ import { act } from "react";
 
 import { renderGame } from "../../helpers/game.tsx";
 import { stubWebAnimations } from "../../helpers/dom.ts";
-import { hideStartupScreen } from "../../../src/renderer/utils/startup.ts";
+import { hideStartupScreen } from "../../../src/renderer/utils/app/startup.ts";
 
 // the game plays sounds through this; here we only want to know which
 const audio = vi.hoisted(() => ({ playSound: vi.fn(), pauseSound: vi.fn() }));
 
-vi.mock("../../../src/renderer/utils/sounds.ts", async (original) => ({
-  ...(await original<typeof import("../../../src/renderer/utils/sounds.ts")>()),
+vi.mock("../../../src/renderer/utils/app/sounds.ts", async (original) => ({
+  ...(await original<
+    typeof import("../../../src/renderer/utils/app/sounds.ts")
+  >()),
   ...audio,
 }));
 

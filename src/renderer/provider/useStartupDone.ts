@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { isStartupCovering, whenStartupDone } from "../utils/startup.ts";
+import { isStartupCovering, whenStartupDone } from "../utils/app/startup.ts";
 
 export function useStartupDone() {
   const [done, setDone] = useState(() => !isStartupCovering());

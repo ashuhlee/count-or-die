@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from "react";
 
-import { pauseSound, playSound } from "../utils/sounds.ts";
+import { pauseSound, playSound } from "../utils/app/sounds.ts";
 import {
   createInitialState,
   reduce,
@@ -16,9 +16,9 @@ import {
 } from "../game/gameLogic.ts";
 import { createGameClock } from "../game/gameClock.ts";
 import { getPowerUp } from "../game/powerUps.ts";
-import { loadSavedGame } from "../utils/savedGame.ts";
-import { quitGame } from "../utils/quitGame.ts";
-import { reportBug } from "../utils/reportBug.ts";
+import { loadSavedGame } from "../utils/storage/savedGame.ts";
+import { quitGame } from "../utils/app/quitGame.ts";
+import { reportBug } from "../utils/app/reportBug.ts";
 import { useTimeouts } from "../hooks/useTimeouts.ts";
 import { useStartupDone } from "./useStartupDone.ts";
 import { createEventBus, EventBusContext } from "./eventBus.ts";

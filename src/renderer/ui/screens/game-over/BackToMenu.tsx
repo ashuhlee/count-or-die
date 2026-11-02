@@ -1,7 +1,7 @@
 import { useRef, useState, type CSSProperties } from "react";
 
 import { useGame } from "../../../provider/useGame.ts";
-import Letters from "../../components/letters/Letters.tsx";
+import Letters from "../../components/text/letters/Letters.tsx";
 
 const HOVER_STRIPE_SPEED = 3;
 

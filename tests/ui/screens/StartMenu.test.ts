@@ -3,13 +3,15 @@ import { afterEach, beforeEach, expect, describe, test, vi } from "vitest";
 import { act } from "react";
 import { stubWebAnimations } from "../../helpers/dom.ts";
 import { renderGame } from "../../helpers/game.tsx";
-import { audioConfig } from "../../../src/renderer/utils/sounds.ts";
-import { hideStartupScreen } from "../../../src/renderer/utils/startup.ts";
+import { audioConfig } from "../../../src/renderer/utils/app/sounds.ts";
+import { hideStartupScreen } from "../../../src/renderer/utils/app/startup.ts";
 
 const audio = vi.hoisted(() => ({ playSound: vi.fn(), pauseSound: vi.fn() }));
 
-vi.mock("../../../src/renderer/utils/sounds.ts", async (original) => ({
-  ...(await original<typeof import("../../../src/renderer/utils/sounds.ts")>()),
+vi.mock("../../../src/renderer/utils/app/sounds.ts", async (original) => ({
+  ...(await original<
+    typeof import("../../../src/renderer/utils/app/sounds.ts")
+  >()),
   ...audio,
 }));
 

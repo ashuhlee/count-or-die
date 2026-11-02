@@ -1,4 +1,4 @@
-import { requestSettings } from "../utils/settingsNotice.ts";
+import { requestSettings } from "../utils/events/settingsNotice.ts";
 
 type KeyBinds = {
   onIncrease: () => void;

@@ -14,21 +14,21 @@ import trophyTracker from "@assets/ui/deco/trophy_grey.svg";
 import tombstonePng from "@assets/ui/deco/tombstone.png";
 
 import { useGame } from "../../../provider/useGame.ts";
-import { formatCounter } from "../../../utils/formatCounter.ts";
-import { openGithub } from "../../../utils/openGithub.ts";
-import RoundButton from "../../components/round-button/RoundButton.tsx";
-import PixelButton from "../../components/pixel-button/PixelButton.tsx";
+import { formatCounter } from "../../../utils/text/formatCounter.ts";
+import { openGithub } from "../../../utils/app/openGithub.ts";
+import RoundButton from "../../components/buttons/round-button/RoundButton.tsx";
+import PixelButton from "../../components/buttons/pixel-button/PixelButton.tsx";
 import {
   BUTTON_LOOK,
   QUIT_COLORS,
   RESTART_COLORS,
-} from "../../components/pixel-button/buttonLooks.ts";
-import Tooltip from "../../components/tooltip/Tooltip.tsx";
-import SkullFloor from "../../components/skull-floor/SkullFloor.tsx";
-import BulgeFilter from "../../components/bulge/BulgeFilter.tsx";
-import Letters from "../../components/letters/Letters.tsx";
-import GameNotification from "../../components/game-notification/GameNotification.tsx";
-import PixelPanel from "../../components/pixel-panel/PixelPanel.tsx";
+} from "../../components/buttons/pixel-button/buttonLooks.ts";
+import Tooltip from "../../overlays/tooltip/Tooltip.tsx";
+import SkullFloor from "../../components/effects/skull-floor/SkullFloor.tsx";
+import BulgeFilter from "../../components/effects/bulge/BulgeFilter.tsx";
+import Letters from "../../components/text/letters/Letters.tsx";
+import GameNotification from "../../overlays/game-notification/GameNotification.tsx";
+import PixelPanel from "../../components/hud/pixel-panel/PixelPanel.tsx";
 import BackToMenu from "./BackToMenu.tsx";
 import MeltInShader, {
   type MeltColors,

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 
 import { pickGameOverPhrase } from "../../../game/phrases.ts";
-import { formatCounter } from "../../../utils/formatCounter.ts";
+import { formatCounter } from "../../../utils/text/formatCounter.ts";
 import { useGameEvent } from "../../../provider/useGameEvent.ts";
 
 export function useGameOverView() {

@@ -1,9 +1,9 @@
 import { useEffect, useState, type CSSProperties } from "react";
 
 import { useGame } from "../../../provider/useGame.ts";
-import Letters from "../../components/letters/Letters.tsx";
-import SkullFloor from "../../components/skull-floor/SkullFloor.tsx";
-import PixelButton from "../../components/pixel-button/PixelButton.tsx";
+import Letters from "../../components/text/letters/Letters.tsx";
+import SkullFloor from "../../components/effects/skull-floor/SkullFloor.tsx";
+import PixelButton from "../../components/buttons/pixel-button/PixelButton.tsx";
 import GameOverBackground, {
   GAME_OVER_HUE,
 } from "../game-over/GameOverBackground.tsx";

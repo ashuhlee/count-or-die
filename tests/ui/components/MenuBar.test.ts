@@ -13,9 +13,9 @@ import { renderInto } from "../../helpers/dom.ts";
 import {
   EXIT,
   SHOWN_FOR,
-} from "../../../src/renderer/ui/components/game-notification/useTimedNotification.ts";
-import MenuBar from "../../../src/renderer/ui/components/menu-bar/MenuBar.tsx";
-import { audioConfig } from "../../../src/renderer/utils/sounds.ts";
+} from "../../../src/renderer/ui/overlays/game-notification/useTimedNotification.ts";
+import MenuBar from "../../../src/renderer/ui/components/hud/menu-bar/MenuBar.tsx";
+import { audioConfig } from "../../../src/renderer/utils/app/sounds.ts";
 
 describe("MenuBar", () => {
   let container: HTMLDivElement;
