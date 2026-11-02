@@ -100,7 +100,7 @@ export default function Game() {
           </>
         )}
         <p id="app-ver" className="app-ver">
-          {__APP_VERSION__}-beta
+          {__APP_VERSION__}
         </p>
       </Fragment>
       {popupShown && (
