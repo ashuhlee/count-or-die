@@ -288,12 +288,103 @@ describe("the menu", () => {
     audio.pauseSound.mockClear();
 
     game.click("#home-btn");
+    game.click("#alert-yes");
     expect(stoppedSounds()).toContain("bgMusic");
     game.wait(COVERED);
 
     expect(game.$("#menu-screen")).not.toBeNull();
     expect(game.$("#game-container")).toBeNull();
     expect(sounds().filter((name) => name === "menuMusic")).toHaveLength(2);
+  });
+
+  test("the home button asks first, and no stays in the game", () => {
+    game.click("#play-btn");
+    game.wait(COVERED + 600);
+    game.press("w");
+    expect(game.$("#alert-popup")).toBeNull();
+
+    game.click("#home-btn");
+    expect(game.$("#alert-popup")).not.toBeNull();
+    expect(game.$("#menu-screen")).toBeNull();
+
+    game.click("#alert-no");
+    // it leaves with a fade
+    game.wait(COVERED);
+    expect(game.$("#alert-popup")).toBeNull();
+    expect(game.$("#menu-screen")).toBeNull();
+    expect(game.counter()).toBe("01");
+  });
+
+  describe("while the home button asks", () => {
+    beforeEach(() => {
+      game.click("#play-btn");
+      game.wait(COVERED + 600);
+    });
+
+    test("the time stands still, and goes on where it was after no", () => {
+      game.wait(10000);
+      game.click("#home-btn");
+
+      game.wait(TIME_IS_UP * 3);
+      expect(game.$("#red-flash").classList.contains("flash")).toBe(false);
+      expect(game.$("#alert-popup")).not.toBeNull();
+
+      game.click("#alert-no");
+      game.wait(TIME_IS_UP - 10000 - 1);
+      expect(game.$("#red-flash").classList.contains("flash")).toBe(false);
+      game.wait(1);
+      expect(game.$("#red-flash").classList.contains("flash")).toBe(true);
+    });
+
+    test("a click on the dimmed background says no", () => {
+      game.click("#home-btn");
+
+      game.click("#alert-popup");
+      expect(game.$("#alert-popup")).not.toBeNull();
+
+      game.click(".alert-popup");
+      game.wait(COVERED);
+      expect(game.$("#alert-popup")).toBeNull();
+      expect(game.$("#menu-screen")).toBeNull();
+    });
+
+    test("Escape says no, and does not bring up the settings", () => {
+      game.click("#home-btn");
+
+      game.press("Escape");
+      game.wait(COVERED);
+      expect(game.$("#alert-popup")).toBeNull();
+      expect(game.$("#menu-screen")).toBeNull();
+      expect(game.$("#options-notice")).toBeNull();
+
+      game.press("Escape");
+      expect(game.$("#options-notice")).not.toBeNull();
+    });
+
+    test("the keys and buttons do nothing", () => {
+      game.click("#home-btn");
+      game.press("w");
+      game.press(" ");
+      game.click("#increase-img");
+      expect(game.counter()).toBe("00");
+
+      game.click("#alert-no");
+      game.press("w");
+      expect(game.counter()).toBe("01");
+    });
+
+    test("no power-up comes, until the wait that was left is over", () => {
+      game.wait(5000);
+      game.click("#home-btn");
+      game.wait(20000);
+      expect(game.$$(".power-up-img")).toHaveLength(0);
+
+      game.click("#alert-no");
+      game.wait(999);
+      expect(game.$$(".power-up-img")).toHaveLength(0);
+      game.wait(1);
+      expect(game.$$(".power-up-img")).toHaveLength(1);
+    });
   });
 
   test("the title only melts in when coming back from a game", () => {

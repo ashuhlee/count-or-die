@@ -166,6 +166,25 @@ describe("collecting one", () => {
     expect(game.counter()).toBe("03");
   });
 
+  test("2x holds its time while the home button asks", () => {
+    game = renderGame({ state: { highScore: 999 } });
+    spawn(DOUBLE, 0, 0, 0);
+    game.click(".power-up-img");
+    game.wait(1000);
+
+    game.click("#home-btn");
+    game.wait(20000);
+    game.click("#alert-no");
+
+    // two of its three seconds are left
+    game.wait(1999);
+    game.click("#increase-img");
+    expect(game.counter()).toBe("02");
+    game.wait(1);
+    game.click("#increase-img");
+    expect(game.counter()).toBe("03");
+  });
+
   test("4x quadruples them", () => {
     game = renderGame({ state: { highScore: 999 } });
     spawn(FOUR, 0, 0, 0);

@@ -7,10 +7,7 @@ import type { AppEvent } from "./eventBus.ts";
 // where the player clicked, on screen
 export type Pointer = { x: number; y: number };
 
-// which screen the player is on
 export type Screen = "menu" | "game";
-
-// the countdown bar's color: 0 healthy, 1 warning, 2 critical, 3 critical fast
 export type BarStage = 0 | 1 | 2 | 3;
 
 export type LoadingScreenState = {
@@ -29,6 +26,8 @@ export type GameActions = {
   quit: () => void;
   reportBug: () => void;
   collectPowerUp: (type: PowerUpType) => void;
+  pause: () => void;
+  resume: () => void;
 
   emit: (event: AppEvent) => void;
 };
@@ -39,8 +38,8 @@ export type GameContextValue = {
   loading: LoadingScreenState;
   actions: GameActions;
   ready: boolean;
+  paused: boolean;
   screen: Screen;
-  // the menu is showing again after a game, not for the first time
   cameFromGame: boolean;
 };
 

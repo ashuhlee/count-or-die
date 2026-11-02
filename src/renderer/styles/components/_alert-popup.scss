@@ -1,0 +1,177 @@
+$fade: 0.1s;
+$pop-from: 0.4;
+$pop-time: 0.3s;
+$pop-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+.alert-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 18;
+  display: grid;
+  place-items: center;
+  background: rgba(46, 43, 71, 0.5);
+  animation: alert-fade-in $fade both;
+
+  .alert-popup-panel {
+    --panel-shadow-height: var(--panel-border-size);
+    --panel-fill: #fffafe;
+
+    width: fit-content;
+    max-width: 360px;
+    display: grid;
+    justify-items: center;
+    gap: 18px;
+    padding: 16px 16px 28px;
+    animation: alert-pop-in $pop-time $pop-easing both;
+  }
+
+  .alert-popup-line {
+    display: block;
+
+    // the space between the lines that a new line started
+    & + .alert-popup-line {
+      margin-top: 10px;
+    }
+  }
+
+  .alert-popup-word {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .alert-popup-text {
+    min-width: 0;
+    text-align: center;
+    line-height: 1.7;
+    --shake-scale: 0.965;
+    --shake-distance: -2px;
+    font-family: "Teeny Tiny Pixls", sans-serif;
+    text-transform: uppercase;
+    font-size: 14px;
+    text-shadow: none;
+
+    color: #3b375f;
+    position: relative;
+    top: 0.1em;
+  }
+
+  .alert-popup-actions {
+    display: flex;
+    justify-content: center;
+    gap: 22px;
+  }
+
+  .alert-popup-button--yes {
+    --button-color: #ffa8eb;
+  }
+
+  .alert-popup-button--no {
+    --button-color: #c4c4d5;
+  }
+
+  .alert-popup-button {
+    position: relative;
+    isolation: isolate;
+    margin: 0;
+    padding: 4px 10px 2px;
+    border: 0;
+    background: none;
+    font-family: "Enter the Gungeon Small", sans-serif;
+    font-size: 19px;
+    text-transform: none;
+    color: #fff;
+    text-shadow: 0 3px 0 var(--shadow-overlay-010);
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    filter: drop-shadow(0px 4px 0px var(--shadow-overlay-010));
+
+    // zooms in on hover and out on a press, like the restart button
+    &:hover {
+      scale: 1.05;
+    }
+
+    &:active {
+      scale: 0.75;
+      filter: brightness(0.97) saturate(110%);
+    }
+
+    &::before {
+      content: ">";
+      display: inline-block;
+      max-width: 0;
+      margin-right: 0;
+      overflow: hidden;
+      opacity: 0;
+      vertical-align: top;
+      font-family: "Teeny Tiny Pixls", sans-serif;
+      font-size: 13px;
+      position: relative;
+      top: 0.1em;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.85);
+    }
+
+    &:hover::before {
+      max-width: 1em;
+      margin-right: 4px;
+      opacity: 1;
+    }
+
+    &:active::before {
+      margin-right: 3px;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      opacity: 0.8;
+      background-color: var(--button-color);
+      box-shadow:
+        -3px 0 0 0 var(--button-color),
+        3px 0 0 0 var(--button-color),
+        0 -3px 0 0 var(--button-color),
+        0 3px 0 0 var(--button-color);
+      transition: all 0.3s ease-out;
+    }
+
+    span {
+      position: relative;
+      display: inline-block;
+      animation: wavy-text-top var(--wave-duration, 2.5s)
+        cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--delay);
+    }
+  }
+}
+
+.alert-popup--leaving {
+  animation: alert-fade-out $fade both;
+  pointer-events: none;
+
+  .alert-popup-panel {
+    animation: alert-pop-out $pop-time $pop-easing both;
+  }
+}
+
+@keyframes alert-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes alert-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes alert-pop-in {
+  from {
+    scale: $pop-from;
+  }
+}
+
+@keyframes alert-pop-out {
+  to {
+    scale: $pop-from;
+  }
+}

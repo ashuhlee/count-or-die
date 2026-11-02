@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 import cloudTopLeft from "@assets/ui/deco/clouds/cloud_1.png";
 import cloudBottomLeft from "@assets/ui/deco/clouds/cloud_2.png";
@@ -9,6 +9,8 @@ import cloudMini from "@assets/ui/deco/clouds/cloud_5.png";
 import { useKeyboardControls } from "../hooks/useKeyboardControls.ts";
 import { useGame } from "../provider/useGame.ts";
 import { useGameEvent } from "../provider/useGameEvent.ts";
+import AlertPopup from "./components/alert-popup/AlertPopup.tsx";
+import { useFadeOut } from "./components/alert-popup/useFadeOut.ts";
 import CursorCounts from "./components/cursor-counts/CursorCounts.tsx";
 import HighScore from "./components/high-score/HighScore.tsx";
 import FpsCounter from "./components/fps-counter/FpsCounter.tsx";
@@ -28,6 +30,19 @@ export default function Game() {
   const { state, screen, ready, actions, loading } = useGame();
   const [page, setPage] = useState(0);
   useGameEvent("pageReset", () => setPage((current) => current + 1));
+
+  // asking before the home button ends the run
+  const [endingRun, setEndingRun] = useState(false);
+  useGameEvent("gameOver", () => setEndingRun(false));
+  useGameEvent("restarted", () => setEndingRun(false));
+  const asking = endingRun && screen === "game";
+  const { pause, resume } = actions;
+  useEffect(() => {
+    if (!asking) return;
+    pause();
+    return resume;
+  }, [asking, pause, resume]);
+  const popupShown = useFadeOut(asking, 300);
 
   return (
     <>
@@ -61,7 +76,7 @@ export default function Game() {
           inGame={screen === "game"}
           onHome={
             screen === "game"
-              ? () => loading.mounted || actions.backToMenu()
+              ? () => loading.mounted || setEndingRun(true)
               : undefined
           }
         />
@@ -88,7 +103,20 @@ export default function Game() {
           {__APP_VERSION__}-beta
         </p>
       </Fragment>
-      {/* on the menu and in the game, but not on the game over screen */}
+      {popupShown && (
+        <AlertPopup
+          leaving={!asking}
+          text={
+            "End this run and go back to the main menu?\nYour score will be saved."
+          }
+          border="#bfb3ff"
+          onYes={() => {
+            setEndingRun(false);
+            actions.backToMenu();
+          }}
+          onNo={() => setEndingRun(false)}
+        />
+      )}
       {(screen === "menu" || !state.isGameOver) && <FpsCounter />}
       <LoadingScreen />
     </>

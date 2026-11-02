@@ -12,7 +12,7 @@ const MAX_WAIT = 12000;
 // Sends power-ups down the screen: one after a wait, then the next wait starts
 // once it has been collected or has fallen off the screen
 export function usePowerUpSpawner() {
-  const { state, actions, ready } = useGame();
+  const { state, actions, ready, paused } = useGame();
   const [falling, setFalling] = useState<Falling[]>([]);
 
   // the timer reads this when it fires, not when it was started
@@ -43,17 +43,36 @@ export function usePowerUpSpawner() {
     ]);
   }, []);
 
-  const waitForNext = useCallback(() => {
-    clearTimeout(timer.current);
+  // when the wait started and how long it is, to hold it during a pause
+  const wait = useRef({ startedAt: 0, ms: 0 });
+  const waitLeft = useRef<number | null>(null);
 
-    timer.current = setTimeout(
-      () => {
+  const waitForNext = useCallback(
+    (ms = Math.random() * (MAX_WAIT - MIN_WAIT) + MIN_WAIT) => {
+      clearTimeout(timer.current);
+      wait.current = { startedAt: Date.now(), ms };
+
+      timer.current = setTimeout(() => {
         timer.current = undefined;
         if (!latest.current.isGameOver) spawn();
-      },
-      Math.random() * (MAX_WAIT - MIN_WAIT) + MIN_WAIT,
-    );
-  }, [spawn]);
+      }, ms);
+    },
+    [spawn],
+  );
+
+  useEffect(() => {
+    if (paused) {
+      if (timer.current === undefined) return;
+      clearTimeout(timer.current);
+      timer.current = undefined;
+      waitLeft.current =
+        wait.current.ms - (Date.now() - wait.current.startedAt);
+    } else if (waitLeft.current !== null) {
+      const ms = Math.max(0, waitLeft.current);
+      waitLeft.current = null;
+      waitForNext(ms);
+    }
+  }, [paused, waitForNext]);
 
   useEffect(() => {
     if (!ready) return;

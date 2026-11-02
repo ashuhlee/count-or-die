@@ -104,6 +104,7 @@
 .try-again span,
 .tracker-value span,
 .game-notification-text span,
+.alert-popup-text span,
 .menu-btn .pixel-btn-label > span {
   display: inline-block;
   animation: shake var(--wave-duration, 2s) ease infinite var(--delay);

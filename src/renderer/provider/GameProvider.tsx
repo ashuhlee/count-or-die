@@ -59,6 +59,12 @@ export default function GameProvider({
 
   const stateRef = useRef(state);
 
+  const [paused, setPaused] = useState(false);
+  const pausedRef = useRef(false);
+  const effects = useRef<
+    { id?: ReturnType<typeof setTimeout>; endsAt: number; left: number }[]
+  >([]);
+
   const randomRef = useRef(random);
   useEffect(() => {
     randomRef.current = random;
@@ -85,15 +91,37 @@ export default function GameProvider({
     state,
     () => dispatch({ type: "timerExpired" }),
     ready && screen === "game",
+    paused,
   );
   const { loading, cover } = useLoadingScreen(later);
+
+  const endEffect = useCallback(
+    (effect: (typeof effects.current)[number]) => {
+      effects.current = effects.current.filter((other) => other !== effect);
+      dispatch({ type: "powerUpEnded" });
+    },
+    [dispatch],
+  );
+  const startEffect = useCallback(
+    (ms: number) => {
+      const effect: (typeof effects.current)[number] = {
+        endsAt: Date.now() + ms,
+        left: ms,
+      };
+      effect.id = later(() => endEffect(effect), ms);
+      effects.current.push(effect);
+    },
+    [later, endEffect],
+  );
 
   const actions = useMemo<GameActions>(
     () => ({
       increase: (pointer) =>
+        pausedRef.current ||
         dispatch({ type: "increase", random: randomRef.current() }, pointer),
 
       boost: (pointer) =>
+        pausedRef.current ||
         dispatch({ type: "boost", random: randomRef.current() }, pointer),
 
       reset() {
@@ -136,14 +164,30 @@ export default function GameProvider({
         dispatch({ type: "collectPowerUp", powerUp: type });
 
         const { duration } = getPowerUp(type);
-        if (duration !== null) {
-          later(() => dispatch({ type: "powerUpEnded" }), duration);
-        }
+        if (duration !== null) startEffect(duration);
+      },
+
+      pause() {
+        pausedRef.current = true;
+        setPaused(true);
+        effects.current.forEach((effect) => {
+          clearTimeout(effect.id);
+          effect.left = effect.endsAt - Date.now();
+        });
+      },
+
+      resume() {
+        pausedRef.current = false;
+        setPaused(false);
+        effects.current.forEach((effect) => {
+          effect.endsAt = Date.now() + effect.left;
+          effect.id = later(() => endEffect(effect), effect.left);
+        });
       },
 
       emit: bus.emit,
     }),
-    [bus, cover, dispatch, later],
+    [bus, cover, dispatch, later, startEffect, endEffect],
   );
 
   useEffect(() => {
@@ -164,8 +208,17 @@ export default function GameProvider({
   }, [ready, screen]);
 
   const value = useMemo<GameContextValue>(
-    () => ({ state, barStage, loading, actions, ready, screen, cameFromGame }),
-    [state, barStage, loading, actions, ready, screen, cameFromGame],
+    () => ({
+      state,
+      barStage,
+      loading,
+      actions,
+      ready,
+      paused,
+      screen,
+      cameFromGame,
+    }),
+    [state, barStage, loading, actions, ready, paused, screen, cameFromGame],
   );
 
   return (

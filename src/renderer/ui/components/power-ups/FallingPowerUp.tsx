@@ -18,6 +18,7 @@ export type Falling = {
 type FallingPowerUpProps = {
   falling: Falling;
   gameOver: boolean;
+  paused: boolean;
   onCollect: (falling: Falling, rect: DOMRect) => void;
   onMiss: (falling: Falling) => void;
 };
@@ -25,6 +26,7 @@ type FallingPowerUpProps = {
 export default function FallingPowerUp({
   falling,
   gameOver,
+  paused,
   onCollect,
   onMiss,
 }: FallingPowerUpProps) {
@@ -41,8 +43,8 @@ export default function FallingPowerUp({
 
   const style: CSSProperties = {
     animation: `${fall} 2.8s linear forwards`,
-    animationPlayState: gameOver ? "paused" : "running",
-    pointerEvents: gameOver ? "none" : undefined,
+    animationPlayState: gameOver || paused ? "paused" : "running",
+    pointerEvents: gameOver || paused ? "none" : undefined,
     ...(nudge !== null && { [side]: `${nudge}px` }),
   };
 

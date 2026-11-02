@@ -11,6 +11,7 @@ export function useCountdown(
   { round, roundSeconds, isGameOver }: GameState,
   onTimeUp: () => void,
   ready = true,
+  paused = false,
 ): BarStage {
   const [reached, setReached] = useState({ round: 0, stage: 0 });
 
@@ -19,17 +20,28 @@ export function useCountdown(
     latestOnTimeUp.current = onTimeUp;
   });
 
+  const clock = useRef({ key: "", elapsed: 0 });
+
   useEffect(() => {
-    if (isGameOver || !ready) return;
+    if (isGameOver || !ready || paused) return;
+
+    const key = `${round}-${roundSeconds}`;
+    if (clock.current.key !== key) clock.current = { key, elapsed: 0 };
 
     const ms = roundSeconds * 1000;
-    const timers = STAGE_AT.map((at, index) =>
-      setTimeout(() => setReached({ round, stage: index + 1 }), at * ms),
-    );
-    timers.push(setTimeout(() => latestOnTimeUp.current(), TIME_UP_AT * ms));
+    const left = (at: number) => Math.max(0, at * ms - clock.current.elapsed);
+    const startedAt = Date.now();
 
-    return () => timers.forEach(clearTimeout);
-  }, [round, roundSeconds, isGameOver, ready]);
+    const timers = STAGE_AT.map((at, index) =>
+      setTimeout(() => setReached({ round, stage: index + 1 }), left(at)),
+    );
+    timers.push(setTimeout(() => latestOnTimeUp.current(), left(TIME_UP_AT)));
+
+    return () => {
+      clock.current.elapsed += Date.now() - startedAt;
+      timers.forEach(clearTimeout);
+    };
+  }, [round, roundSeconds, isGameOver, ready, paused]);
 
   return (reached.round === round ? reached.stage : 0) as BarStage;
 }
