@@ -413,6 +413,20 @@ describe("running out of time", () => {
     );
   });
 
+  test("the first run announces the rank it earned", () => {
+    const { events } = play(createInitialState(), increase(), {
+      type: "timerExpired",
+    });
+
+    expect(has(events, { type: "gameOver", newRank: "Rookie" })).toBe(true);
+  });
+
+  test("a score of nothing earns no rank", () => {
+    const { events } = play(createInitialState(), { type: "timerExpired" });
+
+    expect(has(events, { type: "gameOver", newRank: undefined })).toBe(true);
+  });
+
   test("the first run is not called a new high score", () => {
     const { events } = play(createInitialState(), increase(), {
       type: "timerExpired",

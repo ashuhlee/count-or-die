@@ -205,6 +205,18 @@ function restart(state: GameState, music = true): Update {
   };
 }
 
+// the rank reached in this run, when it is a new one. The first run earns the
+// first rank, whatever it is
+function rankToAnnounce(state: GameState): string | undefined {
+  const reached = getRank(state.highScore);
+  if (!hadHighScore(state))
+    return state.highScore > 0 ? reached.name : undefined;
+
+  return reached.min > getRank(state.highScoreAtStart).min
+    ? reached.name
+    : undefined;
+}
+
 function timerExpired(state: GameState): Update {
   // reaching the goal at the last moment beats the timer
   if (state.counter >= state.currentGoal || state.isGameOver) {
@@ -224,11 +236,7 @@ function timerExpired(state: GameState): Update {
         type: "gameOver",
         isHighScore: state.isHighScore,
         score: state.counter,
-        newRank:
-          hadHighScore(state) &&
-          getRank(state.highScore).min > getRank(state.highScoreAtStart).min
-            ? getRank(state.highScore).name
-            : undefined,
+        newRank: rankToAnnounce(state),
       },
     ],
   };

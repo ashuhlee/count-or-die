@@ -103,7 +103,7 @@ describe("running out of time", () => {
     expect(game.$("#new-rank").textContent).toContain("Slow");
   });
 
-  test("the very first run celebrates nothing", () => {
+  test("the very first run celebrates no record", () => {
     game = renderGame();
     game.click("#increase-img");
     // the bar keeps its usual color instead of turning rainbow
@@ -113,7 +113,25 @@ describe("running out of time", () => {
     fireAnimationEnd(game.$("#red-flash"));
 
     expect(game.$("#new-best")).toBeNull();
-    expect(game.$("#new-rank")).toBeNull();
+  });
+
+  test("the very first run shows the rank it earned, even the first one", () => {
+    game = renderGame();
+    game.click("#increase-img");
+    game.wait(TIME_IS_UP);
+    fireAnimationEnd(game.$("#red-flash"));
+
+    expect(game.$("#new-rank").textContent).toContain("Rookie");
+  });
+
+  test("the very first run shows a higher rank when it reached one", () => {
+    game = renderGame({ state: { counter: 99, currentGoal: 1000 } });
+    game.click("#increase-img");
+    game.wait(TIME_IS_UP);
+    fireAnimationEnd(game.$("#red-flash"));
+
+    expect(game.$("#new-rank").textContent).toContain("Slow");
+    expect(game.$("#new-best")).toBeNull();
   });
 
   test("a new best score in the same rank is not a new rank", () => {
