@@ -29,7 +29,7 @@ function getAnimation(
 }
 
 export default function ProgressBar() {
-  const { state, barStage, ready, paused } = useGame();
+  const { state, barStage, ready } = useGame();
 
   return (
     <>
@@ -41,7 +41,7 @@ export default function ProgressBar() {
           animation: state.isGameOver
             ? "none"
             : getAnimation(barStage, state.roundSeconds, "progress-clip"),
-          animationPlayState: ready && !paused ? "running" : "paused",
+          animationPlayState: ready ? "running" : "paused",
         }}
       >
         <div className="pg-stripes"></div>
@@ -56,7 +56,7 @@ export default function ProgressBar() {
           animation: state.isGameOver
             ? "none"
             : getAnimation(barStage, state.roundSeconds),
-          animationPlayState: ready && !paused ? "running" : "paused",
+          animationPlayState: ready ? "running" : "paused",
           transformOrigin: "left",
           width: "140px",
           background: getBackground(barStage, state.isHighScore),

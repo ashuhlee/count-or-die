@@ -14,6 +14,7 @@ import {
   type GameAction,
   type GameState,
 } from "../game/gameLogic.ts";
+import { createGameClock } from "../game/gameClock.ts";
 import { getPowerUp } from "../game/powerUps.ts";
 import { loadSavedGame } from "../utils/savedGame.ts";
 import { quitGame } from "../utils/quitGame.ts";
@@ -59,11 +60,18 @@ export default function GameProvider({
 
   const stateRef = useRef(state);
 
+  // everything that counts game time goes through this, so a pause is one call
+  const [clock] = useState(() => createGameClock());
+  useEffect(() => () => clock.clear(), [clock]);
+
   const [paused, setPaused] = useState(false);
   const pausedRef = useRef(false);
-  const effects = useRef<
-    { id?: ReturnType<typeof setTimeout>; endsAt: number; left: number }[]
-  >([]);
+
+  // lets the style sheet pause the animations that keep game time
+  useEffect(() => {
+    document.documentElement.toggleAttribute("data-paused", paused);
+    return () => document.documentElement.removeAttribute("data-paused");
+  }, [paused]);
 
   const randomRef = useRef(random);
   useEffect(() => {
@@ -90,29 +98,10 @@ export default function GameProvider({
   const barStage = useCountdown(
     state,
     () => dispatch({ type: "timerExpired" }),
+    clock,
     ready && screen === "game",
-    paused,
   );
   const { loading, cover } = useLoadingScreen(later);
-
-  const endEffect = useCallback(
-    (effect: (typeof effects.current)[number]) => {
-      effects.current = effects.current.filter((other) => other !== effect);
-      dispatch({ type: "powerUpEnded" });
-    },
-    [dispatch],
-  );
-  const startEffect = useCallback(
-    (ms: number) => {
-      const effect: (typeof effects.current)[number] = {
-        endsAt: Date.now() + ms,
-        left: ms,
-      };
-      effect.id = later(() => endEffect(effect), ms);
-      effects.current.push(effect);
-    },
-    [later, endEffect],
-  );
 
   const actions = useMemo<GameActions>(
     () => ({
@@ -164,30 +153,26 @@ export default function GameProvider({
         dispatch({ type: "collectPowerUp", powerUp: type });
 
         const { duration } = getPowerUp(type);
-        if (duration !== null) startEffect(duration);
+        if (duration !== null) {
+          clock.after(() => dispatch({ type: "powerUpEnded" }), duration);
+        }
       },
 
       pause() {
         pausedRef.current = true;
         setPaused(true);
-        effects.current.forEach((effect) => {
-          clearTimeout(effect.id);
-          effect.left = effect.endsAt - Date.now();
-        });
+        clock.pause();
       },
 
       resume() {
         pausedRef.current = false;
         setPaused(false);
-        effects.current.forEach((effect) => {
-          effect.endsAt = Date.now() + effect.left;
-          effect.id = later(() => endEffect(effect), effect.left);
-        });
+        clock.resume();
       },
 
       emit: bus.emit,
     }),
-    [bus, cover, dispatch, later, startEffect, endEffect],
+    [bus, clock, cover, dispatch],
   );
 
   useEffect(() => {
@@ -215,10 +200,21 @@ export default function GameProvider({
       actions,
       ready,
       paused,
+      clock,
       screen,
       cameFromGame,
     }),
-    [state, barStage, loading, actions, ready, paused, screen, cameFromGame],
+    [
+      state,
+      barStage,
+      loading,
+      actions,
+      ready,
+      paused,
+      clock,
+      screen,
+      cameFromGame,
+    ],
   );
 
   return (

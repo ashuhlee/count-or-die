@@ -1,5 +1,6 @@
 import { createContext, useContext } from "react";
 
+import type { GameClock } from "../game/gameClock.ts";
 import type { GameState } from "../game/gameLogic.ts";
 import type { PowerUpType } from "../game/powerUps.ts";
 import type { AppEvent } from "./eventBus.ts";
@@ -39,6 +40,8 @@ export type GameContextValue = {
   actions: GameActions;
   ready: boolean;
   paused: boolean;
+  // the timers of the game, which stop while it is paused
+  clock: GameClock;
   screen: Screen;
   cameFromGame: boolean;
 };

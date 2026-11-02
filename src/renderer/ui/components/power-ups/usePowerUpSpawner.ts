@@ -4,6 +4,7 @@ import { MAX_BOOSTS } from "../../../game/gameLogic.ts";
 import { availablePowerUps, choosePowerUp } from "../../../game/powerUps.ts";
 import { useGame } from "../../../provider/useGame.ts";
 import { useGameEvent } from "../../../provider/useGameEvent.ts";
+import type { ClockTimer } from "../../../game/gameClock.ts";
 import type { Falling } from "./FallingPowerUp.tsx";
 
 const MIN_WAIT = 6000;
@@ -12,7 +13,7 @@ const MAX_WAIT = 12000;
 // Sends power-ups down the screen: one after a wait, then the next wait starts
 // once it has been collected or has fallen off the screen
 export function usePowerUpSpawner() {
-  const { state, actions, ready, paused } = useGame();
+  const { state, actions, ready, clock } = useGame();
   const [falling, setFalling] = useState<Falling[]>([]);
 
   // the timer reads this when it fires, not when it was started
@@ -22,7 +23,7 @@ export function usePowerUpSpawner() {
   });
 
   const nextId = useRef(0);
-  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const timer = useRef<ClockTimer>(undefined);
 
   const spawn = useCallback(() => {
     const options = availablePowerUps(
@@ -43,42 +44,23 @@ export function usePowerUpSpawner() {
     ]);
   }, []);
 
-  // when the wait started and how long it is, to hold it during a pause
-  const wait = useRef({ startedAt: 0, ms: 0 });
-  const waitLeft = useRef<number | null>(null);
+  const waitForNext = useCallback(() => {
+    clock.cancel(timer.current);
 
-  const waitForNext = useCallback(
-    (ms = Math.random() * (MAX_WAIT - MIN_WAIT) + MIN_WAIT) => {
-      clearTimeout(timer.current);
-      wait.current = { startedAt: Date.now(), ms };
-
-      timer.current = setTimeout(() => {
+    timer.current = clock.after(
+      () => {
         timer.current = undefined;
         if (!latest.current.isGameOver) spawn();
-      }, ms);
-    },
-    [spawn],
-  );
-
-  useEffect(() => {
-    if (paused) {
-      if (timer.current === undefined) return;
-      clearTimeout(timer.current);
-      timer.current = undefined;
-      waitLeft.current =
-        wait.current.ms - (Date.now() - wait.current.startedAt);
-    } else if (waitLeft.current !== null) {
-      const ms = Math.max(0, waitLeft.current);
-      waitLeft.current = null;
-      waitForNext(ms);
-    }
-  }, [paused, waitForNext]);
+      },
+      Math.random() * (MAX_WAIT - MIN_WAIT) + MIN_WAIT,
+    );
+  }, [clock, spawn]);
 
   useEffect(() => {
     if (!ready) return;
     waitForNext();
-    return () => clearTimeout(timer.current);
-  }, [waitForNext, ready]);
+    return () => clock.cancel(timer.current);
+  }, [clock, waitForNext, ready]);
 
   useGameEvent("restarted", () => {
     setFalling([]);

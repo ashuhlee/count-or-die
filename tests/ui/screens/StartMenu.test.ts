@@ -361,6 +361,16 @@ describe("the menu", () => {
       expect(game.$("#options-notice")).not.toBeNull();
     });
 
+    test("the page says it is paused, so the animations can hold", () => {
+      expect(document.documentElement.hasAttribute("data-paused")).toBe(false);
+
+      game.click("#home-btn");
+      expect(document.documentElement.hasAttribute("data-paused")).toBe(true);
+
+      game.click("#alert-no");
+      expect(document.documentElement.hasAttribute("data-paused")).toBe(false);
+    });
+
     test("the keys and buttons do nothing", () => {
       game.click("#home-btn");
       game.press("w");

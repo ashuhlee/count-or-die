@@ -6,7 +6,6 @@ import Letters from "../letters/Letters.tsx";
 type AlertPopupProps = {
   text: string;
   border: string;
-  // on its way out
   leaving?: boolean;
   onYes: () => void;
   onNo: () => void;
@@ -32,7 +31,6 @@ function AlertButton({ id, tone, label, onClick }: AlertButtonProps) {
   );
 }
 
-// a panel in the middle of the screen with a question and a yes and a no
 export default function AlertPopup({
   text,
   border,
@@ -42,7 +40,6 @@ export default function AlertPopup({
 }: AlertPopupProps) {
   const textRef = useRef<HTMLSpanElement>(null);
 
-  // the text is only as wide as its longest line, so there is no gap on the right
   useLayoutEffect(() => {
     const element = textRef.current;
     if (!element) return;
@@ -80,8 +77,8 @@ export default function AlertPopup({
     <div
       className={`alert-popup${leaving ? " alert-popup--leaving" : ""}`}
       role="alertdialog"
+      aria-modal="true"
       aria-label={text}
-      // clicking the dimmed background says no
       onClick={(event) => {
         if (event.target === event.currentTarget) onNo();
       }}

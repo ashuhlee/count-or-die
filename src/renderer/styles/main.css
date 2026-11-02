@@ -766,6 +766,14 @@ img {
   transform-box: fill-box;
   transform-origin: center;
 }
+[data-paused] .pg-lines,
+[data-paused] .progress-bar,
+[data-paused] .power-up-img {
+  animation-play-state: paused !important;
+}
+[data-paused] .power-up-img {
+  pointer-events: none !important;
+}
 .buttons {
   display: flex;
   gap: 22px;
