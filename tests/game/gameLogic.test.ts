@@ -7,7 +7,7 @@ import {
   roundSecondsFor,
   type GameAction,
   type GameState,
-} from "../../src/renderer/game/gameReducer.ts";
+} from "../../src/renderer/game/gameLogic.ts";
 import type { GameEvent } from "../../src/renderer/game/events.ts";
 
 // runs a list of actions in order, collecting everything that was reported
@@ -107,6 +107,17 @@ describe("high scores", () => {
     const { events } = play(createInitialState(), increase());
     expect(has(events, { type: "counterAnimation", name: "pop-right" })).toBe(
       true,
+    );
+  });
+
+  test("the clicks after it pop as usual", () => {
+    const first = play(createInitialState(), increase());
+    const { events } = play(first.state, increase());
+
+    expect(types(events)).toContain("highScore");
+    expect(has(events, { type: "counterAnimation", name: "pop" })).toBe(true);
+    expect(has(events, { type: "counterAnimation", name: "pop-right" })).toBe(
+      false,
     );
   });
 

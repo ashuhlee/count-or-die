@@ -13,7 +13,7 @@ import {
   reduce,
   type GameAction,
   type GameState,
-} from "../game/gameReducer.ts";
+} from "../game/gameLogic.ts";
 import { getPowerUp } from "../game/powerUps.ts";
 import { loadSavedGame } from "../utils/savedGame.ts";
 import { quitGame } from "../utils/quitGame.ts";

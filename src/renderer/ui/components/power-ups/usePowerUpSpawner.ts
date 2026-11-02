@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { MAX_BOOSTS } from "../../../game/gameReducer.ts";
+import { MAX_BOOSTS } from "../../../game/gameLogic.ts";
 import { availablePowerUps, choosePowerUp } from "../../../game/powerUps.ts";
 import { useGame } from "../../../provider/useGame.ts";
 import { useGameEvent } from "../../../provider/useGameEvent.ts";

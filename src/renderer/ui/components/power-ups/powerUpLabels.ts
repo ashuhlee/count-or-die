@@ -1,4 +1,4 @@
-import { MAX_BOOSTS, PENALTY_POINTS } from "../../../game/gameReducer.ts";
+import { MAX_BOOSTS, PENALTY_POINTS } from "../../../game/gameLogic.ts";
 import type { PowerUpType } from "../../../game/powerUps.ts";
 
 export const POWER_UP_LABELS: Record<PowerUpType, string> = {

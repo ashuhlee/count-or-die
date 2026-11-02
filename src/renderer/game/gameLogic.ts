@@ -88,9 +88,8 @@ function scoreAndGoal(
     next = { ...next, highScore: next.counter, isHighScore: true };
     events.push({ type: "highScore", score: next.highScore });
 
-    counterAnimation = boosted ? animation : "pop-right";
-
     if (!next.highScoreFxPlayed) {
+      if (!boosted) counterAnimation = "pop-right";
       events.push({ type: "sound", name: "highScore" });
       next = { ...next, highScoreFxPlayed: true };
     }

@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 
-import type { GameState } from "../game/gameReducer.ts";
+import type { GameState } from "../game/gameLogic.ts";
 import type { PowerUpType } from "../game/powerUps.ts";
 import type { AppEvent } from "./eventBus.ts";
 

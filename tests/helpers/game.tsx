@@ -4,23 +4,18 @@ import { act, type ComponentType } from "react";
 import {
   createInitialState,
   type GameState,
-} from "../../src/renderer/game/gameReducer.ts";
+} from "../../src/renderer/game/gameLogic.ts";
 import Game from "../../src/renderer/ui/Game.tsx";
 import GameProvider from "../../src/renderer/provider/GameProvider.tsx";
 import { renderInto } from "./dom.ts";
 
 type RenderGameOptions = {
-  // what the game starts with, on top of a fresh game
   state?: Partial<GameState>;
-  // what "random" gives the game rules (0 picks the first goal step)
   random?: () => number;
-  // what to show inside the game; the whole game by default
   ui?: ComponentType;
-  // open on the menu, as the app does, instead of straight into a game
   startOnMenu?: boolean;
 };
 
-// renders the game and gives helpers to play it like a person would
 export function renderGame({
   state,
   random = () => 0,
@@ -61,8 +56,6 @@ export function renderGame({
         document.dispatchEvent(new KeyboardEvent("keydown", { key, ...init }));
       });
     },
-
-    // moves the fake clock forward, letting React update along the way
     wait(ms: number) {
       act(() => {
         vi.advanceTimersByTime(ms);
