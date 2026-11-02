@@ -1,0 +1,51 @@
+@use "../base/globals";
+
+$scale-time: 0.3s;
+
+.cursor-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+
+  &,
+  * {
+    cursor: none !important;
+  }
+}
+
+.cursor-intro-copy {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.cursor-intro-art {
+  transform-origin: 0 0;
+  animation: cursor-intro-in $scale-time cubic-bezier(0, 1.019, 0.211, 1.006)
+    both;
+
+  img {
+    display: block;
+  }
+  .cursor-intro-hand {
+    margin: calc(#{globals.$cursor-hand-y} * -1px) 0 0
+      calc(#{globals.$cursor-hand-x} * -1px);
+  }
+}
+
+.cursor-intro-copy[data-kind="hand"] .cursor-intro-arrow,
+.cursor-intro-copy:not([data-kind="hand"]) .cursor-intro-hand {
+  display: none;
+}
+
+@keyframes cursor-intro-in {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

@@ -7,6 +7,11 @@
   place-items: center;
   z-index: 20;
 
+  &,
+  * {
+    cursor: none !important;
+  }
+
   .diamond-wrapper,
   .diamond-outline {
     position: absolute;

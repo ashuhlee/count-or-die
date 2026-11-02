@@ -73,8 +73,22 @@
 }
 * {
   box-sizing: border-box;
+  --cursor-kind: arrow;
   cursor:
-    url("../assets/ui/hand.svg") 14 2,
+    url("../assets/ui/arrow.svg") 0 0,
+    auto !important;
+}
+button,
+button *,
+#decrease-button img,
+#increase-button img,
+.power-up-img,
+.power-up-img *,
+.back-to-menu,
+.back-to-menu * {
+  --cursor-kind: hand;
+  cursor:
+    url("../assets/ui/hand.svg") 11 2,
     auto !important;
 }
 ::-webkit-scrollbar {
@@ -1880,6 +1894,45 @@ img {
     scale: 0.4;
   }
 }
+.cursor-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+}
+.cursor-intro,
+.cursor-intro * {
+  cursor: none !important;
+}
+.cursor-intro-copy {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+.cursor-intro-art {
+  transform-origin: 0 0;
+  animation: cursor-intro-in 0.3s cubic-bezier(0, 1.019, 0.211, 1.006) both;
+}
+.cursor-intro-art img {
+  display: block;
+}
+.cursor-intro-art .cursor-intro-hand {
+  margin: calc(2*-1px) 0 0 calc(11*-1px);
+}
+.cursor-intro-copy[data-kind="hand"] .cursor-intro-arrow,
+.cursor-intro-copy:not([data-kind="hand"]) .cursor-intro-hand {
+  display: none;
+}
+@keyframes cursor-intro-in {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 #game-over {
   --mask-size: 100% 200%;
   pointer-events: none;
@@ -2262,6 +2315,10 @@ img {
   display: grid;
   place-items: center;
   z-index: 20;
+}
+.loading-screen,
+.loading-screen * {
+  cursor: none !important;
 }
 .loading-screen .diamond-wrapper,
 .loading-screen .diamond-outline {
