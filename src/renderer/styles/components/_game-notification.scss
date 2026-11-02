@@ -10,8 +10,6 @@
 
   &.game-notification--long {
     padding: 12px 16px;
-
-    // more room between the lines
     .game-notification-text {
       line-height: 1.7;
     }
@@ -61,4 +59,8 @@
   align-items: flex-start;
   gap: 32px;
   filter: url(#tracker-bulge);
+}
+
+#options-notice.bounce-in-left {
+  animation-duration: 0.7s;
 }
