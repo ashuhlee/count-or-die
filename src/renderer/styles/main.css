@@ -73,10 +73,7 @@
 }
 * {
   box-sizing: border-box;
-  --cursor-kind: arrow;
-  cursor:
-    url("../assets/ui/arrow.svg") 0 0,
-    auto !important;
+  --cursor-kind: default;
 }
 button,
 button *,
@@ -1899,9 +1896,12 @@ img {
   inset: 0;
   z-index: 30;
 }
-.cursor-intro,
-.cursor-intro * {
+.cursor-intro[data-kind="hand"],
+.cursor-intro[data-kind="hand"] * {
   cursor: none !important;
+}
+.cursor-intro:not([data-kind="hand"]) .cursor-intro-copy {
+  display: none;
 }
 .cursor-intro-copy {
   position: absolute;
@@ -1915,13 +1915,7 @@ img {
 }
 .cursor-intro-art img {
   display: block;
-}
-.cursor-intro-art .cursor-intro-hand {
   margin: calc(2*-1px) 0 0 calc(11*-1px);
-}
-.cursor-intro-copy[data-kind="hand"] .cursor-intro-arrow,
-.cursor-intro-copy:not([data-kind="hand"]) .cursor-intro-hand {
-  display: none;
 }
 @keyframes cursor-intro-in {
   from {

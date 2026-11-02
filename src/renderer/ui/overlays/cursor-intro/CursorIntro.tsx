@@ -1,6 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
-import arrowImg from "@assets/ui/arrow.svg";
 import handImg from "@assets/ui/hand.svg";
 
 import { useGame } from "../../../provider/useGame.ts";
@@ -15,7 +14,7 @@ export default function CursorIntro() {
 
   function place() {
     const at = pointer.current;
-    if (!at || !copy.current) return;
+    if (!at || !copy.current || !cover.current) return;
 
     copy.current.style.translate = `${at.x}px ${at.y}px`;
     const under = document
@@ -24,7 +23,7 @@ export default function CursorIntro() {
     const kind = under
       ? getComputedStyle(under).getPropertyValue("--cursor-kind").trim()
       : "";
-    copy.current.dataset.kind = kind === "hand" ? "hand" : "arrow";
+    cover.current.dataset.kind = kind === "hand" ? "hand" : "default";
   }
 
   useEffect(() => {
@@ -54,8 +53,7 @@ export default function CursorIntro() {
           className="cursor-intro-art"
           onAnimationEnd={() => setPlaying(false)}
         >
-          <img className="cursor-intro-arrow" src={arrowImg} alt="" />
-          <img className="cursor-intro-hand" src={handImg} alt="" />
+          <img src={handImg} alt="" />
         </div>
       </div>
     </div>

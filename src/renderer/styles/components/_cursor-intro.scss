@@ -7,9 +7,13 @@ $scale-time: 0.15s;
   inset: 0;
   z-index: 30;
 
-  &,
-  * {
+  // the copy replaces the cursor only where the hand is
+  &[data-kind="hand"],
+  &[data-kind="hand"] * {
     cursor: none !important;
+  }
+  &:not([data-kind="hand"]) .cursor-intro-copy {
+    display: none;
   }
 }
 
@@ -27,16 +31,9 @@ $scale-time: 0.15s;
 
   img {
     display: block;
-  }
-  .cursor-intro-hand {
     margin: calc(#{globals.$cursor-hand-y} * -1px) 0 0
       calc(#{globals.$cursor-hand-x} * -1px);
   }
-}
-
-.cursor-intro-copy[data-kind="hand"] .cursor-intro-arrow,
-.cursor-intro-copy:not([data-kind="hand"]) .cursor-intro-hand {
-  display: none;
 }
 
 @keyframes cursor-intro-in {

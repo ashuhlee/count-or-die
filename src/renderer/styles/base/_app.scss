@@ -2,10 +2,7 @@
 
 * {
   box-sizing: border-box;
-  --cursor-kind: arrow;
-  cursor:
-    url("#{globals.$cursor}") 0 0,
-    auto !important;
+  --cursor-kind: default;
 }
 
 // the hand shows over anything that can be clicked
