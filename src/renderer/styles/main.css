@@ -1336,20 +1336,21 @@ img {
 }
 .diamond-notice .diamond-notice-shape {
   display: block;
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
 }
 .diamond-notice .diamond-notice-shape {
   animation:
-    diamond-scale 0.53s cubic-bezier(0, 1.019, 0.211, 1.006) 0.04s both,
-    diamond-spin 0.53s linear 0.04s both;
+    diamond-scale 0.53s cubic-bezier(0, 1.019, 0.211, 1.006) 0.02s both,
+    diamond-spin 0.53s linear 0.02s both;
 }
 .diamond-notice .diamond-notice-text {
   white-space: pre;
   text-align: center;
   font-family: "Mem Prop 5x6", sans-serif;
-  font-size: 30px;
+  font-size: 32px;
   letter-spacing: 5px;
+  translate: calc(5px/2) calc(32px/12);
 }
 .diamond-notice .diamond-notice-line {
   display: block;
@@ -1377,7 +1378,7 @@ img {
     scale: 0;
   }
   100% {
-    scale: 1.3;
+    scale: 1.35;
   }
 }
 @keyframes diamond-fade {
@@ -1387,7 +1388,7 @@ img {
 }
 @keyframes diamond-spin {
   from {
-    rotate: -3deg;
+    rotate: -2deg;
   }
   to {
     rotate: 0deg;
@@ -1400,17 +1401,17 @@ img {
 .diamond-notice--shadow {
   z-index: 4;
   mix-blend-mode: overlay;
-  opacity: 0.15;
+  opacity: 0.2;
 }
 .diamond-notice--shadow .diamond-notice-text {
   color: #000;
-  translate: 0 3px;
+  translate: calc(5px/2) calc(32px/12 + 3px);
 }
 .diamond-notice--text {
   z-index: 5;
 }
 .diamond-notice--text .diamond-notice-text {
-  color: #fff2fc;
+  color: #fff5fd;
 }
 .diamond-notice--left {
   left: max(120px, 50% - 340px);
@@ -1418,7 +1419,62 @@ img {
 }
 .diamond-notice--right {
   left: min(100% - 120px, 50% + 324px);
-  top: 53%;
+  top: 56%;
+}
+.diamond-notice--sparkles {
+  z-index: 6;
+}
+.diamond-notice--sparkles .diamond-notice-body {
+  rotate: none;
+}
+.diamond-notice-sparkles {
+  position: relative;
+  width: 70px;
+  height: 70px;
+}
+.diamond-notice-sparkle {
+  position: absolute;
+  background: #fff;
+  mask: url("../assets/ui/deco/sparkle.svg") center/contain no-repeat;
+  --sparkle-delay: 0.04s;
+  animation:
+    diamond-sparkle-in 0.3s ease-out var(--sparkle-delay) both,
+    diamond-sparkle-turn calc(0.5s - var(--sparkle-delay)) linear
+      var(--sparkle-delay) both;
+}
+.diamond-notice-sparkle--top {
+  top: -38px;
+  right: -42px;
+  width: 28px;
+  height: 28px;
+  --turn: -100deg;
+}
+.diamond-notice-sparkle--bottom {
+  bottom: -36px;
+  left: -42px;
+  width: 28px;
+  height: 28px;
+  --sparkle-delay: 0.1s;
+  --turn: 20deg;
+}
+@keyframes diamond-sparkle-in {
+  0% {
+    scale: 0;
+  }
+  60% {
+    scale: 1.2;
+  }
+  100% {
+    scale: 1;
+  }
+}
+@keyframes diamond-sparkle-turn {
+  from {
+    rotate: -30deg;
+  }
+  to {
+    rotate: var(--turn);
+  }
 }
 :root {
   --panel-fill: #fff5fe;

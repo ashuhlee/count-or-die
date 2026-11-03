@@ -6,5 +6,5 @@ export const POWER_UP_LABELS: Record<PowerUpType, string> = {
   four_click: "X4 Mult!",
   minus_25: `-${PENALTY_POINTS}\nCount!`,
   extra_boost: "+1 Boost",
-  replenish_boosts: `+${MAX_BOOSTS} Boosts!`,
+  replenish_boosts: `+${MAX_BOOSTS}\nBoosts!`,
 };

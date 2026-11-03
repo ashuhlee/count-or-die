@@ -10,9 +10,12 @@ import { POWER_UP_LABELS } from "./powerUpLabels.ts";
 
 const SHOWN_FOR = 500;
 
-const GOOD = "#93E5FF";
-const BAD = "#ff618b";
-const BOOST = "#FF93E1";
+export const NOTICE_COLORS = {
+  good: "#a6e4f7",
+  bad: "#ff618b",
+  boost: "#FF91E0",
+  newBest: "#B1AEFF",
+};
 
 export default function PowerUpNotices() {
   const powerUpNotice = useTimedNotification(SHOWN_FOR, 0);
@@ -21,6 +24,9 @@ export default function PowerUpNotices() {
   const [powerUpTurn, setPowerUpTurn] = useState(0);
   const [boostTurn, setBoostTurn] = useState(0);
   const [boostPoints, setBoostPoints] = useState(0);
+
+  const newBestNotice = useTimedNotification(SHOWN_FOR, 0);
+  const [newBestTurn, setNewBestTurn] = useState(0);
 
   useGameEvent("powerUpPicked", (event) => {
     setPicked(event.powerUp);
@@ -32,6 +38,10 @@ export default function PowerUpNotices() {
     setBoostTurn(nextShapeTurn());
     boostNotice.show();
   });
+  useGameEvent("newBest", () => {
+    setNewBestTurn(nextShapeTurn());
+    newBestNotice.show();
+  });
 
   const bad = picked !== null && getPowerUp(picked).effect === "bad";
 
@@ -42,7 +52,7 @@ export default function PowerUpNotices() {
           key={powerUpNotice.shown.id}
           id="power-up-notice"
           text={POWER_UP_LABELS[picked]}
-          fill={bad ? BAD : GOOD}
+          fill={bad ? NOTICE_COLORS.bad : NOTICE_COLORS.good}
           place="left"
           turn={powerUpTurn}
         />
@@ -52,9 +62,20 @@ export default function PowerUpNotices() {
           key={boostNotice.shown.id}
           id="boost-notice"
           text={`+${boostPoints}\nCount!`}
-          fill={BOOST}
+          fill={NOTICE_COLORS.boost}
           place="right"
           turn={boostTurn}
+        />
+      )}
+      {newBestNotice.shown && (
+        <DiamondNotice
+          key={newBestNotice.shown.id}
+          id="new-best-notice"
+          text={"New\nBest!"}
+          fill={NOTICE_COLORS.newBest}
+          place="left"
+          turn={newBestTurn}
+          sparkles
         />
       )}
     </>

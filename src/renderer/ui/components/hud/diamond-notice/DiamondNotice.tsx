@@ -22,6 +22,7 @@ type DiamondNoticeProps = {
   fill: string;
   place: "left" | "right";
   turn: number;
+  sparkles?: boolean;
   id?: string;
 };
 
@@ -30,6 +31,7 @@ export default function DiamondNotice({
   fill,
   place,
   turn,
+  sparkles = false,
   id,
 }: DiamondNoticeProps) {
   const style = {
@@ -57,7 +59,7 @@ export default function DiamondNotice({
     <div
       className={`diamond-notice diamond-notice--${place} diamond-notice--${name}`}
       style={name === "shape" ? shapeStyle : style}
-      aria-hidden={name === "shadow" || undefined}
+      aria-hidden={name === "shadow" || name === "sparkles" || undefined}
     >
       <div className="diamond-notice-body">{children}</div>
     </div>
@@ -77,6 +79,14 @@ export default function DiamondNotice({
       )}
       {layer("shadow", letters)}
       {layer("text", letters)}
+      {sparkles &&
+        layer(
+          "sparkles",
+          <div className="diamond-notice-sparkles">
+            <span className="diamond-notice-sparkle diamond-notice-sparkle--top" />
+            <span className="diamond-notice-sparkle diamond-notice-sparkle--bottom" />
+          </div>,
+        )}
     </div>
   );
 }

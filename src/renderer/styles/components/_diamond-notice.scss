@@ -1,7 +1,14 @@
+@use "../base/globals";
+
 $shown-for: 0.5s;
+$sparkle-delay: 0.04s;
 $fade-out: 0.07s;
-$diamond-delay: 0.04s;
+$diamond-delay: 0.02s;
 $diamond-time: $shown-for + 0.03s;
+
+$text-size: 32px;
+$letter-spacing: 5px;
+$text-centering: calc(#{$letter-spacing} / 2) calc(#{$text-size} / 12);
 
 .diamond-notice-group {
   display: contents;
@@ -21,8 +28,8 @@ $diamond-time: $shown-for + 0.03s;
 
   .diamond-notice-shape {
     display: block;
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
   }
 
   .diamond-notice-shape {
@@ -36,8 +43,9 @@ $diamond-time: $shown-for + 0.03s;
     white-space: pre;
     text-align: center;
     font-family: "Mem Prop 5x6", sans-serif;
-    font-size: 30px;
-    letter-spacing: 5px;
+    font-size: $text-size;
+    letter-spacing: $letter-spacing;
+    translate: $text-centering;
   }
 
   .diamond-notice-line {
@@ -70,7 +78,7 @@ $diamond-time: $shown-for + 0.03s;
     scale: 0;
   }
   100% {
-    scale: 1.3;
+    scale: 1.35;
   }
 }
 
@@ -82,7 +90,7 @@ $diamond-time: $shown-for + 0.03s;
 
 @keyframes diamond-spin {
   from {
-    rotate: -3deg;
+    rotate: -2deg;
   }
   to {
     rotate: 0deg;
@@ -97,11 +105,11 @@ $diamond-time: $shown-for + 0.03s;
 .diamond-notice--shadow {
   z-index: 4;
   mix-blend-mode: overlay;
-  opacity: 0.15;
+  opacity: 0.2;
 
   .diamond-notice-text {
     color: black;
-    translate: 0 3px;
+    translate: calc(#{$letter-spacing} / 2) calc(#{$text-size} / 12 + 3px);
   }
 }
 
@@ -109,7 +117,7 @@ $diamond-time: $shown-for + 0.03s;
   z-index: 5;
 
   .diamond-notice-text {
-    color: #fff2fc;
+    color: #fff5fd;
   }
 }
 
@@ -120,5 +128,67 @@ $diamond-time: $shown-for + 0.03s;
 
 .diamond-notice--right {
   left: min(calc(100% - 120px), calc(50% + 324px));
-  top: 53%;
+  top: 56%;
+}
+
+.diamond-notice--sparkles {
+  z-index: 6;
+
+  .diamond-notice-body {
+    rotate: none;
+  }
+}
+
+.diamond-notice-sparkles {
+  position: relative;
+  width: 70px;
+  height: 70px;
+}
+
+.diamond-notice-sparkle {
+  position: absolute;
+  background: #fff;
+  mask: url("#{globals.$assets}/ui/deco/sparkle.svg") center / contain no-repeat;
+  --sparkle-delay: #{$sparkle-delay};
+  animation:
+    diamond-sparkle-in 0.3s ease-out var(--sparkle-delay) both,
+    diamond-sparkle-turn calc(#{$shown-for} - var(--sparkle-delay)) linear
+      var(--sparkle-delay) both;
+
+  &--top {
+    top: -38px;
+    right: -42px;
+    width: 28px;
+    height: 28px;
+    --turn: -100deg;
+  }
+  &--bottom {
+    bottom: -36px;
+    left: -42px;
+    width: 28px;
+    height: 28px;
+    --sparkle-delay: #{$sparkle-delay + 0.06s};
+    --turn: 20deg;
+  }
+}
+
+@keyframes diamond-sparkle-in {
+  0% {
+    scale: 0;
+  }
+  60% {
+    scale: 1.2;
+  }
+  100% {
+    scale: 1;
+  }
+}
+
+@keyframes diamond-sparkle-turn {
+  from {
+    rotate: -30deg;
+  }
+  to {
+    rotate: var(--turn);
+  }
 }

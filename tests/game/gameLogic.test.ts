@@ -98,6 +98,7 @@ describe("high scores", () => {
     expect(events.filter((e) => e.type === "highScore")).toHaveLength(2);
     // ...but the fanfare and confetti happen once per game
     expect(events.filter((e) => e.type === "confetti")).toHaveLength(1);
+    expect(events.filter((e) => e.type === "newBest")).toHaveLength(1);
     expect(
       events.filter((e) => e.type === "sound" && e.name === "highScore"),
     ).toHaveLength(1);
@@ -140,6 +141,7 @@ describe("high scores", () => {
     );
     expect(state.isHighScore).toBe(false);
     expect(types(events)).not.toContain("confetti");
+    expect(types(events)).not.toContain("newBest");
     expect(has(events, { type: "sound", name: "highScore" })).toBe(false);
     expect(has(events, { type: "counterAnimation", name: "pop-right" })).toBe(
       false,

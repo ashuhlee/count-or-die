@@ -189,6 +189,38 @@ describe("the keyboard", () => {
     expect(game.$("#boost-notice")).toBeNull();
   });
 
+  test("a new best says so, for a moment", () => {
+    game = renderGame({ state: { highScore: 1, highScoreAtStart: 1 } });
+    game.click("#increase-img");
+    expect(game.$("#new-best-notice")).toBeNull();
+
+    game.click("#increase-img");
+    expect(game.$("#new-best-notice")).not.toBeNull();
+
+    game.wait(500);
+    expect(game.$("#new-best-notice")).toBeNull();
+  });
+
+  test("a new best from a boost shows beside the boost notice, on the other side", () => {
+    game = renderGame({ state: { highScore: 1, highScoreAtStart: 1 } });
+    game.press(" ");
+
+    const side = (selector: string) =>
+      game.$(`${selector} .diamond-notice`).className;
+    expect(game.$("#boost-notice")).not.toBeNull();
+    expect(game.$("#new-best-notice")).not.toBeNull();
+    expect(side("#boost-notice")).toContain("diamond-notice--right");
+    expect(side("#new-best-notice")).toContain("diamond-notice--left");
+  });
+
+  test("a first run, with no record to beat, has no new best", () => {
+    game = renderGame();
+    game.click("#increase-img");
+    game.click("#increase-img");
+
+    expect(game.$("#new-best-notice")).toBeNull();
+  });
+
   test("holding a key down scores once, not over and over", () => {
     vi.stubEnv("DEV", false);
     game = renderGame();
