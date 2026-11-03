@@ -778,10 +778,14 @@ img {
       infinite var(--delay),
     letter-pop 2.18s ease-in-out 1 calc(var(--index)*0.04s);
 }
-#game-over .game-over-btns .wide-btn:hover .pixel-btn-label span,
-#play-btn:hover .pixel-btn-label > span {
+#game-over .game-over-btns .wide-btn:hover .pixel-btn-label span {
   display: inline-block;
-  animation: letter-pop 2.18s ease-in-out infinite calc(var(--index)*0.04s);
+  animation: letter-pop 2.18s ease-in-out 1 calc(var(--index)*0.04s);
+}
+#play-btn:hover .pixel-btn-label > span {
+  animation:
+    shake var(--wave-duration, 2s) ease infinite var(--delay),
+    letter-pop 2.18s ease-in-out 1 calc(var(--index)*0.04s);
 }
 #game-over .game-over-btns .wide-btn:hover .pixel-btn-label span {
   letter-spacing: 0.1666666667em;

@@ -176,11 +176,16 @@ $pop-total: $pop-letters * $pop-step + $pop-fall + $pop-pause;
     letter-pop $pop-total ease-in-out 1 calc(var(--index) * #{$pop-step});
 }
 
-#game-over .game-over-btns .wide-btn:hover .pixel-btn-label span,
-#play-btn:hover .pixel-btn-label > span {
+#game-over .game-over-btns .wide-btn:hover .pixel-btn-label span {
   display: inline-block;
-  animation: letter-pop $pop-total ease-in-out infinite
+  animation: letter-pop $pop-total ease-in-out 1
     calc(var(--index) * #{$pop-step});
+}
+
+#play-btn:hover .pixel-btn-label > span {
+  animation:
+    shake var(--wave-duration, 2s) ease infinite var(--delay),
+    letter-pop $pop-total ease-in-out 1 calc(var(--index) * #{$pop-step});
 }
 
 #game-over .game-over-btns .wide-btn:hover .pixel-btn-label span {
