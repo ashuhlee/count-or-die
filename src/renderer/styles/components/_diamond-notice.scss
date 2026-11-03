@@ -16,7 +16,6 @@ $text-centering: calc(#{$letter-spacing} / 2) calc(#{$text-size} / 12);
 }
 
 .diamond-notice {
-  // a notice can set its own, with the time it shows for
   --shown-for: #{$shown-for};
   position: fixed;
   transform: translate(-50%, -50%);

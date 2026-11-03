@@ -8,8 +8,8 @@ import DiamondNotice, {
 import { useTimedNotification } from "../../../overlays/game-notification/useTimedNotification.ts";
 import { POWER_UP_LABELS } from "./powerUpLabels.ts";
 
-const SHOWN_FOR = 600;
-const NEW_BEST_SHOWN_FOR = 700;
+const SHOWN_FOR = 550;
+const NEW_BEST_SHOWN_FOR = 550;
 
 export const NOTICE_COLORS = {
   good: "#a6e4f7",
