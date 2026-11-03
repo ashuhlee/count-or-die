@@ -33,6 +33,10 @@ export default function GameScreen() {
     useReplayAnimation<HTMLDivElement>("penalty-shake");
   useGameEvent("penalty", shake);
 
+  const [titleRef, popTitle] =
+    useReplayAnimation<HTMLSpanElement>("game-name-pop");
+  useGameEvent("powerUpPicked", popTitle);
+
   const [run, setRun] = useState(0);
   useGameEvent("restarted", () => setRun((current) => current + 1));
 
@@ -50,7 +54,7 @@ export default function GameScreen() {
         <ProgressBar />
       </div>
       <h1 className="title">
-        <span className="game-name">
+        <span className="game-name" ref={titleRef}>
           <Letters text="count or die" step={0.1} />
         </span>
       </h1>

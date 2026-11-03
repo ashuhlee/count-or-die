@@ -168,6 +168,17 @@ describe("collecting one", () => {
     expect(game.counter()).toBe("03");
   });
 
+  test("collecting one makes the letters of the title pop", () => {
+    game = renderGame({ state: { highScore: 999 } });
+    expect(game.$(".game-name").classList.contains("game-name-pop")).toBe(
+      false,
+    );
+
+    spawn(DOUBLE, 0, 0, 0);
+    game.click(".power-up-img");
+    expect(game.$(".game-name").classList.contains("game-name-pop")).toBe(true);
+  });
+
   test("a high score alone does not make the bar rainbow", () => {
     game = renderGame({ state: { highScore: 1, highScoreAtStart: 1 } });
     const plain = game.$("#progress-bar").style.background;
