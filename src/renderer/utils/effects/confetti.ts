@@ -35,7 +35,7 @@ function burst(): void {
   });
 }
 
-export const FIREWORKS = { duration: 400, every: 200, count: 50 };
+export const FIREWORKS = { duration: 400, every: 300, count: 50 };
 
 const between = (min: number, max: number) => min + Math.random() * (max - min);
 

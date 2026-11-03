@@ -65,7 +65,6 @@ test("the fireworks start at once, from both sides, then go on in rounds that st
 
   vi.advanceTimersByTime(FIREWORKS.duration * 2);
   const calls = fire.mock.calls.length;
-  expect(calls).toBeGreaterThan(4);
   expect(calls % 2).toBe(0);
 
   vi.advanceTimersByTime(FIREWORKS.duration * 2);

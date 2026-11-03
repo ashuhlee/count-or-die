@@ -101,7 +101,7 @@ function scoreAndGoal(
     }
     if (celebrate && !next.confettiPlayed) {
       events.push({ type: "confetti" });
-      events.push({ type: "newBest" });
+      events.push({ type: "newBest", boosted });
       next = { ...next, confettiPlayed: true };
     }
   }

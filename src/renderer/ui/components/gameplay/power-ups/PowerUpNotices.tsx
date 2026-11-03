@@ -8,7 +8,8 @@ import DiamondNotice, {
 import { useTimedNotification } from "../../../overlays/game-notification/useTimedNotification.ts";
 import { POWER_UP_LABELS } from "./powerUpLabels.ts";
 
-const SHOWN_FOR = 500;
+const SHOWN_FOR = 600;
+const NEW_BEST_SHOWN_FOR = 700;
 
 export const NOTICE_COLORS = {
   good: "#a6e4f7",
@@ -25,8 +26,9 @@ export default function PowerUpNotices() {
   const [boostTurn, setBoostTurn] = useState(0);
   const [boostPoints, setBoostPoints] = useState(0);
 
-  const newBestNotice = useTimedNotification(SHOWN_FOR, 0);
+  const newBestNotice = useTimedNotification(NEW_BEST_SHOWN_FOR, 0);
   const [newBestTurn, setNewBestTurn] = useState(0);
+  const [newBestSide, setNewBestSide] = useState<"left" | "right">("left");
 
   useGameEvent("powerUpPicked", (event) => {
     setPicked(event.powerUp);
@@ -38,8 +40,9 @@ export default function PowerUpNotices() {
     setBoostTurn(nextShapeTurn());
     boostNotice.show();
   });
-  useGameEvent("newBest", () => {
+  useGameEvent("newBest", (event) => {
     setNewBestTurn(nextShapeTurn());
+    setNewBestSide(event.boosted || Math.random() < 0.5 ? "left" : "right");
     newBestNotice.show();
   });
 
@@ -73,8 +76,9 @@ export default function PowerUpNotices() {
           id="new-best-notice"
           text={"New\nBest!"}
           fill={NOTICE_COLORS.newBest}
-          place="left"
+          place={newBestSide}
           turn={newBestTurn}
+          shownFor={NEW_BEST_SHOWN_FOR}
           sparkles
         />
       )}

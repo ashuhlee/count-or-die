@@ -88,6 +88,12 @@ describe("clicking", () => {
 });
 
 describe("high scores", () => {
+  test("a new best from a boost says so", () => {
+    const { events } = play(createInitialState({ highScore: 1 }), boost());
+
+    expect(has(events, { type: "newBest", boosted: true })).toBe(true);
+  });
+
   test("beating the high score updates it and celebrates once", () => {
     const start = createInitialState({ highScore: 1 });
     const { state, events } = play(start, increase(), increase(), increase());
@@ -99,6 +105,7 @@ describe("high scores", () => {
     // ...but the fanfare and confetti happen once per game
     expect(events.filter((e) => e.type === "confetti")).toHaveLength(1);
     expect(events.filter((e) => e.type === "newBest")).toHaveLength(1);
+    expect(has(events, { type: "newBest", boosted: false })).toBe(true);
     expect(
       events.filter((e) => e.type === "sound" && e.name === "highScore"),
     ).toHaveLength(1);

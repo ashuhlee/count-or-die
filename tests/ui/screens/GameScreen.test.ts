@@ -197,20 +197,39 @@ describe("the keyboard", () => {
     game.click("#increase-img");
     expect(game.$("#new-best-notice")).not.toBeNull();
 
+    // longer than the other notices
+    game.wait(500);
+    expect(game.$("#new-best-notice")).not.toBeNull();
     game.wait(500);
     expect(game.$("#new-best-notice")).toBeNull();
   });
 
-  test("a new best from a boost shows beside the boost notice, on the other side", () => {
+  test.each([
+    ["the left", 0.1, "diamond-notice--left"],
+    ["the right", 0.9, "diamond-notice--right"],
+  ])("a new best shows on %s, picked at random", (_name, random, side) => {
+    vi.spyOn(Math, "random").mockReturnValue(random);
+    game = renderGame({ state: { highScore: 1, highScoreAtStart: 1 } });
+    game.click("#increase-img");
+    game.click("#increase-img");
+
+    expect(game.$("#new-best-notice .diamond-notice").className).toContain(
+      side,
+    );
+  });
+
+  test("a new best from a boost is always on the left, away from the boost notice", () => {
+    // the pick that would put it on the right, were it not from a boost
+    vi.spyOn(Math, "random").mockReturnValue(0.9);
     game = renderGame({ state: { highScore: 1, highScoreAtStart: 1 } });
     game.press(" ");
 
-    const side = (selector: string) =>
-      game.$(`${selector} .diamond-notice`).className;
-    expect(game.$("#boost-notice")).not.toBeNull();
-    expect(game.$("#new-best-notice")).not.toBeNull();
-    expect(side("#boost-notice")).toContain("diamond-notice--right");
-    expect(side("#new-best-notice")).toContain("diamond-notice--left");
+    expect(game.$("#new-best-notice .diamond-notice").className).toContain(
+      "diamond-notice--left",
+    );
+    expect(game.$("#boost-notice .diamond-notice").className).toContain(
+      "diamond-notice--right",
+    );
   });
 
   test("a first run, with no record to beat, has no new best", () => {

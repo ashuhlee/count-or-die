@@ -23,6 +23,7 @@ type DiamondNoticeProps = {
   place: "left" | "right";
   turn: number;
   sparkles?: boolean;
+  shownFor?: number;
   id?: string;
 };
 
@@ -32,11 +33,13 @@ export default function DiamondNotice({
   place,
   turn,
   sparkles = false,
+  shownFor,
   id,
 }: DiamondNoticeProps) {
   const style = {
     "--fill": fill,
     "--tilt": `${place === "left" ? -TILT : TILT}deg`,
+    ...(shownFor !== undefined && { "--shown-for": `${shownFor}ms` }),
   } as CSSProperties;
   const shapeStyle = { ...style, "--tilt": `${turn}deg` } as CSSProperties;
 

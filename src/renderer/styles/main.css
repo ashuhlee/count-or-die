@@ -1324,6 +1324,7 @@ img {
   display: contents;
 }
 .diamond-notice {
+  --shown-for: 0.5s;
   position: fixed;
   transform: translate(-50%, -50%);
   pointer-events: none;
@@ -1332,7 +1333,7 @@ img {
   display: grid;
   place-items: center;
   rotate: var(--tilt);
-  animation: diamond-fade 0.07s linear 0.43s both;
+  animation: diamond-fade 0.07s linear calc(var(--shown-for) - 0.07s) both;
 }
 .diamond-notice .diamond-notice-shape {
   display: block;
@@ -1421,6 +1422,13 @@ img {
   left: min(100% - 120px, 50% + 324px);
   top: 56%;
 }
+#new-best-notice .diamond-notice--left {
+  margin: 40px 0 0 -36px;
+}
+#new-best-notice .diamond-notice--right {
+  top: 38%;
+  margin: 40px 0 0 36px;
+}
 .diamond-notice--sparkles {
   z-index: 6;
 }
@@ -1434,26 +1442,26 @@ img {
 }
 .diamond-notice-sparkle {
   position: absolute;
-  background: #fff;
+  background: #fff5fd;
   mask: url("../assets/ui/deco/sparkle.svg") center/contain no-repeat;
   --sparkle-delay: 0.04s;
   animation:
     diamond-sparkle-in 0.3s ease-out var(--sparkle-delay) both,
-    diamond-sparkle-turn calc(0.5s - var(--sparkle-delay)) linear
+    diamond-sparkle-turn calc(var(--shown-for) - var(--sparkle-delay)) linear
       var(--sparkle-delay) both;
 }
 .diamond-notice-sparkle--top {
   top: -38px;
   right: -42px;
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   --turn: -100deg;
 }
 .diamond-notice-sparkle--bottom {
   bottom: -36px;
   left: -42px;
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   --sparkle-delay: 0.1s;
   --turn: 20deg;
 }

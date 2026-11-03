@@ -6,6 +6,7 @@ $fade-out: 0.07s;
 $diamond-delay: 0.02s;
 $diamond-time: $shown-for + 0.03s;
 
+$text-color: #fff5fd;
 $text-size: 32px;
 $letter-spacing: 5px;
 $text-centering: calc(#{$letter-spacing} / 2) calc(#{$text-size} / 12);
@@ -15,6 +16,8 @@ $text-centering: calc(#{$letter-spacing} / 2) calc(#{$text-size} / 12);
 }
 
 .diamond-notice {
+  // a notice can set its own, with the time it shows for
+  --shown-for: #{$shown-for};
   position: fixed;
   transform: translate(-50%, -50%);
   pointer-events: none;
@@ -23,7 +26,8 @@ $text-centering: calc(#{$letter-spacing} / 2) calc(#{$text-size} / 12);
     display: grid;
     place-items: center;
     rotate: var(--tilt);
-    animation: diamond-fade $fade-out linear ($shown-for - $fade-out) both;
+    animation: diamond-fade $fade-out linear
+      calc(var(--shown-for) - #{$fade-out}) both;
   }
 
   .diamond-notice-shape {
@@ -117,7 +121,7 @@ $text-centering: calc(#{$letter-spacing} / 2) calc(#{$text-size} / 12);
   z-index: 5;
 
   .diamond-notice-text {
-    color: #fff5fd;
+    color: $text-color;
   }
 }
 
@@ -129,6 +133,14 @@ $text-centering: calc(#{$letter-spacing} / 2) calc(#{$text-size} / 12);
 .diamond-notice--right {
   left: min(calc(100% - 120px), calc(50% + 324px));
   top: 56%;
+}
+
+#new-best-notice .diamond-notice--left {
+  margin: 40px 0 0 -36px;
+}
+#new-best-notice .diamond-notice--right {
+  top: 38%;
+  margin: 40px 0 0 36px;
 }
 
 .diamond-notice--sparkles {
@@ -147,26 +159,26 @@ $text-centering: calc(#{$letter-spacing} / 2) calc(#{$text-size} / 12);
 
 .diamond-notice-sparkle {
   position: absolute;
-  background: #fff;
+  background: $text-color;
   mask: url("#{globals.$assets}/ui/deco/sparkle.svg") center / contain no-repeat;
   --sparkle-delay: #{$sparkle-delay};
   animation:
     diamond-sparkle-in 0.3s ease-out var(--sparkle-delay) both,
-    diamond-sparkle-turn calc(#{$shown-for} - var(--sparkle-delay)) linear
+    diamond-sparkle-turn calc(var(--shown-for) - var(--sparkle-delay)) linear
       var(--sparkle-delay) both;
 
   &--top {
     top: -38px;
     right: -42px;
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     --turn: -100deg;
   }
   &--bottom {
     bottom: -36px;
     left: -42px;
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     --sparkle-delay: #{$sparkle-delay + 0.06s};
     --turn: 20deg;
   }
