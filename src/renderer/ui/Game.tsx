@@ -19,7 +19,6 @@ import PowerUps from "./components/gameplay/power-ups/PowerUps.tsx";
 import PowerUpNotices from "./components/gameplay/power-ups/PowerUpNotices.tsx";
 import SmokePopups from "./components/effects/smoke/SmokePopups.tsx";
 import CRTShader from "./shaders/crt-shader/CRTShader.tsx";
-import CursorIntro from "./overlays/cursor-intro/CursorIntro.tsx";
 import LoadingScreen from "./overlays/loading/LoadingScreen.tsx";
 import GameOver from "./screens/game-over/GameOver.tsx";
 import RedFlash from "./screens/game-over/RedFlash.tsx";
@@ -123,7 +122,6 @@ export default function Game() {
       )}
       {(screen === "menu" || !state.isGameOver) && <FpsCounter />}
       <LoadingScreen />
-      <CursorIntro />
     </>
   );
 }

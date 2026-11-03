@@ -2,7 +2,6 @@
 
 * {
   box-sizing: border-box;
-  --cursor-kind: default;
 }
 
 // the hand shows over anything that can be clicked
@@ -16,7 +15,6 @@ button *,
 .back-to-menu *,
 [role="button"],
 [role="button"] * {
-  --cursor-kind: hand;
   cursor:
     url("#{globals.$cursor-hand}") #{globals.$cursor-hand-x}
       #{globals.$cursor-hand-y},

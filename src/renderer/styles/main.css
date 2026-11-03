@@ -73,7 +73,6 @@
 }
 * {
   box-sizing: border-box;
-  --cursor-kind: default;
 }
 button,
 button *,
@@ -85,7 +84,6 @@ button *,
 .back-to-menu *,
 [role="button"],
 [role="button"] * {
-  --cursor-kind: hand;
   cursor:
     url("../assets/ui/hand.svg") 11 2,
     auto !important;
@@ -2001,42 +1999,6 @@ img {
 @keyframes alert-pop-in {
   from {
     scale: 0.4;
-  }
-}
-.cursor-intro {
-  position: fixed;
-  inset: 0;
-  z-index: 30;
-}
-.cursor-intro[data-kind="hand"],
-.cursor-intro[data-kind="hand"] * {
-  cursor: none !important;
-}
-.cursor-intro:not([data-kind="hand"]) .cursor-intro-copy {
-  display: none;
-}
-.cursor-intro-copy {
-  position: absolute;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-}
-.cursor-intro-art {
-  transform-origin: 0 0;
-  animation: cursor-intro-in 0.15s cubic-bezier(0, 1.019, 0.211, 1.006) both;
-}
-.cursor-intro-art img {
-  display: block;
-  margin: calc(2*-1px) 0 0 calc(11*-1px);
-}
-@keyframes cursor-intro-in {
-  from {
-    transform: scale(0.4);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
   }
 }
 #game-over {
