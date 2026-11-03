@@ -168,6 +168,15 @@ describe("collecting one", () => {
     expect(game.counter()).toBe("03");
   });
 
+  test("a high score alone does not make the bar rainbow", () => {
+    game = renderGame({ state: { highScore: 1, highScoreAtStart: 1 } });
+    const plain = game.$("#progress-bar").style.background;
+
+    game.click("#increase-img");
+    game.click("#increase-img");
+    expect(game.$("#progress-bar").style.background).toBe(plain);
+  });
+
   test("2x makes the bar rainbow until it runs out", () => {
     game = renderGame({ state: { highScore: 999 } });
     const plain = game.$("#progress-bar").style.background;

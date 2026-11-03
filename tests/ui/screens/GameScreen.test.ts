@@ -268,8 +268,8 @@ describe("the keyboard", () => {
 
     const sparkles = () => game.$$(".pg-sparkle");
 
-    test("come off the end of it while a high score is on", () => {
-      game = renderGame({ state: { highScore: 1, highScoreAtStart: 1 } });
+    test("come off the end of it while a power-up is running", () => {
+      game = renderGame({ state: { countIncrement: 2 } });
       expect(sparkles()).toHaveLength(0);
 
       game.click("#increase-img");
@@ -284,7 +284,7 @@ describe("the keyboard", () => {
     });
 
     test("go on through the warning and the critical stages, until time is up", () => {
-      game = renderGame({ state: { highScore: 1, highScoreAtStart: 1 } });
+      game = renderGame({ state: { countIncrement: 2 } });
       game.click("#increase-img");
       game.click("#increase-img");
       game.wait(300);
@@ -304,16 +304,9 @@ describe("the keyboard", () => {
       expect(sparkles()).toHaveLength(0);
     });
 
-    test("do not come before a record is beaten", () => {
-      game = renderGame({ state: { highScore: 50, highScoreAtStart: 50 } });
+    test("do not come for a high score, only for a power-up", () => {
+      game = renderGame({ state: { highScore: 1, highScoreAtStart: 1 } });
       game.click("#increase-img");
-      game.wait(500);
-
-      expect(sparkles()).toHaveLength(0);
-    });
-
-    test("do not come on the first run, which has no record", () => {
-      game = renderGame();
       game.click("#increase-img");
       game.wait(500);
 

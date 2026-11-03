@@ -4,7 +4,7 @@ import { useGame, type BarStage } from "../../../../provider/useGame.ts";
 import { useProgressSparkles } from "./useProgressSparkles.ts";
 
 const COLORS = {
-  highScore: "var(--rainbow-gradient-bar)",
+  rainbow: "var(--rainbow-gradient-bar)",
   primary: "#AD9EFF",
   warning: "#ffb199",
   critical: "#f7628b",
@@ -20,7 +20,7 @@ const BLINK_FAST = "blink 0.4s linear infinite";
 const isRainbowStage = (stage: BarStage) => stage <= 1;
 
 function getBackground(stage: BarStage, rainbow: boolean): string {
-  if (rainbow && isRainbowStage(stage)) return COLORS.highScore;
+  if (rainbow && isRainbowStage(stage)) return COLORS.rainbow;
   if (stage === 0) return COLORS.primary;
   if (stage === 1) return COLORS.warning;
   return COLORS.critical;
@@ -43,8 +43,8 @@ export default function ProgressBar() {
 
   const fill = useRef<HTMLDivElement>(null);
   const sparkles = useRef<HTMLDivElement>(null);
-  // a high score, or a power-up that is running, makes the bar rainbow
-  const rainbow = state.isHighScore || state.countIncrement > 1;
+  // a power-up that is running makes the bar rainbow
+  const rainbow = state.countIncrement > 1;
   useProgressSparkles(
     fill,
     sparkles,
