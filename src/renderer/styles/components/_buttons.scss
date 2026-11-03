@@ -17,6 +17,14 @@
   filter: drop-shadow(0px 7px 0px var(--shadow-pink-020));
 }
 
+// once the game is over, none of the game's buttons can be pressed
+.game-ended {
+  .buttons,
+  .reset {
+    pointer-events: none;
+  }
+}
+
 .reset {
   .pixel-btn {
     filter: drop-shadow(0px 7px 0px var(--shadow-pink-020));

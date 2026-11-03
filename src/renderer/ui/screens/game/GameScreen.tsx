@@ -27,7 +27,7 @@ const pointerOf = (event: MouseEvent) => ({
 });
 
 export default function GameScreen() {
-  const { actions } = useGame();
+  const { state, actions } = useGame();
 
   const [screenRef, shake] =
     useReplayAnimation<HTMLDivElement>("penalty-shake");
@@ -37,7 +37,11 @@ export default function GameScreen() {
   useGameEvent("restarted", () => setRun((current) => current + 1));
 
   return (
-    <div id="game-container" ref={screenRef}>
+    <div
+      id="game-container"
+      ref={screenRef}
+      className={state.isGameOver ? "game-ended" : undefined}
+    >
       <div className="goal-chatbox" id="goal-chatbox">
         <GoalBox />
       </div>

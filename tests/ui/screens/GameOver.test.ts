@@ -263,6 +263,26 @@ describe("starting over", () => {
     expect(game.$("#loading-screen")).toBeNull();
   });
 
+  test("the game's buttons do nothing once the game is over", () => {
+    game = renderGame({ state: { counter: 12 } });
+    game.wait(TIME_IS_UP);
+    expect(game.$("#game-container").classList.contains("game-ended")).toBe(
+      true,
+    );
+
+    // the restart button, pressed while the game over screen comes in
+    game.click("#reset-img");
+    game.click("#increase-img");
+    game.click("#decrease-img");
+    expect(game.counter()).toBe("12");
+
+    fireAnimationEnd(game.$("#red-flash"));
+    expect(isShown()).toBe(true);
+    game.click("#reset-img");
+    expect(game.counter()).toBe("12");
+    expect(isShown()).toBe(true);
+  });
+
   test("the game over button goes through the loading screen", () => {
     game = renderGame({ state: { counter: 12 } });
     game.wait(TIME_IS_UP);
@@ -332,13 +352,13 @@ describe("starting over", () => {
     expect(game.$("#death-tracker").textContent).toBe("2");
   });
 
-  test("restarting before the screen appears cancels it", () => {
+  test("restarting before the screen appears does not cancel it", () => {
     game = renderGame();
     game.wait(TIME_IS_UP);
     game.click("#reset-img");
     fireAnimationEnd(game.$("#red-flash"));
 
-    expect(isShown()).toBe(false);
+    expect(isShown()).toBe(true);
   });
 });
 

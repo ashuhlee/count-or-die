@@ -114,6 +114,9 @@ export default function GameProvider({
         dispatch({ type: "boost", random: randomRef.current() }, pointer),
 
       reset() {
+        // once the game is over, only the game over screen can start a new one
+        if (stateRef.current.isGameOver) return;
+
         dispatch({ type: "restart" });
         playSound("mouseClick");
       },

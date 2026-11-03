@@ -11,7 +11,7 @@ const COLORS = {
 };
 
 // how much faster the stripes slide on a rainbow bar
-const RAINBOW_STRIPE_SPEED = 2.5;
+const RAINBOW_STRIPE_SPEED = 3;
 
 const BLINK_SLOW = "blink 0.8s linear infinite";
 const BLINK_FAST = "blink 0.4s linear infinite";
