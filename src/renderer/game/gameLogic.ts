@@ -133,7 +133,7 @@ function increase(state: GameState, random: number): Update {
   const events: GameEvent[] = [
     { type: "pressed", button: "increase", disabled: false },
     { type: "sound", name: "buttonInc" },
-    { type: "cursorCount", value: state.countIncrement, boosted: false },
+    { type: "cursorCount", value: state.countIncrement },
   ];
 
   const next = scoreAndGoal(
@@ -169,7 +169,6 @@ function boost(state: GameState, random: number): Update {
     { type: "sound", name: "useBoost" },
   ];
   if (boostsAvailable === 0) events.push({ type: "noBoostsLeft" });
-  events.push({ type: "cursorCount", value: pointsAdded, boosted: true });
 
   const next = scoreAndGoal(
     { ...state, counter: state.currentGoal, boostsAvailable },

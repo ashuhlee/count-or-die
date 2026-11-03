@@ -146,6 +146,14 @@ describe("clicking", () => {
     expect(game.$(".count-cursor").textContent).toBe("+4");
   });
 
+  test("a boost floats no count at the cursor, its notice says it", () => {
+    game = renderGame();
+    game.click("#decrease-img", { clientX: 1, clientY: 1 });
+
+    expect(game.$(".count-cursor")).toBeNull();
+    expect(game.$("#boost-notice")).not.toBeNull();
+  });
+
   test("nothing happens once the game is over", () => {
     game = renderGame({ state: { isGameOver: true } });
     game.click("#increase-img");

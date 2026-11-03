@@ -73,7 +73,7 @@ describe("clicking", () => {
     expect(events).toEqual([
       { type: "pressed", button: "increase", disabled: false },
       { type: "sound", name: "buttonInc" },
-      { type: "cursorCount", value: 1, boosted: false },
+      { type: "cursorCount", value: 1 },
       { type: "counterAnimation", name: "pop" },
     ]);
   });
@@ -239,9 +239,9 @@ describe("boosting", () => {
     // the goal was reached, so it moved on (random 0 adds 10)
     expect(state.currentGoal).toBe(40);
     expect(state.counter).toBe(30);
-    expect(has(events, { type: "cursorCount", value: 29, boosted: true })).toBe(
-      true,
-    );
+    // the boost notice says how much it added, so nothing floats at the cursor:
+    // the only count is the one of the click before it
+    expect(events.filter((e) => e.type === "cursorCount")).toHaveLength(1);
   });
 
   test("a boosted goal does not count towards the faster countdown", () => {

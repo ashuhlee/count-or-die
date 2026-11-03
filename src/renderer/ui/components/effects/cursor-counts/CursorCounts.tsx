@@ -2,18 +2,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useGameEvent } from "../../../../provider/useGameEvent.ts";
 
-const BOOST_COLORS = ["#E8E3F8", "#83d0ff", "#ae9eff", "#FF98E1"];
-const PLAIN_COLOR = "#FFFFFF";
+const COLOR = "#FFFFFF";
 
 type CursorCount = {
   id: number;
   value: number;
   x: number;
   y: number;
-  color: string;
-  isBoosted: boolean;
   xPos: number;
-  rotateDeg: number;
 };
 
 function FloatingCount({
@@ -23,23 +19,23 @@ function FloatingCount({
   count: CursorCount;
   onDone: (id: number) => void;
 }) {
-  const { id, value, x, y, color, isBoosted, xPos, rotateDeg } = count;
+  const { id, value, x, y, xPos } = count;
   const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const animation = ref.current.animate(
       [
         {
-          opacity: isBoosted ? 1 : 0.7,
+          opacity: 0.7,
           transform: `translateY(-20px) translateX(0) rotate(0) scale(1)`,
         },
         {
           opacity: 0,
           transform: `translateY(-80px)
 						translateX(${xPos}px)
-						rotate(${isBoosted ? rotateDeg : xPos}deg)
-						scale(${isBoosted ? 1.4 : 1.2})`,
-          color,
+						rotate(${xPos}deg)
+						scale(1.2)`,
+          color: COLOR,
         },
       ],
       { duration: 700, easing: "ease-out" },
@@ -52,7 +48,7 @@ function FloatingCount({
       animation.removeEventListener("finish", finish);
       animation.cancel();
     };
-  }, [id, color, isBoosted, xPos, rotateDeg, onDone]);
+  }, [id, xPos, onDone]);
 
   return (
     <span
@@ -61,7 +57,7 @@ function FloatingCount({
       style={{
         left: `${x}px`,
         top: `${y}px`,
-        color,
+        color: COLOR,
         textShadow: "0 2px 0 var(--shadow-pink-020)",
       }}
     >
@@ -73,15 +69,8 @@ function FloatingCount({
 export default function CursorCounts() {
   const [counts, setCounts] = useState<CursorCount[]>([]);
   const nextId = useRef(0);
-  const boostColor = useRef(0);
 
-  useGameEvent("cursorCount", ({ value, boosted, x, y }) => {
-    let color = PLAIN_COLOR;
-    if (boosted) {
-      color = BOOST_COLORS[boostColor.current];
-      boostColor.current = (boostColor.current + 1) % BOOST_COLORS.length;
-    }
-
+  useGameEvent("cursorCount", ({ value, x, y }) => {
     setCounts((current) => [
       ...current,
       {
@@ -89,10 +78,7 @@ export default function CursorCounts() {
         value,
         x,
         y,
-        color,
-        isBoosted: boosted,
         xPos: (Math.random() - 0.5) * 70,
-        rotateDeg: (Math.random() - 0.5) * 50,
       },
     ]);
   });
