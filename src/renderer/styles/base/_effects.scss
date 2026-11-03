@@ -149,10 +149,10 @@ $pop-total: $pop-letters * $pop-step + $pop-fall + $pop-pause;
 }
 
 .back-to-menu:hover span {
-  animation: back-letter-pop $pop-total ease-in-out infinite
+  animation: rotate-letter-pop $pop-total ease-in-out infinite
     calc(var(--index) * #{$pop-step});
 }
-@keyframes back-letter-pop {
+@keyframes rotate-letter-pop {
   0% {
     scale: 1;
     rotate: 0deg;
@@ -166,6 +166,37 @@ $pop-total: $pop-letters * $pop-step + $pop-fall + $pop-pause;
   100% {
     scale: 1;
     rotate: 0deg;
+  }
+}
+
+// the same without the turn, for the buttons
+#game-over .game-over-btns .wide-btn:hover .pixel-btn-label span,
+#play-btn:hover .pixel-btn-label > span {
+  display: inline-block;
+  animation: letter-pop $pop-total ease-in-out infinite
+    calc(var(--index) * #{$pop-step});
+}
+// a letter on its own loses the gap the font puts between letters in a run,
+// which is a pixel of the font, a sixth of its size
+#game-over .game-over-btns .wide-btn:hover .pixel-btn-label span {
+  letter-spacing: calc(1em / 6);
+
+  // and the font draws the gap between words closer than that
+  &[data-char="\a0 "] {
+    margin-left: calc(-1em / 3);
+  }
+}
+@keyframes letter-pop {
+  0% {
+    scale: 1;
+  }
+  #{pop-at($pop-rise)},
+  #{pop-at($pop-step)} {
+    scale: 1.15;
+  }
+  #{pop-at($pop-step + $pop-fall)},
+  100% {
+    scale: 1;
   }
 }
 .no-boosts-shake {

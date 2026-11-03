@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --shadow-pink-005: rgba(206, 42, 133, 0.05);
   --shadow-pink-008: rgba(206, 42, 133, 0.08);
   --shadow-pink-010: rgba(206, 42, 133, 0.1);
@@ -753,9 +753,10 @@ img {
     cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--delay);
 }
 .back-to-menu:hover span {
-  animation: back-letter-pop 2.18s ease-in-out infinite calc(var(--index)*0.04s);
+  animation: rotate-letter-pop 2.18s ease-in-out infinite
+    calc(var(--index)*0.04s);
 }
-@keyframes back-letter-pop {
+@keyframes rotate-letter-pop {
   0% {
     scale: 1;
     rotate: 0deg;
@@ -769,6 +770,34 @@ img {
   100% {
     scale: 1;
     rotate: 0deg;
+  }
+}
+#game-over .game-over-btns .wide-btn:hover .pixel-btn-label span,
+#play-btn:hover .pixel-btn-label > span {
+  display: inline-block;
+  animation: letter-pop 2.18s ease-in-out infinite calc(var(--index)*0.04s);
+}
+#game-over .game-over-btns .wide-btn:hover .pixel-btn-label span {
+  letter-spacing: 0.1666666667em;
+}
+#game-over
+  .game-over-btns
+  .wide-btn:hover
+  .pixel-btn-label
+  span[data-char=" "] {
+  margin-left: -0.3333333333em;
+}
+@keyframes letter-pop {
+  0% {
+    scale: 1;
+  }
+  3.2110091743%,
+  1.8348623853% {
+    scale: 1.15;
+  }
+  11.0091743119%,
+  100% {
+    scale: 1;
   }
 }
 .no-boosts-shake {
