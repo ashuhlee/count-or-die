@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import { useGame, type BarStage } from "../../../../provider/useGame.ts";
 import { useProgressSparkles } from "./useProgressSparkles.ts";
@@ -10,11 +10,18 @@ const COLORS = {
   critical: "#f7628b",
 };
 
-const BLINK_SLOW = "blink 0.8s linear infinite";
-const BLINK_FAST = "blink 0.5s linear infinite";
+// how much faster the stripes slide on a rainbow bar
+const RAINBOW_STRIPE_SPEED = 2.5;
 
-function getBackground(stage: BarStage, isHighScore: boolean): string {
-  if (stage === 0) return isHighScore ? COLORS.highScore : COLORS.primary;
+const BLINK_SLOW = "blink 0.8s linear infinite";
+const BLINK_FAST = "blink 0.4s linear infinite";
+
+// the rainbow lasts through the warning, and goes away in critical
+const isRainbowStage = (stage: BarStage) => stage <= 1;
+
+function getBackground(stage: BarStage, rainbow: boolean): string {
+  if (rainbow && isRainbowStage(stage)) return COLORS.highScore;
+  if (stage === 0) return COLORS.primary;
   if (stage === 1) return COLORS.warning;
   return COLORS.critical;
 }
@@ -36,20 +43,34 @@ export default function ProgressBar() {
 
   const fill = useRef<HTMLDivElement>(null);
   const sparkles = useRef<HTMLDivElement>(null);
+  // a high score, or a power-up that is running, makes the bar rainbow
+  const rainbow = state.isHighScore || state.countIncrement > 1;
   useProgressSparkles(
     fill,
     sparkles,
-    state.isHighScore &&
-      barStage === 0 &&
+    rainbow &&
+      isRainbowStage(barStage) &&
       !state.isGameOver &&
       ready &&
       !paused,
   );
 
+  const lines = useRef<HTMLDivElement>(null);
+  const rainbowBar = rainbow && isRainbowStage(barStage);
+  useEffect(() => {
+    const animations = lines.current?.getAnimations?.({ subtree: true }) ?? [];
+    for (const animation of animations) {
+      if ((animation as CSSAnimation).animationName === "slide-stripes") {
+        animation.playbackRate = rainbowBar ? RAINBOW_STRIPE_SPEED : 1;
+      }
+    }
+  }, [rainbowBar, state.round]);
+
   return (
     <>
       <div
         key={`stripes-${state.round}`}
+        ref={lines}
         className="pg-lines"
         style={{
           visibility: state.isGameOver ? "hidden" : "visible",
@@ -75,14 +96,14 @@ export default function ProgressBar() {
           animationPlayState: ready ? "running" : "paused",
           transformOrigin: "left",
           width: "140px",
-          background: getBackground(barStage, state.isHighScore),
+          background: getBackground(barStage, rainbow),
         }}
       ></div>
       <div className="progress-bg"></div>
       <div
         ref={sparkles}
         className="pg-sparkles"
-        style={{ opacity: barStage === 0 ? 1 : 0 }}
+        style={{ opacity: isRainbowStage(barStage) ? 1 : 0 }}
       ></div>
     </>
   );

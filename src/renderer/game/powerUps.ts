@@ -9,7 +9,7 @@ export type PowerUpType =
 
 type PowerUpDefinition = {
   type: PowerUpType;
-  weight: number; // how likely it is to appear, relative to the others
+  weight: number; // how likely it is to appear
   duration: number | null; // how long a timed effect lasts; null for instant ones
   sound: SoundName;
   effect: "good" | "bad";
@@ -28,7 +28,7 @@ export const POWER_UPS: PowerUpDefinition[] = [
   {
     type: "four_click",
     weight: 20,
-    duration: 3000,
+    duration: 4000,
     sound: "powerUp",
     effect: "good",
     description: "4x counter!",

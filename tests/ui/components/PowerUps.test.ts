@@ -168,6 +168,38 @@ describe("collecting one", () => {
     expect(game.counter()).toBe("03");
   });
 
+  test("2x makes the bar rainbow until it runs out", () => {
+    game = renderGame({ state: { highScore: 999 } });
+    const plain = game.$("#progress-bar").style.background;
+
+    spawn(DOUBLE, 0, 0, 0);
+    game.click(".power-up-img");
+    expect(game.$("#progress-bar").style.background).not.toBe(plain);
+
+    game.wait(2999);
+    expect(game.$("#progress-bar").style.background).not.toBe(plain);
+    game.wait(1);
+    expect(game.$("#progress-bar").style.background).toBe(plain);
+  });
+
+  test("2x also speeds up the stripes of the bar, until it runs out", () => {
+    const stripes = { animationName: "slide-stripes", playbackRate: 1 };
+    Element.prototype.getAnimations = () => [stripes] as unknown as Animation[];
+    try {
+      game = renderGame({ state: { highScore: 999 } });
+      expect(stripes.playbackRate).toBe(1);
+
+      spawn(DOUBLE, 0, 0, 0);
+      game.click(".power-up-img");
+      expect(stripes.playbackRate).toBeGreaterThan(1);
+
+      game.wait(3000);
+      expect(stripes.playbackRate).toBe(1);
+    } finally {
+      delete (Element.prototype as { getAnimations?: unknown }).getAnimations;
+    }
+  });
+
   test("2x holds its time while the home button asks", () => {
     // with a score, or the home button would not ask
     game = renderGame({ state: { highScore: 999, counter: 1 } });
