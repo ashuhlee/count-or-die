@@ -48,11 +48,7 @@ export default function ProgressBar() {
   useProgressSparkles(
     fill,
     sparkles,
-    rainbow &&
-      isRainbowStage(barStage) &&
-      !state.isGameOver &&
-      ready &&
-      !paused,
+    rainbow && !state.isGameOver && ready && !paused,
   );
 
   const lines = useRef<HTMLDivElement>(null);
@@ -100,11 +96,7 @@ export default function ProgressBar() {
         }}
       ></div>
       <div className="progress-bg"></div>
-      <div
-        ref={sparkles}
-        className="pg-sparkles"
-        style={{ opacity: isRainbowStage(barStage) ? 1 : 0 }}
-      ></div>
+      <div ref={sparkles} className="pg-sparkles"></div>
     </>
   );
 }

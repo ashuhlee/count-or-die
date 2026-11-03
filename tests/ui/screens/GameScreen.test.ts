@@ -283,7 +283,7 @@ describe("the keyboard", () => {
       expect(sparkles()).toHaveLength(0);
     });
 
-    test("go on through the warning, and stop when time is running out", () => {
+    test("go on through the warning and the critical stages, until time is up", () => {
       game = renderGame({ state: { highScore: 1, highScoreAtStart: 1 } });
       game.click("#increase-img");
       game.click("#increase-img");
@@ -292,14 +292,14 @@ describe("the keyboard", () => {
 
       // the bar changes color about half way through the round
       game.wait(10000);
-      expect((game.$(".pg-sparkles") as HTMLElement).style.opacity).toBe("1");
       expect(sparkles().length).toBeGreaterThan(0);
 
       // and again, to the critical color, a while later
       game.wait(4000);
-      expect((game.$(".pg-sparkles") as HTMLElement).style.opacity).toBe("0");
+      expect(sparkles().length).toBeGreaterThan(0);
 
-      // none are made any more, the last ones go
+      // none are made any more once the run is over, the last ones go
+      game.wait(TIME_IS_UP);
       game.wait(1000);
       expect(sparkles()).toHaveLength(0);
     });
