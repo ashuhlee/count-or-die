@@ -11,7 +11,9 @@ import { vi } from "vitest";
 window.HTMLMediaElement.prototype.play = () => Promise.resolve();
 window.HTMLMediaElement.prototype.pause = () => {};
 
-vi.mock("canvas-confetti", () => ({ default: vi.fn() }));
+vi.mock("canvas-confetti", () => ({
+  default: Object.assign(vi.fn(), { shapeFromPath: vi.fn() }),
+}));
 
 vi.mock("../src/renderer/ui/shaders/crt-shader/CRTShader.tsx", () => ({
   default: () => null,
