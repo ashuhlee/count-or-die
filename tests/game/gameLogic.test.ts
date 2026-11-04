@@ -606,6 +606,10 @@ describe("power-ups", () => {
     expect(state.trueGoalsReached).toBe(1);
     expect(state.highScore).toBe(35);
     expect(types(events)).toContain("newBest");
+
+    // only the sound of the power-up, not the one of reaching a goal
+    expect(has(events, { type: "sound", name: "powerUp" })).toBe(true);
+    expect(has(events, { type: "sound", name: "goalReached" })).toBe(false);
   });
 
   test("the penalty takes 25 points and may go below zero", () => {

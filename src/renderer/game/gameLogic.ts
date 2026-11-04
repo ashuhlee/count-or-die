@@ -106,6 +106,7 @@ function scoreAndGoal(
   boosted: boolean,
   random: number,
   events: GameEvent[],
+  goalSound = true,
 ): GameState {
   let next = state;
   let counterAnimation = animation;
@@ -128,7 +129,9 @@ function scoreAndGoal(
   }
 
   if (next.counter >= next.currentGoal) {
-    if (!boosted) events.push({ type: "sound", name: "goalReached" });
+    if (!boosted && goalSound) {
+      events.push({ type: "sound", name: "goalReached" });
+    }
 
     const trueGoalsReached = boosted
       ? next.trueGoalsReached
@@ -285,8 +288,6 @@ function collectPowerUp(
   const powerUp = getPowerUp(type);
   let next = state;
 
-  // the mirror of the penalty; it counts like points from clicks, so it may beat
-  // the high score or reach the goal
   if (type === "plus_25") {
     const events: GameEvent[] = [{ type: "sound", name: powerUp.sound }];
     next = scoreAndGoal(
@@ -295,6 +296,7 @@ function collectPowerUp(
       false,
       random,
       events,
+      false,
     );
     return { state: next, events };
   }
