@@ -31,6 +31,7 @@ afterEach(() => {
   delete window.electron;
   vi.useRealTimers();
   vi.restoreAllMocks();
+  vi.unstubAllEnvs();
 });
 
 // a round lasts 20 seconds; time is up a hair before
@@ -145,6 +146,14 @@ describe("clicking", () => {
     expect(game.$(".count-cursor").textContent).toBe("+4");
   });
 
+  test("a boost floats no count at the cursor, its notice says it", () => {
+    game = renderGame();
+    game.click("#decrease-img", { clientX: 1, clientY: 1 });
+
+    expect(game.$(".count-cursor")).toBeNull();
+    expect(game.$("#boost-notice")).not.toBeNull();
+  });
+
   test("nothing happens once the game is over", () => {
     game = renderGame({ state: { isGameOver: true } });
     game.click("#increase-img");
@@ -179,9 +188,95 @@ describe("the keyboard", () => {
 
     game.press(" ");
     expect(game.$("#boost-notice")).not.toBeNull();
+    // it says how many the boost added
+    expect(game.$("#boost-notice .diamond-notice--text").textContent).toContain(
+      "+30",
+    );
 
     game.wait(2500);
     expect(game.$("#boost-notice")).toBeNull();
+  });
+
+  test("a new best says so, for a moment", () => {
+    game = renderGame({ state: { highScore: 1, highScoreAtStart: 1 } });
+    game.click("#increase-img");
+    expect(game.$("#new-best-notice")).toBeNull();
+
+    game.click("#increase-img");
+    expect(game.$("#new-best-notice")).not.toBeNull();
+
+    // longer than the other notices
+    game.wait(500);
+    expect(game.$("#new-best-notice")).not.toBeNull();
+    game.wait(500);
+    expect(game.$("#new-best-notice")).toBeNull();
+  });
+
+  test.each([
+    ["the left", 0.1, "diamond-notice--left"],
+    ["the right", 0.9, "diamond-notice--right"],
+  ])("a new best shows on %s, picked at random", (_name, random, side) => {
+    vi.spyOn(Math, "random").mockReturnValue(random);
+    game = renderGame({ state: { highScore: 1, highScoreAtStart: 1 } });
+    game.click("#increase-img");
+    game.click("#increase-img");
+
+    expect(game.$("#new-best-notice .diamond-notice").className).toContain(
+      side,
+    );
+  });
+
+  test("a new best from a boost is always on the left, away from the boost notice", () => {
+    // the pick that would put it on the right, were it not from a boost
+    vi.spyOn(Math, "random").mockReturnValue(0.9);
+    game = renderGame({ state: { highScore: 1, highScoreAtStart: 1 } });
+    game.press(" ");
+
+    expect(game.$("#new-best-notice .diamond-notice").className).toContain(
+      "diamond-notice--left",
+    );
+    expect(game.$("#boost-notice .diamond-notice").className).toContain(
+      "diamond-notice--right",
+    );
+  });
+
+  test("a first run, with no record to beat, has no new best", () => {
+    game = renderGame();
+    game.click("#increase-img");
+    game.click("#increase-img");
+
+    expect(game.$("#new-best-notice")).toBeNull();
+  });
+
+  test("holding a key down scores once, not over and over", () => {
+    vi.stubEnv("DEV", false);
+    game = renderGame();
+    game.press("w");
+    for (let i = 0; i < 5; i++) game.press("w", { repeat: true });
+
+    expect(game.counter()).toBe("01");
+
+    // letting go and pressing again scores again
+    game.press("w");
+    expect(game.counter()).toBe("02");
+  });
+
+  test("holding a key keeps scoring while developing, to test with", () => {
+    vi.stubEnv("DEV", true);
+    game = renderGame();
+    game.press("w");
+    for (let i = 0; i < 5; i++) game.press("w", { repeat: true });
+
+    expect(game.counter()).toBe("06");
+  });
+
+  test("holding space boosts once", () => {
+    vi.stubEnv("DEV", false);
+    game = renderGame();
+    game.press(" ");
+    for (let i = 0; i < 5; i++) game.press(" ", { repeat: true });
+
+    expect(usedHearts()).toEqual([false, false, false, true]);
   });
 
   test("other keys do nothing", () => {
@@ -210,6 +305,72 @@ describe("the keyboard", () => {
     game.press("Escape");
     expect(game.$("#options-notice")).not.toBeNull();
     expect(alert).not.toHaveBeenCalled();
+  });
+
+  describe("the sparkles on the end of the progress bar", () => {
+    // jsdom lays nothing out: the bar is half full, on a 140 wide track
+    beforeEach(() => {
+      vi.spyOn(Element.prototype, "getBoundingClientRect").mockImplementation(
+        function (this: Element) {
+          const width = this.classList.contains("progress-bar") ? 70 : 140;
+          return {
+            left: 0,
+            right: width,
+            width,
+            top: 0,
+            bottom: 13,
+            height: 13,
+          } as DOMRect;
+        },
+      );
+    });
+
+    const sparkles = () => game.$$(".pg-sparkle");
+
+    test("come off the end of it while a power-up is running", () => {
+      game = renderGame({ state: { countIncrement: 2 } });
+      expect(sparkles()).toHaveLength(0);
+
+      game.click("#increase-img");
+      game.click("#increase-img");
+      game.wait(300);
+      expect(sparkles().length).toBeGreaterThan(0);
+
+      // they are gone again a moment after it ends
+      game.wait(TIME_IS_UP);
+      game.wait(1000);
+      expect(sparkles()).toHaveLength(0);
+    });
+
+    test("go on through the warning and the critical stages, until time is up", () => {
+      game = renderGame({ state: { countIncrement: 2 } });
+      game.click("#increase-img");
+      game.click("#increase-img");
+      game.wait(300);
+      expect(sparkles().length).toBeGreaterThan(0);
+
+      // the bar changes color about half way through the round
+      game.wait(10000);
+      expect(sparkles().length).toBeGreaterThan(0);
+
+      // and again, to the critical color, a while later
+      game.wait(4000);
+      expect(sparkles().length).toBeGreaterThan(0);
+
+      // none are made any more once the run is over, the last ones go
+      game.wait(TIME_IS_UP);
+      game.wait(1000);
+      expect(sparkles()).toHaveLength(0);
+    });
+
+    test("do not come for a high score, only for a power-up", () => {
+      game = renderGame({ state: { highScore: 1, highScoreAtStart: 1 } });
+      game.click("#increase-img");
+      game.click("#increase-img");
+      game.wait(500);
+
+      expect(sparkles()).toHaveLength(0);
+    });
   });
 
   test("keys do nothing once the game is over", () => {
@@ -278,7 +439,7 @@ describe("boosting", () => {
     game.click("#decrease-img");
     expect(usedHearts().filter(Boolean)).toHaveLength(2);
 
-    game.click("#reset-img");
+    game.restart();
 
     expect(usedHearts()).toEqual([false, false, false, false]);
     expect(game.$("#no-boosts").style.display).toBe("none");

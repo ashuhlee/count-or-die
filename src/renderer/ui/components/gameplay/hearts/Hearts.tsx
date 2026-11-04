@@ -10,11 +10,16 @@ import Letters from "../../text/letters/Letters.tsx";
 import Heart, { type HeartMelt } from "./Heart.tsx";
 import { useHeartSlots } from "./useHeartSlots.ts";
 
-const HEARTS: { colorClass: string; src: string; melt?: HeartMelt }[] = [
-  { colorClass: "heart-pink", src: heartPink, melt: {} },
-  { colorClass: "heart-purple", src: heartPurple, melt: {} },
-  { colorClass: "heart-blue", src: heartBlue, melt: {} },
-  { colorClass: "heart-white", src: heartWhite, melt: {} },
+const HEARTS: {
+  colorClass: string;
+  src: string;
+  shine: string; // the color of the shine that sweeps over it
+  melt?: HeartMelt;
+}[] = [
+  { colorClass: "heart-pink", src: heartPink, shine: "#ffa6d7", melt: {} },
+  { colorClass: "heart-purple", src: heartPurple, shine: "#bda9ff", melt: {} },
+  { colorClass: "heart-blue", src: heartBlue, shine: "#a4d0ff", melt: {} },
+  { colorClass: "heart-white", src: heartWhite, shine: "#d4dbff", melt: {} },
 ];
 
 export default function Hearts() {
@@ -38,12 +43,13 @@ export default function Hearts() {
         </span>
       </h1>
       <div className="hearts">
-        {HEARTS.map(({ colorClass, src, melt }, index) => (
+        {HEARTS.map(({ colorClass, src, shine, melt }, index) => (
           <Heart
             key={index}
             number={index + 1}
             colorClass={colorClass}
             src={src}
+            shine={shine}
             used={slots.used[index]}
             restoring={slots.restoring[index]}
             melt={melt}

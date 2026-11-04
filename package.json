@@ -1,7 +1,7 @@
 {
   "name": "count-or-die",
   "productName": "Count or Die",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.1",
   "author": "ashuhlee",
   "description": "",
   "main": ".vite/build/main.js",
@@ -45,7 +45,6 @@
   "dependencies": {
     "animate.css": "4.1.1",
     "canvas-confetti": "^1.9.4",
-    "powerglitch": "^2.5.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "simple-discord-rpc": "^1.0.1"

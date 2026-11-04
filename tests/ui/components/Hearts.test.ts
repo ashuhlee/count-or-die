@@ -25,6 +25,8 @@ function Harness() {
     null,
     createElement(GameScreen),
     button("replenish", () => actions.collectPowerUp("replenish_boosts")),
+    // the new run of the game over screen, which this does not show
+    button("start-over", () => actions.restartFromGameOver()),
   );
 }
 
@@ -64,7 +66,8 @@ describe("the hearts after a power-up", () => {
     game.wait(200);
     const before = hearts();
 
-    game.click("#reset-img");
+    game.click("#start-over");
+    game.wait(540);
 
     expect(hearts()[0]).not.toBe(before[0]);
     game.wait(2000);

@@ -7,7 +7,7 @@ import {
 } from "../../src/renderer/game/gameLogic.ts";
 import Game from "../../src/renderer/ui/Game.tsx";
 import GameProvider from "../../src/renderer/provider/GameProvider.tsx";
-import { renderInto } from "./dom.ts";
+import { fireAnimationEnd, renderInto } from "./dom.ts";
 
 type RenderGameOptions = {
   state?: Partial<GameState>;
@@ -60,6 +60,13 @@ export function renderGame({
       act(() => {
         vi.advanceTimersByTime(ms);
       });
+    },
+
+    restart() {
+      this.click("#end-run-btn");
+      fireAnimationEnd($("#red-flash"));
+      this.click("#game-over-btn");
+      this.wait(540);
     },
 
     // the score as the player reads it

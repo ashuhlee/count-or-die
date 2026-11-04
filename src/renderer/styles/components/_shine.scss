@@ -4,6 +4,7 @@
 //   --shine-delay     how long to wait before the first sweep
 //   --shine-ratio     how wide the bands are against the element's height
 //   --shine-frames    how many steps the sweep takes, like the frames of a gif
+//   --shine-color     the color of the bands, white when left out
 
 $shine-sweep: 0.6s; // how long the sweep takes
 $shine-rest: 5s; // delay until next sweep
@@ -43,7 +44,8 @@ $shine-columns: 21;
     left: 0;
     aspect-ratio: var(--shine-ratio);
     pointer-events: none;
-    background: shine-tile() 0 0 / 100% 100% no-repeat;
+    background: var(--shine-color, #fff);
+    mask: shine-tile() 0 0 / 100% 100% no-repeat;
     image-rendering: pixelated;
     mix-blend-mode: overlay;
     opacity: var(--shine-opacity);
@@ -53,16 +55,23 @@ $shine-columns: 21;
   }
 }
 
-@keyframes shine-sweep {
-  0% {
-    left: 0;
-    transform: translateX(-100%);
-  }
-  #{math.div($shine-sweep, $shine-sweep + $shine-rest) * 100%},
-  100% {
-    left: calc(100% * var(--shine-frames) / (var(--shine-frames) - 1));
-    transform: translateX(
-      calc(100% * (0.65 * var(--shine-frames) / (var(--shine-frames) - 1) - 1))
-    );
+@mixin sweep-keyframes($name, $period) {
+  @keyframes #{$name} {
+    0% {
+      left: 0;
+      transform: translateX(-100%);
+    }
+    #{math.div($shine-sweep, $period) * 100%},
+    100% {
+      left: calc(100% * var(--shine-frames) / (var(--shine-frames) - 1));
+      transform: translateX(
+        calc(
+          100% * (0.65 * var(--shine-frames) / (var(--shine-frames) - 1) - 1)
+        )
+      );
+    }
   }
 }
+
+@include sweep-keyframes(shine-sweep, $shine-sweep + $shine-rest);
+@include sweep-keyframes(shine-sweep-once, $shine-sweep);

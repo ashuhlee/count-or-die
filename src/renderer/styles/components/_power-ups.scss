@@ -1,3 +1,8 @@
+@use "shine";
+
+$shine-every: 1.5s;
+$power-up-width: 72px;
+
 .spawn-area {
   //border: 5px solid red; // debugging
   width: 70%;
@@ -23,16 +28,33 @@
 .power-up-img {
   position: absolute;
   pointer-events: visible;
-  height: 84px;
   top: -60px;
   transform: rotate(0);
   padding: 10px;
+  filter: drop-shadow(0 4px 0 var(--shadow-pink-015));
 }
 
 .power-up-melt .melt-in-shader__image {
-  width: auto;
-  height: 64px;
+  width: $power-up-width;
+  height: auto;
 }
+.power-up-art {
+  position: relative;
+}
+.power-up-art .power-up-shine {
+  position: absolute;
+  inset: 0;
+  mask: var(--power-up-mask) center / 100% 100% no-repeat;
+  --shine-opacity: 0.3;
+  --shine-delay: 1s;
+  --shine-duration: #{$shine-every};
+  &::after {
+    animation-name: power-up-shine-sweep;
+    animation-iteration-count: 1;
+  }
+}
+
+@include shine.sweep-keyframes(power-up-shine-sweep, $shine-every);
 
 @keyframes falling {
   to {

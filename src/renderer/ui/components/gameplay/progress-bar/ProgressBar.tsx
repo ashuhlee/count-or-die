@@ -1,17 +1,28 @@
+import { useEffect, useRef } from "react";
+
+import { isTimedPowerUp } from "../../../../game/gameLogic.ts";
 import { useGame, type BarStage } from "../../../../provider/useGame.ts";
+import { useProgressSparkles } from "./useProgressSparkles.ts";
 
 const COLORS = {
-  highScore: "var(--rainbow-gradient-bar)",
+  rainbow: "var(--rainbow-gradient-bar)",
   primary: "#AD9EFF",
   warning: "#ffb199",
   critical: "#f7628b",
 };
 
-const BLINK_SLOW = "blink 0.8s linear infinite";
-const BLINK_FAST = "blink 0.5s linear infinite";
+// how much faster the stripes slide on a rainbow bar
+const RAINBOW_STRIPE_SPEED = 3;
 
-function getBackground(stage: BarStage, isHighScore: boolean): string {
-  if (stage === 0) return isHighScore ? COLORS.highScore : COLORS.primary;
+const BLINK_SLOW = "blink 0.8s linear infinite";
+const BLINK_FAST = "blink 0.4s linear infinite";
+
+// the rainbow lasts through the warning, and goes away in critical
+const isRainbowStage = (stage: BarStage) => stage <= 1;
+
+function getBackground(stage: BarStage, rainbow: boolean): string {
+  if (rainbow) return COLORS.rainbow;
+  if (stage === 0) return COLORS.primary;
   if (stage === 1) return COLORS.warning;
   return COLORS.critical;
 }
@@ -29,12 +40,35 @@ function getAnimation(
 }
 
 export default function ProgressBar() {
-  const { state, barStage, ready } = useGame();
+  const { state, barStage, ready, paused } = useGame();
+
+  const fill = useRef<HTMLDivElement>(null);
+  const sparkles = useRef<HTMLDivElement>(null);
+  // a power-up that is running makes the bar rainbow
+  const rainbow = isTimedPowerUp(state);
+  useProgressSparkles(
+    fill,
+    sparkles,
+    rainbow && !state.isGameOver && ready && !paused,
+  );
+
+  const lines = useRef<HTMLDivElement>(null);
+  // stays rainbow through every stage while the time is frozen
+  const rainbowBar = rainbow && (isRainbowStage(barStage) || state.timeFrozen);
+  useEffect(() => {
+    const animations = lines.current?.getAnimations?.({ subtree: true }) ?? [];
+    for (const animation of animations) {
+      if ((animation as CSSAnimation).animationName === "slide-stripes") {
+        animation.playbackRate = rainbowBar ? RAINBOW_STRIPE_SPEED : 1;
+      }
+    }
+  }, [rainbowBar, state.round]);
 
   return (
     <>
       <div
         key={`stripes-${state.round}`}
+        ref={lines}
         className="pg-lines"
         style={{
           visibility: state.isGameOver ? "hidden" : "visible",
@@ -48,6 +82,7 @@ export default function ProgressBar() {
       </div>
       <div
         key={`fill-${state.round}`}
+        ref={fill}
         className="progress-bar"
         id="progress-bar"
         style={{
@@ -59,10 +94,13 @@ export default function ProgressBar() {
           animationPlayState: ready ? "running" : "paused",
           transformOrigin: "left",
           width: "140px",
-          background: getBackground(barStage, state.isHighScore),
+          background: state.isGameOver
+            ? COLORS.critical
+            : getBackground(barStage, rainbowBar),
         }}
       ></div>
       <div className="progress-bg"></div>
+      <div ref={sparkles} className="pg-sparkles"></div>
     </>
   );
 }

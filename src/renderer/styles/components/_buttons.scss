@@ -17,7 +17,15 @@
   filter: drop-shadow(0px 7px 0px var(--shadow-pink-020));
 }
 
-.reset {
+// once the game is over, none of the game's buttons can be pressed
+.game-ended {
+  .buttons,
+  .end-run {
+    pointer-events: none;
+  }
+}
+
+.end-run {
   .pixel-btn {
     filter: drop-shadow(0px 7px 0px var(--shadow-pink-020));
   }
@@ -29,7 +37,11 @@
 
   &:active {
     transform: scale(0.75);
-    filter: brightness(0.97) saturate(110%);
+    filter: brightness(0.95) saturate(110%);
+
+    .pixel-btn {
+      filter: none;
+    }
   }
 }
 
@@ -61,7 +73,7 @@
     &:active {
       scale: 0.9;
       rotate: 0deg !important;
-      filter: brightness(0.97) saturate(110%);
+      filter: brightness(0.95) saturate(110%);
     }
 
     img {

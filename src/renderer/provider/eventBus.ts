@@ -7,7 +7,6 @@ export type AppEvent =
   | {
       type: "cursorCount";
       value: number;
-      boosted: boolean;
       x: number;
       y: number;
     }

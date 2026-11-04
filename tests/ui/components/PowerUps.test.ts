@@ -49,13 +49,18 @@ function nextPowerUp(...randoms: number[]) {
   randoms.forEach((value) => random.mockReturnValueOnce(value));
 }
 
-// "which one" numbers. With every boost in place the choices are 2x (40),
-// 4x (20) and the penalty (20); with one missing there are two more (10, 8).
+// "which one" numbers. With every boost in place the choices are 2x (40), 4x
+// (20), the combo (15), the time freeze (15), the bonus (20) and the penalty
+// (20); with one missing there are two more (10, 8). Each number is inside the
+// range of its power-up either way.
 const DOUBLE = 0;
-const FOUR = 0.6;
-const PENALTY = 0.8;
-const EXTRA_BOOST = 0.87;
-const SUPERSTAR = 0.95;
+const FOUR = 0.35;
+const COMBO = 0.48;
+const FREEZE = 0.59;
+const BONUS = 0.72;
+const PENALTY = 0.86;
+const EXTRA_BOOST = 0.9;
+const SUPERSTAR = 0.97;
 
 const icons = () => game.$$(".power-up-img");
 const sounds = () => audio.playSound.mock.calls.map(([name]) => name);
@@ -108,7 +113,7 @@ describe("when they appear", () => {
     game.wait(6000);
     expect(icons()).toHaveLength(1);
 
-    game.click("#reset-img");
+    game.restart();
     expect(icons()).toHaveLength(0);
 
     game.wait(5999);
@@ -168,8 +173,61 @@ describe("collecting one", () => {
     expect(game.counter()).toBe("03");
   });
 
-  test("2x holds its time while the home button asks", () => {
+  test("collecting one makes the letters of the title pop", () => {
     game = renderGame({ state: { highScore: 999 } });
+    expect(game.$(".game-name").classList.contains("game-name-pop")).toBe(
+      false,
+    );
+
+    spawn(DOUBLE, 0, 0, 0);
+    game.click(".power-up-img");
+    expect(game.$(".game-name").classList.contains("game-name-pop")).toBe(true);
+  });
+
+  test("a high score alone does not make the bar rainbow", () => {
+    game = renderGame({ state: { highScore: 1, highScoreAtStart: 1 } });
+    const plain = game.$("#progress-bar").style.background;
+
+    game.click("#increase-img");
+    game.click("#increase-img");
+    expect(game.$("#progress-bar").style.background).toBe(plain);
+  });
+
+  test("2x makes the bar rainbow until it runs out", () => {
+    game = renderGame({ state: { highScore: 999 } });
+    const plain = game.$("#progress-bar").style.background;
+
+    spawn(DOUBLE, 0, 0, 0);
+    game.click(".power-up-img");
+    expect(game.$("#progress-bar").style.background).not.toBe(plain);
+
+    game.wait(2999);
+    expect(game.$("#progress-bar").style.background).not.toBe(plain);
+    game.wait(1);
+    expect(game.$("#progress-bar").style.background).toBe(plain);
+  });
+
+  test("2x also speeds up the stripes of the bar, until it runs out", () => {
+    const stripes = { animationName: "slide-stripes", playbackRate: 1 };
+    Element.prototype.getAnimations = () => [stripes] as unknown as Animation[];
+    try {
+      game = renderGame({ state: { highScore: 999 } });
+      expect(stripes.playbackRate).toBe(1);
+
+      spawn(DOUBLE, 0, 0, 0);
+      game.click(".power-up-img");
+      expect(stripes.playbackRate).toBeGreaterThan(1);
+
+      game.wait(3000);
+      expect(stripes.playbackRate).toBe(1);
+    } finally {
+      delete (Element.prototype as { getAnimations?: unknown }).getAnimations;
+    }
+  });
+
+  test("2x holds its time while the home button asks", () => {
+    // with a score, or the home button would not ask
+    game = renderGame({ state: { highScore: 999, counter: 1 } });
     spawn(DOUBLE, 0, 0, 0);
     game.click(".power-up-img");
     game.wait(1000);
@@ -181,10 +239,134 @@ describe("collecting one", () => {
     // two of its three seconds are left
     game.wait(1999);
     game.click("#increase-img");
-    expect(game.counter()).toBe("02");
+    expect(game.counter()).toBe("03");
     game.wait(1);
     game.click("#increase-img");
+    expect(game.counter()).toBe("04");
+  });
+
+  test("a combo adds one more with each click, for three seconds", () => {
+    game = renderGame({ state: { highScore: 999 } });
+    spawn(COMBO, 0, 0, 0);
+    game.click(".power-up-img");
+
+    game.click("#increase-img");
+    expect(game.counter()).toBe("01");
+    game.click("#increase-img");
     expect(game.counter()).toBe("03");
+    game.click("#increase-img");
+    expect(game.counter()).toBe("06");
+
+    game.wait(3000);
+    game.click("#increase-img");
+    expect(game.counter()).toBe("07");
+  });
+
+  test("a combo makes the bar rainbow until it runs out", () => {
+    game = renderGame({ state: { highScore: 999 } });
+    const plain = game.$("#progress-bar").style.background;
+
+    spawn(COMBO, 0, 0, 0);
+    game.click(".power-up-img");
+    expect(game.$("#progress-bar").style.background).not.toBe(plain);
+
+    game.wait(3000);
+    expect(game.$("#progress-bar").style.background).toBe(plain);
+  });
+
+  test("the time freeze stops the countdown for three seconds", () => {
+    game = renderGame({ state: { highScore: 999 } });
+    spawn(FREEZE, 0, 0, 0);
+    game.click(".power-up-img");
+
+    expect(document.documentElement.hasAttribute("data-frozen")).toBe(true);
+    expect(sounds()).toContain("powerUp");
+
+    // time is up 19.9 seconds into the round, and six had passed when it was
+    // collected; with three that did not count, it is up 22.9 seconds in
+    // in steps, so that the screen gets to update after the freeze ends
+    for (let second = 0; second < 16; second++) game.wait(1000);
+    expect(game.$("#red-flash").classList.contains("flash")).toBe(false);
+    expect(document.documentElement.hasAttribute("data-frozen")).toBe(false);
+
+    game.wait(1000);
+    expect(game.$("#red-flash").classList.contains("flash")).toBe(true);
+  });
+
+  test("a pause in the middle of a freeze does not end it early", () => {
+    game = renderGame({ state: { highScore: 999, counter: 1 } });
+    spawn(FREEZE, 0, 0, 0);
+    game.click(".power-up-img");
+
+    game.click("#home-btn");
+    game.wait(10000);
+    game.click("#alert-no");
+
+    // all three seconds of the freeze are still there, with the countdown held
+    game.wait(2900);
+    expect(document.documentElement.hasAttribute("data-frozen")).toBe(true);
+    game.wait(100);
+    expect(document.documentElement.hasAttribute("data-frozen")).toBe(false);
+
+    // and it counts down again, with 13.9 of the round's seconds left
+    for (let second = 0; second < 13; second++) game.wait(1000);
+    expect(game.$("#red-flash").classList.contains("flash")).toBe(false);
+    game.wait(1000);
+    expect(game.$("#red-flash").classList.contains("flash")).toBe(true);
+  });
+
+  test("the time freeze keeps the bar rainbow, even when time is short", () => {
+    // a short round, so that the bar has its critical color when it appears
+    game = renderGame({ state: { highScore: 999, roundSeconds: 7 } });
+    const plain = game.$("#progress-bar").style.background;
+
+    spawn(FREEZE, 0, 0, 0);
+    const critical = game.$("#progress-bar").style.background;
+    expect(critical).not.toBe(plain);
+
+    game.click(".power-up-img");
+    expect(game.$("#progress-bar").style.background).not.toBe(critical);
+
+    game.wait(3000);
+    expect(game.$("#progress-bar").style.background).toBe(critical);
+  });
+
+  test("only the rare ones shine", () => {
+    game = renderGame({ state: { highScore: 999 } });
+    spawn(DOUBLE, 0, 0, 0);
+    expect(game.$(".power-up-shine")).toBeNull();
+    game.click(".power-up-img");
+
+    spawn(COMBO, 0, 0, 0);
+    expect(game.$(".power-up-shine")).not.toBeNull();
+    expect(game.$(".power-up-shine").classList.contains("shine")).toBe(true);
+  });
+
+  test("a new run after a game over does not start with the power-up still on", () => {
+    // it begins with a power-up running, and so with a rainbow bar
+    game = renderGame({ state: { highScore: 999, countIncrement: 4 } });
+    const rainbow = game.$("#progress-bar").style.background;
+
+    // time is up 19.9 seconds in
+    game.wait(19900);
+    fireAnimationEnd(game.$("#red-flash"));
+    game.click("#game-over-btn");
+    game.wait(600);
+
+    expect(game.$("#progress-bar").style.background).not.toBe(rainbow);
+    expect(game.$$(".pg-sparkle")).toHaveLength(0);
+    game.click("#increase-img");
+    expect(game.counter()).toBe("01");
+  });
+
+  test("the bonus adds 25 points at once, and says so", () => {
+    game = renderGame({ state: { highScore: 999 } });
+    spawn(BONUS, 0, 0, 0);
+    game.click(".power-up-img");
+
+    expect(game.counter()).toBe("25");
+    expect(game.$("#power-up-notice")).not.toBeNull();
+    expect(sounds()).toContain("powerUp");
   });
 
   test("4x quadruples them", () => {
@@ -196,14 +378,27 @@ describe("collecting one", () => {
     expect(game.counter()).toBe("04");
   });
 
-  test("a power-up carries on through a restart", () => {
+  test("a new run does not start with it still on", () => {
     game = renderGame({ state: { highScore: 999 } });
-    spawn(DOUBLE, 0, 0, 0);
+    spawn(FOUR, 0, 0, 0);
     game.click(".power-up-img");
-    game.click("#reset-img");
+    const rainbow = game.$("#progress-bar").style.background;
+
+    game.restart();
+    expect(game.$("#progress-bar").style.background).not.toBe(rainbow);
 
     game.click("#increase-img");
-    expect(game.counter()).toBe("02");
+    expect(game.counter()).toBe("01");
+  });
+
+  test("ending the run ends the time freeze", () => {
+    game = renderGame({ state: { highScore: 999 } });
+    spawn(FREEZE, 0, 0, 0);
+    game.click(".power-up-img");
+    expect(document.documentElement.hasAttribute("data-frozen")).toBe(true);
+
+    game.click("#end-run-btn");
+    expect(document.documentElement.hasAttribute("data-frozen")).toBe(false);
   });
 });
 
@@ -247,7 +442,7 @@ describe("boost power-ups", () => {
       seen.add(icons()[0].dataset.powerUpType);
       game.click(".power-up-img");
       // a fresh round, so the clock never runs out while looking
-      game.click("#reset-img");
+      game.restart();
     }
 
     expect(seen.has("extra_boost")).toBe(false);
@@ -366,7 +561,7 @@ describe("boost power-ups", () => {
     game.click(".power-up-img");
     game.wait(0);
 
-    game.click("#reset-img");
+    game.restart();
     expect(usedHearts()).toEqual([false, false, false, false]);
 
     // nothing is left to come back, so nothing is left restoring
@@ -390,6 +585,18 @@ describe("missing one", () => {
     expect(icons()).toHaveLength(0);
     game.wait(1);
     expect(icons()).toHaveLength(1);
+  });
+
+  test("the end of its shine does not take it off the screen early", () => {
+    game = renderGame();
+    spawn(COMBO, 0, 0, 0);
+
+    // the shine ends before the fall does
+    fireAnimationEnd(game.$(".power-up-shine"));
+    expect(icons()).toHaveLength(1);
+
+    fireAnimationEnd(icons()[0]);
+    expect(icons()).toHaveLength(0);
   });
 });
 

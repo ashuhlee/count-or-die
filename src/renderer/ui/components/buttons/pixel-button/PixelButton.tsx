@@ -9,6 +9,7 @@ type PixelButtonProps = {
   highlight?: string;
   shade?: string;
   textShadow?: string;
+  shine?: boolean;
 } & ComponentPropsWithoutRef<"button">;
 
 export default function PixelButton({
@@ -20,6 +21,7 @@ export default function PixelButton({
   highlight,
   shade,
   textShadow,
+  shine,
   className,
   style,
   children,
@@ -45,6 +47,7 @@ export default function PixelButton({
       {...rest}
     >
       <span className="pixel-btn-label">{children}</span>
+      {shine && <span className="pixel-btn-shine shine" aria-hidden="true" />}
     </button>
   );
 }

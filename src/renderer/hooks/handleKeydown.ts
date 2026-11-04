@@ -3,9 +3,12 @@ import { requestSettings } from "../utils/events/settingsNotice.ts";
 type KeyBinds = {
   onIncrease: () => void;
   onBoost: () => void;
+  onStart: () => void;
 };
 
 export function handleKeydown(event: KeyboardEvent, handlers: KeyBinds): void {
+  if (event.repeat && !import.meta.env.DEV) return;
+
   if (event.key === "Escape") {
     requestSettings();
     return;
@@ -25,6 +28,7 @@ export function handleKeydown(event: KeyboardEvent, handlers: KeyBinds): void {
 
     case " ":
       handlers.onBoost();
+      handlers.onStart();
       break;
   }
 }

@@ -3,13 +3,16 @@ import type { SoundName } from "./events.ts";
 export type PowerUpType =
   | "double_click"
   | "four_click"
+  | "combo"
+  | "time_freeze"
+  | "plus_25"
   | "minus_25"
   | "extra_boost"
   | "replenish_boosts";
 
 type PowerUpDefinition = {
   type: PowerUpType;
-  weight: number; // how likely it is to appear, relative to the others
+  weight: number; // how likely it is to appear
   duration: number | null; // how long a timed effect lasts; null for instant ones
   sound: SoundName;
   effect: "good" | "bad";
@@ -32,6 +35,30 @@ export const POWER_UPS: PowerUpDefinition[] = [
     sound: "powerUp",
     effect: "good",
     description: "4x counter!",
+  },
+  {
+    type: "combo",
+    weight: 15,
+    duration: 2500,
+    sound: "powerUp",
+    effect: "good",
+    description: "combo!",
+  },
+  {
+    type: "time_freeze",
+    weight: 15,
+    duration: 3000,
+    sound: "powerUp",
+    effect: "good",
+    description: "time freeze!",
+  },
+  {
+    type: "plus_25",
+    weight: 20,
+    duration: null,
+    sound: "powerUp",
+    effect: "good",
+    description: "+25 bonus!",
   },
   {
     type: "minus_25",
@@ -61,11 +88,16 @@ export const POWER_UPS: PowerUpDefinition[] = [
 
 const BOOST_TYPES = new Set<PowerUpType>(["extra_boost", "replenish_boosts"]);
 
+const RARE_WEIGHT = 15;
+
+export const isRare = (type: PowerUpType): boolean =>
+  getPowerUp(type).weight <= RARE_WEIGHT;
+
 export function getPowerUp(type: PowerUpType): PowerUpDefinition {
   return POWER_UPS.find((powerUp) => powerUp.type === type);
 }
 
-// boost power-ups are pointless while every boost is still there
+// skip boost power-ups while all boosts are available
 export function availablePowerUps(
   boostsAvailable: number,
   maxBoosts: number,

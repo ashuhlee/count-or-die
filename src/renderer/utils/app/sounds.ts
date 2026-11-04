@@ -2,7 +2,7 @@ import type { SoundName } from "../../game/events.ts";
 
 import bgMusicFile from "@assets/audio/music/the-return-of-the-8-bit-era.mp3";
 import menuMusicFile from "@assets/audio/music/lightyeartraxx-kim-lightyear-time-is-up.mp3";
-import gameOverMusicFile from "@assets/audio/sfx/game-over-music.mp3";
+import gameOverMusicFile from "@assets/audio/music/game-over-music.mp3";
 
 import btnIncFxFile from "@assets/audio/sfx/button-press-1.mp3";
 
@@ -113,6 +113,13 @@ export function playSound(name: SoundName): void {
 
 export function pauseSound(name: SoundName): void {
   audioConfig[name].audio.pause();
+}
+
+// the music, as opposed to the sound effects
+const MUSIC: SoundName[] = ["bgMusic", "menuMusic", "gameOverMusic"];
+
+export function muteMusic(muted: boolean): void {
+  for (const name of MUSIC) audioConfig[name].audio.muted = muted;
 }
 
 export function toggleAudio(mute: boolean): void {

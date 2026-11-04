@@ -63,6 +63,25 @@ describe("running out of time", () => {
     expect(isShown()).toBe(true);
   });
 
+  test("the bar ends full and critical when time runs out", () => {
+    game = renderGame();
+    game.wait(TIME_IS_UP);
+
+    expect(barColor()).toBe("rgb(247, 98, 139)");
+    // nothing drains it any more
+    expect(game.$("#progress-bar").style.animation).toBe("none");
+  });
+
+  test("the bar ends full and critical when the run is ended early", () => {
+    game = renderGame();
+    // early on, it still has its first color
+    expect(barColor()).toBe("rgb(173, 158, 255)");
+
+    game.click("#end-run-btn");
+    expect(barColor()).toBe("rgb(247, 98, 139)");
+    expect(game.$("#progress-bar").style.animation).toBe("none");
+  });
+
   test("shows a phrase, the final score and counts the death", () => {
     game = renderGame({ state: { highScore: 99 } });
     game.click("#increase-img");
@@ -207,30 +226,78 @@ describe("running out of time", () => {
 });
 
 describe("starting over", () => {
-  test("the reset button restarts right away", () => {
-    fakeElectron();
+  test("the end run button ends the run, with the red flash, like the timer does", () => {
     game = renderGame({ state: { counter: 12, boostsAvailable: 2 } });
-    game.click("#reset-img");
+    expect(game.$("#red-flash").classList.contains("flash")).toBe(false);
 
-    expect(game.counter()).toBe("00");
-    expect(game.$$(".hearts > div.heart-use")).toHaveLength(0);
-    expect(sounds()).toContain("mouseClick");
-    expect(
-      sounds().filter((name) => name === "bgMusic").length,
-    ).toBeGreaterThan(1);
-    expect(window.electron.setDiscordStatus).toHaveBeenCalledWith({
-      gameStatusRPC: "in-game",
-    });
+    game.click("#end-run-btn");
+    expect(sounds()).toContain("gameOver");
+    expect(game.$("#red-flash").classList.contains("flash")).toBe(true);
+
+    fireAnimationEnd(game.$("#red-flash"));
+    expect(isShown()).toBe(true);
+    expect(game.$("#score-tracker").textContent).toBe("12");
+    expect(game.$("#death-tracker").textContent).toBe("1");
   });
 
   test("restarts the countdown from the top", () => {
     game = renderGame();
     game.wait(15000);
-    game.click("#reset-img");
+    game.restart();
 
     expect(barColor()).toBe("rgb(173, 158, 255)");
     game.wait(TIME_IS_UP - 1);
     expect(game.$("#red-flash").className).toBe("");
+  });
+
+  test("space starts a new run once the screen has been up a moment", () => {
+    game = renderGame({ state: { counter: 12 } });
+    game.wait(TIME_IS_UP);
+    fireAnimationEnd(game.$("#red-flash"));
+
+    // still pressing it from the run
+    game.press(" ");
+    game.wait(799);
+    game.press(" ");
+    expect(game.$("#loading-screen")).toBeNull();
+
+    game.wait(1);
+    game.press(" ");
+    expect(sounds()).toContain("buttonClick");
+    expect(game.$("#loading-screen")).not.toBeNull();
+
+    game.wait(530);
+    expect(isShown()).toBe(false);
+    expect(game.counter()).toBe("00");
+  });
+
+  test("space does not start a new run before the game over screen shows", () => {
+    game = renderGame({ state: { counter: 12 } });
+    game.wait(TIME_IS_UP + 2000);
+    expect(isShown()).toBe(false);
+
+    game.press(" ");
+    expect(game.$("#loading-screen")).toBeNull();
+  });
+
+  test("the game's buttons do nothing once the game is over", () => {
+    game = renderGame({ state: { counter: 12 } });
+    game.wait(TIME_IS_UP);
+    expect(game.$("#game-container").classList.contains("game-ended")).toBe(
+      true,
+    );
+
+    // the restart button, pressed while the game over screen comes in
+    game.click("#end-run-btn");
+    game.click("#increase-img");
+    game.click("#decrease-img");
+    expect(game.counter()).toBe("12");
+
+    fireAnimationEnd(game.$("#red-flash"));
+    expect(isShown()).toBe(true);
+    game.click("#end-run-btn");
+    expect(game.counter()).toBe("12");
+    expect(isShown()).toBe(true);
   });
 
   test("the game over button goes through the loading screen", () => {
@@ -280,15 +347,6 @@ describe("starting over", () => {
     expect(game.counter()).toBe("00");
   });
 
-  test("the reset button keeps the page, so the counter can shake", () => {
-    game = renderGame({ state: { counter: 12 } });
-    const page = game.$("#app");
-
-    game.click("#reset-img");
-
-    expect(game.$("#app")).toBe(page);
-  });
-
   test("a new game can be played, and lost, again", () => {
     game = renderGame();
     game.wait(TIME_IS_UP);
@@ -302,13 +360,13 @@ describe("starting over", () => {
     expect(game.$("#death-tracker").textContent).toBe("2");
   });
 
-  test("restarting before the screen appears cancels it", () => {
+  test("ending the run again while the red flash plays does not cancel it", () => {
     game = renderGame();
     game.wait(TIME_IS_UP);
-    game.click("#reset-img");
+    game.click("#end-run-btn");
     fireAnimationEnd(game.$("#red-flash"));
 
-    expect(isShown()).toBe(false);
+    expect(isShown()).toBe(true);
   });
 });
 

@@ -20,7 +20,7 @@ export type LoadingScreenState = {
 export type GameActions = {
   increase: (pointer?: Pointer) => void;
   boost: (pointer?: Pointer) => void;
-  reset: () => void;
+  endRun: () => void;
   restartFromGameOver: () => void;
   play: () => void;
   backToMenu: () => void;
@@ -40,7 +40,6 @@ export type GameContextValue = {
   actions: GameActions;
   ready: boolean;
   paused: boolean;
-  // the timers of the game, which stop while it is paused
   clock: GameClock;
   screen: Screen;
   cameFromGame: boolean;

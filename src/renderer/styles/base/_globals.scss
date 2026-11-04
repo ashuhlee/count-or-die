@@ -23,10 +23,10 @@
 
   --rainbow-gradient-bar: linear-gradient(
     to right,
-    #ffd5a5,
-    #ffb2ee,
-    #c0c3ff,
-    #a7eaff
+    #ffa7eb,
+    #b8abff,
+    #bde4ff,
+    #d9dfff
   );
 
   --rainbow-gradient-text: linear-gradient(
@@ -42,10 +42,12 @@
 $assets: "../assets";
 $body-bg-image: "#{$assets}/ui/textures/tile-2.png";
 $game-over-bg: "#{$assets}/ui/textures/tile-go.png";
-$loading-bg: "#{$assets}/ui/textures/tile-loading-2.png";
-$loading-bg-2: "#{$assets}/ui/textures/tile-loading-3.png";
+$loading-bg: "#{$assets}/ui/textures/tile-loading-1.png";
+$loading-bg-2: "#{$assets}/ui/textures/tile-loading-2.png";
 $melt-mask: "#{$assets}/ui/masks/drip-mask.png";
-$cursor: "#{$assets}/ui/hand.png";
+$cursor-hand: "#{$assets}/ui/hand.svg";
+$cursor-hand-x: 11;
+$cursor-hand-y: 2;
 $delay-step: 0.3s;
 
 $fonts: "../assets/fonts";

@@ -31,7 +31,6 @@ export default function Game() {
   const [page, setPage] = useState(0);
   useGameEvent("pageReset", () => setPage((current) => current + 1));
 
-  // asking before the home button ends the run
   const [endingRun, setEndingRun] = useState(false);
   useGameEvent("gameOver", () => setEndingRun(false));
   useGameEvent("restarted", () => setEndingRun(false));
@@ -76,7 +75,11 @@ export default function Game() {
           inGame={screen === "game"}
           onHome={
             screen === "game"
-              ? () => loading.mounted || setEndingRun(true)
+              ? () => {
+                  if (loading.mounted) return;
+                  if (state.counter === 0) actions.backToMenu();
+                  else setEndingRun(true);
+                }
               : undefined
           }
         />
@@ -100,14 +103,14 @@ export default function Game() {
           </>
         )}
         <p id="app-ver" className="app-ver">
-          {__APP_VERSION__}-beta
+          {__APP_VERSION__}
         </p>
       </Fragment>
       {popupShown && (
         <AlertPopup
           leaving={!asking}
           text={
-            "End this run and go back to the main menu?\nYour score will be saved."
+            "Are you sure you want to end this run?\nYour score will be saved."
           }
           border="#bfb3ff"
           onYes={() => {

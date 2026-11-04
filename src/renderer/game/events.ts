@@ -26,11 +26,12 @@ export type GameEvent =
   | { type: "stopSound"; name: SoundName }
   | { type: "pressed"; button: "increase" | "decrease"; disabled: boolean }
   | { type: "counterAnimation"; name: CounterAnimation }
-  | { type: "cursorCount"; value: number; boosted: boolean }
+  | { type: "cursorCount"; value: number }
   | { type: "goalChanged"; direction: "forward" | "reverse" }
   | { type: "highScore"; score: number }
   | { type: "confetti" }
-  | { type: "boostNotification" }
+  | { type: "newBest"; boosted: boolean }
+  | { type: "boostNotification"; points: number }
   | { type: "noBoostsFlash" }
   | { type: "noBoostsLeft" }
   | {

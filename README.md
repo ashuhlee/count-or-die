@@ -47,12 +47,16 @@ Compete against your personal best high score. In future versions, compare your 
 
 As you play, power-ups randomly spawn on the screen, but you have to click them before they vanish. And try not to click _certain_ ones.
 
-| Type                                                                                                                     | Effect           | Chance of Spawning |
-| ------------------------------------------------------------------------------------------------------------------------ | ---------------- | ------------------ |
-| <img height="36" alt="candy" src="https://github.com/user-attachments/assets/aff7a350-c06e-4e74-8612-f2e313e364df"/>     | 2x counter       | 40%                |
-| <img height="36" alt="donut" src="https://github.com/user-attachments/assets/bcc83aa0-7ebb-4d22-a9b5-5b86ae725106"/>     | 4x counter       | 20%                |
-| <img height="36" alt="star" src="https://github.com/user-attachments/assets/f52dbe04-cbde-4de5-af6d-f8ca8b51cb09"/>      | Extra boost      | 10%                |
-| <img height="36" alt="superstar" src="https://github.com/user-attachments/assets/5b54f551-8a58-4822-b929-9ab59617f6d2"/> | Replenish boosts | 8%                 |
+| Type                                                                                                                    | Effect              | Chance of Spawning |
+| ----------------------------------------------------------------------------------------------------------------------- | ------------------- | ------------------ |
+| <img width="36" alt="purple candy" src="src/renderer/assets/ui/power-ups/candy-purple.png"/>                            | 2x counter          | 40%                |
+| <img width="36" alt="blue candy" src="src/renderer/assets/ui/power-ups/candy-blue.png"/>                                | 4x counter          | 20%                |
+| <img width="36" alt="pink candy" src="src/renderer/assets/ui/power-ups/candy-pink.png"/>                                | Combo (+1, +2, +3…) | 15%                |
+| <img width="36" alt="pink donut" src="src/renderer/assets/ui/power-ups/donut-pink.png"/>                                | +25 bonus           | 20%                |
+| <img width="36" alt="popsicle" src="src/renderer/assets/ui/power-ups/popsicle-pink.png"/>                               | Time freeze         | 15%                |
+| <img width="36" alt="star" src="https://github.com/user-attachments/assets/f52dbe04-cbde-4de5-af6d-f8ca8b51cb09"/>      | Extra boost         | 10%                |
+| <img width="36" alt="superstar" src="https://github.com/user-attachments/assets/5b54f551-8a58-4822-b929-9ab59617f6d2"/> | Replenish boosts    | 8%                 |
+| <img width="36" alt="brown donut" src="src/renderer/assets/ui/power-ups/donut-brown.png"/>                              | −25 penalty         | 20%                |
 
 ### Controls
 

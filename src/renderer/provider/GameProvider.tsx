@@ -14,7 +14,7 @@ import {
   type GameAction,
   type GameState,
 } from "../game/gameLogic.ts";
-import { createGameClock } from "../game/gameClock.ts";
+import { createGameClock, type ClockTimer } from "../game/gameClock.ts";
 import { getPowerUp } from "../game/powerUps.ts";
 import { loadSavedGame } from "../utils/storage/savedGame.ts";
 import { quitGame } from "../utils/app/quitGame.ts";
@@ -64,6 +64,9 @@ export default function GameProvider({
   const [clock] = useState(() => createGameClock());
   useEffect(() => () => clock.clear(), [clock]);
 
+  const [countdownClock] = useState(() => createGameClock());
+  useEffect(() => () => countdownClock.clear(), [countdownClock]);
+
   const [paused, setPaused] = useState(false);
   const pausedRef = useRef(false);
 
@@ -73,6 +76,27 @@ export default function GameProvider({
     return () => document.documentElement.removeAttribute("data-paused");
   }, [paused]);
 
+  // when the power-up that is running ends; a new one takes its place, and the
+  // end of the run takes it away
+  const powerUpEnd = useRef<ClockTimer>(undefined);
+  useEffect(() => {
+    if (state.isGameOver) clock.cancel(powerUpEnd.current);
+  }, [state.isGameOver, clock]);
+
+  // time is frozen: the countdown + bar stop
+  const frozenRef = useRef(false);
+  useEffect(() => {
+    frozenRef.current = state.timeFrozen;
+    document.documentElement.toggleAttribute("data-frozen", state.timeFrozen);
+
+    if (state.timeFrozen) countdownClock.pause();
+    else if (!pausedRef.current) countdownClock.resume();
+  }, [state.timeFrozen, countdownClock]);
+  useEffect(
+    () => () => document.documentElement.removeAttribute("data-frozen"),
+    [],
+  );
+
   const randomRef = useRef(random);
   useEffect(() => {
     randomRef.current = random;
@@ -81,6 +105,7 @@ export default function GameProvider({
   const dispatch = useCallback(
     (action: GameAction, pointer?: Pointer) => {
       const update = reduce(stateRef.current, action);
+      if (action.type === "restart") clock.cancel(powerUpEnd.current);
 
       stateRef.current = update.state;
       setState(update.state);
@@ -90,7 +115,7 @@ export default function GameProvider({
         performEvent(event, { bus, later, deathCount, pointer }),
       );
     },
-    [bus, later],
+    [bus, clock, later],
   );
 
   const ready = useStartupDone();
@@ -98,7 +123,7 @@ export default function GameProvider({
   const barStage = useCountdown(
     state,
     () => dispatch({ type: "timerExpired" }),
-    clock,
+    countdownClock,
     ready && screen === "game",
   );
   const { loading, cover } = useLoadingScreen(later);
@@ -113,9 +138,9 @@ export default function GameProvider({
         pausedRef.current ||
         dispatch({ type: "boost", random: randomRef.current() }, pointer),
 
-      reset() {
-        dispatch({ type: "restart" });
-        playSound("mouseClick");
+      endRun() {
+        if (stateRef.current.isGameOver) return;
+        dispatch({ type: "endRun" });
       },
 
       restartFromGameOver() {
@@ -150,11 +175,19 @@ export default function GameProvider({
       reportBug,
 
       collectPowerUp(type) {
-        dispatch({ type: "collectPowerUp", powerUp: type });
+        dispatch({
+          type: "collectPowerUp",
+          powerUp: type,
+          random: randomRef.current(),
+        });
 
         const { duration } = getPowerUp(type);
         if (duration !== null) {
-          clock.after(() => dispatch({ type: "powerUpEnded" }), duration);
+          clock.cancel(powerUpEnd.current);
+          powerUpEnd.current = clock.after(
+            () => dispatch({ type: "powerUpEnded" }),
+            duration,
+          );
         }
       },
 
@@ -162,17 +195,19 @@ export default function GameProvider({
         pausedRef.current = true;
         setPaused(true);
         clock.pause();
+        countdownClock.pause();
       },
 
       resume() {
         pausedRef.current = false;
         setPaused(false);
         clock.resume();
+        if (!frozenRef.current) countdownClock.resume();
       },
 
       emit: bus.emit,
     }),
-    [bus, clock, cover, dispatch],
+    [bus, clock, countdownClock, cover, dispatch],
   );
 
   useEffect(() => {

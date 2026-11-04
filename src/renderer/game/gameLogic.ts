@@ -6,13 +6,31 @@ export const MAX_BOOSTS = 4;
 const FIRST_GOAL = 30;
 const ROUND_SECONDS = 20;
 export const PENALTY_POINTS = 25;
+export const BONUS_POINTS = 25;
 
 export const DEFAULT_GOAL_STEPS = [10, 15, 20, 25, 30];
+
+// a power-up that lasts a while is running
+export const isTimedPowerUp = (state: GameState): boolean =>
+  state.countIncrement > 1 || state.comboNext !== null || state.timeFrozen;
+
+// the ones that last a while replace each other; this clears what the one
+// before left
+const withoutTimedPowerUp = (state: GameState): GameState => ({
+  ...state,
+  countIncrement: 1,
+  comboNext: null,
+  timeFrozen: false,
+  goalSteps: DEFAULT_GOAL_STEPS,
+});
 
 export type GameState = {
   counter: number;
   boostsAvailable: number;
   countIncrement: number;
+  comboNext: number | null;
+  // the bar is not draining
+  timeFrozen: boolean;
   currentGoal: number;
   goalSteps: number[];
   trueGoalsReached: number;
@@ -35,7 +53,8 @@ export type GameAction =
   | { type: "boost"; random: number }
   | { type: "restart"; music?: boolean }
   | { type: "timerExpired" }
-  | { type: "collectPowerUp"; powerUp: PowerUpType }
+  | { type: "endRun" }
+  | { type: "collectPowerUp"; powerUp: PowerUpType; random?: number }
   | { type: "powerUpEnded" };
 
 type Update = { state: GameState; events: GameEvent[] };
@@ -47,6 +66,8 @@ export function createInitialState(
     counter: 0,
     boostsAvailable: MAX_BOOSTS,
     countIncrement: 1,
+    comboNext: null,
+    timeFrozen: false,
     currentGoal: FIRST_GOAL,
     goalSteps: DEFAULT_GOAL_STEPS,
     trueGoalsReached: 0,
@@ -85,6 +106,7 @@ function scoreAndGoal(
   boosted: boolean,
   random: number,
   events: GameEvent[],
+  goalSound = true,
 ): GameState {
   let next = state;
   let counterAnimation = animation;
@@ -101,12 +123,15 @@ function scoreAndGoal(
     }
     if (celebrate && !next.confettiPlayed) {
       events.push({ type: "confetti" });
+      events.push({ type: "newBest", boosted });
       next = { ...next, confettiPlayed: true };
     }
   }
 
   if (next.counter >= next.currentGoal) {
-    if (!boosted) events.push({ type: "sound", name: "goalReached" });
+    if (!boosted && goalSound) {
+      events.push({ type: "sound", name: "goalReached" });
+    }
 
     const trueGoalsReached = boosted
       ? next.trueGoalsReached
@@ -129,14 +154,21 @@ function scoreAndGoal(
 function increase(state: GameState, random: number): Update {
   if (state.isGameOver) return { state, events: [] };
 
+  // in a combo, each click adds one more than the one before
+  const gain = state.comboNext ?? state.countIncrement;
+
   const events: GameEvent[] = [
     { type: "pressed", button: "increase", disabled: false },
     { type: "sound", name: "buttonInc" },
-    { type: "cursorCount", value: state.countIncrement, boosted: false },
+    { type: "cursorCount", value: gain },
   ];
 
   const next = scoreAndGoal(
-    { ...state, counter: state.counter + state.countIncrement },
+    {
+      ...state,
+      counter: state.counter + gain,
+      comboNext: state.comboNext === null ? null : state.comboNext + 1,
+    },
     "pop",
     false,
     random,
@@ -164,11 +196,10 @@ function boost(state: GameState, random: number): Update {
 
   const events: GameEvent[] = [
     { type: "pressed", button: "decrease", disabled: false },
-    { type: "boostNotification" },
+    { type: "boostNotification", points: pointsAdded },
     { type: "sound", name: "useBoost" },
   ];
   if (boostsAvailable === 0) events.push({ type: "noBoostsLeft" });
-  events.push({ type: "cursorCount", value: pointsAdded, boosted: true });
 
   const next = scoreAndGoal(
     { ...state, counter: state.currentGoal, boostsAvailable },
@@ -183,7 +214,7 @@ function boost(state: GameState, random: number): Update {
 function restart(state: GameState, music = true): Update {
   return {
     state: {
-      ...state,
+      ...withoutTimedPowerUp(state),
       counter: 0,
       boostsAvailable: MAX_BOOSTS,
       currentGoal: FIRST_GOAL,
@@ -222,10 +253,17 @@ function timerExpired(state: GameState): Update {
   if (state.counter >= state.currentGoal || state.isGameOver) {
     return { state, events: [] };
   }
+  return endRun(state);
+}
+
+// the run ends, by the timer or by the player
+function endRun(state: GameState): Update {
+  if (state.isGameOver) return { state, events: [] };
 
   return {
+    // a power-up that lasts a while does not outlast the run
     state: {
-      ...state,
+      ...withoutTimedPowerUp(state),
       isGameOver: true,
       deathCount: state.deathCount + 1,
     },
@@ -242,9 +280,26 @@ function timerExpired(state: GameState): Update {
   };
 }
 
-function collectPowerUp(state: GameState, type: PowerUpType): Update {
+function collectPowerUp(
+  state: GameState,
+  type: PowerUpType,
+  random: number,
+): Update {
   const powerUp = getPowerUp(type);
   let next = state;
+
+  if (type === "plus_25") {
+    const events: GameEvent[] = [{ type: "sound", name: powerUp.sound }];
+    next = scoreAndGoal(
+      { ...state, counter: state.counter + BONUS_POINTS },
+      "pop",
+      false,
+      random,
+      events,
+      false,
+    );
+    return { state: next, events };
+  }
 
   switch (type) {
     case "extra_boost":
@@ -260,10 +315,28 @@ function collectPowerUp(state: GameState, type: PowerUpType): Update {
       next = { ...next, counter: next.counter - PENALTY_POINTS };
       break;
     case "double_click":
-      next = { ...next, countIncrement: 2, goalSteps: [15, 20, 25, 30] };
+      next = {
+        ...withoutTimedPowerUp(next),
+        countIncrement: 2,
+        goalSteps: [15, 20, 25, 30],
+      };
       break;
     case "four_click":
-      next = { ...next, countIncrement: 4, goalSteps: [20, 25, 30] };
+      next = {
+        ...withoutTimedPowerUp(next),
+        countIncrement: 4,
+        goalSteps: [20, 25, 30],
+      };
+      break;
+    case "combo":
+      next = {
+        ...withoutTimedPowerUp(next),
+        comboNext: 1,
+        goalSteps: [20, 25, 30],
+      };
+      break;
+    case "time_freeze":
+      next = { ...withoutTimedPowerUp(next), timeFrozen: true };
       break;
   }
 
@@ -280,7 +353,7 @@ function collectPowerUp(state: GameState, type: PowerUpType): Update {
 
 function powerUpEnded(state: GameState): Update {
   return {
-    state: { ...state, countIncrement: 1, goalSteps: DEFAULT_GOAL_STEPS },
+    state: withoutTimedPowerUp(state),
     events: [],
   };
 }
@@ -295,8 +368,10 @@ export function reduce(state: GameState, action: GameAction): Update {
       return restart(state, action.music);
     case "timerExpired":
       return timerExpired(state);
+    case "endRun":
+      return endRun(state);
     case "collectPowerUp":
-      return collectPowerUp(state, action.powerUp);
+      return collectPowerUp(state, action.powerUp, action.random ?? 0);
     case "powerUpEnded":
       return powerUpEnded(state);
   }

@@ -1,5 +1,7 @@
 import { Fragment, useEffect, useLayoutEffect, useRef } from "react";
 
+import skullIcon from "@assets/ui/deco/skull_grey.svg";
+
 import PixelPanel from "../../components/hud/pixel-panel/PixelPanel.tsx";
 import Letters from "../../components/text/letters/Letters.tsx";
 
@@ -88,6 +90,7 @@ export default function AlertPopup({
         border={border}
         className="alert-popup-panel"
       >
+        <img src={skullIcon} alt="" className="alert-popup-skull" />
         <span ref={textRef} className="alert-popup-text">
           {lines.map((line, lineIndex) => (
             <span key={lineIndex} className="alert-popup-line">

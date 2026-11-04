@@ -76,11 +76,15 @@ describe("the menu with the startup screen up", () => {
 describe("the menu", () => {
   test("is what the app opens on, with play, report a bug and quit buttons", () => {
     expect(game.$("#menu-screen")).not.toBeNull();
-    expect(
-      game
-        .$$(".menu-btn")
-        .map((button) => button.textContent.replace(/\u00a0/g, " ")),
-    ).toEqual(["Play game", "Report a bug", "Quit"]);
+    // the wording can change, which buttons there are cannot
+    expect(game.$$(".menu-btn").map((button) => button.id)).toEqual([
+      "play-btn",
+      "report-bug-btn",
+      "quit-game-btn",
+    ]);
+    for (const button of game.$$(".menu-btn")) {
+      expect(button.textContent.trim()).not.toBe("");
+    }
     expect(game.$("#game-container")).toBeNull();
   });
 
@@ -153,12 +157,34 @@ describe("the menu", () => {
 
   test("does not run a game behind it", () => {
     game.wait(TIME_IS_UP * 2);
-    game.press(" ");
     game.press("w");
+    game.press("ArrowUp");
 
     expect(game.$("#menu-screen")).not.toBeNull();
     expect(sounds()).not.toContain("gameOver");
     expect(game.$("#counter")).toBeNull();
+  });
+
+  test("space starts a game, like play does", () => {
+    game.press(" ");
+
+    expect(sounds()).toContain("buttonClick");
+    expect(game.$("#loading-screen")).not.toBeNull();
+
+    game.wait(COVERED);
+    expect(game.$("#menu-screen")).toBeNull();
+    expect(game.counter()).toBe("00");
+  });
+
+  test("space again while the game is starting does not start it twice", () => {
+    game.press(" ");
+    const clicks = () => sounds().filter((name) => name === "buttonClick");
+    expect(clicks()).toHaveLength(1);
+
+    game.press(" ");
+    game.wait(COVERED);
+    expect(clicks()).toHaveLength(1);
+    expect(game.counter()).toBe("00");
   });
 
   test("Escape says the settings are not there yet", () => {
@@ -254,6 +280,29 @@ describe("the menu", () => {
     );
   });
 
+  test("the welcome notice opens the changelog in the app's browser", () => {
+    window.electron = {
+      setDiscordStatus: vi.fn(),
+      quitApp: vi.fn(),
+      openChangelog: vi.fn(),
+      showGpuWarning: vi.fn(),
+    } as unknown as Window["electron"];
+    game.click("#welcome-notice");
+
+    expect(window.electron.openChangelog).toHaveBeenCalledTimes(1);
+  });
+
+  test("the welcome notice opens the changelog in a new tab in the browser", () => {
+    const open = vi.spyOn(window, "open").mockImplementation(() => null);
+    game.click("#welcome-notice");
+
+    expect(open).toHaveBeenCalledWith(
+      "https://github.com/ashuhlee/count-or-die/releases",
+      "_blank",
+      "noopener",
+    );
+  });
+
   test("quit closes the app after a moment", () => {
     window.electron = {
       setDiscordStatus: vi.fn(),
@@ -317,10 +366,22 @@ describe("the menu", () => {
     expect(game.counter()).toBe("01");
   });
 
+  test("the home button does not ask when there is no score", () => {
+    game.click("#play-btn");
+    game.wait(COVERED + 600);
+
+    game.click("#home-btn");
+    expect(game.$("#alert-popup")).toBeNull();
+    game.wait(COVERED);
+    expect(game.$("#menu-screen")).not.toBeNull();
+  });
+
   describe("while the home button asks", () => {
     beforeEach(() => {
       game.click("#play-btn");
       game.wait(COVERED + 600);
+      // it only asks when there is a score to lose
+      game.press("w");
     });
 
     test("the time stands still, and goes on where it was after no", () => {
@@ -378,11 +439,11 @@ describe("the menu", () => {
       game.press("w");
       game.press(" ");
       game.click("#increase-img");
-      expect(game.counter()).toBe("00");
+      expect(game.counter()).toBe("01");
 
       game.click("#alert-no");
       game.press("w");
-      expect(game.counter()).toBe("01");
+      expect(game.counter()).toBe("02");
     });
 
     test("no power-up comes, until the wait that was left is over", () => {

@@ -1,3 +1,4 @@
+@use "../base/globals";
 @use "../base/pixel-stripes" as stripes;
 
 .progress {
@@ -11,7 +12,7 @@
     grid-area: 1 / 1;
     height: 13px;
     width: 140px;
-    z-index: 2;
+    z-index: 3;
     mix-blend-mode: overlay;
   }
 
@@ -22,14 +23,56 @@
       $stripe-period: 12px,
       $stripe-width: 6px,
       $stripe-step: 2px,
-      $stripe-opacity: 0.225,
+      $stripe-opacity: 0.2,
       $stripe-pixel-size: 1.5
     );
     animation: slide-stripes 1.15s linear infinite;
   }
 
+  .pg-sparkles {
+    grid-area: 1 / 1;
+    position: relative;
+    height: 13px;
+    width: 140px;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease-out;
+  }
+
+  .pg-sparkle {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: var(--size);
+    height: var(--size);
+    background: url("#{globals.$assets}/ui/deco/sparkle.svg") center / 100% 100%
+      no-repeat;
+    rotate: var(--rot);
+    animation:
+      pg-sparkle-burst 0.4s ease-out forwards,
+      pg-sparkle-fade 0.4s linear forwards;
+  }
+
+  .progress-bar {
+    position: relative;
+    z-index: 2;
+
+    // inner shadow
+    &::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 5px;
+      background: #000;
+      mix-blend-mode: overlay;
+      opacity: 0.3;
+    }
+  }
+
   .progress-bg {
     grid-area: 1 / 1;
+    z-index: 0;
     height: 13px;
     width: 140px;
     background: #59527c;
@@ -38,5 +81,23 @@
       4px 0 0 0 #fff2fc,
       0 -4px 0 0 #fff2fc,
       0 4px 0 0 #fff2fc;
+  }
+}
+
+@keyframes pg-sparkle-burst {
+  to {
+    translate: var(--dx) var(--dy);
+  }
+}
+@keyframes pg-sparkle-fade {
+  from {
+    opacity: 0;
+  }
+  12%,
+  35% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }

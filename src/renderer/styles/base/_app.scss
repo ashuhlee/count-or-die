@@ -2,7 +2,23 @@
 
 * {
   box-sizing: border-box;
-  cursor: url("#{globals.$cursor}"), auto !important;
+}
+
+// the hand shows over anything that can be clicked
+button,
+button *,
+#decrease-button img,
+#increase-button img,
+.power-up-img,
+.power-up-img *,
+.back-to-menu,
+.back-to-menu *,
+[role="button"],
+[role="button"] * {
+  cursor:
+    url("#{globals.$cursor-hand}") #{globals.$cursor-hand-x}
+      #{globals.$cursor-hand-y},
+    auto !important;
 }
 
 ::-webkit-scrollbar {
@@ -16,7 +32,6 @@
   transform: translate(-50%, -50%);
   padding: 40px;
   z-index: 1;
-  //border: 5px solid blue;
 }
 
 body {

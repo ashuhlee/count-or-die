@@ -27,17 +27,25 @@ const pointerOf = (event: MouseEvent) => ({
 });
 
 export default function GameScreen() {
-  const { actions } = useGame();
+  const { state, actions } = useGame();
 
   const [screenRef, shake] =
     useReplayAnimation<HTMLDivElement>("penalty-shake");
   useGameEvent("penalty", shake);
 
+  const [titleRef, popTitle] =
+    useReplayAnimation<HTMLSpanElement>("game-name-pop");
+  useGameEvent("powerUpPicked", popTitle);
+
   const [run, setRun] = useState(0);
   useGameEvent("restarted", () => setRun((current) => current + 1));
 
   return (
-    <div id="game-container" ref={screenRef}>
+    <div
+      id="game-container"
+      ref={screenRef}
+      className={state.isGameOver ? "game-ended" : undefined}
+    >
       <div className="goal-chatbox" id="goal-chatbox">
         <GoalBox />
       </div>
@@ -46,7 +54,7 @@ export default function GameScreen() {
         <ProgressBar />
       </div>
       <h1 className="title">
-        <span className="game-name">
+        <span className="game-name" ref={titleRef}>
           <Letters text="count or die" step={0.1} />
         </span>
       </h1>
@@ -81,16 +89,16 @@ export default function GameScreen() {
         </div>
       </div>
 
-      <div className="reset" id="reset">
+      <div className="end-run" id="end-run">
         <PixelButton
           {...BUTTON_LOOK}
           {...RESTART_COLORS}
-          id="reset-img"
+          id="end-run-btn"
           className="wide-btn"
-          aria-label="restart"
-          onClick={actions.reset}
+          aria-label="end run"
+          onClick={actions.endRun}
         >
-          <Letters text="RESTART" step={0.1} height={0.7} duration={1} />
+          <Letters text="END RUN" step={0.1} height={0.7} duration={1} />
         </PixelButton>
       </div>
     </div>

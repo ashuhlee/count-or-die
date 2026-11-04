@@ -1,4 +1,19 @@
+@use "sass:list";
+@use "sass:math";
 @use "../base/globals";
+
+$tilt: 30deg;
+$half-side: math.div(50%, math.sqrt(2));
+
+@function tilted-square($angle) {
+  $points: ();
+  @each $sx, $sy in (-1 -1), (1 -1), (1 1), (-1 1) {
+    $x: 50% + $half-side * ($sx * math.cos($angle) - $sy * math.sin($angle));
+    $y: 50% + $half-side * ($sx * math.sin($angle) + $sy * math.cos($angle));
+    $points: list.append($points, "#{$x} #{$y}", comma);
+  }
+  @return polygon(#{list.join((), $points, comma)});
+}
 
 .loading-screen {
   position: fixed;
@@ -6,6 +21,11 @@
   display: grid;
   place-items: center;
   z-index: 20;
+
+  &,
+  * {
+    cursor: none !important;
+  }
 
   .diamond-wrapper,
   .diamond-outline {
@@ -47,8 +67,11 @@
   .loading-skull {
     position: relative;
     z-index: 10;
+    display: block;
     width: 80px;
     height: 80px;
+    background: linear-gradient(to bottom, #846d8c, #3c385f);
+    mask: var(--skull) center / 100% 100% no-repeat;
     animation: jackInTheBox 1.2s ease -0.2s forwards;
   }
 
@@ -68,12 +91,12 @@
     clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
   }
   100% {
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    clip-path: tilted-square(-$tilt);
   }
 }
 @keyframes shrink-clip {
   0% {
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    clip-path: tilted-square($tilt);
   }
   100% {
     clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);

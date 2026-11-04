@@ -149,10 +149,10 @@ $pop-total: $pop-letters * $pop-step + $pop-fall + $pop-pause;
 }
 
 .back-to-menu:hover span {
-  animation: back-letter-pop $pop-total ease-in-out infinite
+  animation: rotate-letter-pop $pop-total ease-in-out infinite
     calc(var(--index) * #{$pop-step});
 }
-@keyframes back-letter-pop {
+@keyframes rotate-letter-pop {
   0% {
     scale: 1;
     rotate: 0deg;
@@ -166,6 +166,46 @@ $pop-total: $pop-letters * $pop-step + $pop-fall + $pop-pause;
   100% {
     scale: 1;
     rotate: 0deg;
+  }
+}
+
+.game-name.game-name-pop span {
+  animation:
+    wavy-text var(--wave-duration, 2.5s) cubic-bezier(0.25, 0.1, 0.25, 1)
+      infinite var(--delay),
+    letter-pop $pop-total ease-in-out 1 calc(var(--index) * #{$pop-step});
+}
+
+#game-over .game-over-btns .wide-btn:hover .pixel-btn-label span {
+  display: inline-block;
+  animation: letter-pop $pop-total ease-in-out 1
+    calc(var(--index) * #{$pop-step});
+}
+
+#play-btn:hover .pixel-btn-label > span {
+  animation:
+    shake var(--wave-duration, 2s) ease infinite var(--delay),
+    letter-pop $pop-total ease-in-out 1 calc(var(--index) * #{$pop-step});
+}
+
+#game-over .game-over-btns .wide-btn:hover .pixel-btn-label span {
+  letter-spacing: calc(1em / 6);
+
+  &[data-char="\a0 "] {
+    margin-left: calc(-1em / 3);
+  }
+}
+@keyframes letter-pop {
+  0% {
+    scale: 1;
+  }
+  #{pop-at($pop-rise)},
+  #{pop-at($pop-step)} {
+    scale: 1.15;
+  }
+  #{pop-at($pop-step + $pop-fall)},
+  100% {
+    scale: 1;
   }
 }
 .no-boosts-shake {
