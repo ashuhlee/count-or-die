@@ -63,7 +63,7 @@ export const POWER_UPS: PowerUpDefinition[] = [
   },
   {
     type: "time_rush",
-    weight: 1500000,
+    weight: 15,
     duration: 3000,
     sound: "penalty",
     effect: "bad",
