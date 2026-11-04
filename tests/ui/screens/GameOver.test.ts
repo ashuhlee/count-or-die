@@ -63,6 +63,25 @@ describe("running out of time", () => {
     expect(isShown()).toBe(true);
   });
 
+  test("the bar ends full and critical when time runs out", () => {
+    game = renderGame();
+    game.wait(TIME_IS_UP);
+
+    expect(barColor()).toBe("rgb(247, 98, 139)");
+    // nothing drains it any more
+    expect(game.$("#progress-bar").style.animation).toBe("none");
+  });
+
+  test("the bar ends full and critical when the run is ended early", () => {
+    game = renderGame();
+    // early on, it still has its first color
+    expect(barColor()).toBe("rgb(173, 158, 255)");
+
+    game.click("#end-run-btn");
+    expect(barColor()).toBe("rgb(247, 98, 139)");
+    expect(game.$("#progress-bar").style.animation).toBe("none");
+  });
+
   test("shows a phrase, the final score and counts the death", () => {
     game = renderGame({ state: { highScore: 99 } });
     game.click("#increase-img");

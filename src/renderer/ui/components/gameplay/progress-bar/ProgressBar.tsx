@@ -94,7 +94,9 @@ export default function ProgressBar() {
           animationPlayState: ready ? "running" : "paused",
           transformOrigin: "left",
           width: "140px",
-          background: getBackground(barStage, rainbowBar),
+          background: state.isGameOver
+            ? COLORS.critical
+            : getBackground(barStage, rainbowBar),
         }}
       ></div>
       <div className="progress-bg"></div>
