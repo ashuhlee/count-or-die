@@ -331,6 +331,17 @@ describe("collecting one", () => {
     expect(game.$("#progress-bar").style.background).toBe(critical);
   });
 
+  test("only the rare ones shine", () => {
+    game = renderGame({ state: { highScore: 999 } });
+    spawn(DOUBLE, 0, 0, 0);
+    expect(game.$(".power-up-shine")).toBeNull();
+    game.click(".power-up-img");
+
+    spawn(COMBO, 0, 0, 0);
+    expect(game.$(".power-up-shine")).not.toBeNull();
+    expect(game.$(".power-up-shine").classList.contains("shine")).toBe(true);
+  });
+
   test("the bonus adds 25 points at once, and says so", () => {
     game = renderGame({ state: { highScore: 999 } });
     spawn(BONUS, 0, 0, 0);

@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 
-import type { PowerUpType } from "../../../../game/powerUps.ts";
+import { isRare, type PowerUpType } from "../../../../game/powerUps.ts";
 import MeltInShader from "../../../shaders/melt-in-shader/MeltInShader.tsx";
 import { POWER_UP_ICONS } from "./powerUpIcons.ts";
 
@@ -58,17 +58,32 @@ export default function FallingPowerUp({
         }
         onAnimationEnd={() => onMiss(falling)}
       >
-        <MeltInShader
-          src={POWER_UP_ICONS[type]}
-          alt={type}
-          className="power-up-melt"
-          active={gameOver}
-          mode="out"
-          duration={700}
-          pixelScale={5}
-          shadow={false}
-          settledBrightness={1}
-        />
+        {/* the picture and its shine in a box of their own, so the shine is only
+            ever over the picture */}
+        <div className="power-up-art">
+          <MeltInShader
+            src={POWER_UP_ICONS[type]}
+            alt={type}
+            className="power-up-melt"
+            active={gameOver}
+            mode="out"
+            duration={700}
+            pixelScale={5}
+            shadow={false}
+            settledBrightness={1}
+          />
+          {isRare(type) && !gameOver && (
+            <div
+              className="power-up-shine shine"
+              aria-hidden="true"
+              style={
+                {
+                  "--power-up-mask": `url("${POWER_UP_ICONS[type]}")`,
+                } as CSSProperties
+              }
+            />
+          )}
+        </div>
       </div>
     </div>
   );

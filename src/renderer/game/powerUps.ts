@@ -88,6 +88,11 @@ export const POWER_UPS: PowerUpDefinition[] = [
 
 const BOOST_TYPES = new Set<PowerUpType>(["extra_boost", "replenish_boosts"]);
 
+const RARE_WEIGHT = 15;
+
+export const isRare = (type: PowerUpType): boolean =>
+  getPowerUp(type).weight <= RARE_WEIGHT;
+
 export function getPowerUp(type: PowerUpType): PowerUpDefinition {
   return POWER_UPS.find((powerUp) => powerUp.type === type);
 }

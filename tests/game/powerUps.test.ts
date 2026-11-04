@@ -4,6 +4,7 @@ import {
   availablePowerUps,
   choosePowerUp,
   getPowerUp,
+  isRare,
   POWER_UPS,
 } from "../../src/renderer/game/powerUps.ts";
 import { pickGameOverPhrase } from "../../src/renderer/game/phrases.ts";
@@ -18,6 +19,16 @@ describe("power-up definitions", () => {
     expect(getPowerUp("combo").duration).not.toBeNull();
     expect(getPowerUp("combo").effect).toBe("good");
     expect(getPowerUp("extra_boost").duration).toBeNull();
+  });
+
+  test("the ones with a weight of 15 or less are the rare ones", () => {
+    for (const { type, weight } of POWER_UPS) {
+      expect(isRare(type)).toBe(weight <= 15);
+    }
+    expect(isRare("combo")).toBe(true);
+    expect(isRare("time_freeze")).toBe(true);
+    expect(isRare("replenish_boosts")).toBe(true);
+    expect(isRare("double_click")).toBe(false);
   });
 
   test("every boost is available while some are missing", () => {
