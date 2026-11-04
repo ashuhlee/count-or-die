@@ -9,7 +9,7 @@ import githubBtnSvg from "@assets/ui/svg/github-button.svg";
 import lockIcon from "@assets/ui/deco/lock_grey.svg";
 import skullIcon from "@assets/ui/deco/skull_grey.svg";
 
-import { audioConfig, toggleAudio } from "../../../../utils/app/sounds.ts";
+import { muteMusic, toggleAudio } from "../../../../utils/app/sounds.ts";
 import { openChangelog } from "../../../../utils/app/openChangelog.ts";
 import { openGithub } from "../../../../utils/app/openGithub.ts";
 import {
@@ -27,8 +27,7 @@ const SOUND_STATE_KEY = "soundState";
 const SOUND_ICONS = [soundBtnUnmuted, soundBtnNoMusic, soundBtnMuted];
 
 function applySoundState(state: number): void {
-  audioConfig.bgMusic.audio.muted = state !== 0;
-  audioConfig.menuMusic.audio.muted = state !== 0;
+  muteMusic(state !== 0);
   toggleAudio(state >= 2);
   localStorage.setItem(SOUND_STATE_KEY, state.toString());
 }
@@ -43,7 +42,6 @@ const WELCOME_DELAY = 0.2;
 type MenuBarProps = {
   entrance?: "wait" | "play";
   onHome?: () => void;
-  // the settings menu is not ready for the game page yet
   inGame?: boolean;
 };
 

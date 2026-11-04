@@ -26,6 +26,7 @@ describe("MenuBar", () => {
     localStorage.clear();
     audioConfig.bgMusic.audio.muted = false;
     audioConfig.menuMusic.audio.muted = false;
+    audioConfig.gameOverMusic.audio.muted = false;
     mount(MenuBar);
   });
   afterEach(() => unmount());
@@ -43,6 +44,10 @@ describe("MenuBar", () => {
     expect(localStorage.getItem("soundState")).toBe("1");
     expect(audioConfig.bgMusic.audio.muted).toBe(true);
     expect(audioConfig.menuMusic.audio.muted).toBe(true);
+    // the game over music is music too, and the effects are still on
+    expect(audioConfig.gameOverMusic.audio.muted).toBe(true);
+    expect(audioConfig.buttonClick.audio.muted).toBe(false);
+    expect(audioConfig.buttonClick.audio.volume).toBe(0.2);
     const second = sound().getAttribute("src");
 
     click();
@@ -53,6 +58,7 @@ describe("MenuBar", () => {
     expect(localStorage.getItem("soundState")).toBe("0");
     expect(audioConfig.bgMusic.audio.muted).toBe(false);
     expect(audioConfig.menuMusic.audio.muted).toBe(false);
+    expect(audioConfig.gameOverMusic.audio.muted).toBe(false);
     expect(sound().getAttribute("src")).toBe(first);
     expect(second).not.toBe(first);
   });
