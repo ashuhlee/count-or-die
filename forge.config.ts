@@ -8,6 +8,7 @@ const config: ForgeConfig = {
     name: "Count or Die",
     executableName: "CountOrDie",
     icon: "./resources/icons/icon",
+    appCategoryType: "public.app-category.games",
   },
   rebuildConfig: {},
   makers: [

@@ -129,7 +129,7 @@ export default function MenuBar({ entrance, onHome, inGame }: MenuBarProps) {
               <GameNotification
                 icon={skullIcon}
                 iconAlt="skull"
-                text="Welcome to the beta!"
+                text="Welcome to beta.1!"
                 border="#B0A1FF"
                 still
                 delay={WELCOME_DELAY}
