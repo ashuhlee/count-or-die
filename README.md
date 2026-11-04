@@ -1,6 +1,6 @@
 <div align="center">
-  <img width="80" alt="mac-icon" src="https://github.com/user-attachments/assets/76287ee2-f7d1-454d-ab64-e59e637ee1ee" />
-  <h1 style="margin-top: 5px;">Count or Die</h1>
+  <img width="90" alt="mac-icon" src="https://github.com/user-attachments/assets/d3fb5cbf-1d1b-4d77-ab94-0447968a994e" />
+  <h1>Count or Die</h1>
   <p>A cutesy arcade clicker game where speed meets strategy</p>
 
 [![GitHub Repo stars](https://img.shields.io/github/stars/ashuhlee/count-or-die?style=for-the-badge&logo=starship&logoColor=%23D7E0ED&labelColor=%232F2D42&color=%23FFBDF2)](https://github.com/ashuhlee/count-or-die/stargazers)
