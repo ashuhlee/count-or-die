@@ -2,8 +2,9 @@ import {
   candyBlue,
   candyPink,
   candyPurple,
-  donut,
-  badDonut,
+  donutPink,
+  popsiclePink,
+  donutBrown,
   star,
   superstar,
 } from "@assets/ui/power-ups";
@@ -14,8 +15,9 @@ export const POWER_UP_ICONS: Record<PowerUpType, string> = {
   double_click: candyPurple,
   four_click: candyBlue,
   combo: candyPink,
-  plus_25: donut,
-  minus_25: badDonut,
+  time_freeze: popsiclePink,
+  plus_25: donutPink,
+  minus_25: donutBrown,
   extra_boost: star,
   replenish_boosts: superstar,
 };
