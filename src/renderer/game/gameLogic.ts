@@ -53,6 +53,7 @@ export type GameAction =
   | { type: "boost"; random: number }
   | { type: "restart"; music?: boolean }
   | { type: "timerExpired" }
+  | { type: "endRun" }
   | { type: "collectPowerUp"; powerUp: PowerUpType; random?: number }
   | { type: "powerUpEnded" };
 
@@ -249,6 +250,12 @@ function timerExpired(state: GameState): Update {
   if (state.counter >= state.currentGoal || state.isGameOver) {
     return { state, events: [] };
   }
+  return endRun(state);
+}
+
+// the run ends, by the timer or by the player
+function endRun(state: GameState): Update {
+  if (state.isGameOver) return { state, events: [] };
 
   return {
     // a power-up that lasts a while does not outlast the run
@@ -359,6 +366,8 @@ export function reduce(state: GameState, action: GameAction): Update {
       return restart(state, action.music);
     case "timerExpired":
       return timerExpired(state);
+    case "endRun":
+      return endRun(state);
     case "collectPowerUp":
       return collectPowerUp(state, action.powerUp, action.random ?? 0);
     case "powerUpEnded":

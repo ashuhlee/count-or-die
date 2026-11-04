@@ -20,12 +20,12 @@
 // once the game is over, none of the game's buttons can be pressed
 .game-ended {
   .buttons,
-  .reset {
+  .end-run {
     pointer-events: none;
   }
 }
 
-.reset {
+.end-run {
   .pixel-btn {
     filter: drop-shadow(0px 7px 0px var(--shadow-pink-020));
   }

@@ -89,16 +89,16 @@ export default function GameScreen() {
         </div>
       </div>
 
-      <div className="reset" id="reset">
+      <div className="end-run" id="end-run">
         <PixelButton
           {...BUTTON_LOOK}
           {...RESTART_COLORS}
-          id="reset-img"
+          id="end-run-btn"
           className="wide-btn"
-          aria-label="restart"
-          onClick={actions.reset}
+          aria-label="end run"
+          onClick={actions.endRun}
         >
-          <Letters text="RESTART" step={0.1} height={0.7} duration={1} />
+          <Letters text="END RUN" step={0.1} height={0.7} duration={1} />
         </PixelButton>
       </div>
     </div>

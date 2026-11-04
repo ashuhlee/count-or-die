@@ -439,7 +439,7 @@ describe("boosting", () => {
     game.click("#decrease-img");
     expect(usedHearts().filter(Boolean)).toHaveLength(2);
 
-    game.click("#reset-img");
+    game.restart();
 
     expect(usedHearts()).toEqual([false, false, false, false]);
     expect(game.$("#no-boosts").style.display).toBe("none");

@@ -138,10 +138,9 @@ export default function GameProvider({
         pausedRef.current ||
         dispatch({ type: "boost", random: randomRef.current() }, pointer),
 
-      reset() {
+      endRun() {
         if (stateRef.current.isGameOver) return;
-        dispatch({ type: "restart" });
-        playSound("mouseClick");
+        dispatch({ type: "endRun" });
       },
 
       restartFromGameOver() {

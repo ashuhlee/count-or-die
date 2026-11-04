@@ -851,23 +851,23 @@ img {
   filter: drop-shadow(0px 7px 0px var(--shadow-pink-020));
 }
 .game-ended .buttons,
-.game-ended .reset {
+.game-ended .end-run {
   pointer-events: none;
 }
-.reset .pixel-btn {
+.end-run .pixel-btn {
   filter: drop-shadow(0px 7px 0px var(--shadow-pink-020));
 }
-.reset {
+.end-run {
   transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.reset:hover {
+.end-run:hover {
   transform: scale(1.05);
 }
-.reset:active {
+.end-run:active {
   transform: scale(0.75);
   filter: brightness(0.95) saturate(110%);
 }
-.reset:active .pixel-btn {
+.end-run:active .pixel-btn {
   filter: none;
 }
 .controls {

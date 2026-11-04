@@ -113,7 +113,7 @@ describe("when they appear", () => {
     game.wait(6000);
     expect(icons()).toHaveLength(1);
 
-    game.click("#reset-img");
+    game.restart();
     expect(icons()).toHaveLength(0);
 
     game.wait(5999);
@@ -378,26 +378,26 @@ describe("collecting one", () => {
     expect(game.counter()).toBe("04");
   });
 
-  test("a restart ends it, as the whole run starts over", () => {
+  test("a new run does not start with it still on", () => {
     game = renderGame({ state: { highScore: 999 } });
     spawn(FOUR, 0, 0, 0);
     game.click(".power-up-img");
     const rainbow = game.$("#progress-bar").style.background;
 
-    game.click("#reset-img");
+    game.restart();
     expect(game.$("#progress-bar").style.background).not.toBe(rainbow);
 
     game.click("#increase-img");
     expect(game.counter()).toBe("01");
   });
 
-  test("a restart ends the time freeze, so the countdown runs again", () => {
+  test("ending the run ends the time freeze", () => {
     game = renderGame({ state: { highScore: 999 } });
     spawn(FREEZE, 0, 0, 0);
     game.click(".power-up-img");
     expect(document.documentElement.hasAttribute("data-frozen")).toBe(true);
 
-    game.click("#reset-img");
+    game.click("#end-run-btn");
     expect(document.documentElement.hasAttribute("data-frozen")).toBe(false);
   });
 });
@@ -442,7 +442,7 @@ describe("boost power-ups", () => {
       seen.add(icons()[0].dataset.powerUpType);
       game.click(".power-up-img");
       // a fresh round, so the clock never runs out while looking
-      game.click("#reset-img");
+      game.restart();
     }
 
     expect(seen.has("extra_boost")).toBe(false);
@@ -561,7 +561,7 @@ describe("boost power-ups", () => {
     game.click(".power-up-img");
     game.wait(0);
 
-    game.click("#reset-img");
+    game.restart();
     expect(usedHearts()).toEqual([false, false, false, false]);
 
     // nothing is left to come back, so nothing is left restoring
