@@ -522,6 +522,25 @@ describe("power-ups", () => {
     expect(play(back, increase(), increase()).state.counter).toBe(1 + 2);
   });
 
+  test("a time freeze freezes time, until it ends", () => {
+    const { state } = take(createInitialState(), "time_freeze");
+    expect(state.timeFrozen).toBe(true);
+
+    expect(play(state, { type: "powerUpEnded" }).state.timeFrozen).toBe(false);
+  });
+
+  test("a time freeze replaces the other power-ups that last, and the other way round", () => {
+    const doubled = take(createInitialState(), "double_click").state;
+    const frozen = take(doubled, "time_freeze").state;
+    expect(frozen.timeFrozen).toBe(true);
+    expect(frozen.countIncrement).toBe(1);
+    expect(frozen.goalSteps).toEqual(DEFAULT_GOAL_STEPS);
+
+    const combo = take(frozen, "combo").state;
+    expect(combo.timeFrozen).toBe(false);
+    expect(combo.comboNext).toBe(1);
+  });
+
   test("the bonus gives 25 points, the mirror of the penalty", () => {
     const { state, events } = take(
       { ...createInitialState(), counter: 3 },

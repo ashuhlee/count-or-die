@@ -12,6 +12,7 @@ describe("power-up definitions", () => {
   test("looks one up by type", () => {
     expect(getPowerUp("minus_25").effect).toBe("bad");
     expect(getPowerUp("plus_25").effect).toBe("good");
+    expect(getPowerUp("time_freeze").duration).toBe(3000);
     expect(getPowerUp("plus_25").duration).toBeNull();
     expect(getPowerUp("double_click").duration).toBe(3000);
     expect(getPowerUp("combo").duration).not.toBeNull();
@@ -38,9 +39,10 @@ describe("choosePowerUp", () => {
   });
 
   test("picks by weight", () => {
-    expect(choosePowerUp(POWER_UPS, 0.25).type).toBe("double_click");
-    expect(choosePowerUp(POWER_UPS, 0.35).type).toBe("four_click");
-    expect(choosePowerUp(POWER_UPS, 0.5).type).toBe("combo");
+    expect(choosePowerUp(POWER_UPS, 0.2).type).toBe("double_click");
+    expect(choosePowerUp(POWER_UPS, 0.3).type).toBe("four_click");
+    expect(choosePowerUp(POWER_UPS, 0.45).type).toBe("combo");
+    expect(choosePowerUp(POWER_UPS, 0.55).type).toBe("time_freeze");
     expect(choosePowerUp(POWER_UPS, 0.65).type).toBe("plus_25");
     expect(choosePowerUp(POWER_UPS, 0.8).type).toBe("minus_25");
     expect(choosePowerUp(POWER_UPS, 0.9).type).toBe("extra_boost");

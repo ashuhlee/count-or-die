@@ -50,14 +50,15 @@ function nextPowerUp(...randoms: number[]) {
 }
 
 // "which one" numbers. With every boost in place the choices are 2x (40), 4x
-// (20), the combo (20), the bonus (20) and the penalty (20); with one missing
-// there are two more (10, 8). Each number is inside the range of its power-up
-// either way.
+// (20), the combo (15), the time freeze (15), the bonus (20) and the penalty
+// (20); with one missing there are two more (10, 8). Each number is inside the
+// range of its power-up either way.
 const DOUBLE = 0;
-const FOUR = 0.38;
-const COMBO = 0.54;
-const BONUS = 0.69;
-const PENALTY = 0.85;
+const FOUR = 0.35;
+const COMBO = 0.48;
+const FREEZE = 0.59;
+const BONUS = 0.72;
+const PENALTY = 0.86;
 const EXTRA_BOOST = 0.9;
 const SUPERSTAR = 0.97;
 
@@ -271,6 +272,63 @@ describe("collecting one", () => {
 
     game.wait(3000);
     expect(game.$("#progress-bar").style.background).toBe(plain);
+  });
+
+  test("the time freeze stops the countdown for three seconds", () => {
+    game = renderGame({ state: { highScore: 999 } });
+    spawn(FREEZE, 0, 0, 0);
+    game.click(".power-up-img");
+
+    expect(document.documentElement.hasAttribute("data-frozen")).toBe(true);
+    expect(sounds()).toContain("powerUp");
+
+    // time is up 19.9 seconds into the round, and six had passed when it was
+    // collected; with three that did not count, it is up 22.9 seconds in
+    // in steps, so that the screen gets to update after the freeze ends
+    for (let second = 0; second < 16; second++) game.wait(1000);
+    expect(game.$("#red-flash").classList.contains("flash")).toBe(false);
+    expect(document.documentElement.hasAttribute("data-frozen")).toBe(false);
+
+    game.wait(1000);
+    expect(game.$("#red-flash").classList.contains("flash")).toBe(true);
+  });
+
+  test("a pause in the middle of a freeze does not end it early", () => {
+    game = renderGame({ state: { highScore: 999, counter: 1 } });
+    spawn(FREEZE, 0, 0, 0);
+    game.click(".power-up-img");
+
+    game.click("#home-btn");
+    game.wait(10000);
+    game.click("#alert-no");
+
+    // all three seconds of the freeze are still there, with the countdown held
+    game.wait(2900);
+    expect(document.documentElement.hasAttribute("data-frozen")).toBe(true);
+    game.wait(100);
+    expect(document.documentElement.hasAttribute("data-frozen")).toBe(false);
+
+    // and it counts down again, with 13.9 of the round's seconds left
+    for (let second = 0; second < 13; second++) game.wait(1000);
+    expect(game.$("#red-flash").classList.contains("flash")).toBe(false);
+    game.wait(1000);
+    expect(game.$("#red-flash").classList.contains("flash")).toBe(true);
+  });
+
+  test("the time freeze keeps the bar rainbow, even when time is short", () => {
+    // a short round, so that the bar has its critical color when it appears
+    game = renderGame({ state: { highScore: 999, roundSeconds: 7 } });
+    const plain = game.$("#progress-bar").style.background;
+
+    spawn(FREEZE, 0, 0, 0);
+    const critical = game.$("#progress-bar").style.background;
+    expect(critical).not.toBe(plain);
+
+    game.click(".power-up-img");
+    expect(game.$("#progress-bar").style.background).not.toBe(critical);
+
+    game.wait(3000);
+    expect(game.$("#progress-bar").style.background).toBe(critical);
   });
 
   test("the bonus adds 25 points at once, and says so", () => {

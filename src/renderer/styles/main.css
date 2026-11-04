@@ -818,6 +818,11 @@ img {
   transform-box: fill-box;
   transform-origin: center;
 }
+[data-frozen] .pg-lines,
+[data-frozen] .progress-bar {
+  animation-play-state: paused !important;
+  opacity: 1 !important;
+}
 [data-paused] .pg-lines,
 [data-paused] .progress-bar,
 [data-paused] .pg-sparkle,
@@ -1342,7 +1347,7 @@ img {
   filter: drop-shadow(0 4px 0 var(--shadow-pink-015));
 }
 .power-up-melt .melt-in-shader__image {
-  width: 64px;
+  width: 72px;
   height: auto;
 }
 @keyframes falling {

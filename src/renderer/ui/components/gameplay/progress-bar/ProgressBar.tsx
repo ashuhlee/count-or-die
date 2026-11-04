@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-import { isCountPowerUp } from "../../../../game/gameLogic.ts";
+import { isTimedPowerUp } from "../../../../game/gameLogic.ts";
 import { useGame, type BarStage } from "../../../../provider/useGame.ts";
 import { useProgressSparkles } from "./useProgressSparkles.ts";
 
@@ -21,7 +21,7 @@ const BLINK_FAST = "blink 0.4s linear infinite";
 const isRainbowStage = (stage: BarStage) => stage <= 1;
 
 function getBackground(stage: BarStage, rainbow: boolean): string {
-  if (rainbow && isRainbowStage(stage)) return COLORS.rainbow;
+  if (rainbow) return COLORS.rainbow;
   if (stage === 0) return COLORS.primary;
   if (stage === 1) return COLORS.warning;
   return COLORS.critical;
@@ -45,7 +45,7 @@ export default function ProgressBar() {
   const fill = useRef<HTMLDivElement>(null);
   const sparkles = useRef<HTMLDivElement>(null);
   // a power-up that is running makes the bar rainbow
-  const rainbow = isCountPowerUp(state);
+  const rainbow = isTimedPowerUp(state);
   useProgressSparkles(
     fill,
     sparkles,
@@ -53,7 +53,8 @@ export default function ProgressBar() {
   );
 
   const lines = useRef<HTMLDivElement>(null);
-  const rainbowBar = rainbow && isRainbowStage(barStage);
+  // stays rainbow through every stage while the time is frozen
+  const rainbowBar = rainbow && (isRainbowStage(barStage) || state.timeFrozen);
   useEffect(() => {
     const animations = lines.current?.getAnimations?.({ subtree: true }) ?? [];
     for (const animation of animations) {
@@ -93,7 +94,7 @@ export default function ProgressBar() {
           animationPlayState: ready ? "running" : "paused",
           transformOrigin: "left",
           width: "140px",
-          background: getBackground(barStage, rainbow),
+          background: getBackground(barStage, rainbowBar),
         }}
       ></div>
       <div className="progress-bg"></div>

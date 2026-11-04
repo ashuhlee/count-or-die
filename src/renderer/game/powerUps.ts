@@ -4,6 +4,7 @@ export type PowerUpType =
   | "double_click"
   | "four_click"
   | "combo"
+  | "time_freeze"
   | "plus_25"
   | "minus_25"
   | "extra_boost"
@@ -22,7 +23,7 @@ export const POWER_UPS: PowerUpDefinition[] = [
   {
     type: "double_click",
     weight: 40,
-    duration: 3000,
+    duration: 3000000,
     sound: "powerUp",
     effect: "good",
     description: "2x counter!",
@@ -42,6 +43,14 @@ export const POWER_UPS: PowerUpDefinition[] = [
     sound: "powerUp",
     effect: "good",
     description: "combo!",
+  },
+  {
+    type: "time_freeze",
+    weight: 15,
+    duration: 3000,
+    sound: "powerUp",
+    effect: "good",
+    description: "time freeze!",
   },
   {
     type: "plus_25",

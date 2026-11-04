@@ -1,3 +1,12 @@
+[data-frozen] {
+  .pg-lines,
+  .progress-bar {
+    animation-play-state: paused !important;
+    // bypass the blink during critical stage during frozen power up
+    opacity: 1 !important;
+  }
+}
+
 [data-paused] {
   .pg-lines,
   .progress-bar,

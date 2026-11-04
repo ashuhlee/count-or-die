@@ -64,6 +64,9 @@ export default function GameProvider({
   const [clock] = useState(() => createGameClock());
   useEffect(() => () => clock.clear(), [clock]);
 
+  const [countdownClock] = useState(() => createGameClock());
+  useEffect(() => () => countdownClock.clear(), [countdownClock]);
+
   const [paused, setPaused] = useState(false);
   const pausedRef = useRef(false);
 
@@ -72,6 +75,20 @@ export default function GameProvider({
     document.documentElement.toggleAttribute("data-paused", paused);
     return () => document.documentElement.removeAttribute("data-paused");
   }, [paused]);
+
+  // time is frozen: the countdown + bar stop
+  const frozenRef = useRef(false);
+  useEffect(() => {
+    frozenRef.current = state.timeFrozen;
+    document.documentElement.toggleAttribute("data-frozen", state.timeFrozen);
+
+    if (state.timeFrozen) countdownClock.pause();
+    else if (!pausedRef.current) countdownClock.resume();
+  }, [state.timeFrozen, countdownClock]);
+  useEffect(
+    () => () => document.documentElement.removeAttribute("data-frozen"),
+    [],
+  );
 
   const randomRef = useRef(random);
   useEffect(() => {
@@ -98,7 +115,7 @@ export default function GameProvider({
   const barStage = useCountdown(
     state,
     () => dispatch({ type: "timerExpired" }),
-    clock,
+    countdownClock,
     ready && screen === "game",
   );
   const { loading, cover } = useLoadingScreen(later);
@@ -114,9 +131,7 @@ export default function GameProvider({
         dispatch({ type: "boost", random: randomRef.current() }, pointer),
 
       reset() {
-        // once the game is over, only the game over screen can start a new one
         if (stateRef.current.isGameOver) return;
-
         dispatch({ type: "restart" });
         playSound("mouseClick");
       },
@@ -169,17 +184,19 @@ export default function GameProvider({
         pausedRef.current = true;
         setPaused(true);
         clock.pause();
+        countdownClock.pause();
       },
 
       resume() {
         pausedRef.current = false;
         setPaused(false);
         clock.resume();
+        if (!frozenRef.current) countdownClock.resume();
       },
 
       emit: bus.emit,
     }),
-    [bus, clock, cover, dispatch],
+    [bus, clock, countdownClock, cover, dispatch],
   );
 
   useEffect(() => {

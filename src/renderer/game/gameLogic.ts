@@ -10,15 +10,27 @@ export const BONUS_POINTS = 25;
 
 export const DEFAULT_GOAL_STEPS = [10, 15, 20, 25, 30];
 
-// a power-up that changes what a click is worth is running
-export const isCountPowerUp = (state: GameState): boolean =>
-  state.countIncrement > 1 || state.comboNext !== null;
+// a power-up that lasts a while is running
+export const isTimedPowerUp = (state: GameState): boolean =>
+  state.countIncrement > 1 || state.comboNext !== null || state.timeFrozen;
+
+// the ones that last a while replace each other; this clears what the one
+// before left
+const withoutTimedPowerUp = (state: GameState): GameState => ({
+  ...state,
+  countIncrement: 1,
+  comboNext: null,
+  timeFrozen: false,
+  goalSteps: DEFAULT_GOAL_STEPS,
+});
 
 export type GameState = {
   counter: number;
   boostsAvailable: number;
   countIncrement: number;
   comboNext: number | null;
+  // the bar is not draining
+  timeFrozen: boolean;
   currentGoal: number;
   goalSteps: number[];
   trueGoalsReached: number;
@@ -54,6 +66,7 @@ export function createInitialState(
     boostsAvailable: MAX_BOOSTS,
     countIncrement: 1,
     comboNext: null,
+    timeFrozen: false,
     currentGoal: FIRST_GOAL,
     goalSteps: DEFAULT_GOAL_STEPS,
     trueGoalsReached: 0,
@@ -291,30 +304,29 @@ function collectPowerUp(
     case "minus_25":
       next = { ...next, counter: next.counter - PENALTY_POINTS };
       break;
-    // the ones that change what a click is worth replace each other
     case "double_click":
       next = {
-        ...next,
+        ...withoutTimedPowerUp(next),
         countIncrement: 2,
-        comboNext: null,
         goalSteps: [15, 20, 25, 30],
       };
       break;
     case "four_click":
       next = {
-        ...next,
+        ...withoutTimedPowerUp(next),
         countIncrement: 4,
-        comboNext: null,
         goalSteps: [20, 25, 30],
       };
       break;
     case "combo":
       next = {
-        ...next,
-        countIncrement: 1,
+        ...withoutTimedPowerUp(next),
         comboNext: 1,
         goalSteps: [20, 25, 30],
       };
+      break;
+    case "time_freeze":
+      next = { ...withoutTimedPowerUp(next), timeFrozen: true };
       break;
   }
 
@@ -331,12 +343,7 @@ function collectPowerUp(
 
 function powerUpEnded(state: GameState): Update {
   return {
-    state: {
-      ...state,
-      countIncrement: 1,
-      comboNext: null,
-      goalSteps: DEFAULT_GOAL_STEPS,
-    },
+    state: withoutTimedPowerUp(state),
     events: [],
   };
 }
