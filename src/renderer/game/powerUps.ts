@@ -5,6 +5,7 @@ export type PowerUpType =
   | "four_click"
   | "combo"
   | "time_freeze"
+  | "time_rush"
   | "plus_25"
   | "minus_25"
   | "extra_boost"
@@ -59,6 +60,14 @@ export const POWER_UPS: PowerUpDefinition[] = [
     sound: "powerUp",
     effect: "good",
     description: "+25 bonus!",
+  },
+  {
+    type: "time_rush",
+    weight: 1500000,
+    duration: 3000,
+    sound: "penalty",
+    effect: "bad",
+    description: "time rush!",
   },
   {
     type: "minus_25",

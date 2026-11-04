@@ -10,19 +10,27 @@ export type GameClock = {
   cancel: (timer: ClockTimer | undefined) => void;
   pause: () => void;
   resume: () => void;
+  setRate: (rate: number) => void;
   clear: () => void;
 };
 
 export function createGameClock(): GameClock {
   const timers = new Set<ClockTimer>();
   let paused = false;
+  let rate = 1;
 
   function start(timer: ClockTimer) {
-    timer.endsAt = Date.now() + timer.left;
+    const wait = timer.left / rate;
+    timer.endsAt = Date.now() + wait;
     timer.id = setTimeout(() => {
       timers.delete(timer);
       timer.callback();
-    }, timer.left);
+    }, wait);
+  }
+
+  function stop(timer: ClockTimer) {
+    clearTimeout(timer.id);
+    timer.left = Math.max(0, timer.endsAt - Date.now()) * rate;
   }
 
   return {
@@ -42,16 +50,20 @@ export function createGameClock(): GameClock {
     pause() {
       if (paused) return;
       paused = true;
-      timers.forEach((timer) => {
-        clearTimeout(timer.id);
-        timer.left = Math.max(0, timer.endsAt - Date.now());
-      });
+      timers.forEach(stop);
     },
 
     resume() {
       if (!paused) return;
       paused = false;
       timers.forEach(start);
+    },
+
+    setRate(next) {
+      if (next === rate) return;
+      if (!paused) timers.forEach(stop);
+      rate = next;
+      if (!paused) timers.forEach(start);
     },
 
     clear() {

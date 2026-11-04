@@ -50,16 +50,17 @@ function nextPowerUp(...randoms: number[]) {
 }
 
 // "which one" numbers. With every boost in place the choices are 2x (40), 4x
-// (20), the combo (15), the time freeze (15), the bonus (20) and the penalty
-// (20); with one missing there are two more (10, 8). Each number is inside the
-// range of its power-up either way.
+// (20), the combo (15), the time freeze (15), the bonus (20), the time rush
+// (15) and the penalty (20); with one missing there are two more (10, 8). Each
+// number is inside the range of its power-up either way.
 const DOUBLE = 0;
-const FOUR = 0.35;
-const COMBO = 0.48;
-const FREEZE = 0.59;
-const BONUS = 0.72;
-const PENALTY = 0.86;
-const EXTRA_BOOST = 0.9;
+const FOUR = 0.32;
+const COMBO = 0.44;
+const FREEZE = 0.53;
+const BONUS = 0.65;
+const RUSH = 0.763;
+const PENALTY = 0.875;
+const EXTRA_BOOST = 0.92;
 const SUPERSTAR = 0.97;
 
 const icons = () => game.$$(".power-up-img");
@@ -313,6 +314,43 @@ describe("collecting one", () => {
     expect(game.$("#red-flash").classList.contains("flash")).toBe(false);
     game.wait(1000);
     expect(game.$("#red-flash").classList.contains("flash")).toBe(true);
+  });
+
+  test("the time rush makes time run twice as fast for three seconds", () => {
+    game = renderGame({ state: { highScore: 999 } });
+    spawn(RUSH, 0, 0, 0);
+    game.click(".power-up-img");
+
+    // time is up 19.9 seconds in. Six had passed when it was collected, and the
+    // rush takes six more in its three, so it is up 16.9 seconds in
+    for (let second = 0; second < 10; second++) game.wait(1000);
+    expect(game.$("#red-flash").classList.contains("flash")).toBe(false);
+
+    game.wait(1000);
+    expect(game.$("#red-flash").classList.contains("flash")).toBe(true);
+  });
+
+  test("the time rush drains the bar at its speed, critical and not rainbow", () => {
+    const bar = { animationName: "progress-anim", playbackRate: 1 };
+    Element.prototype.getAnimations = () => [bar] as unknown as Animation[];
+    try {
+      game = renderGame({ state: { highScore: 999 } });
+      const plain = game.$("#progress-bar").style.background;
+
+      spawn(RUSH, 0, 0, 0);
+      game.click(".power-up-img");
+      const rush = game.$("#progress-bar").style.background;
+      expect(rush).not.toBe(plain);
+      expect(rush).not.toContain("rainbow");
+      expect(game.$(".pg-sparkle")).toBeNull();
+      expect(bar.playbackRate).toBeGreaterThan(1);
+
+      for (let second = 0; second < 3; second++) game.wait(1000);
+      game.wait(100);
+      expect(bar.playbackRate).toBe(1);
+    } finally {
+      delete (Element.prototype as { getAnimations?: unknown }).getAnimations;
+    }
   });
 
   test("the time freeze keeps the bar rainbow, even when time is short", () => {

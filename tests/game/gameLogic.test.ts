@@ -349,6 +349,7 @@ describe("restarting", () => {
       "four_click",
       "combo",
       "time_freeze",
+      "time_rush",
     ] as const) {
       const running = play(createInitialState(), {
         type: "collectPowerUp",
@@ -551,6 +552,7 @@ describe("power-ups", () => {
       "four_click",
       "combo",
       "time_freeze",
+      "time_rush",
     ] as const) {
       const running = take(createInitialState(), powerUp).state;
       const over = play(running, { type: "timerExpired" }).state;
@@ -570,6 +572,25 @@ describe("power-ups", () => {
     expect(state.timeFrozen).toBe(true);
 
     expect(play(state, { type: "powerUpEnded" }).state.timeFrozen).toBe(false);
+  });
+
+  test("a time rush rushes time, until it ends", () => {
+    const { state } = take(createInitialState(), "time_rush");
+    expect(state.timeRush).toBe(true);
+    expect(state.timeFrozen).toBe(false);
+
+    expect(play(state, { type: "powerUpEnded" }).state.timeRush).toBe(false);
+  });
+
+  test("a time rush is a bad power-up, so it shakes the screen and the freeze takes it away", () => {
+    const { state, events } = take(createInitialState(), "time_rush");
+    expect(types(events)).toContain("penalty");
+    expect(has(events, { type: "sound", name: "penalty" })).toBe(true);
+
+    const frozen = take(state, "time_freeze").state;
+    expect(frozen.timeRush).toBe(false);
+    expect(frozen.timeFrozen).toBe(true);
+    expect(take(frozen, "time_rush").state.timeFrozen).toBe(false);
   });
 
   test("a time freeze replaces the other power-ups that last, and the other way round", () => {

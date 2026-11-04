@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-import { isTimedPowerUp } from "../../../../game/gameLogic.ts";
+import { isTimedPowerUp, RUSH_RATE } from "../../../../game/gameLogic.ts";
 import { useGame, type BarStage } from "../../../../provider/useGame.ts";
 import { useProgressSparkles } from "./useProgressSparkles.ts";
 
@@ -45,7 +45,7 @@ export default function ProgressBar() {
   const fill = useRef<HTMLDivElement>(null);
   const sparkles = useRef<HTMLDivElement>(null);
   // a power-up that is running makes the bar rainbow
-  const rainbow = isTimedPowerUp(state);
+  const rainbow = isTimedPowerUp(state) && !state.timeRush;
   useProgressSparkles(
     fill,
     sparkles,
@@ -64,6 +64,23 @@ export default function ProgressBar() {
     }
   }, [rainbowBar, state.round]);
 
+  const stage: BarStage = state.timeRush ? 3 : barStage;
+  useEffect(() => {
+    const animations = [
+      ...(lines.current?.getAnimations?.() ?? []),
+      ...(fill.current?.getAnimations?.() ?? []),
+    ];
+    for (const animation of animations) {
+      const { animationName } = animation as CSSAnimation;
+      if (
+        animationName === "progress-anim" ||
+        animationName === "progress-clip"
+      ) {
+        animation.playbackRate = state.timeRush ? RUSH_RATE : 1;
+      }
+    }
+  }, [state.timeRush, state.round, stage]);
+
   return (
     <>
       <div
@@ -74,7 +91,7 @@ export default function ProgressBar() {
           visibility: state.isGameOver ? "hidden" : "visible",
           animation: state.isGameOver
             ? "none"
-            : getAnimation(barStage, state.roundSeconds, "progress-clip"),
+            : getAnimation(stage, state.roundSeconds, "progress-clip"),
           animationPlayState: ready ? "running" : "paused",
         }}
       >
@@ -90,13 +107,13 @@ export default function ProgressBar() {
           gridArea: "1 / 1",
           animation: state.isGameOver
             ? "none"
-            : getAnimation(barStage, state.roundSeconds),
+            : getAnimation(stage, state.roundSeconds),
           animationPlayState: ready ? "running" : "paused",
           transformOrigin: "left",
           width: "140px",
           background: state.isGameOver
             ? COLORS.critical
-            : getBackground(barStage, rainbowBar),
+            : getBackground(stage, rainbowBar),
         }}
       ></div>
       <div className="progress-bg"></div>

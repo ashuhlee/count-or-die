@@ -11,6 +11,7 @@ import { pauseSound, playSound } from "../utils/app/sounds.ts";
 import {
   createInitialState,
   reduce,
+  RUSH_RATE,
   type GameAction,
   type GameState,
 } from "../game/gameLogic.ts";
@@ -96,6 +97,11 @@ export default function GameProvider({
     () => () => document.documentElement.removeAttribute("data-frozen"),
     [],
   );
+
+  // time rushes: the countdown and the bar run twice as fast
+  useEffect(() => {
+    countdownClock.setRate(state.timeRush ? RUSH_RATE : 1);
+  }, [state.timeRush, countdownClock]);
 
   const randomRef = useRef(random);
   useEffect(() => {

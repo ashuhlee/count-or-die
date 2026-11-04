@@ -7,20 +7,23 @@ const FIRST_GOAL = 30;
 const ROUND_SECONDS = 20;
 export const PENALTY_POINTS = 25;
 export const BONUS_POINTS = 25;
+export const RUSH_RATE = 2; // how many times faster the countdown runs during a time rush
 
 export const DEFAULT_GOAL_STEPS = [10, 15, 20, 25, 30];
 
 // a power-up that lasts a while is running
 export const isTimedPowerUp = (state: GameState): boolean =>
-  state.countIncrement > 1 || state.comboNext !== null || state.timeFrozen;
+  state.countIncrement > 1 ||
+  state.comboNext !== null ||
+  state.timeFrozen ||
+  state.timeRush;
 
-// the ones that last a while replace each other; this clears what the one
-// before left
 const withoutTimedPowerUp = (state: GameState): GameState => ({
   ...state,
   countIncrement: 1,
   comboNext: null,
   timeFrozen: false,
+  timeRush: false,
   goalSteps: DEFAULT_GOAL_STEPS,
 });
 
@@ -31,6 +34,8 @@ export type GameState = {
   comboNext: number | null;
   // the bar is not draining
   timeFrozen: boolean;
+  // the bar drains twice as fast
+  timeRush: boolean;
   currentGoal: number;
   goalSteps: number[];
   trueGoalsReached: number;
@@ -68,6 +73,7 @@ export function createInitialState(
     countIncrement: 1,
     comboNext: null,
     timeFrozen: false,
+    timeRush: false,
     currentGoal: FIRST_GOAL,
     goalSteps: DEFAULT_GOAL_STEPS,
     trueGoalsReached: 0,
@@ -337,6 +343,9 @@ function collectPowerUp(
       break;
     case "time_freeze":
       next = { ...withoutTimedPowerUp(next), timeFrozen: true };
+      break;
+    case "time_rush":
+      next = { ...withoutTimedPowerUp(next), timeRush: true };
       break;
   }
 

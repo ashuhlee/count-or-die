@@ -10,6 +10,7 @@ export const POWER_UP_LABELS: Record<PowerUpType, string> = {
   four_click: "X4 Mult!",
   combo: "Combo!",
   time_freeze: "Time\nFreeze!",
+  time_rush: "Time\nRush!",
   plus_25: `+${BONUS_POINTS}\nCount!`,
   minus_25: `-${PENALTY_POINTS}\nCount!`,
   extra_boost: "+1 Boost",
