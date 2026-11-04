@@ -23,7 +23,7 @@ export const POWER_UPS: PowerUpDefinition[] = [
   {
     type: "double_click",
     weight: 40,
-    duration: 3000000,
+    duration: 3000,
     sound: "powerUp",
     effect: "good",
     description: "2x counter!",
@@ -97,7 +97,7 @@ export function getPowerUp(type: PowerUpType): PowerUpDefinition {
   return POWER_UPS.find((powerUp) => powerUp.type === type);
 }
 
-// boost power-ups are pointless while every boost is still there
+// skip boost power-ups while all boosts are available
 export function availablePowerUps(
   boostsAvailable: number,
   maxBoosts: number,

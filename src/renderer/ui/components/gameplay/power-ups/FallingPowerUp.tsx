@@ -56,10 +56,10 @@ export default function FallingPowerUp({
           gameOver ||
           onCollect(falling, event.currentTarget.getBoundingClientRect())
         }
-        onAnimationEnd={() => onMiss(falling)}
+        onAnimationEnd={(event) =>
+          event.target === event.currentTarget && onMiss(falling)
+        }
       >
-        {/* the picture and its shine in a box of their own, so the shine is only
-            ever over the picture */}
         <div className="power-up-art">
           <MeltInShader
             src={POWER_UP_ICONS[type]}

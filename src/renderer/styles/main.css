@@ -1357,12 +1357,13 @@ img {
   position: absolute;
   inset: 0;
   mask: var(--power-up-mask) center/100% 100% no-repeat;
-  --shine-opacity: 0.4;
-  --shine-delay: 0.2s;
+  --shine-opacity: 0.3;
+  --shine-delay: 1s;
   --shine-duration: 1.5s;
 }
 .power-up-art .power-up-shine::after {
   animation-name: power-up-shine-sweep;
+  animation-iteration-count: 1;
 }
 @keyframes power-up-shine-sweep {
   0% {

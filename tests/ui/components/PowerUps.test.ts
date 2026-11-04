@@ -342,6 +342,23 @@ describe("collecting one", () => {
     expect(game.$(".power-up-shine").classList.contains("shine")).toBe(true);
   });
 
+  test("a new run after a game over does not start with the power-up still on", () => {
+    // it begins with a power-up running, and so with a rainbow bar
+    game = renderGame({ state: { highScore: 999, countIncrement: 4 } });
+    const rainbow = game.$("#progress-bar").style.background;
+
+    // time is up 19.9 seconds in
+    game.wait(19900);
+    fireAnimationEnd(game.$("#red-flash"));
+    game.click("#game-over-btn");
+    game.wait(600);
+
+    expect(game.$("#progress-bar").style.background).not.toBe(rainbow);
+    expect(game.$$(".pg-sparkle")).toHaveLength(0);
+    game.click("#increase-img");
+    expect(game.counter()).toBe("01");
+  });
+
   test("the bonus adds 25 points at once, and says so", () => {
     game = renderGame({ state: { highScore: 999 } });
     spawn(BONUS, 0, 0, 0);
@@ -361,14 +378,27 @@ describe("collecting one", () => {
     expect(game.counter()).toBe("04");
   });
 
-  test("a power-up carries on through a restart", () => {
+  test("a restart ends it, as the whole run starts over", () => {
     game = renderGame({ state: { highScore: 999 } });
-    spawn(DOUBLE, 0, 0, 0);
+    spawn(FOUR, 0, 0, 0);
     game.click(".power-up-img");
+    const rainbow = game.$("#progress-bar").style.background;
+
     game.click("#reset-img");
+    expect(game.$("#progress-bar").style.background).not.toBe(rainbow);
 
     game.click("#increase-img");
-    expect(game.counter()).toBe("02");
+    expect(game.counter()).toBe("01");
+  });
+
+  test("a restart ends the time freeze, so the countdown runs again", () => {
+    game = renderGame({ state: { highScore: 999 } });
+    spawn(FREEZE, 0, 0, 0);
+    game.click(".power-up-img");
+    expect(document.documentElement.hasAttribute("data-frozen")).toBe(true);
+
+    game.click("#reset-img");
+    expect(document.documentElement.hasAttribute("data-frozen")).toBe(false);
   });
 });
 
@@ -555,6 +585,18 @@ describe("missing one", () => {
     expect(icons()).toHaveLength(0);
     game.wait(1);
     expect(icons()).toHaveLength(1);
+  });
+
+  test("the end of its shine does not take it off the screen early", () => {
+    game = renderGame();
+    spawn(COMBO, 0, 0, 0);
+
+    // the shine ends before the fall does
+    fireAnimationEnd(game.$(".power-up-shine"));
+    expect(icons()).toHaveLength(1);
+
+    fireAnimationEnd(icons()[0]);
+    expect(icons()).toHaveLength(0);
   });
 });
 

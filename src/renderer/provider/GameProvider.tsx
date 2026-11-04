@@ -14,7 +14,7 @@ import {
   type GameAction,
   type GameState,
 } from "../game/gameLogic.ts";
-import { createGameClock } from "../game/gameClock.ts";
+import { createGameClock, type ClockTimer } from "../game/gameClock.ts";
 import { getPowerUp } from "../game/powerUps.ts";
 import { loadSavedGame } from "../utils/storage/savedGame.ts";
 import { quitGame } from "../utils/app/quitGame.ts";
@@ -76,6 +76,13 @@ export default function GameProvider({
     return () => document.documentElement.removeAttribute("data-paused");
   }, [paused]);
 
+  // when the power-up that is running ends; a new one takes its place, and the
+  // end of the run takes it away
+  const powerUpEnd = useRef<ClockTimer>(undefined);
+  useEffect(() => {
+    if (state.isGameOver) clock.cancel(powerUpEnd.current);
+  }, [state.isGameOver, clock]);
+
   // time is frozen: the countdown + bar stop
   const frozenRef = useRef(false);
   useEffect(() => {
@@ -98,6 +105,7 @@ export default function GameProvider({
   const dispatch = useCallback(
     (action: GameAction, pointer?: Pointer) => {
       const update = reduce(stateRef.current, action);
+      if (action.type === "restart") clock.cancel(powerUpEnd.current);
 
       stateRef.current = update.state;
       setState(update.state);
@@ -107,7 +115,7 @@ export default function GameProvider({
         performEvent(event, { bus, later, deathCount, pointer }),
       );
     },
-    [bus, later],
+    [bus, clock, later],
   );
 
   const ready = useStartupDone();
@@ -176,7 +184,11 @@ export default function GameProvider({
 
         const { duration } = getPowerUp(type);
         if (duration !== null) {
-          clock.after(() => dispatch({ type: "powerUpEnded" }), duration);
+          clock.cancel(powerUpEnd.current);
+          powerUpEnd.current = clock.after(
+            () => dispatch({ type: "powerUpEnded" }),
+            duration,
+          );
         }
       },
 

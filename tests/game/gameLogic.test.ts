@@ -3,6 +3,7 @@ import { expect, describe, test } from "vite-plus/test";
 import {
   createInitialState,
   DEFAULT_GOAL_STEPS,
+  isTimedPowerUp,
   reduce,
   roundSecondsFor,
   type GameAction,
@@ -335,8 +336,30 @@ describe("restarting", () => {
     expect(play(messy(), { type: "restart" }).state.round).toBe(7);
   });
 
-  test("an active power-up carries on", () => {
-    expect(play(messy(), { type: "restart" }).state.countIncrement).toBe(2);
+  test("an active power-up ends with the run", () => {
+    const restarted = play(messy(), { type: "restart" }).state;
+
+    expect(restarted.countIncrement).toBe(1);
+    expect(isTimedPowerUp(restarted)).toBe(false);
+  });
+
+  test("every power-up that lasts ends with it, not only 2x", () => {
+    for (const powerUp of [
+      "double_click",
+      "four_click",
+      "combo",
+      "time_freeze",
+    ] as const) {
+      const running = play(createInitialState(), {
+        type: "collectPowerUp",
+        powerUp,
+      }).state;
+
+      expect(isTimedPowerUp(running)).toBe(true);
+      expect(isTimedPowerUp(play(running, { type: "restart" }).state)).toBe(
+        false,
+      );
+    }
   });
 
   test("can restart without starting the music", () => {
@@ -520,6 +543,26 @@ describe("power-ups", () => {
     const back = take(doubled, "combo").state;
     expect(back.countIncrement).toBe(1);
     expect(play(back, increase(), increase()).state.counter).toBe(1 + 2);
+  });
+
+  test("the end of the run ends the power-ups that last, so a new run starts clean", () => {
+    for (const powerUp of [
+      "double_click",
+      "four_click",
+      "combo",
+      "time_freeze",
+    ] as const) {
+      const running = take(createInitialState(), powerUp).state;
+      const over = play(running, { type: "timerExpired" }).state;
+
+      expect(over.isGameOver).toBe(true);
+      expect(over.countIncrement).toBe(1);
+      expect(over.comboNext).toBeNull();
+      expect(over.timeFrozen).toBe(false);
+
+      const again = play(over, { type: "restart" }).state;
+      expect(isTimedPowerUp(again)).toBe(false);
+    }
   });
 
   test("a time freeze freezes time, until it ends", () => {

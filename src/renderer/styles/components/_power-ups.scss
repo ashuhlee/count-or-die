@@ -45,11 +45,12 @@ $power-up-width: 72px;
   position: absolute;
   inset: 0;
   mask: var(--power-up-mask) center / 100% 100% no-repeat;
-  --shine-opacity: 0.4;
-  --shine-delay: 0.2s;
+  --shine-opacity: 0.3;
+  --shine-delay: 1s;
   --shine-duration: #{$shine-every};
   &::after {
     animation-name: power-up-shine-sweep;
+    animation-iteration-count: 1;
   }
 }
 

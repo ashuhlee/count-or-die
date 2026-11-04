@@ -210,7 +210,7 @@ function boost(state: GameState, random: number): Update {
 function restart(state: GameState, music = true): Update {
   return {
     state: {
-      ...state,
+      ...withoutTimedPowerUp(state),
       counter: 0,
       boostsAvailable: MAX_BOOSTS,
       currentGoal: FIRST_GOAL,
@@ -251,8 +251,9 @@ function timerExpired(state: GameState): Update {
   }
 
   return {
+    // a power-up that lasts a while does not outlast the run
     state: {
-      ...state,
+      ...withoutTimedPowerUp(state),
       isGameOver: true,
       deathCount: state.deathCount + 1,
     },
