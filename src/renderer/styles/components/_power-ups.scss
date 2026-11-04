@@ -1,3 +1,5 @@
+$power-up-width: 64px;
+
 .spawn-area {
   //border: 5px solid red; // debugging
   width: 70%;
@@ -23,15 +25,15 @@
 .power-up-img {
   position: absolute;
   pointer-events: visible;
-  height: 84px;
   top: -60px;
   transform: rotate(0);
   padding: 10px;
+  filter: drop-shadow(0 4px 0 var(--shadow-pink-015));
 }
 
 .power-up-melt .melt-in-shader__image {
-  width: auto;
-  height: 64px;
+  width: $power-up-width;
+  height: auto;
 }
 
 @keyframes falling {

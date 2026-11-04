@@ -6,13 +6,19 @@ export const MAX_BOOSTS = 4;
 const FIRST_GOAL = 30;
 const ROUND_SECONDS = 20;
 export const PENALTY_POINTS = 25;
+export const BONUS_POINTS = 25;
 
 export const DEFAULT_GOAL_STEPS = [10, 15, 20, 25, 30];
+
+// a power-up that changes what a click is worth is running
+export const isCountPowerUp = (state: GameState): boolean =>
+  state.countIncrement > 1 || state.comboNext !== null;
 
 export type GameState = {
   counter: number;
   boostsAvailable: number;
   countIncrement: number;
+  comboNext: number | null;
   currentGoal: number;
   goalSteps: number[];
   trueGoalsReached: number;
@@ -35,7 +41,7 @@ export type GameAction =
   | { type: "boost"; random: number }
   | { type: "restart"; music?: boolean }
   | { type: "timerExpired" }
-  | { type: "collectPowerUp"; powerUp: PowerUpType }
+  | { type: "collectPowerUp"; powerUp: PowerUpType; random?: number }
   | { type: "powerUpEnded" };
 
 type Update = { state: GameState; events: GameEvent[] };
@@ -47,6 +53,7 @@ export function createInitialState(
     counter: 0,
     boostsAvailable: MAX_BOOSTS,
     countIncrement: 1,
+    comboNext: null,
     currentGoal: FIRST_GOAL,
     goalSteps: DEFAULT_GOAL_STEPS,
     trueGoalsReached: 0,
@@ -130,14 +137,21 @@ function scoreAndGoal(
 function increase(state: GameState, random: number): Update {
   if (state.isGameOver) return { state, events: [] };
 
+  // in a combo, each click adds one more than the one before
+  const gain = state.comboNext ?? state.countIncrement;
+
   const events: GameEvent[] = [
     { type: "pressed", button: "increase", disabled: false },
     { type: "sound", name: "buttonInc" },
-    { type: "cursorCount", value: state.countIncrement },
+    { type: "cursorCount", value: gain },
   ];
 
   const next = scoreAndGoal(
-    { ...state, counter: state.counter + state.countIncrement },
+    {
+      ...state,
+      counter: state.counter + gain,
+      comboNext: state.comboNext === null ? null : state.comboNext + 1,
+    },
     "pop",
     false,
     random,
@@ -242,9 +256,27 @@ function timerExpired(state: GameState): Update {
   };
 }
 
-function collectPowerUp(state: GameState, type: PowerUpType): Update {
+function collectPowerUp(
+  state: GameState,
+  type: PowerUpType,
+  random: number,
+): Update {
   const powerUp = getPowerUp(type);
   let next = state;
+
+  // the mirror of the penalty; it counts like points from clicks, so it may beat
+  // the high score or reach the goal
+  if (type === "plus_25") {
+    const events: GameEvent[] = [{ type: "sound", name: powerUp.sound }];
+    next = scoreAndGoal(
+      { ...state, counter: state.counter + BONUS_POINTS },
+      "pop",
+      false,
+      random,
+      events,
+    );
+    return { state: next, events };
+  }
 
   switch (type) {
     case "extra_boost":
@@ -259,11 +291,30 @@ function collectPowerUp(state: GameState, type: PowerUpType): Update {
     case "minus_25":
       next = { ...next, counter: next.counter - PENALTY_POINTS };
       break;
+    // the ones that change what a click is worth replace each other
     case "double_click":
-      next = { ...next, countIncrement: 2, goalSteps: [15, 20, 25, 30] };
+      next = {
+        ...next,
+        countIncrement: 2,
+        comboNext: null,
+        goalSteps: [15, 20, 25, 30],
+      };
       break;
     case "four_click":
-      next = { ...next, countIncrement: 4, goalSteps: [20, 25, 30] };
+      next = {
+        ...next,
+        countIncrement: 4,
+        comboNext: null,
+        goalSteps: [20, 25, 30],
+      };
+      break;
+    case "combo":
+      next = {
+        ...next,
+        countIncrement: 1,
+        comboNext: 1,
+        goalSteps: [20, 25, 30],
+      };
       break;
   }
 
@@ -280,7 +331,12 @@ function collectPowerUp(state: GameState, type: PowerUpType): Update {
 
 function powerUpEnded(state: GameState): Update {
   return {
-    state: { ...state, countIncrement: 1, goalSteps: DEFAULT_GOAL_STEPS },
+    state: {
+      ...state,
+      countIncrement: 1,
+      comboNext: null,
+      goalSteps: DEFAULT_GOAL_STEPS,
+    },
     events: [],
   };
 }
@@ -296,7 +352,7 @@ export function reduce(state: GameState, action: GameAction): Update {
     case "timerExpired":
       return timerExpired(state);
     case "collectPowerUp":
-      return collectPowerUp(state, action.powerUp);
+      return collectPowerUp(state, action.powerUp, action.random ?? 0);
     case "powerUpEnded":
       return powerUpEnded(state);
   }

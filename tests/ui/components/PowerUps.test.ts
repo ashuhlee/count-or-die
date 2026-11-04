@@ -49,13 +49,17 @@ function nextPowerUp(...randoms: number[]) {
   randoms.forEach((value) => random.mockReturnValueOnce(value));
 }
 
-// "which one" numbers. With every boost in place the choices are 2x (40),
-// 4x (20) and the penalty (20); with one missing there are two more (10, 8).
+// "which one" numbers. With every boost in place the choices are 2x (40), 4x
+// (20), the combo (20), the bonus (20) and the penalty (20); with one missing
+// there are two more (10, 8). Each number is inside the range of its power-up
+// either way.
 const DOUBLE = 0;
-const FOUR = 0.6;
-const PENALTY = 0.8;
-const EXTRA_BOOST = 0.87;
-const SUPERSTAR = 0.95;
+const FOUR = 0.38;
+const COMBO = 0.54;
+const BONUS = 0.69;
+const PENALTY = 0.85;
+const EXTRA_BOOST = 0.9;
+const SUPERSTAR = 0.97;
 
 const icons = () => game.$$(".power-up-img");
 const sounds = () => audio.playSound.mock.calls.map(([name]) => name);
@@ -238,6 +242,45 @@ describe("collecting one", () => {
     game.wait(1);
     game.click("#increase-img");
     expect(game.counter()).toBe("04");
+  });
+
+  test("a combo adds one more with each click, for three seconds", () => {
+    game = renderGame({ state: { highScore: 999 } });
+    spawn(COMBO, 0, 0, 0);
+    game.click(".power-up-img");
+
+    game.click("#increase-img");
+    expect(game.counter()).toBe("01");
+    game.click("#increase-img");
+    expect(game.counter()).toBe("03");
+    game.click("#increase-img");
+    expect(game.counter()).toBe("06");
+
+    game.wait(3000);
+    game.click("#increase-img");
+    expect(game.counter()).toBe("07");
+  });
+
+  test("a combo makes the bar rainbow until it runs out", () => {
+    game = renderGame({ state: { highScore: 999 } });
+    const plain = game.$("#progress-bar").style.background;
+
+    spawn(COMBO, 0, 0, 0);
+    game.click(".power-up-img");
+    expect(game.$("#progress-bar").style.background).not.toBe(plain);
+
+    game.wait(3000);
+    expect(game.$("#progress-bar").style.background).toBe(plain);
+  });
+
+  test("the bonus adds 25 points at once, and says so", () => {
+    game = renderGame({ state: { highScore: 999 } });
+    spawn(BONUS, 0, 0, 0);
+    game.click(".power-up-img");
+
+    expect(game.counter()).toBe("25");
+    expect(game.$("#power-up-notice")).not.toBeNull();
+    expect(sounds()).toContain("powerUp");
   });
 
   test("4x quadruples them", () => {

@@ -3,6 +3,8 @@ import type { SoundName } from "./events.ts";
 export type PowerUpType =
   | "double_click"
   | "four_click"
+  | "combo"
+  | "plus_25"
   | "minus_25"
   | "extra_boost"
   | "replenish_boosts";
@@ -28,10 +30,26 @@ export const POWER_UPS: PowerUpDefinition[] = [
   {
     type: "four_click",
     weight: 20,
-    duration: 4000,
+    duration: 3000,
     sound: "powerUp",
     effect: "good",
     description: "4x counter!",
+  },
+  {
+    type: "combo",
+    weight: 15,
+    duration: 2500,
+    sound: "powerUp",
+    effect: "good",
+    description: "combo!",
+  },
+  {
+    type: "plus_25",
+    weight: 20,
+    duration: null,
+    sound: "powerUp",
+    effect: "good",
+    description: "+25 bonus!",
   },
   {
     type: "minus_25",

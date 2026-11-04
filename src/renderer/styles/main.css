@@ -1336,14 +1336,14 @@ img {
 .power-up-img {
   position: absolute;
   pointer-events: visible;
-  height: 84px;
   top: -60px;
   transform: rotate(0);
   padding: 10px;
+  filter: drop-shadow(0 4px 0 var(--shadow-pink-015));
 }
 .power-up-melt .melt-in-shader__image {
-  width: auto;
-  height: 64px;
+  width: 64px;
+  height: auto;
 }
 @keyframes falling {
   to {

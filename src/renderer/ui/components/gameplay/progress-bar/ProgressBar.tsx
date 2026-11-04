@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 
+import { isCountPowerUp } from "../../../../game/gameLogic.ts";
 import { useGame, type BarStage } from "../../../../provider/useGame.ts";
 import { useProgressSparkles } from "./useProgressSparkles.ts";
 
@@ -44,7 +45,7 @@ export default function ProgressBar() {
   const fill = useRef<HTMLDivElement>(null);
   const sparkles = useRef<HTMLDivElement>(null);
   // a power-up that is running makes the bar rainbow
-  const rainbow = state.countIncrement > 1;
+  const rainbow = isCountPowerUp(state);
   useProgressSparkles(
     fill,
     sparkles,

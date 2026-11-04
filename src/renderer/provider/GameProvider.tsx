@@ -153,7 +153,11 @@ export default function GameProvider({
       reportBug,
 
       collectPowerUp(type) {
-        dispatch({ type: "collectPowerUp", powerUp: type });
+        dispatch({
+          type: "collectPowerUp",
+          powerUp: type,
+          random: randomRef.current(),
+        });
 
         const { duration } = getPowerUp(type);
         if (duration !== null) {

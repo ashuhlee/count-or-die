@@ -490,6 +490,62 @@ describe("power-ups", () => {
     expect(state.goalSteps).toEqual([20, 25, 30]);
   });
 
+  test("a combo adds one more with each click, until it ends", () => {
+    const taken = take(createInitialState(), "combo").state;
+    expect(taken.comboNext).toBe(1);
+
+    const { state, events } = play(taken, increase(), increase(), increase());
+    expect(state.counter).toBe(1 + 2 + 3);
+    expect(state.comboNext).toBe(4);
+    // each click reports what it added
+    const counts = events.flatMap((e) =>
+      e.type === "cursorCount" ? [e.value] : [],
+    );
+    expect(counts).toEqual([1, 2, 3]);
+
+    // and it starts again from 1 the next time
+    const ended = play(state, { type: "powerUpEnded" }).state;
+    expect(ended.comboNext).toBeNull();
+    expect(play(ended, increase()).state.counter).toBe(6 + 1);
+    const again = take(ended, "combo").state;
+    expect(play(again, increase()).state.counter).toBe(6 + 1);
+  });
+
+  test("a combo and a multiplier replace each other", () => {
+    const combo = take(createInitialState(), "combo").state;
+    const doubled = take(combo, "double_click").state;
+    expect(doubled.comboNext).toBeNull();
+    expect(play(doubled, increase()).state.counter).toBe(2);
+
+    const back = take(doubled, "combo").state;
+    expect(back.countIncrement).toBe(1);
+    expect(play(back, increase(), increase()).state.counter).toBe(1 + 2);
+  });
+
+  test("the bonus gives 25 points, the mirror of the penalty", () => {
+    const { state, events } = take(
+      { ...createInitialState(), counter: 3 },
+      "plus_25",
+    );
+
+    expect(state.counter).toBe(28);
+    expect(types(events)).not.toContain("penalty");
+    expect(has(events, { type: "sound", name: "powerUp" })).toBe(true);
+    expect(has(events, { type: "counterAnimation", name: "pop" })).toBe(true);
+  });
+
+  test("the bonus can reach the goal, and beat the high score", () => {
+    const start = { ...createInitialState({ highScore: 5 }), counter: 10 };
+    const { state, events } = take(start, "plus_25");
+
+    // 35 passes the first goal of 30, which moves on
+    expect(state.counter).toBe(35);
+    expect(state.currentGoal).toBeGreaterThan(30);
+    expect(state.trueGoalsReached).toBe(1);
+    expect(state.highScore).toBe(35);
+    expect(types(events)).toContain("newBest");
+  });
+
   test("the penalty takes 25 points and may go below zero", () => {
     const { state, events } = take(
       { ...createInitialState(), counter: 10 },
