@@ -45,7 +45,11 @@ const TRACKER_BORDERS = {
   deaths: "#E3E0EF",
 };
 
-const NOTIFICATION_COLORS = { blue: "#a6d7ff", purple: "#d0a4ff" };
+const NOTIFICATION_COLORS = {
+  blue: "#a6d7ff",
+  purple: "#d0a4ff",
+  pink: "#ffb9f0",
+};
 
 const NOTIFICATION_ENTRANCE = { step: 0.2 };
 const TRACKER_ENTRANCE = {
@@ -76,7 +80,10 @@ export default function GameOver() {
 
   const rainbowClass = view.rainbow ? " rainbow-txt" : "";
   const trackerClass = `tracker-container${view.visible ? " bounce-in-right" : ""}`;
-  const notifications = [view.newBest, view.newRank].filter(Boolean).length;
+  const notifications =
+    [view.newBest, view.newRank].filter(Boolean).length +
+    view.challenges.length;
+  const challengesFrom = [view.newBest, view.newRank].filter(Boolean).length;
 
   const trackerDelay = notifications
     ? TRACKER_ENTRANCE.delayWithNotifications
@@ -112,7 +119,7 @@ export default function GameOver() {
           <span className={`go-text-random${rainbowClass}`}>{view.phrase}</span>
         </h2>
         <BulgeFilter {...TRACKER_BULGE} />
-        {(view.newBest || view.newRank) && (
+        {notifications > 0 && (
           <div className="notices">
             {view.newBest && (
               <GameNotification
@@ -136,6 +143,19 @@ export default function GameOver() {
                 id="new-rank"
               />
             )}
+            {view.challenges.map((label, index) => (
+              <GameNotification
+                key={label}
+                icon={trophyTracker}
+                iconAlt="trophy"
+                text={`${label}`}
+                border={NOTIFICATION_COLORS.purple}
+                visible={view.visible}
+                delay={NOTIFICATION_ENTRANCE.step * (challengesFrom + index)}
+                shine
+                id={`challenge-${index}`}
+              />
+            ))}
           </div>
         )}
         <div className="top-right-info">

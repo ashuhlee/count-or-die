@@ -3,13 +3,15 @@ import type { GameEvent } from "../game/events.ts";
 import type { PowerUpType } from "../game/powerUps.ts";
 
 export type AppEvent =
-  | Exclude<GameEvent, { type: "cursorCount" }>
+  | Exclude<GameEvent, { type: "cursorCount" } | { type: "gameOver" }>
   | {
       type: "cursorCount";
       value: number;
       x: number;
       y: number;
     }
+  // with the daily challenges that this run completed
+  | (Extract<GameEvent, { type: "gameOver" }> & { challenges: string[] })
   | { type: "smoke"; x: number; y: number }
   | { type: "powerUpPicked"; powerUp: PowerUpType }
   | { type: "flashEnded" } // the red flash finished playing

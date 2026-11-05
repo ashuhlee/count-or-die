@@ -40,6 +40,10 @@ export type GameState = {
   goalSteps: number[];
   trueGoalsReached: number;
 
+  // what this run has done so far, for daily challenges
+  peakScore: number;
+  powerUpsCollected: number;
+
   highScore: number;
   highScoreAtStart: number;
   isHighScore: boolean;
@@ -78,6 +82,9 @@ export function createInitialState(
     goalSteps: DEFAULT_GOAL_STEPS,
     trueGoalsReached: 0,
 
+    peakScore: 0,
+    powerUpsCollected: 0,
+
     highScore: saved.highScore ?? 0,
     highScoreAtStart: saved.highScore ?? 0,
     isHighScore: false,
@@ -114,7 +121,7 @@ function scoreAndGoal(
   events: GameEvent[],
   goalSound = true,
 ): GameState {
-  let next = state;
+  let next = { ...state, peakScore: Math.max(state.peakScore, state.counter) };
   let counterAnimation = animation;
 
   if (next.counter > next.highScore) {
@@ -225,6 +232,8 @@ function restart(state: GameState, music = true): Update {
       boostsAvailable: MAX_BOOSTS,
       currentGoal: FIRST_GOAL,
       trueGoalsReached: 0,
+      peakScore: 0,
+      powerUpsCollected: 0,
       highScoreAtStart: state.highScore,
       isHighScore: false,
       highScoreFxPlayed: false,
@@ -280,6 +289,8 @@ function endRun(state: GameState): Update {
         type: "gameOver",
         isHighScore: state.isHighScore,
         score: state.counter,
+        peakScore: state.peakScore,
+        powerUps: state.powerUpsCollected,
         newRank: rankToAnnounce(state),
       },
     ],
@@ -292,12 +303,12 @@ function collectPowerUp(
   random: number,
 ): Update {
   const powerUp = getPowerUp(type);
-  let next = state;
+  let next = { ...state, powerUpsCollected: state.powerUpsCollected + 1 };
 
   if (type === "plus_25") {
     const events: GameEvent[] = [{ type: "sound", name: powerUp.sound }];
     next = scoreAndGoal(
-      { ...state, counter: state.counter + BONUS_POINTS },
+      { ...next, counter: next.counter + BONUS_POINTS },
       "pop",
       false,
       random,

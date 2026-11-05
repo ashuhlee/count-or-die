@@ -12,11 +12,13 @@ export function useGameOverView() {
     rainbow: false,
     newBest: false,
     newRank: null as string | null,
+    // the daily challenges that this run completed
+    challenges: [] as string[],
     score: formatCounter(0),
   });
   const waitingForFlash = useRef(false);
 
-  useGameEvent("gameOver", ({ isHighScore, score, newRank }) => {
+  useGameEvent("gameOver", ({ isHighScore, score, newRank, challenges }) => {
     waitingForFlash.current = true;
     setView((current) => ({
       ...current,
@@ -25,6 +27,7 @@ export function useGameOverView() {
       rainbow: current.rainbow || isHighScore,
       newBest: isHighScore,
       newRank: newRank ?? null,
+      challenges,
       score: formatCounter(score),
     }));
   });
@@ -45,6 +48,7 @@ export function useGameOverView() {
       rainbow: false,
       newBest: false,
       newRank: null,
+      challenges: [],
       phrase: pickGameOverPhrase(false, Math.random()),
     }));
   });

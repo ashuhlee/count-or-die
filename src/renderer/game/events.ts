@@ -38,6 +38,8 @@ export type GameEvent =
       type: "gameOver";
       isHighScore: boolean;
       score: number;
+      peakScore: number;
+      powerUps: number;
       newRank?: string;
     }
   | { type: "restarted" }

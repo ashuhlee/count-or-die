@@ -209,8 +209,35 @@ describe("running out of time", () => {
     expect(events).toEqual([
       { type: "sound", name: "gameOver" },
       { type: "stopSound", name: "bgMusic" },
-      { type: "gameOver", isHighScore: false, score: 12 },
+      {
+        type: "gameOver",
+        isHighScore: false,
+        score: 12,
+        peakScore: 0,
+        powerUps: 0,
+      },
     ]);
+  });
+
+  test("tells the peak score and the power-ups of the run, which a restart clears", () => {
+    // 1 point, then 25 down and 25 up again: the counter ends at 1, but it was
+    // never higher than 1; two power-ups were collected
+    const run = play(
+      createInitialState({ highScore: 999 }),
+      increase(),
+      { type: "collectPowerUp", powerUp: "minus_25" },
+      { type: "collectPowerUp", powerUp: "plus_25" },
+    );
+    expect(run.state.powerUpsCollected).toBe(2);
+
+    const over = play(run.state, { type: "endRun" });
+    expect(
+      has(over.events, { type: "gameOver", peakScore: 1, powerUps: 2 }),
+    ).toBe(true);
+
+    const next = play(over.state, { type: "restart" }).state;
+    expect(next.peakScore).toBe(0);
+    expect(next.powerUpsCollected).toBe(0);
   });
 
   test("does nothing if the goal was reached in time", () => {
