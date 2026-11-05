@@ -114,17 +114,15 @@ export default function MenuBar({
           onClick={onSoundClick}
         />
         {!inGame && (
-          <Tooltip text="How to play" placement="cursor-left">
-            <RoundButton
-              {...entering(2)}
-              variant={5}
-              icon={infoBtnSvg}
-              iconAlt="info icon"
-              iconSize={12}
-              id="help-btn"
-              onClick={onHelp}
-            />
-          </Tooltip>
+          <RoundButton
+            {...entering(2)}
+            variant={5}
+            icon={infoBtnSvg}
+            iconAlt="info icon"
+            iconSize={12}
+            id="help-btn"
+            onClick={onHelp}
+          />
         )}
       </div>
       {(welcome || options.shown) && (

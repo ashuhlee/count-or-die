@@ -10,18 +10,9 @@
   animation: alert-fade-in $fade both;
 
   .alert-popup-panel {
-    --panel-shadow-height: var(--panel-border-size);
-    --panel-fill: #fffafe;
-    --pad-y: 24px;
-    --pad-x: 28px;
+    width: 536px;
+    max-width: 92vw;
     filter: drop-shadow(0 5px 0 var(--shadow-overlay-010));
-
-    width: fit-content;
-    max-width: 420px;
-    display: grid;
-    justify-items: center;
-    gap: 24px;
-    padding: var(--pad-y) var(--pad-x);
     animation: alert-pop-in $pop-time $pop-easing both;
   }
 }

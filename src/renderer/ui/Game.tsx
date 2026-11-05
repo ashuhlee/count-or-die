@@ -120,12 +120,11 @@ export default function Game() {
       </Fragment>
       {popupShown && (
         <AlertPopup
-          size="small"
           leaving={!asking}
+          title="End run?"
           text={
             "Are you sure you want to end this run?\nYour score will be saved."
           }
-          border="#bfb3ff"
           onYes={() => {
             setEndingRun(false);
             actions.backToMenu();
@@ -135,11 +134,9 @@ export default function Game() {
       )}
       {helpShown && (
         <AlertPopup
-          size="regular"
           leaving={!helping}
           title="How to play"
           text={HOW_TO_PLAY}
-          border="#bfb3ff"
           onNo={() => setHelpOpen(false)}
         />
       )}

@@ -1,9 +1,9 @@
-// the text area of regular popups
+// the text area, framed below the tab
 .alert-popup {
   .alert-popup-body {
-    $dark: #3a375e;
-    $ring: #ffebfb;
-    $band: color-mix(in srgb, #a989ee 35%, transparent);
+    $dark: #59517d;
+    $ring: #fff0fc;
+    $band: color-mix(in srgb, #9389ee 30%, transparent);
 
     --u: calc(536px / 114);
     --v: calc(80px / 17);
@@ -11,13 +11,11 @@
     position: relative;
     z-index: 1;
     margin-top: calc(var(--v) * -2 - 2px);
-    justify-self: stretch;
     display: grid;
     justify-items: center;
     gap: 24px;
     padding: 30px 32px 40px;
     background:
-      // the ring follows the dark stroke around its stepped corners
       linear-gradient($ring, $ring) left top / var(--u)
         calc(100% - var(--v) * 2) no-repeat,
       linear-gradient($ring, $ring) right top / var(--u)

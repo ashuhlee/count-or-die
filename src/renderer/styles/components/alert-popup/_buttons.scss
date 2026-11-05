@@ -31,35 +31,13 @@
 
     &:hover {
       scale: 1.05;
+      filter: drop-shadow(0px 4px 0px var(--shadow-overlay-010))
+        brightness(0.96) saturate(105%);
     }
 
     &:active {
       scale: 0.75;
-      filter: brightness(0.97) saturate(110%);
-    }
-
-    &::before {
-      content: ">";
-      display: inline-block;
-      max-width: 0;
-      margin-right: 0;
-      overflow: hidden;
-      opacity: 0;
-      vertical-align: top;
-      font-family: "Teeny Tiny Pixls", sans-serif;
-      font-size: 13px;
-      position: relative;
-      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.85);
-    }
-
-    &:hover::before {
-      max-width: 1em;
-      margin-right: 4px;
-      opacity: 1;
-    }
-
-    &:active::before {
-      margin-right: 3px;
+      filter: brightness(0.94) saturate(110%);
     }
 
     &::after {
