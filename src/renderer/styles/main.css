@@ -1347,7 +1347,7 @@ img {
   filter: drop-shadow(0 4px 0 var(--shadow-pink-015));
 }
 .power-up-melt .melt-in-shader__image {
-  width: 72px;
+  width: 68px;
   height: auto;
 }
 .power-up-art {
@@ -2594,10 +2594,10 @@ img {
 }
 .menu-screen {
   flex-direction: column;
-  gap: 60px;
+  gap: 32px;
 }
 .menu-screen .menu-title {
-  width: max(26vw, 300px);
+  width: max(26vw, 270px);
 }
 .startup-screen {
   --progress: 0;

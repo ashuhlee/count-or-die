@@ -16,7 +16,7 @@ export default function StartMenuTitle() {
       delay={250}
       duration={1600}
       shadow={true}
-      pixelScale={2}
+      pixelScale={0.7}
     />
   );
 }
