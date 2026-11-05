@@ -910,7 +910,7 @@ img {
 .progress .pg-lines {
   grid-area: 1/1;
   height: 13px;
-  width: 140px;
+  width: 150px;
   z-index: 3;
   mix-blend-mode: overlay;
 }
@@ -927,7 +927,7 @@ img {
   grid-area: 1/1;
   position: relative;
   height: 13px;
-  width: 140px;
+  width: 150px;
   z-index: 1;
   overflow: hidden;
   pointer-events: none;
@@ -962,7 +962,7 @@ img {
   grid-area: 1/1;
   z-index: 0;
   height: 13px;
-  width: 140px;
+  width: 150px;
   background: #4c466b;
   box-shadow:
     -4px 0 0 0 #fff2fc,
