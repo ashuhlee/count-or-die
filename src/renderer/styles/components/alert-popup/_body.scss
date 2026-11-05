@@ -1,0 +1,44 @@
+// the text area of regular popups
+.alert-popup {
+  .alert-popup-body {
+    $dark: #3a375e;
+    $ring: #ffebfb;
+    $band: color-mix(in srgb, #a989ee 35%, transparent);
+
+    --u: calc(536px / 114);
+    --v: calc(80px / 17);
+
+    position: relative;
+    z-index: 1;
+    margin-top: calc(var(--v) * -2 - 2px);
+    justify-self: stretch;
+    display: grid;
+    justify-items: center;
+    gap: 24px;
+    padding: 30px 32px 40px;
+    background:
+      // the ring follows the dark stroke around its stepped corners
+      linear-gradient($ring, $ring) left top / var(--u)
+        calc(100% - var(--v) * 2) no-repeat,
+      linear-gradient($ring, $ring) right top / var(--u)
+        calc(100% - var(--v) * 2) no-repeat,
+      linear-gradient($ring, $ring) left var(--u) bottom var(--v) / var(--u)
+        var(--v) no-repeat,
+      linear-gradient($ring, $ring) right var(--u) bottom var(--v) / var(--u)
+        var(--v) no-repeat,
+      linear-gradient($ring, $ring) left calc(var(--u) * 2) bottom 0 /
+        calc(100% - var(--u) * 4) var(--v) no-repeat,
+      linear-gradient($dark, $dark) left var(--u) top 0 / var(--u)
+        calc(100% - var(--v) * 2) no-repeat,
+      linear-gradient($dark, $dark) right var(--u) top 0 / var(--u)
+        calc(100% - var(--v) * 2) no-repeat,
+      linear-gradient($dark, $dark) left var(--u) top 0 /
+        calc(100% - var(--u) * 2) var(--v) no-repeat,
+      linear-gradient($dark, $dark) left calc(var(--u) * 2) bottom
+        var(--v) / calc(100% - var(--u) * 4) var(--v) no-repeat,
+      linear-gradient($band, $band) left calc(var(--u) * 2) bottom
+        calc(var(--v) * 2) / calc(100% - var(--u) * 4) var(--v) no-repeat,
+      linear-gradient(#fff, #fff) left calc(var(--u) * 2) top 0 /
+        calc(100% - var(--u) * 4) calc(100% - var(--v) * 2) no-repeat;
+  }
+}
