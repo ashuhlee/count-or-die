@@ -1,17 +1,27 @@
 import { Fragment, useEffect, useLayoutEffect, useRef } from "react";
 
-import tabSvg from "@assets/ui/tabs/tab.svg";
+import tabPurple from "@assets/ui/tabs/tab.svg";
+import tabBlue from "@assets/ui/tabs/tab-blue.svg";
 import closeSvg from "@assets/ui/tabs/close.svg";
+import closeHoverSvg from "@assets/ui/tabs/close-hover.svg";
 
 import Letters from "../../components/text/letters/Letters.tsx";
 
+const TABS = { purple: tabPurple, blue: tabBlue };
+
+export type AlertRow = { label: string; value: string; done?: boolean };
+
 type AlertPopupProps = {
   // *words* between asterisks are highlighted
-  text: string;
+  text?: string;
+  rows?: AlertRow[];
   title: string;
+  tab?: keyof typeof TABS;
   leaving?: boolean;
   onYes?: () => void;
   onNo: () => void;
+  okLabel?: string;
+  onOk?: () => void;
 };
 
 type AlertButtonProps = {
@@ -59,11 +69,15 @@ function parseLine(line: string): Word[] {
 }
 
 export default function AlertPopup({
-  text,
+  text = "",
+  rows,
   title,
+  tab = "purple",
   leaving = false,
   onYes,
   onNo,
+  okLabel = "Got it",
+  onOk,
 }: AlertPopupProps) {
   const textRef = useRef<HTMLSpanElement>(null);
 
@@ -98,20 +112,23 @@ export default function AlertPopup({
 
   const lines = text.split("\n").map(parseLine);
   const plainLines = lines.map((words) => words.map(({ word }) => word));
+  const label = rows
+    ? rows.map((row) => `${row.label} ${row.value}`).join(" ")
+    : plainLines.map((words) => words.join(" ")).join(" ");
 
   return (
     <div
       className={`alert-popup${leaving ? " alert-popup--leaving" : ""}`}
       role="alertdialog"
       aria-modal="true"
-      aria-label={plainLines.map((words) => words.join(" ")).join(" ")}
+      aria-label={label}
       onClick={(event) => {
         if (event.target === event.currentTarget) onNo();
       }}
     >
       <div id="alert-popup" className="alert-popup-panel">
         <div className="alert-popup-tab">
-          <img src={tabSvg} alt="" className="alert-popup-header" />
+          <img src={TABS[tab]} alt="" className="alert-popup-header" />
           <span className="alert-popup-title" aria-label={title}>
             <Letters text={title} step={TYPING_STEP} />
           </span>
@@ -123,36 +140,61 @@ export default function AlertPopup({
             onClick={onNo}
           >
             <img src={closeSvg} alt="" />
+            <img
+              src={closeHoverSvg}
+              alt=""
+              className="alert-popup-close-hover"
+            />
           </button>
         </div>
-        <div className="alert-popup-body">
-          <span ref={textRef} className="alert-popup-text">
-            {lines.map((words, lineIndex) => (
-              <span key={lineIndex} className="alert-popup-line">
-                {words.map(({ word, highlight }, index) => (
-                  <Fragment key={index}>
-                    {index > 0 && " "}
-                    <span
-                      className={`alert-popup-word${highlight ? " alert-popup-word--highlight" : ""}`}
-                    >
-                      <Letters
-                        text={word}
-                        step={0.2}
-                        duration={3}
-                        offset={
-                          plainLines.slice(0, lineIndex).join(" ").length +
-                          (lineIndex ? 1 : 0) +
-                          plainLines[lineIndex].slice(0, index).join(" ")
-                            .length +
-                          (index ? 1 : 0)
-                        }
-                      />
-                    </span>
-                  </Fragment>
+        <div
+          className={`alert-popup-body${rows ? " alert-popup-body--rows" : ""}`}
+        >
+          {rows ? (
+            <ul className="alert-popup-rows">
+              {rows.map((row) => (
+                <li
+                  key={row.label}
+                  className={`alert-popup-row${row.done ? " alert-popup-row--done" : ""}`}
+                >
+                  <span className="alert-popup-row-label">
+                    <span className="alert-popup-row-text">{row.label}</span>
+                  </span>
+                  <span className="alert-popup-row-value">{row.value}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <>
+              <span ref={textRef} className="alert-popup-text">
+                {lines.map((words, lineIndex) => (
+                  <span key={lineIndex} className="alert-popup-line">
+                    {words.map(({ word, highlight }, index) => (
+                      <Fragment key={index}>
+                        {index > 0 && " "}
+                        <span
+                          className={`alert-popup-word${highlight ? " alert-popup-word--highlight" : ""}`}
+                        >
+                          <Letters
+                            text={word}
+                            step={0.2}
+                            duration={3}
+                            offset={
+                              plainLines.slice(0, lineIndex).join(" ").length +
+                              (lineIndex ? 1 : 0) +
+                              plainLines[lineIndex].slice(0, index).join(" ")
+                                .length +
+                              (index ? 1 : 0)
+                            }
+                          />
+                        </span>
+                      </Fragment>
+                    ))}
+                  </span>
                 ))}
               </span>
-            ))}
-          </span>
+            </>
+          )}
           <div className="alert-popup-actions">
             {onYes ? (
               <>
@@ -173,8 +215,8 @@ export default function AlertPopup({
               <AlertButton
                 id="alert-ok"
                 tone="yes"
-                label="Got it"
-                onClick={onNo}
+                label={okLabel}
+                onClick={onOk ?? onNo}
                 autoFocus
               />
             )}

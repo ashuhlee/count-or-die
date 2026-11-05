@@ -105,8 +105,20 @@
       filter: drop-shadow(0 4px 0 #9389ee);
     }
 
+    // the pink-x version shows on hover
+    .alert-popup-close-hover {
+      display: none;
+    }
+
     &:hover {
       scale: 1.05;
+
+      img {
+        display: none;
+      }
+      .alert-popup-close-hover {
+        display: block;
+      }
     }
     &:active {
       scale: 0.9;
