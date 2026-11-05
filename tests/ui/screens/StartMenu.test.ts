@@ -5,6 +5,7 @@ import { stubWebAnimations } from "../../helpers/dom.ts";
 import { renderGame } from "../../helpers/game.tsx";
 import { audioConfig } from "../../../src/renderer/utils/app/sounds.ts";
 import { hideStartupScreen } from "../../../src/renderer/utils/app/startup.ts";
+import { MIN_WAIT } from "../../../src/renderer/ui/components/gameplay/power-ups/usePowerUpSpawner.ts";
 
 const audio = vi.hoisted(() => ({ playSound: vi.fn(), pauseSound: vi.fn() }));
 
@@ -299,6 +300,52 @@ describe("the menu", () => {
     });
   });
 
+  describe("the how to play button during a game", () => {
+    beforeEach(() => {
+      game.click("#play-btn");
+      game.wait(COVERED + 600);
+    });
+
+    test("is there, and opens the popup", () => {
+      expect(game.$("#alert-popup")).toBeNull();
+
+      game.click("#help-btn");
+      expect(game.$("#alert-popup")).not.toBeNull();
+      expect(game.$("#game-container")).not.toBeNull();
+
+      game.click("#alert-ok");
+      game.wait(COVERED);
+      expect(game.$("#alert-popup")).toBeNull();
+    });
+
+    test("the time stands still while it is open, and goes on after", () => {
+      game.wait(10000);
+      game.click("#help-btn");
+
+      game.wait(TIME_IS_UP * 3);
+      expect(game.$("#red-flash").classList.contains("flash")).toBe(false);
+      expect(game.$("#alert-popup")).not.toBeNull();
+
+      game.click("#alert-ok");
+      game.wait(TIME_IS_UP - 10000 - 1);
+      expect(game.$("#red-flash").classList.contains("flash")).toBe(false);
+      game.wait(1);
+      expect(game.$("#red-flash").classList.contains("flash")).toBe(true);
+    });
+
+    test("nothing is counted while it is open", () => {
+      game.click("#help-btn");
+      game.press("w");
+      game.press(" ");
+      expect(game.counter()).toBe("00");
+
+      game.click("#alert-ok");
+      game.wait(COVERED);
+      game.press("w");
+      expect(game.counter()).toBe("01");
+    });
+  });
+
   test("the welcome notice opens the changelog in the app's browser", () => {
     window.electron = {
       setDiscordStatus: vi.fn(),
@@ -466,7 +513,8 @@ describe("the menu", () => {
     });
 
     test("no power-up comes, until the wait that was left is over", () => {
-      game.wait(5000);
+      // one second of the wait is left
+      game.wait(MIN_WAIT - 1000);
       game.click("#home-btn");
       game.wait(20000);
       expect(game.$$(".power-up-img")).toHaveLength(0);

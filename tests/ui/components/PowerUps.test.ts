@@ -2,6 +2,10 @@ import { afterEach, beforeEach, expect, describe, test, vi } from "vitest";
 
 import { fireAnimationEnd, stubWebAnimations } from "../../helpers/dom.ts";
 import { renderGame } from "../../helpers/game.tsx";
+import {
+  MAX_WAIT,
+  MIN_WAIT,
+} from "../../../src/renderer/ui/components/gameplay/power-ups/usePowerUpSpawner.ts";
 
 const audio = vi.hoisted(() => ({ playSound: vi.fn(), pauseSound: vi.fn() }));
 
@@ -69,27 +73,37 @@ const hearts = () => game.$$(".hearts > div");
 const usedHearts = () =>
   hearts().map((heart) => heart.classList.contains("heart-use"));
 
+// time is up 19.9 seconds into the round. A power-up is collected as soon as
+// it comes, which is MIN_WAIT in, so this much of the round is left then
+const LEFT_AT_PICK = 19900 - MIN_WAIT;
+
+// how many whole seconds to wait in steps (so that the screen gets to update),
+// and still not be at the moment that is `ms` away. One more second passes it
+const stepsBefore = (ms: number) => Math.ceil(ms / 1000) - 1;
+
 // a power-up is on screen
 function spawn(...randoms: number[]) {
   nextPowerUp(...randoms);
-  game.wait(6000);
+  game.wait(MIN_WAIT);
 }
 
 describe("when they appear", () => {
   test("not at first, then after the first wait", () => {
     game = renderGame();
 
-    game.wait(5999);
+    game.wait(MIN_WAIT - 1);
     expect(icons()).toHaveLength(0);
     game.wait(1);
     expect(icons()).toHaveLength(1);
   });
 
-  test("the wait is somewhere between 6 and 12 seconds", () => {
+  test("the wait is somewhere between the shortest and the longest", () => {
     vi.mocked(Math.random).mockReturnValue(0.999);
     game = renderGame();
 
-    game.wait(11993);
+    // 0.999 of the way from the shortest wait to the longest
+    const wait = Math.ceil(MIN_WAIT + 0.999 * (MAX_WAIT - MIN_WAIT));
+    game.wait(wait - 1);
     expect(icons()).toHaveLength(0);
     game.wait(1);
     expect(icons()).toHaveLength(1);
@@ -111,13 +125,13 @@ describe("when they appear", () => {
 
   test("a new game starts with a clean screen and a fresh wait", () => {
     game = renderGame();
-    game.wait(6000);
+    game.wait(MIN_WAIT);
     expect(icons()).toHaveLength(1);
 
     game.restart();
     expect(icons()).toHaveLength(0);
 
-    game.wait(5999);
+    game.wait(MIN_WAIT - 1);
     expect(icons()).toHaveLength(0);
     game.wait(1);
     expect(icons()).toHaveLength(1);
@@ -141,14 +155,22 @@ describe("collecting one", () => {
 
     expect(icons()).toHaveLength(0);
     expect(game.$$(".smoke-puff")).toHaveLength(1);
-    game.wait(3000);
-    expect(game.$$(".smoke-puff")).toHaveLength(0);
 
-    // the next one comes 6 seconds after this
-    game.wait(2999);
+    // the next one comes after the shortest wait, counted from the pick
+    game.wait(MIN_WAIT - 1);
     expect(icons()).toHaveLength(0);
     game.wait(1);
     expect(icons()).toHaveLength(1);
+  });
+
+  test("the puff of smoke is gone after three seconds", () => {
+    game = renderGame();
+    spawn(DOUBLE, 0, 0, 0);
+    game.click(".power-up-img");
+    expect(game.$$(".smoke-puff")).toHaveLength(1);
+
+    game.wait(3000);
+    expect(game.$$(".smoke-puff")).toHaveLength(0);
   });
 
   test("a good one plays its sound and pops the counter", () => {
@@ -283,10 +305,9 @@ describe("collecting one", () => {
     expect(document.documentElement.hasAttribute("data-frozen")).toBe(true);
     expect(sounds()).toContain("powerUp");
 
-    // time is up 19.9 seconds into the round, and six had passed when it was
-    // collected; with three that did not count, it is up 22.9 seconds in
-    // in steps, so that the screen gets to update after the freeze ends
-    for (let second = 0; second < 16; second++) game.wait(1000);
+    // the round has LEFT_AT_PICK to go, and three seconds of the freeze do not
+    // count. In steps, so that the screen gets to update after the freeze ends
+    for (let s = 0; s < stepsBefore(LEFT_AT_PICK + 3000); s++) game.wait(1000);
     expect(game.$("#red-flash").classList.contains("flash")).toBe(false);
     expect(document.documentElement.hasAttribute("data-frozen")).toBe(false);
 
@@ -309,8 +330,8 @@ describe("collecting one", () => {
     game.wait(100);
     expect(document.documentElement.hasAttribute("data-frozen")).toBe(false);
 
-    // and it counts down again, with 13.9 of the round's seconds left
-    for (let second = 0; second < 13; second++) game.wait(1000);
+    // and it counts down again, with all of what was left at the pick
+    for (let s = 0; s < stepsBefore(LEFT_AT_PICK); s++) game.wait(1000);
     expect(game.$("#red-flash").classList.contains("flash")).toBe(false);
     game.wait(1000);
     expect(game.$("#red-flash").classList.contains("flash")).toBe(true);
@@ -321,9 +342,10 @@ describe("collecting one", () => {
     spawn(RUSH, 0, 0, 0);
     game.click(".power-up-img");
 
-    // time is up 19.9 seconds in. Six had passed when it was collected, and the
-    // rush takes six more in its three, so it is up 16.9 seconds in
-    for (let second = 0; second < 10; second++) game.wait(1000);
+    // the rush takes six seconds of the round in its three, so the rest of
+    // what was left at the pick is down in three seconds less than six
+    const left = 3000 + LEFT_AT_PICK - 6000;
+    for (let s = 0; s < stepsBefore(left); s++) game.wait(1000);
     expect(game.$("#red-flash").classList.contains("flash")).toBe(false);
 
     game.wait(1000);
@@ -354,8 +376,11 @@ describe("collecting one", () => {
   });
 
   test("the time freeze keeps the bar rainbow, even when time is short", () => {
-    // a short round, so that the bar has its critical color when it appears
-    game = renderGame({ state: { highScore: 999, roundSeconds: 7 } });
+    // a round that ends a second after the power-up appears, so that the bar
+    // has its critical color then
+    game = renderGame({
+      state: { highScore: 999, roundSeconds: MIN_WAIT / 1000 + 1 },
+    });
     const plain = game.$("#progress-bar").style.background;
 
     spawn(FREEZE, 0, 0, 0);
@@ -619,7 +644,7 @@ describe("missing one", () => {
     expect(icons()).toHaveLength(0);
     expect(sounds()).not.toContain("powerUp");
 
-    game.wait(5999);
+    game.wait(MIN_WAIT - 1);
     expect(icons()).toHaveLength(0);
     game.wait(1);
     expect(icons()).toHaveLength(1);
@@ -648,7 +673,7 @@ describe("when the time runs out", () => {
     spawn(DOUBLE, 0, 0, 0);
     expect(melting().meltActive).toBe("false");
 
-    game.wait(TIME_IS_UP - 6000);
+    game.wait(TIME_IS_UP - MIN_WAIT);
     expect(melting().meltMode).toBe("out");
     expect(melting().meltActive).toBe("true");
     expect(icons()[0].style.animationPlayState).toBe("paused");
@@ -657,7 +682,7 @@ describe("when the time runs out", () => {
   test("it can no longer be collected", () => {
     game = renderGame();
     spawn(DOUBLE, 0, 0, 0);
-    game.wait(TIME_IS_UP - 6000);
+    game.wait(TIME_IS_UP - MIN_WAIT);
     game.click(".power-up-img");
 
     expect(sounds()).not.toContain("powerUp");
@@ -691,7 +716,7 @@ describe("the notice of a collected one", () => {
     game.wait(2500);
 
     nextPowerUp(PENALTY, 0, 0.9, 0);
-    game.wait(6000);
+    game.wait(MIN_WAIT);
     game.click(".power-up-img");
     expect(game.$("#power-up-notice .diamond-notice--left")).not.toBeNull();
   });

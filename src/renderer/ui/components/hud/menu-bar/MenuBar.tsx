@@ -105,6 +105,15 @@ export default function MenuBar({
           />
         )}
         <RoundButton
+          {...entering(2)}
+          variant={5}
+          icon={infoBtnSvg}
+          iconAlt="info icon"
+          iconSize={12}
+          id="help-btn"
+          onClick={onHelp}
+        />
+        <RoundButton
           {...entering(0)}
           variant={soundState >= 2 ? 4 : 5}
           icon={SOUND_ICONS[soundState] ?? soundBtnMuted}
@@ -113,17 +122,6 @@ export default function MenuBar({
           iconId="soundBtn"
           onClick={onSoundClick}
         />
-        {!inGame && (
-          <RoundButton
-            {...entering(2)}
-            variant={5}
-            icon={infoBtnSvg}
-            iconAlt="info icon"
-            iconSize={12}
-            id="help-btn"
-            onClick={onHelp}
-          />
-        )}
       </div>
       {(welcome || options.shown) && (
         <div className="notices">

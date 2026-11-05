@@ -14,7 +14,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: drop-shadow(0px 7px 0px var(--shadow-pink-020));
+  filter: drop-shadow(0px 6px 0px var(--shadow-pink-020));
 }
 
 // once the game is over, none of the game's buttons can be pressed
@@ -27,7 +27,7 @@
 
 .end-run {
   .pixel-btn {
-    filter: drop-shadow(0px 7px 0px var(--shadow-pink-020));
+    filter: drop-shadow(0px 6px 0px var(--shadow-pink-020));
   }
   transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 

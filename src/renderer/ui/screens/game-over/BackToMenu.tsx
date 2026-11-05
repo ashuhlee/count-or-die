@@ -44,7 +44,7 @@ export default function BackToMenu() {
           : undefined
       }
     >
-      <Letters text="Back to menu" step={0.1} height={0.7} duration={1} />
+      <Letters text="Main menu" step={0.1} height={0.7} duration={1} />
     </h2>
   );
 }

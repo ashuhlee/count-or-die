@@ -7,8 +7,9 @@ import { useGameEvent } from "../../../../provider/useGameEvent.ts";
 import type { ClockTimer } from "../../../../game/gameClock.ts";
 import type { Falling } from "./FallingPowerUp.tsx";
 
-const MIN_WAIT = 5000;
-const MAX_WAIT = 10000;
+// how long it takes for the next power-up to come, ms
+export const MIN_WAIT = 5000;
+export const MAX_WAIT = 8000;
 
 export function usePowerUpSpawner() {
   const { state, actions, ready, clock } = useGame();

@@ -19,7 +19,6 @@
   }
 
   .alert-popup-text {
-    // the words measure their place from it
     position: relative;
     min-width: 0;
     max-width: 460px;
@@ -29,7 +28,7 @@
     line-height: 20px;
     text-transform: uppercase;
     text-shadow: none;
-    color: #3c3760;
+    color: #433e61;
 
     // the letters stand still
     [data-char] {

@@ -7,7 +7,7 @@ import { useProgressSparkles } from "./useProgressSparkles.ts";
 const COLORS = {
   rainbow: "var(--rainbow-gradient-bar)",
   primary: "#AD9EFF",
-  warning: "#ffb199",
+  warning: "#ffb4be",
   critical: "#f7628b",
 };
 

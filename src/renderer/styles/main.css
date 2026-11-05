@@ -798,14 +798,14 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: drop-shadow(0px 7px 0px var(--shadow-pink-020));
+  filter: drop-shadow(0px 6px 0px var(--shadow-pink-020));
 }
 .game-ended .buttons,
 .game-ended .end-run {
   pointer-events: none;
 }
 .end-run .pixel-btn {
-  filter: drop-shadow(0px 7px 0px var(--shadow-pink-020));
+  filter: drop-shadow(0px 6px 0px var(--shadow-pink-020));
 }
 .end-run {
   transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -2033,7 +2033,7 @@ img {
   line-height: 20px;
   text-transform: uppercase;
   text-shadow: none;
-  color: #3c3760;
+  color: #433e61;
 }
 .alert-popup .alert-popup-text [data-char] {
   display: inline-block;
@@ -2414,7 +2414,7 @@ img {
   gap: 22px;
 }
 #game-over .bottom-section .game-over-btns .wide-btn {
-  filter: drop-shadow(0px 7px 0px var(--shadow-pink-015));
+  filter: drop-shadow(0px 5px 0px var(--shadow-pink-015));
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 #game-over .bottom-section .game-over-btns .wide-btn:hover {

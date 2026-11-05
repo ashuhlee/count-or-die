@@ -41,7 +41,9 @@ export default function Game() {
   const asking = endingRun && screen === "game";
 
   const [helpOpen, setHelpOpen] = useState(false);
-  const helping = helpOpen && screen === "menu";
+  // on the menu, and in a run that is still going
+  const helping =
+    helpOpen && (screen === "menu" || (screen === "game" && !state.isGameOver));
 
   const { pause, resume } = actions;
   useEffect(() => {
