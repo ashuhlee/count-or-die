@@ -61,7 +61,6 @@ export default function GameProvider({
 
   const stateRef = useRef(state);
 
-  // everything that counts game time goes through this, so a pause is one call
   const [clock] = useState(() => createGameClock());
   useEffect(() => () => clock.clear(), [clock]);
 
@@ -71,14 +70,11 @@ export default function GameProvider({
   const [paused, setPaused] = useState(false);
   const pausedRef = useRef(false);
 
-  // lets the style sheet pause the animations that keep game time
   useEffect(() => {
     document.documentElement.toggleAttribute("data-paused", paused);
     return () => document.documentElement.removeAttribute("data-paused");
   }, [paused]);
 
-  // when the power-up that is running ends; a new one takes its place, and the
-  // end of the run takes it away
   const powerUpEnd = useRef<ClockTimer>(undefined);
   useEffect(() => {
     if (state.isGameOver) clock.cancel(powerUpEnd.current);
@@ -143,11 +139,6 @@ export default function GameProvider({
       boost: (pointer) =>
         pausedRef.current ||
         dispatch({ type: "boost", random: randomRef.current() }, pointer),
-
-      endRun() {
-        if (stateRef.current.isGameOver) return;
-        dispatch({ type: "endRun" });
-      },
 
       restartFromGameOver() {
         playSound("buttonClick");

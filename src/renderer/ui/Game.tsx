@@ -9,7 +9,11 @@ import cloudMini from "@assets/ui/deco/clouds/cloud_5.png";
 import { useKeyboardControls } from "../hooks/useKeyboardControls.ts";
 import { useGame } from "../provider/useGame.ts";
 import { useGameEvent } from "../provider/useGameEvent.ts";
-import AlertPopup from "./overlays/alert-popup/AlertPopup.tsx";
+import { describeDaily } from "../game/challenges.ts";
+import { loadDailyChallenges } from "../utils/storage/dailyChallenges.ts";
+import AlertPopup, {
+  type AlertRow,
+} from "./overlays/alert-popup/AlertPopup.tsx";
 import { useFadeOut } from "./overlays/alert-popup/useFadeOut.ts";
 import CursorCounts from "./components/effects/cursor-counts/CursorCounts.tsx";
 import FpsCounter from "./components/hud/fps-counter/FpsCounter.tsx";
@@ -29,6 +33,21 @@ const HOW_TO_PLAY = [
   "Click *+* or *D* arrow key to count. Boosts *(space)* jump straight to the goal.",
 ].join("\n");
 
+// the pending ones first, the finished ones after
+function readChallenges(): AlertRow[] {
+  const rows = describeDaily(loadDailyChallenges()).map(
+    ({ label, progress, target, done }) => ({
+      label,
+      value: `${done ? target : progress}/${target}`,
+      done,
+    }),
+  );
+  return [
+    ...rows.filter((row) => !row.done),
+    ...rows.filter((row) => row.done),
+  ];
+}
+
 export default function Game() {
   useKeyboardControls();
   const { state, screen, ready, actions, loading } = useGame();
@@ -45,15 +64,30 @@ export default function Game() {
   const helping =
     helpOpen && (screen === "menu" || (screen === "game" && !state.isGameOver));
 
+  // the day's challenges, read again after each run and when opened
+  const [challengesOpen, setChallengesOpen] = useState(false);
+  const [challenges, setChallenges] = useState(readChallenges);
+  useGameEvent("gameOver", () => setChallenges(readChallenges()));
+  const openChallenges = () => {
+    setChallenges(readChallenges());
+    setChallengesOpen(true);
+  };
+  const challengesCompleted = challenges.filter((row) => row.done).length;
+  const challengesDone = challengesCompleted === challenges.length;
+  const challenging =
+    challengesOpen &&
+    (screen === "menu" || (screen === "game" && !state.isGameOver));
+
   const { pause, resume } = actions;
   useEffect(() => {
-    if (!asking && !helping) return;
+    if (!asking && !helping && !challenging) return;
     pause();
     return resume;
-  }, [asking, helping, pause, resume]);
+  }, [asking, helping, challenging, pause, resume]);
 
   const popupShown = useFadeOut(asking, 300);
   const helpShown = useFadeOut(helping, 300);
+  const challengesShown = useFadeOut(challenging, 300);
 
   return (
     <>
@@ -86,6 +120,11 @@ export default function Game() {
           entrance={screen === "menu" ? (ready ? "play" : "wait") : undefined}
           inGame={screen === "game"}
           onHelp={() => setHelpOpen(true)}
+          challenges={{
+            done: challengesCompleted,
+            total: challenges.length,
+            onOpen: openChallenges,
+          }}
           onHome={
             screen === "game"
               ? () => {
@@ -106,7 +145,7 @@ export default function Game() {
             <GameOver />
 
             <div className="app" id="app">
-              <GameScreen />
+              <GameScreen onChallenges={openChallenges} />
             </div>
 
             <CursorCounts />
@@ -135,9 +174,30 @@ export default function Game() {
       {helpShown && (
         <AlertPopup
           leaving={!helping}
-          title="How to play"
+          title="? How to play"
           text={HOW_TO_PLAY}
           onNo={() => setHelpOpen(false)}
+        />
+      )}
+      {challengesShown && (
+        <AlertPopup
+          leaving={!challenging}
+          title="Daily challenges"
+          tab="purple"
+          rows={challenges}
+          okLabel={
+            challengesDone
+              ? "Challenges complete!"
+              : screen === "menu"
+                ? "Play"
+                : "Got it"
+          }
+          onOk={() => {
+            setChallengesOpen(false);
+            if (screen === "menu" && !challengesDone && !loading.mounted)
+              actions.play();
+          }}
+          onNo={() => setChallengesOpen(false)}
         />
       )}
       {(screen === "menu" || !state.isGameOver) && <FpsCounter />}

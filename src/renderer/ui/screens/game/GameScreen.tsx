@@ -26,7 +26,11 @@ const pointerOf = (event: MouseEvent) => ({
   y: event.clientY,
 });
 
-export default function GameScreen() {
+export default function GameScreen({
+  onChallenges,
+}: {
+  onChallenges?: () => void;
+}) {
   const { state, actions } = useGame();
 
   const [screenRef, shake] =
@@ -93,12 +97,12 @@ export default function GameScreen() {
         <PixelButton
           {...BUTTON_LOOK}
           {...RESTART_COLORS}
-          id="end-run-btn"
+          id="challenges-btn"
           className="wide-btn"
-          aria-label="end run"
-          onClick={actions.endRun}
+          aria-label="challenges"
+          onClick={onChallenges}
         >
-          <Letters text="END RUN" step={0.1} height={0.7} duration={1} />
+          <Letters text="CHALLENGES" step={0.1} height={0.7} duration={1} />
         </PixelButton>
       </div>
     </div>

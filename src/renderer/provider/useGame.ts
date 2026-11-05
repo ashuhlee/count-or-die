@@ -20,7 +20,6 @@ export type LoadingScreenState = {
 export type GameActions = {
   increase: (pointer?: Pointer) => void;
   boost: (pointer?: Pointer) => void;
-  endRun: () => void;
   restartFromGameOver: () => void;
   play: () => void;
   backToMenu: () => void;

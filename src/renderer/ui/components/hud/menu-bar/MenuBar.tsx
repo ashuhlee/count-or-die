@@ -8,6 +8,7 @@ import homeBtnSvg from "@assets/ui/svg/home-button.svg";
 import infoBtnSvg from "@assets/ui/svg/info-button.svg";
 import lockIcon from "@assets/ui/deco/lock_grey.svg";
 import skullIcon from "@assets/ui/deco/skull_grey.svg";
+import trophyIcon from "@assets/ui/deco/trophy_grey.svg";
 
 import { muteMusic, toggleAudio } from "../../../../utils/app/sounds.ts";
 import { openChangelog } from "../../../../utils/app/openChangelog.ts";
@@ -42,6 +43,7 @@ type MenuBarProps = {
   entrance?: "wait" | "play";
   onHome?: () => void;
   onHelp?: () => void;
+  challenges?: { done: number; total: number; onOpen: () => void };
   inGame?: boolean;
 };
 
@@ -49,6 +51,7 @@ export default function MenuBar({
   entrance,
   onHome,
   onHelp,
+  challenges,
   inGame,
 }: MenuBarProps) {
   const options = useTimedNotification();
@@ -69,6 +72,7 @@ export default function MenuBar({
   }
 
   const welcome = !inGame && entrance === "play";
+  const daily = welcome && challenges && challenges.done < challenges.total;
 
   const entering = (index: number) => ({
     className: entrance ? "bounce-in-right" : undefined,
@@ -123,7 +127,7 @@ export default function MenuBar({
           onClick={onSoundClick}
         />
       </div>
-      {(welcome || options.shown) && (
+      {(welcome || daily || options.shown) && (
         <div className="notices">
           {welcome && (
             <Tooltip text="Changelog" placement="cursor-right">
@@ -138,6 +142,18 @@ export default function MenuBar({
                 onClick={openChangelog}
               />
             </Tooltip>
+          )}
+          {daily && (
+            <GameNotification
+              icon={trophyIcon}
+              iconAlt="trophy"
+              text={`Daily challenges: ${challenges.done}/${challenges.total}`}
+              border="#E3E0EF"
+              still
+              delay={WELCOME_DELAY + 0.1}
+              id="challenges-notice"
+              onClick={challenges.onOpen}
+            />
           )}
           {options.shown && (
             <GameNotification
