@@ -2,24 +2,12 @@
   --shadow-pink-005: rgba(206, 42, 133, 0.05);
   --shadow-pink-008: rgba(206, 42, 133, 0.08);
   --shadow-pink-010: rgba(206, 42, 133, 0.1);
-  --shadow-pink-012: rgba(206, 42, 133, 0.12);
   --shadow-pink-015: rgba(206, 42, 133, 0.15);
   --shadow-pink-020: rgba(206, 42, 133, 0.2);
 
-  --shadow-purple-010: rgba(94, 40, 255, 0.1);
   --shadow-purple-015: rgba(94, 40, 255, 0.15);
-  --shadow-purple-025: rgba(94, 40, 255, 0.25);
-  --shadow-purple-030: rgba(94, 40, 255, 0.3);
 
   --shadow-overlay-010: rgba(0, 0, 0, 0.1);
-  --shadow-overlay-015: rgba(0, 0, 0, 0.15);
-  --shadow-overlay-020: rgba(0, 0, 0, 0.2);
-  --shadow-overlay-025: rgba(0, 0, 0, 0.25);
-  --shadow-overlay-030: rgba(0, 0, 0, 0.3);
-  --shadow-overlay-035: rgba(0, 0, 0, 0.35);
-  --shadow-overlay-040: rgba(0, 0, 0, 0.4);
-  --shadow-overlay-045: rgba(0, 0, 0, 0.45);
-  --shadow-overlay-050: rgba(0, 0, 0, 0.5);
 
   --rainbow-gradient-bar: linear-gradient(
     to right,
@@ -95,15 +83,3 @@ $fonts: "../assets/fonts";
   font-display: block;
   src: url("#{$fonts}/smw-text-nc.woff") format("woff");
 }
-
-$rainbow-gradient: linear-gradient(
-  to right,
-  #ffacad,
-  #ffd5a5,
-  #fdffb6,
-  #cbffbf,
-  #9bf6ff,
-  #a0c4ff,
-  #bdb2ff,
-  #ffc6ff
-);

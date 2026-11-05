@@ -9,7 +9,7 @@ import GameOverBackground, {
 } from "../game-over/GameOverBackground.tsx";
 import StartMenuTitle from "./StartMenuTitle.tsx";
 
-export const BUTTONS_DELAY = 300;
+const BUTTONS_DELAY = 300;
 const HUE_DURATION = 500;
 
 const COLORS = { play: "#b0a1ff", report: "#FF85E3", quit: "#CDC8EA" };

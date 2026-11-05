@@ -12,7 +12,6 @@ import { useGameEvent } from "../provider/useGameEvent.ts";
 import AlertPopup from "./overlays/alert-popup/AlertPopup.tsx";
 import { useFadeOut } from "./overlays/alert-popup/useFadeOut.ts";
 import CursorCounts from "./components/effects/cursor-counts/CursorCounts.tsx";
-import HighScore from "./components/gameplay/high-score/HighScore.tsx";
 import FpsCounter from "./components/hud/fps-counter/FpsCounter.tsx";
 import MenuBar from "./components/hud/menu-bar/MenuBar.tsx";
 import PowerUps from "./components/gameplay/power-ups/PowerUps.tsx";
@@ -107,7 +106,6 @@ export default function Game() {
             <div className="app" id="app">
               <GameScreen />
             </div>
-            {/*<HighScore />*/}
 
             <CursorCounts />
             <PowerUps />

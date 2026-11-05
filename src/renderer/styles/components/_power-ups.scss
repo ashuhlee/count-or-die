@@ -45,7 +45,7 @@ $power-up-width: 68px;
   position: absolute;
   inset: 0;
   mask: var(--power-up-mask) center / 100% 100% no-repeat;
-  --shine-opacity: 0.3;
+  --shine-opacity: 0.5;
   --shine-delay: 1s;
   --shine-duration: #{$shine-every};
   &::after {

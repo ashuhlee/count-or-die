@@ -17,7 +17,7 @@ export type MeltColors = {
   shadow: string;
 };
 
-export const MELT_COLORS: MeltColors = {
+const MELT_COLORS: MeltColors = {
   edge: "#ff8ae0",
   flash: "#ffffff",
   ember: "#9875ff",

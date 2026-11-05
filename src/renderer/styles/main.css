@@ -2,22 +2,10 @@
   --shadow-pink-005: rgba(206, 42, 133, 0.05);
   --shadow-pink-008: rgba(206, 42, 133, 0.08);
   --shadow-pink-010: rgba(206, 42, 133, 0.1);
-  --shadow-pink-012: rgba(206, 42, 133, 0.12);
   --shadow-pink-015: rgba(206, 42, 133, 0.15);
   --shadow-pink-020: rgba(206, 42, 133, 0.2);
-  --shadow-purple-010: rgba(94, 40, 255, 0.1);
   --shadow-purple-015: rgba(94, 40, 255, 0.15);
-  --shadow-purple-025: rgba(94, 40, 255, 0.25);
-  --shadow-purple-030: rgba(94, 40, 255, 0.3);
   --shadow-overlay-010: rgba(0, 0, 0, 0.1);
-  --shadow-overlay-015: rgba(0, 0, 0, 0.15);
-  --shadow-overlay-020: rgba(0, 0, 0, 0.2);
-  --shadow-overlay-025: rgba(0, 0, 0, 0.25);
-  --shadow-overlay-030: rgba(0, 0, 0, 0.3);
-  --shadow-overlay-035: rgba(0, 0, 0, 0.35);
-  --shadow-overlay-040: rgba(0, 0, 0, 0.4);
-  --shadow-overlay-045: rgba(0, 0, 0, 0.45);
-  --shadow-overlay-050: rgba(0, 0, 0, 0.5);
   --rainbow-gradient-bar: linear-gradient(
     to right,
     #ffa7eb,
@@ -117,14 +105,6 @@ body {
   -webkit-user-select: none;
   -webkit-app-region: no-drag;
 }
-.game-background {
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  opacity: 0.1;
-  mix-blend-mode: multiply;
-  pointer-events: none;
-}
 button,
 input,
 textarea,
@@ -173,29 +153,6 @@ img {
   }
   to {
     filter: hue-rotate(30deg) saturate(1);
-  }
-}
-@keyframes gradient {
-  0% {
-    color: rgba(0, 0, 0, 0);
-    background-image: linear-gradient(
-      to right,
-      #ffacad,
-      #ffd5a5,
-      #fdffb6,
-      #cbffbf,
-      #9bf6ff,
-      #a0c4ff,
-      #bdb2ff,
-      #ffc6ff
-    );
-    background-clip: text;
-    background-size: 200% auto;
-    background-position: 0% center;
-  }
-  100% {
-    color: #fff;
-    background-position: 200% center;
   }
 }
 @keyframes fade-in-up {
@@ -638,12 +595,6 @@ img {
 .heart-white:nth-child(4) {
   animation-delay: 0.9s;
 }
-#high-score.new-score {
-  animation:
-    bounce 0.6s,
-    gradient 2s ease;
-  transform-origin: center;
-}
 .new-goal,
 .new-goal-reverse {
   transform-style: preserve-3d;
@@ -1063,18 +1014,6 @@ img {
   pointer-events: none;
   z-index: 5;
 }
-#high-score {
-  position: absolute;
-  font-size: 15px;
-  color: #fff;
-  text-shadow: 0 4px 0 var(--shadow-pink-015);
-  font-family: "Teeny Tiny Pixls", sans-serif;
-  font-weight: bold;
-  bottom: -10px;
-  right: 0;
-  padding: 30px;
-  text-align: right;
-}
 .app-ver {
   position: absolute;
   font-size: 16px;
@@ -1356,7 +1295,7 @@ img {
   position: absolute;
   inset: 0;
   mask: var(--power-up-mask) center/100% 100% no-repeat;
-  --shine-opacity: 0.3;
+  --shine-opacity: 0.5;
   --shine-delay: 1s;
   --shine-duration: 1.5s;
 }
