@@ -68,7 +68,7 @@ export default function FallingPowerUp({
             active={gameOver}
             mode="out"
             duration={700}
-            pixelScale={5}
+            pixelScale={3}
             shadow={false}
             settledBrightness={1}
           />

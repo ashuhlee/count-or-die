@@ -1,8 +1,14 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 
 import { useGameEvent } from "../../../../provider/useGameEvent.ts";
 
-const COLOR = "#FFFFFF";
+const COLORS = ["#FDA9E3", "#b5d9ff", "#aaa3ff"];
 
 type CursorCount = {
   id: number;
@@ -22,7 +28,8 @@ function FloatingCount({
   const { id, value, x, y, xPos } = count;
   const ref = useRef<HTMLSpanElement>(null);
 
-  useEffect(() => {
+  // before the first paint, so the count never shows as it is in the style sheet
+  useLayoutEffect(() => {
     const animation = ref.current.animate(
       [
         {
@@ -35,10 +42,9 @@ function FloatingCount({
 						translateX(${xPos}px)
 						rotate(${xPos}deg)
 						scale(1.2)`,
-          color: COLOR,
         },
       ],
-      { duration: 700, easing: "ease-out" },
+      { duration: 700, easing: "ease-out", fill: "both" },
     );
 
     const finish = () => onDone(id);
@@ -54,12 +60,13 @@ function FloatingCount({
     <span
       ref={ref}
       className="count-cursor"
-      style={{
-        left: `${x}px`,
-        top: `${y}px`,
-        color: COLOR,
-        textShadow: "0 2px 0 var(--shadow-pink-020)",
-      }}
+      style={
+        {
+          left: `${x}px`,
+          top: `${y}px`,
+          "--count-color": COLORS[id % COLORS.length],
+        } as CSSProperties
+      }
     >
       {`+${value}`}
     </span>
@@ -71,15 +78,10 @@ export default function CursorCounts() {
   const nextId = useRef(0);
 
   useGameEvent("cursorCount", ({ value, x, y }) => {
+    const id = nextId.current++;
     setCounts((current) => [
       ...current,
-      {
-        id: nextId.current++,
-        value,
-        x,
-        y,
-        xPos: (Math.random() - 0.5) * 70,
-      },
+      { id, value, x, y, xPos: (Math.random() - 0.5) * 70 },
     ]);
   });
 
