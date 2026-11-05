@@ -27,7 +27,7 @@
   color: #fff;
   -webkit-text-stroke: 3px var(--count-color);
   paint-order: stroke fill;
-  filter: drop-shadow(2px 2px 0 var(--count-color));
+  filter: drop-shadow(3px 3px 0 var(--count-color));
   pointer-events: none;
   z-index: 5;
 }
