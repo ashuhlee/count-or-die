@@ -19,6 +19,7 @@ export function useKeyboardControls(): void {
         onStart: () =>
           screen === "menu" &&
           !loading.mounted &&
+          !paused &&
           !(event.target instanceof HTMLButtonElement) &&
           actions.play(),
       });

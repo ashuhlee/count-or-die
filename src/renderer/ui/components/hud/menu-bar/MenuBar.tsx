@@ -5,13 +5,12 @@ import soundBtnNoMusic from "@assets/ui/svg/sound-button-no_music.svg";
 import soundBtnUnmuted from "@assets/ui/svg/sound-button-reg.svg";
 import optionsBtnSvg from "@assets/ui/svg/options-button.svg";
 import homeBtnSvg from "@assets/ui/svg/home-button.svg";
-import githubBtnSvg from "@assets/ui/svg/github-button.svg";
+import infoBtnSvg from "@assets/ui/svg/info-button.svg";
 import lockIcon from "@assets/ui/deco/lock_grey.svg";
 import skullIcon from "@assets/ui/deco/skull_grey.svg";
 
 import { muteMusic, toggleAudio } from "../../../../utils/app/sounds.ts";
 import { openChangelog } from "../../../../utils/app/openChangelog.ts";
-import { openGithub } from "../../../../utils/app/openGithub.ts";
 import {
   onSettingsRequested,
   requestSettings,
@@ -42,10 +41,16 @@ const WELCOME_DELAY = 0.2;
 type MenuBarProps = {
   entrance?: "wait" | "play";
   onHome?: () => void;
+  onHelp?: () => void;
   inGame?: boolean;
 };
 
-export default function MenuBar({ entrance, onHome, inGame }: MenuBarProps) {
+export default function MenuBar({
+  entrance,
+  onHome,
+  onHelp,
+  inGame,
+}: MenuBarProps) {
   const options = useTimedNotification();
   useEffect(() => onSettingsRequested(options.show), [options.show]);
   const [soundState, setSoundState] = useState(readSavedState);
@@ -109,15 +114,15 @@ export default function MenuBar({ entrance, onHome, inGame }: MenuBarProps) {
           onClick={onSoundClick}
         />
         {!inGame && (
-          <Tooltip text="Contribute" placement="cursor-left">
+          <Tooltip text="How to play" placement="cursor-left">
             <RoundButton
               {...entering(2)}
               variant={5}
-              icon={githubBtnSvg}
-              iconAlt="github icon"
-              iconSize={30}
-              id="github-btn"
-              onClick={openGithub}
+              icon={infoBtnSvg}
+              iconAlt="info icon"
+              iconSize={12}
+              id="help-btn"
+              onClick={onHelp}
             />
           </Tooltip>
         )}

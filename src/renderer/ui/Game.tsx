@@ -25,6 +25,11 @@ import RedFlash from "./screens/game-over/RedFlash.tsx";
 import GameScreen from "./screens/game/GameScreen.tsx";
 import StartMenuScreen from "./screens/start-menu/StartMenuScreen.tsx";
 
+const HOW_TO_PLAY = [
+  "Reach the goal before the timer runs out.",
+  "Click *+* or *D* arrow key to count. Boosts *(space)* jump straight to the goal.",
+].join("\n");
+
 export default function Game() {
   useKeyboardControls();
   const { state, screen, ready, actions, loading } = useGame();
@@ -35,13 +40,19 @@ export default function Game() {
   useGameEvent("gameOver", () => setEndingRun(false));
   useGameEvent("restarted", () => setEndingRun(false));
   const asking = endingRun && screen === "game";
+
+  const [helpOpen, setHelpOpen] = useState(false);
+  const helping = helpOpen && screen === "menu";
+
   const { pause, resume } = actions;
   useEffect(() => {
-    if (!asking) return;
+    if (!asking && !helping) return;
     pause();
     return resume;
-  }, [asking, pause, resume]);
+  }, [asking, helping, pause, resume]);
+
   const popupShown = useFadeOut(asking, 300);
+  const helpShown = useFadeOut(helping, 300);
 
   return (
     <>
@@ -73,6 +84,7 @@ export default function Game() {
         <MenuBar
           entrance={screen === "menu" ? (ready ? "play" : "wait") : undefined}
           inGame={screen === "game"}
+          onHelp={() => setHelpOpen(true)}
           onHome={
             screen === "game"
               ? () => {
@@ -108,6 +120,7 @@ export default function Game() {
       </Fragment>
       {popupShown && (
         <AlertPopup
+          size="small"
           leaving={!asking}
           text={
             "Are you sure you want to end this run?\nYour score will be saved."
@@ -118,6 +131,16 @@ export default function Game() {
             actions.backToMenu();
           }}
           onNo={() => setEndingRun(false)}
+        />
+      )}
+      {helpShown && (
+        <AlertPopup
+          size="regular"
+          leaving={!helping}
+          title="How to play"
+          text={HOW_TO_PLAY}
+          border="#bfb3ff"
+          onNo={() => setHelpOpen(false)}
         />
       )}
       {(screen === "menu" || !state.isGameOver) && <FpsCounter />}

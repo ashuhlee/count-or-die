@@ -256,28 +256,47 @@ describe("the menu", () => {
     );
   });
 
-  test("the github button opens the project page in the app's browser", () => {
-    window.electron = {
-      setDiscordStatus: vi.fn(),
-      quitApp: vi.fn(),
-      openGithub: vi.fn(),
-      showGpuWarning: vi.fn(),
-    } as unknown as Window["electron"];
-    game.click("#github-btn");
+  describe("the how to play button", () => {
+    test("opens a popup that only informs, and the button closes it", () => {
+      expect(game.$("#alert-popup")).toBeNull();
 
-    expect(sounds()).not.toContain("buttonClick");
-    expect(window.electron.openGithub).toHaveBeenCalledTimes(1);
-  });
+      game.click("#help-btn");
+      expect(game.$("#alert-popup")).not.toBeNull();
+      expect(game.$("#alert-yes")).toBeNull();
 
-  test("the github button opens a new tab in the browser", () => {
-    const open = vi.spyOn(window, "open").mockImplementation(() => null);
-    game.click("#github-btn");
+      game.click("#alert-close");
+      game.wait(COVERED);
+      expect(game.$("#alert-popup")).toBeNull();
+      expect(game.$("#menu-screen")).not.toBeNull();
+    });
 
-    expect(open).toHaveBeenCalledWith(
-      "https://github.com/ashuhlee/count-or-die",
-      "_blank",
-      "noopener",
-    );
+    test("space does not start the game while it is open", () => {
+      game.click("#help-btn");
+
+      game.press(" ");
+      expect(game.$("#alert-popup")).not.toBeNull();
+      expect(game.$("#menu-screen")).not.toBeNull();
+      expect(sounds()).not.toContain("bgMusic");
+    });
+
+    test("Escape closes it, and does not bring up the settings", () => {
+      game.click("#help-btn");
+
+      game.press("Escape");
+      game.wait(COVERED);
+      expect(game.$("#alert-popup")).toBeNull();
+      expect(game.$("#options-notice")).toBeNull();
+    });
+
+    test("space starts the game again once it is closed", () => {
+      game.click("#help-btn");
+      game.click("#alert-close");
+      game.wait(COVERED);
+
+      game.press(" ");
+      game.wait(COVERED + 600);
+      expect(game.$("#game-container")).not.toBeNull();
+    });
   });
 
   test("the welcome notice opens the changelog in the app's browser", () => {
