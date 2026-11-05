@@ -41,7 +41,7 @@ Compete against your personal best high score. In future versions, compare your 
 ### Game Modes
 
 - **Regular Mode:** Classic sequential counting with regular numbers only
-- **Nerd-Out Mode:** A random mix of numbers and math equations (e.g., 25, 4 × 10, 100 ÷ 2) _(Coming soon)_
+- **Nerd-Out Mode:** Math equations only (e.g., 4 × 10, 100 ÷ 2). Solve in your head and keep clicking _(Coming soon)_
 
 ### Power-Up System
 
@@ -136,48 +136,18 @@ git pull origin main
 npm install
 ```
 
-## Features Currently in Development
+## Features Coming to Beta.2
 
 - Additional game mode for the math enjoyers
 - Improved high score management system
 
 ## Tech Stack
 
-- **Electron:** Framework for cross-platform desktop application development
-- **React:** Runs the game and renders its interface
-- **Vite:** Build tool for fast development and bundling
-- **Vite+:** Toolchain for linting, formatting and testing (`vp check`, `vp test`)
+- **Electron:** framework for cross-platform desktop app development
+- **Electron Forge:** for packaging and distributing Electron apps
+- **React:** runs the game and renders its interface
+- **Vite+:** toolchain for bundling, linting, formatting and testing (`vp check`, `vp test`)
 - **Discord Integration:** Discord Rich Presence support [(simple-discord-rpc)](https://www.npmjs.com/package/simple-discord-rpc)
-- **Electron Forge:** For packaging and distributing Electron apps
-
-## Project Structure
-
-```
-src/
-├── main/              Electron main process (window, Discord Rich Presence)
-├── preload/           Bridge between Electron and the game
-└── renderer/
-    ├── index.html, index.tsx, App.tsx   The page and where React starts
-    ├── preload.d.ts   Types for what the preload exposes on `window`
-    ├── assets/        Images and audio files
-    ├── styles/        SCSS and the compiled main.css
-    ├── game/          The game rules: plain functions, no React or DOM
-    ├── provider/      Runs the game in React: GameProvider (state, timers,
-    │                  sounds, saving), useGame and the event bus
-    ├── hooks/         Shared hooks
-    ├── utils/         Sound, confetti, saving and other small helpers
-    └── ui/            What is drawn
-        ├── screens/      Full screens: game, game over
-        ├── overlays/     Drawn over the whole screen: loading screen
-        ├── shaders/      WebGL effects: PixelSwirlShader, CRTShader, MeltInShader
-        └── components/   One folder per feature (counter, hearts, goal, ...)
-tests/
-├── game/              The rules
-├── provider/          Running the game: saving, timers, errors
-├── ui/                The game played like a person would: clicks, keys, time
-│                      (one file per component or screen, named after it)
-└── helpers/           Shared test utilities
-```
 
 ## Contributing
 
