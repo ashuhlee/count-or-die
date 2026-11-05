@@ -12,7 +12,11 @@ import StartMenuTitle from "./StartMenuTitle.tsx";
 const BUTTONS_DELAY = 300;
 const HUE_DURATION = 500;
 
-const COLORS = { play: "#b0a1ff", report: "#FF85E3", quit: "#CDC8EA" };
+const COLORS = {
+  play: "#b0a1ff",
+  report: "#FF85E3",
+  quit: "#CDC8EA",
+};
 
 const FILL = "#ffffff";
 const look = (color: string) => ({
@@ -60,7 +64,7 @@ export default function StartMenuScreen() {
           shadeRows={2.5}
           onClick={loading.mounted ? undefined : actions.play}
         >
-          <Letters text="Start game" step={0.2} duration={3} />
+          <Letters text="Classic Mode" step={0.2} duration={3} />
         </PixelButton>
         <PixelButton
           {...look(COLORS.report)}
