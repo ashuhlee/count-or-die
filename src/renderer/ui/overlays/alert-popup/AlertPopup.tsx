@@ -2,8 +2,8 @@ import { Fragment, useEffect, useLayoutEffect, useRef } from "react";
 
 import tabPurple from "@assets/ui/tabs/tab.svg";
 import tabBlue from "@assets/ui/tabs/tab-blue.svg";
-import closeSvg from "@assets/ui/tabs/close.svg";
-import closeHoverSvg from "@assets/ui/tabs/close-hover.svg";
+import closePng from "@assets/ui/tabs/close.png";
+import closeHoverPng from "@assets/ui/tabs/close-hover.png";
 
 import Letters from "../../components/text/letters/Letters.tsx";
 
@@ -167,9 +167,9 @@ export default function AlertPopup({
             aria-label="Close"
             onClick={onNo}
           >
-            <img src={closeSvg} alt="" />
+            <img src={closePng} alt="" />
             <img
-              src={closeHoverSvg}
+              src={closeHoverPng}
               alt=""
               className="alert-popup-close-hover"
             />

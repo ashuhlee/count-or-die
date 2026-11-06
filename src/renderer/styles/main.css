@@ -1944,10 +1944,10 @@ img {
 }
 .alert-popup .alert-popup-close {
   position: absolute;
-  left: 453px;
-  top: 16px;
-  width: 52px;
-  height: auto;
+  left: 450px;
+  top: 13px;
+  width: 59px;
+  height: 48px;
   margin: 0;
   padding: 0;
   border: 0;

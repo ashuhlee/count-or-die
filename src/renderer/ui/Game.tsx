@@ -10,7 +10,7 @@ import { useKeyboardControls } from "../hooks/useKeyboardControls.ts";
 import { useGame } from "../provider/useGame.ts";
 import { useGameEvent } from "../provider/useGameEvent.ts";
 import { describeDaily } from "../game/challenges.ts";
-import { playConfetti } from "../utils/effects/confetti.ts";
+import { burst } from "../utils/effects/confetti.ts";
 import {
   loadDailyChallenges,
   takeCelebration,
@@ -37,7 +37,6 @@ const HOW_TO_PLAY = [
   "Click *+* or *D* arrow key to count. Boosts *(space)* jump straight to the goal.",
 ].join("\n");
 
-// the pending ones first, the finished ones after
 function readChallenges(): AlertRow[] {
   const rows = describeDaily(loadDailyChallenges()).map(
     ({ label, progress, target, done }) => ({
@@ -71,16 +70,17 @@ export default function Game() {
   }, [canHelp]);
   useKeyboardControls(openHelp);
 
-  // the day's challenges, read again after each run and when opened
   const [challengesOpen, setChallengesOpen] = useState(false);
   const [challenges, setChallenges] = useState(readChallenges);
   useGameEvent("gameOver", () => setChallenges(readChallenges()));
+
   const openChallenges = () => {
     const rows = readChallenges();
     setChallenges(rows);
     setChallengesOpen(true);
-    if (rows.every((row) => row.done) && takeCelebration()) playConfetti();
+    if (rows.every((row) => row.done) && takeCelebration()) burst(0.4);
   };
+
   const challengesCompleted = challenges.filter((row) => row.done).length;
   const challengesDone = challengesCompleted === challenges.length;
   const challenging = challengesOpen && screen === "menu";
