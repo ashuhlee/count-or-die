@@ -1,16 +1,15 @@
-import { requestSettings } from "../utils/events/settingsNotice.ts";
-
 type KeyBinds = {
   onIncrease: () => void;
   onBoost: () => void;
   onStart: () => void;
+  onEscape: () => void;
 };
 
 export function handleKeydown(event: KeyboardEvent, handlers: KeyBinds): void {
   if (event.repeat && !import.meta.env.DEV) return;
 
   if (event.key === "Escape") {
-    requestSettings();
+    handlers.onEscape();
     return;
   }
   if (event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) {

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 
 import cloudTopLeft from "@assets/ui/deco/clouds/cloud_1.png";
 import cloudBottomLeft from "@assets/ui/deco/clouds/cloud_2.png";
@@ -49,7 +49,6 @@ function readChallenges(): AlertRow[] {
 }
 
 export default function Game() {
-  useKeyboardControls();
   const { state, screen, ready, actions, loading } = useGame();
   const [page, setPage] = useState(0);
   useGameEvent("pageReset", () => setPage((current) => current + 1));
@@ -60,9 +59,13 @@ export default function Game() {
   const asking = endingRun && screen === "game";
 
   const [helpOpen, setHelpOpen] = useState(false);
-  // on the menu, and in a run that is still going
-  const helping =
-    helpOpen && (screen === "menu" || (screen === "game" && !state.isGameOver));
+  const canHelp = screen === "menu" || (screen === "game" && !state.isGameOver);
+  const helping = helpOpen && canHelp;
+
+  const openHelp = useCallback(() => {
+    if (canHelp) setHelpOpen(true);
+  }, [canHelp]);
+  useKeyboardControls(openHelp);
 
   // the day's challenges, read again after each run and when opened
   const [challengesOpen, setChallengesOpen] = useState(false);

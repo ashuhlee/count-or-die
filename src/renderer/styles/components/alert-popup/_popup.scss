@@ -4,14 +4,16 @@
   position: fixed;
   inset: 0;
   z-index: 18;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: rgba(46, 43, 71, 0.4);
   animation: alert-fade-in $fade both;
 
   .alert-popup-panel {
+    flex: none;
     width: 536px;
-    max-width: 92vw;
+    transform: scale(var(--fit, 1));
     filter: drop-shadow(0 5px 0 var(--shadow-overlay-010));
     animation: alert-pop-in $pop-time $pop-easing both;
   }

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useGame } from "../provider/useGame.ts";
 import { handleKeydown } from "./handleKeydown.ts";
 
-export function useKeyboardControls(): void {
+export function useKeyboardControls(onEscape: () => void): void {
   const { actions, ready, screen, paused, loading } = useGame();
 
   useEffect(() => {
@@ -14,6 +14,7 @@ export function useKeyboardControls(): void {
       if (paused && event.key === "Escape") return;
 
       handleKeydown(event, {
+        onEscape,
         onIncrease: () => playing && actions.increase(),
         onBoost: () => playing && actions.boost(),
         onStart: () =>
@@ -27,5 +28,5 @@ export function useKeyboardControls(): void {
 
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [actions, ready, screen, paused, loading.mounted]);
+  }, [actions, ready, screen, paused, loading.mounted, onEscape]);
 }

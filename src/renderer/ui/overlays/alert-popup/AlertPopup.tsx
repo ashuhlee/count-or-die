@@ -9,6 +9,9 @@ import Letters from "../../components/text/letters/Letters.tsx";
 
 const TABS = { purple: tabPurple, blue: tabBlue };
 
+const WINDOW_MARGIN = 32;
+const MIN_FIT = 0.3;
+
 export type AlertRow = { label: string; value: string; done?: boolean };
 
 type AlertPopupProps = {
@@ -80,6 +83,7 @@ export default function AlertPopup({
   onOk,
 }: AlertPopupProps) {
   const textRef = useRef<HTMLSpanElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const element = textRef.current;
@@ -99,6 +103,30 @@ export default function AlertPopup({
     fit();
     void document.fonts?.ready.then(fit);
   }, [text]);
+
+  useLayoutEffect(() => {
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    const fit = () => {
+      const scale = Math.min(
+        1,
+        (window.innerWidth - WINDOW_MARGIN) / panel.offsetWidth,
+        (window.innerHeight - WINDOW_MARGIN) / panel.offsetHeight,
+      );
+      panel.style.setProperty("--fit", String(Math.max(scale, MIN_FIT)));
+    };
+
+    fit();
+    const observer =
+      typeof ResizeObserver === "undefined" ? null : new ResizeObserver(fit);
+    observer?.observe(panel);
+    window.addEventListener("resize", fit);
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener("resize", fit);
+    };
+  }, []);
 
   useEffect(() => {
     if (leaving) return;
@@ -126,7 +154,7 @@ export default function AlertPopup({
         if (event.target === event.currentTarget) onNo();
       }}
     >
-      <div id="alert-popup" className="alert-popup-panel">
+      <div id="alert-popup" ref={panelRef} className="alert-popup-panel">
         <div className="alert-popup-tab">
           <img src={TABS[tab]} alt="" className="alert-popup-header" />
           <span className="alert-popup-title" aria-label={title}>
