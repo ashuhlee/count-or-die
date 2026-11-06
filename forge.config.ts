@@ -13,13 +13,14 @@ const config: ForgeConfig = {
   rebuildConfig: {},
   makers: [
     {
-      name: "@electron-forge/maker-zip",
+      name: "@electron-forge/maker-squirrel",
       platforms: ["win32"],
       config: {
-        icon: "./resources/icons/win/icon@256.ico",
-        setupIcon: "./resources/icons/win/icon@256.ico",
+        name: "CountOrDie",
+        setupExe: "CountOrDie-Setup.exe",
+        setupIcon: "./resources/icons/icon.ico",
         authors: "ashuhlee",
-        description: "Counter Game",
+        description: "An arcade clicker game where speed meets strategy",
         noMsi: true,
       },
     },
