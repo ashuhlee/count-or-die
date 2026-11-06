@@ -1,12 +1,12 @@
 <div align="center">
-  <img width="90" alt="mac-icon" src="https://github.com/user-attachments/assets/d3fb5cbf-1d1b-4d77-ab94-0447968a994e" />
+  <img width="90" alt="mac-icon" src="https://github.com/user-attachments/assets/6e20b57d-ebc2-435a-9af9-0ddef5458834" />
   <h1>Count or Die</h1>
-  <p>A cutesy arcade clicker game where speed meets strategy</p>
+  <p>An arcade clicker game where speed meets strategy</p>
 
 [![GitHub Repo stars](https://img.shields.io/github/stars/ashuhlee/count-or-die?style=for-the-badge&logo=starship&logoColor=%23D7E0ED&labelColor=%232F2D42&color=%23FFBDF2)](https://github.com/ashuhlee/count-or-die/stargazers)
 [![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/ashuhlee/count-or-die?style=for-the-badge&logo=gitbook&logoColor=%23D9E0EE&labelColor=%232F2D42&color=C1B5FF)](https://github.com/ashuhlee/count-or-die/issues)
 [![GitHub repo size](https://img.shields.io/github/repo-size/ashuhlee/count-or-die?style=for-the-badge&logo=removedotbg&logoColor=%23D9E0EE&labelColor=%232F2D42&color=AEE5FF)](https://github.com/ashuhlee/count-or-die)
-![Static Badge](https://img.shields.io/badge/version-beta-A5A2B7?style=for-the-badge&logoColor=%23D9E0EE&labelColor=2F2D42)
+![Static Badge](https://img.shields.io/badge/version-beta.1-A5A2B7?style=for-the-badge&logoColor=%23D9E0EE&labelColor=2F2D42)
 
 <a href="https://www.youtube.com/watch?v=l_mUEsx0na8"><img width="170" alt="demo link" src="https://github.com/user-attachments/assets/dbb3d7da-7247-433b-8e1d-a31b979113f5" style="margin-right: 10px;" /></a><a href="https://ashuhlee.notion.site/Count-or-Die-2f5a30a56798803383e7dd6b54a77d4e?source=copy_link"><img width="170" alt="tracker link" src="https://github.com/user-attachments/assets/a3df7a77-42dc-4c1b-93cc-cd844d3f12d7" /></a>
 
@@ -15,7 +15,7 @@
 ## About the Game
 
 **Platforms:** Windows, MacOS, Browser <br>
-**Status:** In Development - Beta
+**Status:** In Development - Beta 1 Released
 
 Count or Die is an arcade counting game with progressive difficulty, randomized power-ups, multiple game modes, and a timer that gets faster as you level up!
 
@@ -27,14 +27,23 @@ https://github.com/user-attachments/assets/31746f90-5190-4f27-89c4-96ff47f62f6b
 
 </div>
 
+## Download
+To try out the beta, download the latest release for your platform from the [releases page](https://github.com/ashuhlee/count-or-die/releases/tag/1.0.0), or via the links below:
+
+| Platform | File |
+|----------|------|
+| Windows (32-bit) | [CountOrDie-1.0.0-win32.zip](https://github.com/ashuhlee/flappy-kitty/releases/download/1.0.0/FlappyKitty-1.0.0-win32.zip) |
+| Windows (64-bit) | [CountOrDie-1.0.0-win64.zip](https://github.com/ashuhlee/flappy-kitty/releases/download/1.0.0/FlappyKitty-1.0.0-win64.zip) |
+| macOS | [CountOrDie-1.0.0-mac.dmg](https://github.com/ashuhlee/flappy-kitty/releases/download/1.0.0/FlappyKitty-1.0.0-mac.dmg) |
+
 ## Gameplay
 
 ### Core Mechanics
 
 The main objective is straightforward, reach the counting goal before the timer runs out. The game however, will do its best to stop you.
 
-- **Progressive Difficulty:** Each completed goal makes the timer 1.2x quicker. Don't get too comfortable!
-- **Strategic Boosts:** 4 boosts per game let you skip straight to the goal. Use them early and you'll regret it. Use them too late and you'll also regret it.
+- **Progressive Difficulty:** each completed goal makes the timer 1.2x quicker
+- **Strategic Boosts:** boosts let you skip straight to the goal. Use them early and you'll regret it. Use them too late and you'll also regret it. You can pick up extra boosts via power ups.
 
 Compete against your personal best high score. In future versions, compare your scores with others via the global leaderboard!
 
@@ -87,8 +96,7 @@ Count or Die has support for Discord Rich Presence, allowing friends to see your
 | <img align="center" width="40" src="https://github.com/user-attachments/assets/0d0a0278-56fb-481e-a9e6-569cf537a11d" /> | Legend 😮‍💨 (High score - 400+)      |
 
 ## Installation
-
-Downloadable installers (`.exe`, `.dmg`) are not yet available in the beta. For play testing, local development, or contributing, run the app locally using the steps below.
+For play testing, local development, or contributing, run the app locally using the steps below.
 
 ### Requirements
 
