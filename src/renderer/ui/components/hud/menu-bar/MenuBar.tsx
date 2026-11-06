@@ -39,6 +39,9 @@ function readSavedState(): number {
 
 const ENTRANCE = { delay: 0, step: 0.14 };
 const WELCOME_DELAY = 0.2;
+
+let welcomed = false;
+
 type MenuBarProps = {
   entrance?: "wait" | "play";
   onHome?: () => void;
@@ -71,8 +74,14 @@ export default function MenuBar({
     applySoundState(next);
   }
 
-  const welcome = !inGame && entrance === "play";
-  const daily = welcome && challenges && challenges.done < challenges.total;
+  // the welcome only shows until the first run starts
+  useEffect(() => {
+    if (inGame) welcomed = true;
+  }, [inGame]);
+
+  const onMenu = !inGame && entrance === "play";
+  const welcome = onMenu && !welcomed;
+  const daily = onMenu && challenges;
 
   const entering = (index: number) => ({
     className: entrance ? "bounce-in-right" : undefined,
