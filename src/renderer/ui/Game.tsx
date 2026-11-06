@@ -10,7 +10,11 @@ import { useKeyboardControls } from "../hooks/useKeyboardControls.ts";
 import { useGame } from "../provider/useGame.ts";
 import { useGameEvent } from "../provider/useGameEvent.ts";
 import { describeDaily } from "../game/challenges.ts";
-import { loadDailyChallenges } from "../utils/storage/dailyChallenges.ts";
+import { playConfetti } from "../utils/effects/confetti.ts";
+import {
+  loadDailyChallenges,
+  takeCelebration,
+} from "../utils/storage/dailyChallenges.ts";
 import AlertPopup, {
   type AlertRow,
 } from "./overlays/alert-popup/AlertPopup.tsx";
@@ -72,8 +76,10 @@ export default function Game() {
   const [challenges, setChallenges] = useState(readChallenges);
   useGameEvent("gameOver", () => setChallenges(readChallenges()));
   const openChallenges = () => {
-    setChallenges(readChallenges());
+    const rows = readChallenges();
+    setChallenges(rows);
     setChallengesOpen(true);
+    if (rows.every((row) => row.done) && takeCelebration()) playConfetti();
   };
   const challengesCompleted = challenges.filter((row) => row.done).length;
   const challengesDone = challengesCompleted === challenges.length;

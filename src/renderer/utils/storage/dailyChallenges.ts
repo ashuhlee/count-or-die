@@ -36,3 +36,14 @@ export function loadDailyChallenges(now = new Date()): DailyState {
 export function saveDailyChallenges(state: DailyState): void {
   localStorage.setItem(KEY, JSON.stringify(state));
 }
+
+const CELEBRATED_KEY = "dailyChallengesCelebrated";
+
+export function takeCelebration(now = new Date()): boolean {
+  const today = dateKey(now);
+  try {
+    if (localStorage.getItem(CELEBRATED_KEY) === today) return false;
+    localStorage.setItem(CELEBRATED_KEY, today);
+  } catch {}
+  return true;
+}
