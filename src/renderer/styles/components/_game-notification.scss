@@ -8,6 +8,10 @@
   justify-content: center;
   padding: 8px 12px;
 
+  &.game-notification--wide {
+    --notification-max-width: 580px;
+  }
+
   &.game-notification--long {
     padding: 12px 16px;
     .game-notification-text {

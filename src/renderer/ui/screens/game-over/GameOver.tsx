@@ -24,6 +24,7 @@ import {
   RESTART_COLORS,
 } from "../../components/buttons/pixel-button/buttonLooks.ts";
 import Tooltip from "../../overlays/tooltip/Tooltip.tsx";
+import ChallengeNotice from "./ChallengeNotice.tsx";
 import SkullFloor from "../../components/effects/skull-floor/SkullFloor.tsx";
 import BulgeFilter from "../../components/effects/bulge/BulgeFilter.tsx";
 import Letters from "../../components/text/letters/Letters.tsx";
@@ -49,6 +50,7 @@ const NOTIFICATION_COLORS = {
   blue: "#a6d7ff",
   purple: "#d0a4ff",
   pink: "#ffb9f0",
+  grey: "#E3E0EF",
 };
 
 const NOTIFICATION_ENTRANCE = { step: 0.2 };
@@ -144,15 +146,12 @@ export default function GameOver() {
               />
             )}
             {view.challenges.map((label, index) => (
-              <GameNotification
+              <ChallengeNotice
                 key={label}
-                icon={trophyTracker}
-                iconAlt="trophy"
-                text={`${label}`}
-                border={NOTIFICATION_COLORS.purple}
+                text={label}
+                border={NOTIFICATION_COLORS.grey}
                 visible={view.visible}
                 delay={NOTIFICATION_ENTRANCE.step * (challengesFrom + index)}
-                shine
                 id={`challenge-${index}`}
               />
             ))}

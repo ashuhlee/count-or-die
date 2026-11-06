@@ -15,6 +15,8 @@ type GameNotificationProps = {
   still?: boolean;
   leaving?: boolean;
   shine?: boolean;
+  // a longer max width, for long texts
+  wide?: boolean;
   id?: string;
   // makes the whole notification a button
   onClick?: () => void;
@@ -32,6 +34,7 @@ export default function GameNotification({
   still = false,
   leaving = false,
   shine = false,
+  wide = false,
   id,
   onClick,
 }: GameNotificationProps) {
@@ -71,7 +74,7 @@ export default function GameNotification({
       border={border}
       accent={accent}
       id={id}
-      className={`game-notification${visible ? (leaving ? " slide-out-left" : " bounce-in-left") : ""}${shine ? " shine" : ""}`}
+      className={`game-notification${visible ? (leaving ? " slide-out-left" : " bounce-in-left") : ""}${shine ? " shine" : ""}${wide ? " game-notification--wide" : ""}`}
       style={{ animationDelay: `${leaving ? 0 : delay}s` }}
       {...(onClick && {
         role: "button",

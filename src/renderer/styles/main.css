@@ -1785,6 +1785,9 @@ img {
   justify-content: center;
   padding: 8px 12px;
 }
+.game-notification.game-notification--wide {
+  --notification-max-width: 580px;
+}
 .game-notification.game-notification--long {
   padding: 12px 16px;
 }
