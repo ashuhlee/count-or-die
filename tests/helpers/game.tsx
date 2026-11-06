@@ -9,9 +9,6 @@ import Game from "../../src/renderer/ui/Game.tsx";
 import GameProvider from "../../src/renderer/provider/GameProvider.tsx";
 import { fireAnimationEnd, renderInto } from "./dom.ts";
 
-// the run is over when the timer runs out
-const RUN_LENGTH = 19900;
-
 type RenderGameOptions = {
   state?: Partial<GameState>;
   random?: () => number;
@@ -66,7 +63,7 @@ export function renderGame({
     },
 
     restart() {
-      this.wait(RUN_LENGTH);
+      this.click("#end-run-btn");
       fireAnimationEnd($("#red-flash"));
       this.click("#game-over-btn");
       this.wait(540);

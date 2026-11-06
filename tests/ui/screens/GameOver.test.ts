@@ -32,6 +32,7 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
+const sounds = () => audio.playSound.mock.calls.map(([name]) => name);
 const isShown = () => game.$("#game-over").classList.contains("visible");
 const barColor = () => game.$("#progress-bar").style.background;
 
@@ -77,6 +78,20 @@ describe("running out of time", () => {
 });
 
 describe("starting over", () => {
+  test("the end run button ends the run, with the red flash, like the timer does", () => {
+    game = renderGame({ state: { counter: 12, boostsAvailable: 2 } });
+    expect(game.$("#red-flash").classList.contains("flash")).toBe(false);
+
+    game.click("#end-run-btn");
+    expect(sounds()).toContain("gameOver");
+    expect(game.$("#red-flash").classList.contains("flash")).toBe(true);
+
+    fireAnimationEnd(game.$("#red-flash"));
+    expect(isShown()).toBe(true);
+    expect(game.$("#score-tracker").textContent).toBe("12");
+    expect(game.$("#death-tracker").textContent).toBe("1");
+  });
+
   test("restarts the countdown from the top", () => {
     game = renderGame();
     game.wait(15000);

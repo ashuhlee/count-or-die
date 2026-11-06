@@ -74,9 +74,7 @@ export default function Game() {
   };
   const challengesCompleted = challenges.filter((row) => row.done).length;
   const challengesDone = challengesCompleted === challenges.length;
-  const challenging =
-    challengesOpen &&
-    (screen === "menu" || (screen === "game" && !state.isGameOver));
+  const challenging = challengesOpen && screen === "menu";
 
   const { pause, resume } = actions;
   useEffect(() => {
@@ -145,7 +143,7 @@ export default function Game() {
             <GameOver />
 
             <div className="app" id="app">
-              <GameScreen onChallenges={openChallenges} />
+              <GameScreen />
             </div>
 
             <CursorCounts />
@@ -185,17 +183,10 @@ export default function Game() {
           title="Daily challenges"
           tab="purple"
           rows={challenges}
-          okLabel={
-            challengesDone
-              ? "Challenges complete!"
-              : screen === "menu"
-                ? "Play"
-                : "Got it"
-          }
+          okLabel={challengesDone ? "Complete!" : "Play"}
           onOk={() => {
             setChallengesOpen(false);
-            if (screen === "menu" && !challengesDone && !loading.mounted)
-              actions.play();
+            if (!challengesDone && !loading.mounted) actions.play();
           }}
           onNo={() => setChallengesOpen(false)}
         />

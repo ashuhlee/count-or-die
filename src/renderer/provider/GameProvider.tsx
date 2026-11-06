@@ -70,6 +70,7 @@ export default function GameProvider({
   const [paused, setPaused] = useState(false);
   const pausedRef = useRef(false);
 
+  // lets the style sheet pause the animations that keep game time
   useEffect(() => {
     document.documentElement.toggleAttribute("data-paused", paused);
     return () => document.documentElement.removeAttribute("data-paused");
@@ -139,6 +140,11 @@ export default function GameProvider({
       boost: (pointer) =>
         pausedRef.current ||
         dispatch({ type: "boost", random: randomRef.current() }, pointer),
+
+      endRun() {
+        if (stateRef.current.isGameOver) return;
+        dispatch({ type: "endRun" });
+      },
 
       restartFromGameOver() {
         playSound("buttonClick");
