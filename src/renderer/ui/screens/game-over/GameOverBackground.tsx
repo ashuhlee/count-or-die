@@ -23,8 +23,8 @@ export default memo(function GameOverBackground({
         scale={0.9}
         contrast={5}
         pixelSize={5}
-        detail={7}
-        lighting={0.3}
+        detail={4}
+        lighting={0.2}
         rotationSpeed={-0.1}
         crt={0}
         mouseInteraction={false}

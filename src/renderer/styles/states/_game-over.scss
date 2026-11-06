@@ -12,6 +12,8 @@
   left: 0;
   width: 100%;
   height: 100%;
+  // one full-height row, so the empty skull-area can't take a second one
+  grid-template-rows: 100%;
   place-items: center;
   font-family: "Silkscreen", sans-serif;
   z-index: 10;

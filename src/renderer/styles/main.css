@@ -1945,9 +1945,9 @@ img {
 .alert-popup .alert-popup-close {
   position: absolute;
   left: 450px;
-  top: 13px;
-  width: 59px;
-  height: 48px;
+  top: 17px;
+  width: 52px;
+  height: auto;
   margin: 0;
   padding: 0;
   border: 0;
@@ -1960,7 +1960,7 @@ img {
   display: block;
   width: 100%;
   height: 100%;
-  image-rendering: pixelated;
+  image-rendering: crisp-edges;
   filter: drop-shadow(0 4px 0 #9389ee);
 }
 .alert-popup .alert-popup-close .alert-popup-close-hover {
@@ -2181,6 +2181,7 @@ img {
   left: 0;
   width: 100%;
   height: 100%;
+  grid-template-rows: 100%;
   place-items: center;
   font-family: "Silkscreen", sans-serif;
   z-index: 10;
@@ -2201,9 +2202,9 @@ img {
   position: absolute;
   inset: 0;
   z-index: -11;
-  mix-blend-mode: overlay;
-  opacity: 0.3;
-  filter: hue-rotate(30deg);
+  mix-blend-mode: soft-light;
+  opacity: 0.6;
+  filter: hue-rotate(10deg);
 }
 #game-over::before {
   content: "";
@@ -2647,9 +2648,9 @@ img {
   position: absolute;
   inset: 0;
   z-index: -11;
-  mix-blend-mode: overlay;
-  opacity: 0.3;
-  filter: hue-rotate(30deg);
+  mix-blend-mode: soft-light;
+  opacity: 0.6;
+  filter: hue-rotate(10deg);
 }
 .menu-screen::before {
   content: "";
@@ -2736,7 +2737,7 @@ img {
   gap: 32px;
 }
 .menu-screen .menu-title {
-  width: max(26vw, 270px);
+  width: clamp(270px, 26vw, 400px);
 }
 .startup-screen {
   --progress: 0;

@@ -86,11 +86,10 @@
 
   .alert-popup-close {
     position: absolute;
-    // the png's own size, so its pixels stay sharp
     left: 450px;
-    top: 13px;
-    width: 59px;
-    height: 48px;
+    top: 17px;
+    width: 52px;
+    height: auto;
     margin: 0;
     padding: 0;
     border: 0;
@@ -102,11 +101,10 @@
       display: block;
       width: 100%;
       height: 100%;
-      image-rendering: pixelated;
+      image-rendering: crisp-edges;
       filter: drop-shadow(0 4px 0 #9389ee);
     }
 
-    // the pink-x version shows on hover
     .alert-popup-close-hover {
       display: none;
     }

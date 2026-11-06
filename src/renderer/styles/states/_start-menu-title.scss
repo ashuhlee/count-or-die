@@ -3,6 +3,6 @@
   gap: 32px;
 
   .menu-title {
-    width: max(26vw, 270px);
+    width: clamp(270px, 26vw, 400px);
   }
 }

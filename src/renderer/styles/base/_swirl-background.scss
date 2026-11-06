@@ -7,9 +7,9 @@
     position: absolute;
     inset: 0;
     z-index: -11;
-    mix-blend-mode: overlay;
-    opacity: 0.3;
-    filter: hue-rotate(30deg);
+    mix-blend-mode: soft-light;
+    opacity: 0.6;
+    filter: hue-rotate(10deg);
   }
 
   &::before {
