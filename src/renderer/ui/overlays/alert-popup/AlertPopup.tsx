@@ -155,7 +155,7 @@ export default function AlertPopup({
       }}
     >
       <div id="alert-popup" ref={panelRef} className="alert-popup-panel">
-        <div className="alert-popup-tab">
+        <div className={`alert-popup-tab alert-popup-tab--${tab}`}>
           <img src={TABS[tab]} alt="" className="alert-popup-header" />
           <span className="alert-popup-title" aria-label={title}>
             <Letters text={title} step={TYPING_STEP} />

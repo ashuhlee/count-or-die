@@ -33,8 +33,8 @@ import GameScreen from "./screens/game/GameScreen.tsx";
 import StartMenuScreen from "./screens/start-menu/StartMenuScreen.tsx";
 
 const HOW_TO_PLAY = [
-  "Reach the goal before the timer runs out.",
-  "Click *+* or *D* arrow key to count. Boosts *(space)* jump straight to the goal.",
+  "Reach the goal before the timer runs out!",
+  "Click *+* or the *D* arrow key to count. Use *(space)* to jump straight to the goal.",
 ].join("\n");
 
 function readChallenges(): AlertRow[] {
@@ -190,7 +190,7 @@ export default function Game() {
         <AlertPopup
           leaving={!challenging}
           title="Daily challenges"
-          tab="purple"
+          tab="blue"
           rows={challenges}
           okLabel={challengesDone ? "Complete!" : "Play"}
           onOk={() => {
