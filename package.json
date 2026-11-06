@@ -3,7 +3,7 @@
   "productName": "Count or Die",
   "version": "1.0.0-beta.1",
   "author": "ashuhlee",
-  "description": "",
+  "description": "An arcade clicker game where speed meets strategy",
   "main": ".vite/build/main.js",
   "scripts": {
     "start": "electron-forge start",

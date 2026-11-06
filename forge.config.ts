@@ -1,6 +1,7 @@
 import { FusesPlugin } from "@electron-forge/plugin-fuses";
 import { FuseV1Options, FuseVersion } from "@electron/fuses";
 import type { ForgeConfig } from "@electron-forge/shared-types";
+import pkg from "./package.json";
 
 const config: ForgeConfig = {
   packagerConfig: {
@@ -17,7 +18,7 @@ const config: ForgeConfig = {
       platforms: ["win32"],
       config: {
         name: "CountOrDie",
-        setupExe: "CountOrDie-Setup.exe",
+        setupExe: `CountOrDie-${pkg.version}-win64.exe`,
         setupIcon: "./resources/icons/icon.ico",
         authors: "ashuhlee",
         description: "An arcade clicker game where speed meets strategy",
