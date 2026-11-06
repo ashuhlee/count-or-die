@@ -20,3 +20,9 @@
       cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--delay);
   }
 }
+
+@supports (font: -apple-system-body) {
+  .wide-btn .pixel-btn-label span:not(:last-child) {
+    letter-spacing: calc(1em / 6);
+  }
+}

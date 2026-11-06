@@ -245,6 +245,7 @@
     }
   }
   .bottom-section {
+    display: grid;
     place-items: center;
 
     .back-to-menu {
