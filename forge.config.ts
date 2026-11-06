@@ -20,6 +20,7 @@ const config: ForgeConfig = {
         name: "CountOrDie",
         setupExe: `CountOrDie-${pkg.version}-win64.exe`,
         setupIcon: "./resources/icons/icon.ico",
+        loadingGif: "./resources/installing.gif",
         authors: "ashuhlee",
         description: "An arcade clicker game where speed meets strategy",
         noMsi: true,
