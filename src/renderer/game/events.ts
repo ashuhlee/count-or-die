@@ -8,6 +8,7 @@ export type SoundName =
   | "goalReached"
   | "gameOver"
   | "gameOverMusic"
+  | "loading"
   | "buttonClick"
   | "mouseClick"
   | "powerUp"

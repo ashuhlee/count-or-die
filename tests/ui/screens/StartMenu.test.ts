@@ -44,7 +44,7 @@ describe("the menu", () => {
   test("play covers the menu, then starts a game", () => {
     game.click("#play-btn");
 
-    expect(sounds()).toContain("buttonClick");
+    expect(sounds()).toContain("loading");
     expect(game.$("#loading-screen")).not.toBeNull();
     expect(game.$("#menu-screen")).not.toBeNull();
 

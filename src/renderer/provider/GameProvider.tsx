@@ -70,7 +70,6 @@ export default function GameProvider({
   const [paused, setPaused] = useState(false);
   const pausedRef = useRef(false);
 
-  // lets the style sheet pause the animations that keep game time
   useEffect(() => {
     document.documentElement.toggleAttribute("data-paused", paused);
     return () => document.documentElement.removeAttribute("data-paused");
@@ -148,29 +147,29 @@ export default function GameProvider({
 
       restartFromGameOver() {
         playSound("buttonClick");
-        pauseSound("gameOverMusic");
         cover(() => {
           dispatch({ type: "restart" });
           bus.emit({ type: "pageReset" });
         });
+        pauseSound("gameOverMusic");
       },
 
       play() {
         playSound("buttonClick");
-        pauseSound("menuMusic");
         cover(() => setScreen("game"));
+        pauseSound("menuMusic");
       },
 
       backToMenu() {
         playSound("buttonClick");
-        pauseSound("gameOverMusic");
-        pauseSound("bgMusic");
         cover(() => {
           dispatch({ type: "restart", music: false });
           bus.emit({ type: "pageReset" });
           setScreen("menu");
           setCameFromGame(true);
         });
+        pauseSound("gameOverMusic");
+        pauseSound("bgMusic");
       },
 
       quit: quitGame,

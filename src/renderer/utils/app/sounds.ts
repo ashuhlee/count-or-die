@@ -15,7 +15,7 @@ import boostFxFile from "@assets/audio/sfx/boost.mp3";
 import noBoostsFxFile from "@assets/audio/sfx/error.mp3";
 
 import mouseClickFxFile from "@assets/audio/sfx/mouse-click.mp3";
-import buttonClickFxFile from "@assets/audio/sfx/button-click.mp3";
+import loadingFxFile from "@assets/audio/sfx/loading.mp3";
 
 import powerUpFxFile from "@assets/audio/sfx/power-up.mp3";
 import boostPowerUpFxFile from "@assets/audio/sfx/powerup-boost.mp3";
@@ -66,8 +66,12 @@ export const audioConfig: Record<SoundName, AudioTrack> = {
     audio: new Audio(gameOverMusicFile),
     volume: 0.15,
   },
+  loading: {
+    audio: new Audio(loadingFxFile),
+    volume: 0.2,
+  },
   buttonClick: {
-    audio: new Audio(buttonClickFxFile),
+    audio: new Audio(),
     volume: 0.2,
   },
   mouseClick: {
@@ -100,6 +104,7 @@ for (const config of Object.values(audioConfig)) {
 
 export function playSound(name: SoundName): void {
   const { audio } = audioConfig[name];
+  if (!audio.src) return;
 
   audio.currentTime = 0;
   audio.play().catch((err) => {
