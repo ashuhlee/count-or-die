@@ -100,6 +100,9 @@
     opacity: 1;
     pointer-events: none;
     transition: opacity 0.5s ease 0.2s;
+    // above what the parallax makes a layer of its own (the text and buttons),
+    // below the title and the tombstone, which show over it
+    z-index: 1;
   }
 
   .deco-icons {
@@ -219,6 +222,7 @@
   .go-title {
     width: 80vw;
     max-width: 380px;
+    z-index: 2;
     @include parallax.parallax(0.8);
   }
   img {
@@ -230,6 +234,7 @@
     height: 100%;
     pointer-events: none;
     left: 25vw;
+    z-index: 2;
     @include parallax.parallax(1.8, 0);
 
     @media screen and (max-width: 1100px) {

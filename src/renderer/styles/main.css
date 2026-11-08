@@ -2444,6 +2444,7 @@ img {
   opacity: 1;
   pointer-events: none;
   transition: opacity 0.5s ease 0.2s;
+  z-index: 1;
 }
 #game-over .deco-icons {
   display: flex;
@@ -2560,6 +2561,7 @@ img {
 #game-over .go-title {
   width: 80vw;
   max-width: 380px;
+  z-index: 2;
   translate: calc(var(--parallax-x, 0)*var(--parallax-range)*-0.8)
     calc(var(--parallax-y, 0)*var(--parallax-range)*-0.8);
 }
@@ -2572,6 +2574,7 @@ img {
   height: 100%;
   pointer-events: none;
   left: 25vw;
+  z-index: 2;
   translate: calc(var(--parallax-x, 0)*var(--parallax-range)*-1.8)
     calc(var(--parallax-y, 0)*var(--parallax-range)*0);
 }
