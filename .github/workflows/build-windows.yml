@@ -9,6 +9,10 @@ on:
 jobs:
   package:
     runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [x64, ia32]
 
     steps:
       - name: Clone repository
@@ -30,11 +34,11 @@ jobs:
       - name: Make distributables
         run: |
           Remove-Item -Recurse -Force out -ErrorAction SilentlyContinue
-          npm run make -- --arch=x64
+          npm run make -- --arch=${{ matrix.arch }}
         shell: powershell
 
       - name: Upload installer
         uses: actions/upload-artifact@v4
         with:
-          name: windows-installer
-          path: out/make/squirrel.windows/x64/*.exe
+          name: windows-installer-${{ matrix.arch }}
+          path: out/make/squirrel.windows/${{ matrix.arch }}/*.exe

@@ -3,6 +3,16 @@ import { FuseV1Options, FuseVersion } from "@electron/fuses";
 import type { ForgeConfig } from "@electron-forge/shared-types";
 import pkg from "./package.json";
 
+const arch =
+  process.argv.find((arg) => arg.startsWith("--arch="))?.slice(7) ??
+  process.arch;
+const WIN_SUFFIX = {
+  x64: "win64",
+  ia32: "win32",
+  arm64: "winarm64",
+};
+const winSuffix = WIN_SUFFIX[arch] ?? `win-${arch}`;
+
 const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
@@ -18,7 +28,7 @@ const config: ForgeConfig = {
       platforms: ["win32"],
       config: {
         name: "CountOrDie",
-        setupExe: `CountOrDie-${pkg.version}-win64.exe`,
+        setupExe: `CountOrDie-${pkg.version}-${winSuffix}.exe`,
         setupIcon: "./resources/icons/icon.ico",
         loadingGif: "./resources/installing.gif",
         authors: "ashuhlee",
