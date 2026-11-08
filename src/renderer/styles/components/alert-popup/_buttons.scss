@@ -31,6 +31,10 @@
     --pop-tilt: 6deg;
     @include button-pop.button-pop;
 
+    &:active {
+      filter: brightness(0.93) saturate(108%);
+    }
+
     &::after,
     > * {
       @include button-pop.pop-visual;

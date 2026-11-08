@@ -2295,6 +2295,9 @@ img {
 .alert-popup .alert-popup-button:active {
   --pop-press: 1;
 }
+.alert-popup .alert-popup-button:active {
+  filter: brightness(0.93) saturate(108%);
+}
 .alert-popup .alert-popup-button::after,
 .alert-popup .alert-popup-button > * {
   scale: calc(var(--pop-size)* (1 - var(--pop-press-squish-x)*var(--pop-press)))
