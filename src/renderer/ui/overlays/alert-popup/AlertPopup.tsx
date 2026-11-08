@@ -5,6 +5,7 @@ import tabBlue from "@assets/ui/tabs/tab-blue.svg";
 import closePng from "@assets/ui/tabs/close.png";
 import closeHoverPng from "@assets/ui/tabs/close-hover.png";
 
+import { playSound } from "../../../utils/app/sounds.ts";
 import Letters from "../../components/text/letters/Letters.tsx";
 
 const TABS = { purple: tabPurple, blue: tabBlue };
@@ -48,6 +49,7 @@ function AlertButton({
       id={id}
       className={`alert-popup-button alert-popup-button--${tone}`}
       onClick={onClick}
+      onMouseEnter={() => playSound("buttonHover")}
       autoFocus={autoFocus}
     >
       <Letters text={label} step={0.1} height={0.4} duration={1} />

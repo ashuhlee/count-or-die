@@ -16,6 +16,7 @@ import noBoostsFxFile from "@assets/audio/sfx/error.mp3";
 
 import mouseClickFxFile from "@assets/audio/sfx/mouse-click.mp3";
 import loadingFxFile from "@assets/audio/sfx/loading.mp3";
+import buttonHoverFxFile from "@assets/audio/sfx/button-hover.mp3";
 
 import powerUpFxFile from "@assets/audio/sfx/power-up.mp3";
 import boostPowerUpFxFile from "@assets/audio/sfx/powerup-boost.mp3";
@@ -73,6 +74,10 @@ export const audioConfig: Record<SoundName, AudioTrack> = {
   buttonClick: {
     audio: new Audio(),
     volume: 0.2,
+  },
+  buttonHover: {
+    audio: new Audio(buttonHoverFxFile),
+    volume: 0.6,
   },
   mouseClick: {
     audio: new Audio(mouseClickFxFile),

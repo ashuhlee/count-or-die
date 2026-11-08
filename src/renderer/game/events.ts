@@ -10,6 +10,7 @@ export type SoundName =
   | "gameOverMusic"
   | "loading"
   | "buttonClick"
+  | "buttonHover"
   | "mouseClick"
   | "powerUp"
   | "boostPowerUp"
