@@ -27,6 +27,8 @@ type AlertPopupProps = {
   onNo: () => void;
   okLabel?: string;
   onOk?: () => void;
+  // the main button clicks, unless it starts the loading screen
+  clickOk?: boolean;
 };
 
 type AlertButtonProps = {
@@ -34,6 +36,7 @@ type AlertButtonProps = {
   tone: "yes" | "no";
   label: string;
   onClick: () => void;
+  click?: boolean;
   autoFocus?: boolean;
 };
 
@@ -42,6 +45,7 @@ function AlertButton({
   tone,
   label,
   onClick,
+  click = false,
   autoFocus,
 }: AlertButtonProps) {
   return (
@@ -49,7 +53,10 @@ function AlertButton({
       type="button"
       id={id}
       className={`alert-popup-button alert-popup-button--${tone}`}
-      onClick={onClick}
+      onClick={() => {
+        if (click) playSound("buttonClick");
+        onClick();
+      }}
       onMouseEnter={() => playSound("buttonHover")}
       autoFocus={autoFocus}
     >
@@ -86,6 +93,7 @@ export default function AlertPopup({
   onNo,
   okLabel = "Got it",
   onOk,
+  clickOk = true,
 }: AlertPopupProps) {
   useParallax(true, "modal-parallax");
 
@@ -172,7 +180,9 @@ export default function AlertPopup({
             id="alert-close"
             className="alert-popup-close"
             aria-label="Close"
-            onClick={onNo}
+            onClick={() => {
+              onNo();
+            }}
           >
             <img src={closePng} alt="" />
             <img
@@ -252,6 +262,7 @@ export default function AlertPopup({
                 tone="yes"
                 label={okLabel}
                 onClick={onOk ?? onNo}
+                click={clickOk}
                 autoFocus
               />
             )}

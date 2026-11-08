@@ -36,7 +36,9 @@ describe("MenuBar", () => {
     // the game over music is music too, and the effects are still on
     expect(audioConfig.gameOverMusic.audio.muted).toBe(true);
     expect(audioConfig.buttonClick.audio.muted).toBe(false);
-    expect(audioConfig.buttonClick.audio.volume).toBe(0.2);
+    expect(audioConfig.buttonClick.audio.volume).toBe(
+      audioConfig.buttonClick.volume,
+    );
     const second = sound().getAttribute("src");
 
     click();

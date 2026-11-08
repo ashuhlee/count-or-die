@@ -10,7 +10,11 @@ import lockIcon from "@assets/ui/deco/lock_grey.svg";
 import skullIcon from "@assets/ui/deco/skull_grey.svg";
 import trophyIcon from "@assets/ui/deco/trophy_grey.svg";
 
-import { muteMusic, toggleAudio } from "../../../../utils/app/sounds.ts";
+import {
+  muteMusic,
+  playSound,
+  toggleAudio,
+} from "../../../../utils/app/sounds.ts";
 import { openChangelog } from "../../../../utils/app/openChangelog.ts";
 import {
   onSettingsRequested,
@@ -83,6 +87,12 @@ export default function MenuBar({
   const welcome = onMenu && !welcomed;
   const daily = onMenu && challenges;
 
+  // the menu buttons click
+  const clicked = (action?: () => void) => () => {
+    playSound("buttonClick");
+    action?.();
+  };
+
   const entering = (index: number) => ({
     className: entrance ? "bounce-in-right" : undefined,
     style: entrance
@@ -104,7 +114,7 @@ export default function MenuBar({
             iconAlt="home icon"
             iconSize={28}
             id="home-btn"
-            onClick={onHome}
+            onClick={clicked(onHome)}
           />
         )}
         {!inGame && (
@@ -114,7 +124,7 @@ export default function MenuBar({
             icon={optionsBtnSvg}
             iconAlt="options icon"
             iconSize={24}
-            onClick={requestSettings}
+            onClick={clicked(requestSettings)}
           />
         )}
         <RoundButton
@@ -124,7 +134,7 @@ export default function MenuBar({
           iconAlt="info icon"
           iconSize={12}
           id="help-btn"
-          onClick={onHelp}
+          onClick={clicked(onHelp)}
         />
         <RoundButton
           {...entering(0)}
@@ -133,7 +143,7 @@ export default function MenuBar({
           iconAlt="sound icon"
           iconSize={28}
           iconId="soundBtn"
-          onClick={onSoundClick}
+          onClick={clicked(onSoundClick)}
         />
       </div>
       {(welcome || daily || options.shown) && (

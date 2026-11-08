@@ -201,6 +201,7 @@ export default function Game() {
           tab="blue"
           rows={challenges}
           okLabel={challengesDone ? "Complete!" : "Play"}
+          clickOk={challengesDone}
           onOk={() => {
             setChallengesOpen(false);
             if (!challengesDone && !loading.mounted) actions.play();

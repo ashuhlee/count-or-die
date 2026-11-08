@@ -146,7 +146,6 @@ export default function GameProvider({
       },
 
       restartFromGameOver() {
-        playSound("buttonClick");
         cover(() => {
           dispatch({ type: "restart" });
           bus.emit({ type: "pageReset" });
@@ -155,13 +154,11 @@ export default function GameProvider({
       },
 
       play() {
-        playSound("buttonClick");
         cover(() => setScreen("game"));
         pauseSound("menuMusic");
       },
 
       backToMenu() {
-        playSound("buttonClick");
         cover(() => {
           dispatch({ type: "restart", music: false });
           bus.emit({ type: "pageReset" });
