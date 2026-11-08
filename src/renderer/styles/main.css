@@ -1828,36 +1828,119 @@ img {
 }
 .tooltip-anchor {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
 }
-.tooltip,
-.tooltip-shadow {
+.tooltip {
+  --tooltip-bg: #3f3a59;
+  --tooltip-fg: #fff5fc;
   position: fixed;
   z-index: 1000;
   pointer-events: none;
   white-space: nowrap;
-  font-family: "Mem Prop 5x6", sans-serif;
-  font-size: 20px;
-  letter-spacing: 3px;
+  box-sizing: border-box;
+  text-align: center;
+  transition: width 0.05s ease-out;
+  padding: 5px 8px 3px;
+  font-family: "Enter the Gungeon Small", sans-serif;
+  font-size: 17px;
   text-transform: none;
+  color: var(--tooltip-fg);
+  background-color: var(--tooltip-bg);
+  box-shadow:
+    -3px 0 0 0 var(--tooltip-bg),
+    3px 0 0 0 var(--tooltip-bg),
+    0 -3px 0 0 var(--tooltip-bg),
+    0 3px 0 0 var(--tooltip-bg);
+  filter: drop-shadow(0 5px 0 var(--shadow-pink-015));
+  animation: tooltip-in 0.2s both;
 }
-.tooltip > span > span,
-.tooltip-shadow > span > span {
+.tooltip.tooltip--right {
+  translate: 0 -50%;
+  transform-origin: left center;
+  --tooltip-tilt: -30deg;
+}
+.tooltip.tooltip--left {
+  translate: -100% -50%;
+  transform-origin: right center;
+  --tooltip-tilt: 30deg;
+}
+.tooltip.tooltip--leaving {
+  animation: tooltip-out 0.1s ease-in both;
+}
+.tooltip::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  z-index: -1;
+  pointer-events: none;
+  clip-path: polygon(
+    3px 0,
+    calc(100% - 3px) 0,
+    calc(100% - 3px) 3px,
+    100% 3px,
+    100% calc(100% - 3px),
+    calc(100% - 3px) calc(100% - 3px),
+    calc(100% - 3px) 100%,
+    3px 100%,
+    3px calc(100% - 3px),
+    0 calc(100% - 3px),
+    0 3px,
+    3px 3px
+  );
+  --stripe-period: 16px;
+  background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='8' shape-rendering='crispEdges'><rect x='0' y='0' width='4' height='2' fill='white' fill-opacity='0.04'/><rect x='8' y='0' width='4' height='2' fill='white' fill-opacity='0.04'/><rect x='16' y='0' width='4' height='2' fill='white' fill-opacity='0.04'/><rect x='-2' y='2' width='4' height='2' fill='white' fill-opacity='0.04'/><rect x='6' y='2' width='4' height='2' fill='white' fill-opacity='0.04'/><rect x='14' y='2' width='4' height='2' fill='white' fill-opacity='0.04'/><rect x='-4' y='4' width='4' height='2' fill='white' fill-opacity='0.04'/><rect x='4' y='4' width='4' height='2' fill='white' fill-opacity='0.04'/><rect x='12' y='4' width='4' height='2' fill='white' fill-opacity='0.04'/><rect x='-6' y='6' width='4' height='2' fill='white' fill-opacity='0.04'/><rect x='2' y='6' width='4' height='2' fill='white' fill-opacity='0.04'/><rect x='10' y='6' width='4' height='2' fill='white' fill-opacity='0.04'/></svg>");
+  background-size: 16px 16px;
+  image-rendering: pixelated;
+  animation: slide-stripes 2s linear infinite;
+}
+.tooltip > span {
   display: inline-block;
-  scale: 0;
-  rotate: var(--tooltip-spin, 40deg);
-  transition: none;
 }
-.tooltip.tooltip--open > span > span,
-.tooltip-shadow.tooltip--open > span > span {
-  scale: 1;
-  rotate: 0deg;
-  animation: tooltip-letter-in 0.15s ease-out var(--delay) both;
+.tooltip > span > span {
+  display: inline-block;
+  animation: tooltip-letter-in 0.12s ease-out var(--delay) both;
+}
+.tooltip.tooltip--changed > span {
+  animation: tooltip-text-in 0.1s ease-out both;
+}
+.tooltip.tooltip--changed > span > span {
+  animation: none;
+}
+@keyframes tooltip-text-in {
+  from {
+    scale: 0.5;
+  }
+}
+@keyframes tooltip-in {
+  0% {
+    scale: 0.4 0;
+    rotate: var(--tooltip-tilt);
+    animation-timing-function: ease-out;
+  }
+  50% {
+    scale: 1 1;
+    rotate: 0deg;
+    animation-timing-function: ease-in-out;
+  }
+  65% {
+    scale: 1.06 0.9;
+    rotate: 0deg;
+    animation-timing-function: ease-out;
+  }
+  100% {
+    scale: 1 1;
+    rotate: 0deg;
+  }
+}
+@keyframes tooltip-out {
+  to {
+    scale: 0.4 0;
+  }
 }
 @keyframes tooltip-letter-in {
   0% {
     scale: 0;
-    rotate: var(--tooltip-spin, 40deg);
+    rotate: var(--tooltip-spin, 75deg);
   }
   60% {
     scale: 1.2;
@@ -1867,15 +1950,6 @@ img {
     scale: 1;
     rotate: 0deg;
   }
-}
-.tooltip {
-  color: var(--tooltip-color, #fff2fc);
-}
-.tooltip-shadow {
-  color: var(--tooltip-shadow, black);
-  mix-blend-mode: overlay;
-  opacity: 0.2;
-  translate: 0 3px;
 }
 .game-notification {
   min-height: 32px;

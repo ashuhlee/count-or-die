@@ -29,6 +29,7 @@ const SOUND_STATE_KEY = "soundState";
 
 // 0: sfx + music, 1: sfx + no music, 2: no sfx + no music
 const SOUND_ICONS = [soundBtnUnmuted, soundBtnNoMusic, soundBtnMuted];
+const SOUND_LABELS = ["Music", "Sfx", "Muted"];
 
 function applySoundState(state: number): void {
   muteMusic(state !== 0);
@@ -107,49 +108,57 @@ export default function MenuBar({
     <>
       <div className="controls">
         {onHome && (
+          <Tooltip text="Main menu" side="left">
+            <RoundButton
+              {...entering(2)}
+              variant={5}
+              icon={homeBtnSvg}
+              iconAlt="home icon"
+              iconSize={28}
+              id="home-btn"
+              onClick={clicked(onHome)}
+            />
+          </Tooltip>
+        )}
+        {!inGame && (
+          <Tooltip text="Options" side="left">
+            <RoundButton
+              {...entering(1)}
+              variant={5}
+              icon={optionsBtnSvg}
+              iconAlt="options icon"
+              iconSize={24}
+              onClick={clicked(requestSettings)}
+            />
+          </Tooltip>
+        )}
+        <Tooltip text="How to play" side="left">
           <RoundButton
             {...entering(2)}
             variant={5}
-            icon={homeBtnSvg}
-            iconAlt="home icon"
-            iconSize={28}
-            id="home-btn"
-            onClick={clicked(onHome)}
+            icon={infoBtnSvg}
+            iconAlt="info icon"
+            iconSize={12}
+            id="help-btn"
+            onClick={clicked(onHelp)}
           />
-        )}
-        {!inGame && (
+        </Tooltip>
+        <Tooltip text={SOUND_LABELS[soundState] ?? "Muted"} side="left">
           <RoundButton
-            {...entering(1)}
-            variant={5}
-            icon={optionsBtnSvg}
-            iconAlt="options icon"
-            iconSize={24}
-            onClick={clicked(requestSettings)}
+            {...entering(0)}
+            variant={soundState >= 2 ? 4 : 5}
+            icon={SOUND_ICONS[soundState] ?? soundBtnMuted}
+            iconAlt="sound icon"
+            iconSize={28}
+            iconId="soundBtn"
+            onClick={clicked(onSoundClick)}
           />
-        )}
-        <RoundButton
-          {...entering(2)}
-          variant={5}
-          icon={infoBtnSvg}
-          iconAlt="info icon"
-          iconSize={12}
-          id="help-btn"
-          onClick={clicked(onHelp)}
-        />
-        <RoundButton
-          {...entering(0)}
-          variant={soundState >= 2 ? 4 : 5}
-          icon={SOUND_ICONS[soundState] ?? soundBtnMuted}
-          iconAlt="sound icon"
-          iconSize={28}
-          iconId="soundBtn"
-          onClick={clicked(onSoundClick)}
-        />
+        </Tooltip>
       </div>
       {(welcome || daily || options.shown) && (
         <div className="notices">
           {welcome && (
-            <Tooltip text="Changelog" placement="cursor-right">
+            <Tooltip text="Changelog" side="right">
               <GameNotification
                 icon={skullIcon}
                 iconAlt="skull"
@@ -159,20 +168,24 @@ export default function MenuBar({
                 delay={WELCOME_DELAY}
                 id="welcome-notice"
                 onClick={openChangelog}
+                hoverSound
               />
             </Tooltip>
           )}
           {daily && (
-            <GameNotification
-              icon={trophyIcon}
-              iconAlt="trophy"
-              text={`Daily challenges: ${challenges.done}/${challenges.total}`}
-              border="#E3E0EF"
-              still
-              delay={WELCOME_DELAY + 0.1}
-              id="challenges-notice"
-              onClick={challenges.onOpen}
-            />
+            <Tooltip text="View" side="right">
+              <GameNotification
+                icon={trophyIcon}
+                iconAlt="trophy"
+                text={`Daily challenges: ${challenges.done}/${challenges.total}`}
+                border="#E3E0EF"
+                still
+                delay={WELCOME_DELAY + 0.1}
+                id="challenges-notice"
+                onClick={challenges.onOpen}
+                hoverSound
+              />
+            </Tooltip>
           )}
           {options.shown && (
             <GameNotification
