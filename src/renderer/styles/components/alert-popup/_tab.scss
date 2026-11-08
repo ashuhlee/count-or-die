@@ -1,5 +1,6 @@
 @use "sass:math";
 @use "variables" as *;
+@use "../../base/button-pop";
 @use "../../base/pixel-stripes" as stripes;
 
 @function tab-x($pixels) {
@@ -99,8 +100,12 @@
     padding: 0;
     border: 0;
     background: none;
-    transition: scale 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     animation: alert-close-in 0.3s $pop-easing backwards 0.25s;
+    --pop-press-scale: 0.9;
+    @include button-pop.button-pop;
+    > * {
+      @include button-pop.pop-visual;
+    }
 
     img {
       display: block;
@@ -115,8 +120,6 @@
     }
 
     &:hover {
-      scale: 1.05;
-
       img {
         display: none;
       }
@@ -124,11 +127,8 @@
         display: block;
       }
     }
-    &:active {
-      scale: 0.9;
-      img {
-        filter: none;
-      }
+    &:active img {
+      filter: none;
     }
   }
 }

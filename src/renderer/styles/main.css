@@ -782,6 +782,32 @@ img {
 [data-paused] .power-up-img {
   pointer-events: none !important;
 }
+:root {
+  --pop-scale-time: 0.1s;
+  --pop-hover-scale: 1.08;
+  --pop-press-scale: 0.9;
+  --pop-shade-time: 0.1s;
+  --pop-press-squish: 0.1;
+  --pop-press-squish-x: 0.07;
+  --pop-tilt-time: 0.1s;
+  --pop-tilt-ease: linear;
+  --pop-tilt: 4deg;
+}
+@property --pop-rest {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --pop-left {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+@property --pop-press {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
 .buttons {
   display: flex;
   gap: 22px;
@@ -806,18 +832,41 @@ img {
 }
 .end-run .pixel-btn {
   filter: drop-shadow(0px 6px 0px var(--shadow-pink-020));
+  --pop-rest: 0;
+  --pop-tilted: 0;
+  --pop-left: 1;
+  --pop-press: 0;
+  --pop-size: calc(
+    (1 + (var(--pop-hover-scale) - 1) * var(--pop-rest)) *
+      (1 + (var(--pop-press-scale) - 1) * var(--pop-press))
+  );
+  transition:
+    --pop-left 0s,
+    --pop-rest 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    --pop-press 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    --btn-sink var(--pop-shade-time) ease-out;
 }
-.end-run {
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+.end-run .pixel-btn:hover {
+  --pop-rest: 1;
+  --pop-tilted: 1;
+  --pop-left: 0;
+  transition:
+    --pop-rest var(--pop-scale-time) ease-out,
+    --pop-left var(--pop-tilt-time) var(--pop-tilt-ease),
+    --pop-press 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    --btn-sink var(--pop-shade-time) ease-out;
 }
-.end-run:hover {
-  transform: scale(1.05);
+.end-run .pixel-btn:active {
+  --pop-press: 1;
 }
-.end-run:active {
-  transform: scale(0.75);
-  filter: brightness(0.95) saturate(110%);
+.end-run .pixel-btn::before,
+.end-run .pixel-btn::after,
+.end-run .pixel-btn > * {
+  scale: calc(var(--pop-size)* (1 - var(--pop-press-squish-x)*var(--pop-press)))
+    calc(var(--pop-size)* (1 - var(--pop-press-squish)*var(--pop-press)));
+  rotate: calc(var(--pop-tilt)*var(--pop-tilted)*var(--pop-left));
 }
-.end-run:active .pixel-btn {
+.end-run .pixel-btn:active {
   filter: none;
 }
 .controls {
@@ -843,12 +892,38 @@ img {
   border: 0;
   background: none;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --pop-press-scale: 0.9;
+  --pop-rest: 0;
+  --pop-tilted: 0;
+  --pop-left: 1;
+  --pop-press: 0;
+  --pop-size: calc(
+    (1 + (var(--pop-hover-scale) - 1) * var(--pop-rest)) *
+      (1 + (var(--pop-press-scale) - 1) * var(--pop-press))
+  );
+  transition:
+    --pop-left 0s,
+    --pop-rest 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    --pop-press 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    --btn-sink var(--pop-shade-time) ease-out;
+}
+.controls .round-btn:hover {
+  --pop-rest: 1;
+  --pop-tilted: 1;
+  --pop-left: 0;
+  transition:
+    --pop-rest var(--pop-scale-time) ease-out,
+    --pop-left var(--pop-tilt-time) var(--pop-tilt-ease),
+    --pop-press 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    --btn-sink var(--pop-shade-time) ease-out;
 }
 .controls .round-btn:active {
-  scale: 0.9;
-  rotate: 0deg !important;
-  filter: brightness(0.95) saturate(110%);
+  --pop-press: 1;
+}
+.controls .round-btn > * {
+  scale: calc(var(--pop-size)* (1 - var(--pop-press-squish-x)*var(--pop-press)))
+    calc(var(--pop-size)* (1 - var(--pop-press-squish)*var(--pop-press)));
+  rotate: calc(var(--pop-tilt)*var(--pop-tilted)*var(--pop-left));
 }
 .controls .round-btn img {
   position: absolute;
@@ -864,6 +939,7 @@ img {
   left: 50%;
   width: 22px;
   transform: translate(-50%, -50%);
+  transform-origin: 0 0;
 }
 #counter {
   fill: url(#default-color);
@@ -1537,10 +1613,22 @@ img {
     0 var(--panel-border-size) 0 0 var(--panel-border);
   filter: drop-shadow(0px var(--panel-pixel) 0px var(--shadow-pink-015));
 }
+@property --btn-sink {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
 .pixel-btn {
   --px: 5px;
   --btn-pad-y: 1;
-  --btn-shade-rows: 2;
+  --btn-shade-base: 2;
+  --btn-sink: 0;
+  --btn-sink-text: 0.25;
+  --btn-shade-min: 1;
+  --btn-shade-gone: max(0, var(--btn-shade-base) - var(--btn-shade-min));
+  --btn-shade-rows: calc(
+    var(--btn-shade-base) - var(--btn-shade-gone) * var(--btn-sink)
+  );
   --btn-fill: #e8c0ff;
   --btn-outline-color: var(
     --btn-outline,
@@ -1576,8 +1664,17 @@ img {
 }
 .pixel-btn .pixel-btn-label {
   position: relative;
-  top: var(--btn-text-down);
+  top: calc(
+    var(--btn-text-down) +
+      var(--px)*var(--btn-shade-gone)*var(--btn-sink)*var(--btn-sink-text)
+  );
   left: var(--btn-text-right);
+}
+.pixel-btn {
+  transition: --btn-sink var(--pop-shade-time) ease-out;
+}
+.pixel-btn:active {
+  --btn-sink: 1;
 }
 .pixel-btn::before {
   content: "";
@@ -1956,9 +2053,40 @@ img {
   padding: 0;
   border: 0;
   background: none;
-  transition: scale 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   animation: alert-close-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) backwards
     0.25s;
+  --pop-press-scale: 0.9;
+  --pop-rest: 0;
+  --pop-tilted: 0;
+  --pop-left: 1;
+  --pop-press: 0;
+  --pop-size: calc(
+    (1 + (var(--pop-hover-scale) - 1) * var(--pop-rest)) *
+      (1 + (var(--pop-press-scale) - 1) * var(--pop-press))
+  );
+  transition:
+    --pop-left 0s,
+    --pop-rest 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    --pop-press 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    --btn-sink var(--pop-shade-time) ease-out;
+}
+.alert-popup .alert-popup-close:hover {
+  --pop-rest: 1;
+  --pop-tilted: 1;
+  --pop-left: 0;
+  transition:
+    --pop-rest var(--pop-scale-time) ease-out,
+    --pop-left var(--pop-tilt-time) var(--pop-tilt-ease),
+    --pop-press 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    --btn-sink var(--pop-shade-time) ease-out;
+}
+.alert-popup .alert-popup-close:active {
+  --pop-press: 1;
+}
+.alert-popup .alert-popup-close > * {
+  scale: calc(var(--pop-size)* (1 - var(--pop-press-squish-x)*var(--pop-press)))
+    calc(var(--pop-size)* (1 - var(--pop-press-squish)*var(--pop-press)));
+  rotate: calc(var(--pop-tilt)*var(--pop-tilted)*var(--pop-left));
 }
 .alert-popup .alert-popup-close img {
   display: block;
@@ -1970,17 +2098,11 @@ img {
 .alert-popup .alert-popup-close .alert-popup-close-hover {
   display: none;
 }
-.alert-popup .alert-popup-close:hover {
-  scale: 1.05;
-}
 .alert-popup .alert-popup-close:hover img {
   display: none;
 }
 .alert-popup .alert-popup-close:hover .alert-popup-close-hover {
   display: block;
-}
-.alert-popup .alert-popup-close:active {
-  scale: 0.9;
 }
 .alert-popup .alert-popup-close:active img {
   filter: none;
@@ -2144,17 +2266,40 @@ img {
   text-transform: none;
   color: #fff;
   text-shadow: 0 3px 0 var(--shadow-overlay-010);
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   filter: drop-shadow(0px 4px 0px var(--shadow-overlay-010));
+  --pop-tilt: 6deg;
+  --pop-rest: 0;
+  --pop-tilted: 0;
+  --pop-left: 1;
+  --pop-press: 0;
+  --pop-size: calc(
+    (1 + (var(--pop-hover-scale) - 1) * var(--pop-rest)) *
+      (1 + (var(--pop-press-scale) - 1) * var(--pop-press))
+  );
+  transition:
+    --pop-left 0s,
+    --pop-rest 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    --pop-press 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    --btn-sink var(--pop-shade-time) ease-out;
 }
 .alert-popup .alert-popup-button:hover {
-  scale: 1.05;
-  filter: drop-shadow(0px 4px 0px var(--shadow-overlay-010)) brightness(0.96)
-    saturate(105%);
+  --pop-rest: 1;
+  --pop-tilted: 1;
+  --pop-left: 0;
+  transition:
+    --pop-rest var(--pop-scale-time) ease-out,
+    --pop-left var(--pop-tilt-time) var(--pop-tilt-ease),
+    --pop-press 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    --btn-sink var(--pop-shade-time) ease-out;
 }
 .alert-popup .alert-popup-button:active {
-  scale: 0.75;
-  filter: brightness(0.94) saturate(110%);
+  --pop-press: 1;
+}
+.alert-popup .alert-popup-button::after,
+.alert-popup .alert-popup-button > * {
+  scale: calc(var(--pop-size)* (1 - var(--pop-press-squish-x)*var(--pop-press)))
+    calc(var(--pop-size)* (1 - var(--pop-press-squish)*var(--pop-press)));
+  rotate: calc(var(--pop-tilt)*var(--pop-tilted)*var(--pop-left));
 }
 .alert-popup .alert-popup-button::after {
   content: "";
@@ -2168,9 +2313,14 @@ img {
     3px 0 0 0 var(--button-color),
     0 -3px 0 0 var(--button-color),
     0 3px 0 0 var(--button-color);
-  transition: all 0.3s ease-out;
+  transition:
+    background-color 0.3s ease-out,
+    box-shadow 0.3s ease-out;
 }
-.alert-popup .alert-popup-button span {
+.alert-popup .alert-popup-button .alert-popup-button-label {
+  display: inline-block;
+}
+.alert-popup .alert-popup-button .alert-popup-button-label span {
   position: relative;
   display: inline-block;
   animation: wavy-text-top var(--wave-duration, 2.5s)
@@ -2500,22 +2650,45 @@ img {
 }
 #game-over .bottom-section .game-over-btns .wide-btn {
   filter: drop-shadow(0px 5px 0px var(--shadow-pink-015));
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --pop-rest: 0;
+  --pop-tilted: 0;
+  --pop-left: 1;
+  --pop-press: 0;
+  --pop-size: calc(
+    (1 + (var(--pop-hover-scale) - 1) * var(--pop-rest)) *
+      (1 + (var(--pop-press-scale) - 1) * var(--pop-press))
+  );
+  transition:
+    --pop-left 0s,
+    --pop-rest 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    --pop-press 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    --btn-sink var(--pop-shade-time) ease-out;
 }
 #game-over .bottom-section .game-over-btns .wide-btn:hover {
-  scale: 1.05;
+  --pop-rest: 1;
+  --pop-tilted: 1;
+  --pop-left: 0;
+  transition:
+    --pop-rest var(--pop-scale-time) ease-out,
+    --pop-left var(--pop-tilt-time) var(--pop-tilt-ease),
+    --pop-press 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    --btn-sink var(--pop-shade-time) ease-out;
 }
-#game-over .bottom-section .game-over-btns .play-again-btn:active,
-#game-over .bottom-section .game-over-btns .play-again-btn-2:active {
-  scale: 0.75;
-  rotate: 0deg !important;
-  filter: brightness(0.95) saturate(110%);
+#game-over .bottom-section .game-over-btns .wide-btn:active {
+  --pop-press: 1;
 }
-#game-over .bottom-section .game-over-btns .play-again-btn:hover {
-  rotate: 2deg;
+#game-over .bottom-section .game-over-btns .wide-btn::before,
+#game-over .bottom-section .game-over-btns .wide-btn::after,
+#game-over .bottom-section .game-over-btns .wide-btn > * {
+  scale: calc(var(--pop-size)* (1 - var(--pop-press-squish-x)*var(--pop-press)))
+    calc(var(--pop-size)* (1 - var(--pop-press-squish)*var(--pop-press)));
+  rotate: calc(var(--pop-tilt)*var(--pop-tilted)*var(--pop-left));
 }
-#game-over .bottom-section .game-over-btns .play-again-btn-2:hover {
-  rotate: -2deg;
+#game-over .bottom-section .game-over-btns .play-again-btn {
+  --pop-tilt: 4deg;
+}
+#game-over .bottom-section .game-over-btns .play-again-btn-2 {
+  --pop-tilt: -4deg;
 }
 #game-over .rainbow-txt {
   color: hsla(0, 0%, 100%, 0.9);
@@ -2711,14 +2884,39 @@ img {
   cursor: pointer;
   filter: drop-shadow(0 6px 0 var(--shadow-pink-010));
   opacity: 0;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --pop-rest: 0;
+  --pop-tilted: 0;
+  --pop-left: 1;
+  --pop-press: 0;
+  --pop-size: calc(
+    (1 + (var(--pop-hover-scale) - 1) * var(--pop-rest)) *
+      (1 + (var(--pop-press-scale) - 1) * var(--pop-press))
+  );
+  transition:
+    --pop-left 0s,
+    --pop-rest 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    --pop-press 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    --btn-sink var(--pop-shade-time) ease-out;
 }
 .menu-screen .menu-btn:hover {
-  scale: 1.05;
+  --pop-rest: 1;
+  --pop-tilted: 1;
+  --pop-left: 0;
+  transition:
+    --pop-rest var(--pop-scale-time) ease-out,
+    --pop-left var(--pop-tilt-time) var(--pop-tilt-ease),
+    --pop-press 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    --btn-sink var(--pop-shade-time) ease-out;
 }
 .menu-screen .menu-btn:active {
-  scale: 0.75;
-  filter: brightness(0.95) saturate(110%);
+  --pop-press: 1;
+}
+.menu-screen .menu-btn::before,
+.menu-screen .menu-btn::after,
+.menu-screen .menu-btn > * {
+  scale: calc(var(--pop-size)* (1 - var(--pop-press-squish-x)*var(--pop-press)))
+    calc(var(--pop-size)* (1 - var(--pop-press-squish)*var(--pop-press)));
+  rotate: calc(var(--pop-tilt)*var(--pop-tilted)*var(--pop-left));
 }
 .menu-screen .menu-btn:focus-visible {
   outline: 3px solid #595480;

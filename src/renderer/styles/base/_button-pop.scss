@@ -1,0 +1,75 @@
+:root {
+  --pop-scale-time: 0.1s;
+  --pop-hover-scale: 1.08;
+  --pop-press-scale: 0.9;
+  --pop-shade-time: 0.1s;
+  --pop-press-squish: 0.1;
+  --pop-press-squish-x: 0.07;
+  --pop-tilt-time: 0.1s;
+  --pop-tilt-ease: linear;
+  --pop-tilt: 4deg;
+}
+
+@property --pop-rest {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --pop-left {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+
+@property --pop-press {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+$pop-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+@mixin button-pop {
+  --pop-rest: 0;
+  --pop-tilted: 0;
+  --pop-left: 1;
+  --pop-press: 0;
+
+  --pop-size: calc(
+    (1 + (var(--pop-hover-scale) - 1) * var(--pop-rest)) *
+      (1 + (var(--pop-press-scale) - 1) * var(--pop-press))
+  );
+
+  transition:
+    --pop-left 0s,
+    --pop-rest 0.3s $pop-spring,
+    --pop-press 0.3s $pop-spring,
+    --btn-sink var(--pop-shade-time) ease-out;
+  //filter 0.3s $pop-spring;
+
+  &:hover {
+    --pop-rest: 1;
+    --pop-tilted: 1;
+    --pop-left: 0;
+    transition:
+      --pop-rest var(--pop-scale-time) ease-out,
+      --pop-left var(--pop-tilt-time) var(--pop-tilt-ease),
+      --pop-press 0.3s $pop-spring,
+      --btn-sink var(--pop-shade-time) ease-out;
+    //filter 0.3s $pop-spring;
+  }
+
+  &:active {
+    --pop-press: 1;
+    //filter: brightness(0.98) saturate(105%);
+  }
+}
+
+@mixin pop-visual {
+  scale: calc(
+      var(--pop-size) * (1 - var(--pop-press-squish-x) * var(--pop-press))
+    )
+    calc(var(--pop-size) * (1 - var(--pop-press-squish) * var(--pop-press)));
+  rotate: calc(var(--pop-tilt) * var(--pop-tilted) * var(--pop-left));
+}

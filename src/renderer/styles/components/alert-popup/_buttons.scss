@@ -1,4 +1,5 @@
-// the Yes, No and Got it buttons
+@use "../../base/button-pop";
+
 .alert-popup {
   .alert-popup-actions {
     display: flex;
@@ -26,18 +27,13 @@
     text-transform: none;
     color: #fff;
     text-shadow: 0 3px 0 var(--shadow-overlay-010);
-    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     filter: drop-shadow(0px 4px 0px var(--shadow-overlay-010));
+    --pop-tilt: 6deg;
+    @include button-pop.button-pop;
 
-    &:hover {
-      scale: 1.05;
-      filter: drop-shadow(0px 4px 0px var(--shadow-overlay-010))
-        brightness(0.96) saturate(105%);
-    }
-
-    &:active {
-      scale: 0.75;
-      filter: brightness(0.94) saturate(110%);
+    &::after,
+    > * {
+      @include button-pop.pop-visual;
     }
 
     &::after {
@@ -52,14 +48,19 @@
         3px 0 0 0 var(--button-color),
         0 -3px 0 0 var(--button-color),
         0 3px 0 0 var(--button-color);
-      transition: all 0.3s ease-out;
+      transition:
+        background-color 0.3s ease-out,
+        box-shadow 0.3s ease-out;
     }
-
-    span {
-      position: relative;
+    .alert-popup-button-label {
       display: inline-block;
-      animation: wavy-text-top var(--wave-duration, 2.5s)
-        cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--delay);
+
+      span {
+        position: relative;
+        display: inline-block;
+        animation: wavy-text-top var(--wave-duration, 2.5s)
+          cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--delay);
+      }
     }
   }
 }

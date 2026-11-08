@@ -1,9 +1,24 @@
 @use "shine";
 
+@property --btn-sink {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
 .pixel-btn {
   --px: 5px;
   --btn-pad-y: 1;
-  --btn-shade-rows: 2;
+
+  --btn-shade-base: 2;
+  --btn-sink: 0;
+  --btn-sink-text: 0.25;
+  --btn-shade-min: 1;
+  --btn-shade-gone: max(0, var(--btn-shade-base) - var(--btn-shade-min));
+  --btn-shade-rows: calc(
+    var(--btn-shade-base) - var(--btn-shade-gone) * var(--btn-sink)
+  );
+
   --btn-fill: #e8c0ff;
 
   --btn-outline-color: var(
@@ -42,8 +57,17 @@
 
   .pixel-btn-label {
     position: relative;
-    top: var(--btn-text-down);
+    top: calc(
+      var(--btn-text-down) + var(--px) * var(--btn-shade-gone) *
+        var(--btn-sink) * var(--btn-sink-text)
+    );
     left: var(--btn-text-right);
+  }
+
+  transition: --btn-sink var(--pop-shade-time) ease-out;
+
+  &:active {
+    --btn-sink: 1;
   }
 
   &::before {

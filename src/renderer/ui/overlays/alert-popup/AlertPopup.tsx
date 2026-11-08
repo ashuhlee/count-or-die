@@ -52,7 +52,9 @@ function AlertButton({
       onMouseEnter={() => playSound("buttonHover")}
       autoFocus={autoFocus}
     >
-      <Letters text={label} step={0.1} height={0.4} duration={1} />
+      <span className="alert-popup-button-label">
+        <Letters text={label} step={0.1} height={0.4} duration={1} />
+      </span>
     </button>
   );
 }

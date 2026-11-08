@@ -39,7 +39,7 @@ export default function PixelButton({
           "--btn-fill": color,
           ...(pixelSize !== undefined && { "--px": `${pixelSize}px` }),
           ...(paddingY !== undefined && { "--btn-pad-y": paddingY }),
-          ...(shadeRows !== undefined && { "--btn-shade-rows": shadeRows }),
+          ...(shadeRows !== undefined && { "--btn-shade-base": shadeRows }),
           ...(outline !== undefined && { "--btn-outline": outline }),
           ...(highlight !== undefined && { "--btn-highlight": highlight }),
           ...(shade !== undefined && { "--btn-shade": shade }),

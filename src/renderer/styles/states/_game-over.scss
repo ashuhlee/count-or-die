@@ -1,3 +1,4 @@
+@use "../base/button-pop";
 @use "../base/globals";
 @use "../base/swirl-background";
 @use "../base/pixel-stripes" as stripes;
@@ -331,26 +332,21 @@
 
       .wide-btn {
         filter: drop-shadow(0px 5px 0px var(--shadow-pink-015));
-        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        @include button-pop.button-pop;
 
-        &:hover {
-          scale: 1.05;
+        &::before,
+        &::after,
+        > * {
+          @include button-pop.pop-visual;
         }
       }
 
-      .play-again-btn,
+      // the two lean away from each other
+      .play-again-btn {
+        --pop-tilt: 4deg;
+      }
       .play-again-btn-2 {
-        &:active {
-          scale: 0.75;
-          rotate: 0deg !important;
-          filter: brightness(0.95) saturate(110%);
-        }
-      }
-      .play-again-btn:hover {
-        rotate: 2deg;
-      }
-      .play-again-btn-2:hover {
-        rotate: -2deg;
+        --pop-tilt: -4deg;
       }
     }
   }
