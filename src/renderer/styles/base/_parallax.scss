@@ -1,5 +1,5 @@
 :root {
-  --parallax-range: 4px;
+  --parallax-range: 3px;
 }
 
 @mixin parallax($depth, $depth-y: $depth, $scope: parallax) {

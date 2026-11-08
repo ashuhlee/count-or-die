@@ -1939,7 +1939,7 @@ img {
   animation-duration: 0.7s;
 }
 :root {
-  --parallax-range: 4px;
+  --parallax-range: 3px;
 }
 .alert-popup {
   position: fixed;
@@ -2653,12 +2653,11 @@ img {
   z-index: -3;
   inset: 0;
   transform: scaleX(1);
-  opacity: 0.8;
   --stripe-period: 18px;
   background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' shape-rendering='crispEdges'><rect x='0' y='0' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='12' y='0' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='24' y='0' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='-2' y='2' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='10' y='2' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='22' y='2' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='-4' y='4' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='8' y='4' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='20' y='4' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='-6' y='6' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='6' y='6' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='18' y='6' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='-8' y='8' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='4' y='8' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='16' y='8' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='-10' y='10' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='2' y='10' width='6' height='2' fill='white' fill-opacity='0.2'/><rect x='14' y='10' width='6' height='2' fill='white' fill-opacity='0.2'/></svg>");
   background-size: 18px 18px;
   image-rendering: pixelated;
-  background-color: #a1a1ff;
+  background-color: var(--back-border);
   background-blend-mode: overlay;
   animation: slide-stripes 2.7s linear infinite;
   box-shadow:

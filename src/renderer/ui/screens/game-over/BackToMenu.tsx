@@ -1,7 +1,7 @@
 import { useRef, useState, type CSSProperties } from "react";
 
 import { useGame } from "../../../provider/useGame.ts";
-import { playSound } from "../../../utils/app/sounds.ts";
+// import { playSound } from "../../../utils/app/sounds.ts";
 import Letters from "../../components/text/letters/Letters.tsx";
 
 const HOVER_STRIPE_SPEED = 3;
@@ -28,7 +28,7 @@ export default function BackToMenu() {
       id="menu-btn"
       onClick={actions.backToMenu}
       onMouseEnter={() => {
-        playSound("buttonHover");
+        // playSound("buttonHover");
         setTilt(nextTilt.current);
         setStripeSpeed(HOVER_STRIPE_SPEED);
       }}
