@@ -70,7 +70,6 @@ export default function StartMenuScreen() {
           {...look(COLORS.report)}
           className="menu-btn"
           id="report-bug-btn"
-          shine
           shadeRows={2.5}
           onClick={actions.reportBug}
         >
@@ -80,7 +79,6 @@ export default function StartMenuScreen() {
           {...look(COLORS.quit)}
           className="menu-btn"
           id="quit-game-btn"
-          shine
           shadeRows={2.5}
           onClick={actions.quit}
         >
