@@ -1,4 +1,5 @@
 @use "../base/button-pop";
+@use "../base/parallax";
 @use "../base/swirl-background";
 
 .menu-screen {
@@ -37,6 +38,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    @include parallax.parallax(1);
   }
 
   .menu-btn {
@@ -82,4 +84,13 @@
 
 .menu-screen ~ .app-ver {
   z-index: 3;
+  @include parallax.parallax(0.6);
+}
+
+// the round buttons and the notices belong to the menu bar, outside the screen
+html:has(#menu-screen) {
+  .controls,
+  .notices {
+    @include parallax.parallax(1);
+  }
 }

@@ -7,6 +7,7 @@ import cloudBottomRight from "@assets/ui/deco/clouds/cloud_4.png";
 import cloudMini from "@assets/ui/deco/clouds/cloud_5.png";
 
 import { useKeyboardControls } from "../hooks/useKeyboardControls.ts";
+import { useParallax } from "../hooks/useParallax.ts";
 import { useGame } from "../provider/useGame.ts";
 import { useGameEvent } from "../provider/useGameEvent.ts";
 import { describeDaily } from "../game/challenges.ts";
@@ -95,6 +96,13 @@ export default function Game() {
   const popupShown = useFadeOut(asking, 300);
   const helpShown = useFadeOut(helping, 300);
   const challengesShown = useFadeOut(challenging, 300);
+
+  // the layers of the start menu and game over follow the mouse, until a modal
+  // opens: then the modal follows it and they stay where they are
+  const onParallaxScreen =
+    (screen === "menu" && ready) || (screen === "game" && state.isGameOver);
+  const modalShown = popupShown || helpShown || challengesShown;
+  useParallax(onParallaxScreen && !modalShown);
 
   return (
     <>

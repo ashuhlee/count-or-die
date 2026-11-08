@@ -1938,6 +1938,9 @@ img {
 #options-notice.bounce-in-left {
   animation-duration: 0.7s;
 }
+:root {
+  --parallax-range: 4px;
+}
 .alert-popup {
   position: fixed;
   inset: 0;
@@ -1954,6 +1957,8 @@ img {
   transform: scale(var(--fit, 1));
   filter: drop-shadow(0 5px 0 var(--shadow-overlay-010));
   animation: alert-pop-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  translate: calc(var(--modal-parallax-x, 0)*var(--parallax-range)*-1.5)
+    calc(var(--modal-parallax-y, 0)*var(--parallax-range)*-1.5);
 }
 .alert-popup--leaving {
   animation: alert-fade-out 0.06s both;
@@ -2445,6 +2450,8 @@ img {
   gap: 14px;
   margin-bottom: 20px;
   z-index: -3;
+  translate: calc(var(--parallax-x, 0)*var(--parallax-range)*-1.4)
+    calc(var(--parallax-y, 0)*var(--parallax-range)*-1.4);
 }
 #game-over .deco-icons img {
   height: 55px;
@@ -2469,8 +2476,17 @@ img {
   text-transform: none;
   top: 50px;
   max-width: 250px;
+  translate: calc(var(--parallax-x, 0)*var(--parallax-range)*-1)
+    calc(var(--parallax-y, 0)*var(--parallax-range)*-1);
+}
+#game-over .notices,
+#game-over .controls {
+  translate: calc(var(--parallax-x, 0)*var(--parallax-range)*-1)
+    calc(var(--parallax-y, 0)*var(--parallax-range)*-1);
 }
 #game-over .top-right-info {
+  translate: calc(var(--parallax-x, 0)*var(--parallax-range)*-1)
+    calc(var(--parallax-y, 0)*var(--parallax-range)*-1);
   z-index: -3;
   position: absolute;
   top: 10px;
@@ -2509,6 +2525,8 @@ img {
   margin-right: calc(-0.2em - 1.2px);
 }
 #game-over .play-again {
+  translate: calc(var(--parallax-x, 0)*var(--parallax-range)*-1)
+    calc(var(--parallax-y, 0)*var(--parallax-range)*-1);
   margin: 32px;
   font-size: 28px;
   font-family: "Enter the Gungeon Small", sans-serif;
@@ -2542,6 +2560,8 @@ img {
 #game-over .go-title {
   width: 80vw;
   max-width: 380px;
+  translate: calc(var(--parallax-x, 0)*var(--parallax-range)*-0.8)
+    calc(var(--parallax-y, 0)*var(--parallax-range)*-0.8);
 }
 #game-over img {
   image-rendering: pixelated;
@@ -2552,6 +2572,8 @@ img {
   height: 100%;
   pointer-events: none;
   left: 25vw;
+  translate: calc(var(--parallax-x, 0)*var(--parallax-range)*-1.8)
+    calc(var(--parallax-y, 0)*var(--parallax-range)*0);
 }
 @media screen and (max-width: 1100px) {
   #game-over .tombstone-area {
@@ -2582,6 +2604,8 @@ img {
 #game-over .bottom-section {
   display: grid;
   place-items: center;
+  translate: calc(var(--parallax-x, 0)*var(--parallax-range)*-1)
+    calc(var(--parallax-y, 0)*var(--parallax-range)*-1);
 }
 #game-over .bottom-section .back-to-menu {
   --back-border: #a1a1ff;
@@ -2871,6 +2895,8 @@ img {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  translate: calc(var(--parallax-x, 0)*var(--parallax-range)*-1)
+    calc(var(--parallax-y, 0)*var(--parallax-range)*-1);
 }
 .menu-screen .menu-btn {
   min-width: 240px;
@@ -2936,6 +2962,13 @@ img {
 }
 .menu-screen ~ .app-ver {
   z-index: 3;
+  translate: calc(var(--parallax-x, 0)*var(--parallax-range)*-0.6)
+    calc(var(--parallax-y, 0)*var(--parallax-range)*-0.6);
+}
+html:has(#menu-screen) .controls,
+html:has(#menu-screen) .notices {
+  translate: calc(var(--parallax-x, 0)*var(--parallax-range)*-1)
+    calc(var(--parallax-y, 0)*var(--parallax-range)*-1);
 }
 .menu-screen {
   flex-direction: column;
@@ -2943,6 +2976,8 @@ img {
 }
 .menu-screen .menu-title {
   width: clamp(270px, 26vw, 400px);
+  translate: calc(var(--parallax-x, 0)*var(--parallax-range)*-0.8)
+    calc(var(--parallax-y, 0)*var(--parallax-range)*-0.8);
 }
 .startup-screen {
   --progress: 0;

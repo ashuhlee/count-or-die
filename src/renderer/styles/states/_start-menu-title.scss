@@ -1,8 +1,11 @@
+@use "../base/parallax";
+
 .menu-screen {
   flex-direction: column;
   gap: 32px;
 
   .menu-title {
     width: clamp(270px, 26vw, 400px);
+    @include parallax.parallax(0.8);
   }
 }

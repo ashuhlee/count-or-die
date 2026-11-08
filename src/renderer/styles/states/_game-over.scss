@@ -1,5 +1,6 @@
 @use "../base/button-pop";
 @use "../base/globals";
+@use "../base/parallax";
 @use "../base/swirl-background";
 @use "../base/pixel-stripes" as stripes;
 
@@ -106,6 +107,7 @@
     gap: 14px;
     margin-bottom: 20px;
     z-index: -3;
+    @include parallax.parallax(1.4);
     img {
       height: 55px;
       image-rendering: pixelated;
@@ -131,8 +133,14 @@
     text-transform: none;
     top: 50px;
     max-width: 250px;
+    @include parallax.parallax(1);
+  }
+  .notices,
+  .controls {
+    @include parallax.parallax(1);
   }
   .top-right-info {
+    @include parallax.parallax(1);
     z-index: -3;
     position: absolute;
     top: 10px;
@@ -174,6 +182,7 @@
   }
 
   .play-again {
+    @include parallax.parallax(1);
     margin: 32px;
     font-size: 28px;
     font-family: "Enter the Gungeon Small", sans-serif;
@@ -210,6 +219,7 @@
   .go-title {
     width: 80vw;
     max-width: 380px;
+    @include parallax.parallax(0.8);
   }
   img {
     image-rendering: pixelated;
@@ -220,6 +230,7 @@
     height: 100%;
     pointer-events: none;
     left: 25vw;
+    @include parallax.parallax(1.8, 0);
 
     @media screen and (max-width: 1100px) {
       display: none;
@@ -250,6 +261,7 @@
   .bottom-section {
     display: grid;
     place-items: center;
+    @include parallax.parallax(1);
 
     .back-to-menu {
       --back-border: #a1a1ff;

@@ -5,6 +5,7 @@ import tabBlue from "@assets/ui/tabs/tab-blue.svg";
 import closePng from "@assets/ui/tabs/close.png";
 import closeHoverPng from "@assets/ui/tabs/close-hover.png";
 
+import { useParallax } from "../../../hooks/useParallax.ts";
 import { playSound } from "../../../utils/app/sounds.ts";
 import Letters from "../../components/text/letters/Letters.tsx";
 
@@ -86,6 +87,8 @@ export default function AlertPopup({
   okLabel = "Got it",
   onOk,
 }: AlertPopupProps) {
+  useParallax(true, "modal-parallax");
+
   const textRef = useRef<HTMLSpanElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
