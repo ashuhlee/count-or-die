@@ -16,7 +16,7 @@ export default memo(function GameOverBackground({
   return (
     <div className="go-background">
       <PixelSwirlShader
-        color1="#f65fba"
+        color1="#fc6dc1"
         color2="#ffc4ee"
         color3="#ff8ed7"
         swirl={0.2}
