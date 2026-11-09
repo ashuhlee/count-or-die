@@ -2524,7 +2524,7 @@ img {
     200%/var(--mask-size);
   -webkit-mask: url("../assets/ui/masks/drip-mask.png") no-repeat 0%
     200%/var(--mask-size);
-  animation: menu-drip-in 0.8s ease both;
+  animation: menu-drip-in 0.8s ease 0.1s both;
 }
 @media (max-width: 900px) {
   .menu-reveal--dripping {
@@ -2543,7 +2543,7 @@ img {
   z-index: 100;
   background: #a698ff;
   pointer-events: none;
-  animation: menu-flash-out 0.3s ease 0.2s both;
+  animation: menu-flash-out 0.3s ease 0.3s both;
 }
 @keyframes menu-flash-out {
   to {

@@ -53,7 +53,7 @@ function readChallenges(): AlertRow[] {
   ];
 }
 
-const MENU_DRIP_MS = 800;
+const MENU_DRIP_MS = 900;
 
 export default function Game() {
   const { state, screen, ready, betaNotice, actions, loading } = useGame();

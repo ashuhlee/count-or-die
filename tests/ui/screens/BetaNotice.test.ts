@@ -43,7 +43,7 @@ describe("the beta notice", () => {
     expect(game.$("#beta-notice")).not.toBeNull();
     expect(game.$("#menu-screen").className).toContain("hue-in");
 
-    game.wait(900);
+    game.wait(1000);
     expect(game.$("#beta-notice")).toBeNull();
     expect(game.$(".menu-reveal--dripping")).toBeNull();
     expect(game.$(".menu-flash")).toBeNull();
@@ -67,7 +67,7 @@ describe("the beta notice", () => {
     expect(game.$(".menu-reveal--dripping")).not.toBeNull();
     expect(betaNoticeHidden()).toBe(true);
 
-    game.wait(900);
+    game.wait(1000);
     expect(game.$("#beta-notice")).toBeNull();
   });
 

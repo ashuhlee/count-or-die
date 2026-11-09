@@ -13,7 +13,6 @@ import PixelPanel from "../../components/hud/pixel-panel/PixelPanel.tsx";
 export default function BetaNotice() {
   const { betaNotice, actions } = useGame();
   const loaded = useStartupDone();
-  // the first time it only says hello; later it can be switched off
   const [returning] = useState(betaNoticeSeen);
 
   return (
@@ -50,7 +49,7 @@ export default function BetaNotice() {
           This doesn&apos;t represent the final state of the game and everything
           is subject to change.
         </p>
-        <p>Have fun, and be sure to share your high score!</p>
+        <p>Enjoy the game!</p>
 
         <div className="beta-notice-actions">
           <AlertButton
