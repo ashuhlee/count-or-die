@@ -34,9 +34,20 @@ $dark-bg: "#{$assets}/ui/textures/tile-dark.png";
 $loading-bg: "#{$assets}/ui/textures/tile-loading-1.png";
 $loading-bg-2: "#{$assets}/ui/textures/tile-loading-2.png";
 $melt-mask: "#{$assets}/ui/masks/drip-mask.png";
+// the arrow shown everywhere else, held at its tip
+$cursor-default: "#{$assets}/ui/cursor.svg";
+$cursor-default-x: 3;
+$cursor-default-y: 3;
 $cursor-hand: "#{$assets}/ui/hand.svg";
 $cursor-hand-x: 11;
 $cursor-hand-y: 2;
+// the open and closed hands, held at the middle of the palm
+$cursor-grab: "#{$assets}/ui/grab.svg";
+$cursor-grab-x: 22;
+$cursor-grab-y: 23;
+$cursor-grabbing: "#{$assets}/ui/grabbing.svg";
+$cursor-grabbing-x: 21;
+$cursor-grabbing-y: 21;
 $delay-step: 0.3s;
 
 $fonts: "../assets/fonts";

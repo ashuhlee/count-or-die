@@ -4,6 +4,15 @@
   box-sizing: border-box;
 }
 
+// the arrow is the cursor everywhere, and what is inside takes it from here
+html,
+body {
+  cursor:
+    url("#{globals.$cursor-default}") #{globals.$cursor-default-x}
+      #{globals.$cursor-default-y},
+    default;
+}
+
 // the hand shows over anything that can be clicked
 button,
 button *,
