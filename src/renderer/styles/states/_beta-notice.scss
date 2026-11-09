@@ -37,7 +37,7 @@
   }
 
   .beta-notice-card {
-    width: min(710px, 100%);
+    width: min(600px, 100%);
     box-sizing: border-box;
     padding: 28px 32px;
     font-family: "Jersey 10", sans-serif;
@@ -75,9 +75,7 @@
 
   .beta-notice-actions {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 16px 22px;
     margin-top: 24px;
   }
 }

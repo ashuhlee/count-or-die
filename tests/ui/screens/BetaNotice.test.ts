@@ -3,7 +3,7 @@ import { afterEach, beforeEach, expect, describe, test, vi } from "vitest";
 
 import { stubWebAnimations } from "../../helpers/dom.ts";
 import { renderGame } from "../../helpers/game.tsx";
-import { betaNoticeHidden } from "../../../src/renderer/utils/storage/betaNotice.ts";
+import { betaNoticeSeen } from "../../../src/renderer/utils/storage/betaNotice.ts";
 
 vi.mock("../../../src/renderer/utils/app/sounds.ts", async (original) => ({
   ...(await original<
@@ -49,26 +49,23 @@ describe("the beta notice", () => {
     expect(game.$(".menu-flash")).toBeNull();
   });
 
-  test("only offers to hide itself from the second time", () => {
-    expect(game.$("#beta-notice-never-btn")).toBeNull();
-    game.click("#beta-notice-btn");
-
+  test("counts as shown once the startup screen is gone", () => {
+    localStorage.clear();
     game.unmount();
+    const startup = document.createElement("div");
+    startup.id = "startup-screen";
+    document.body.append(startup);
+
     game = renderGame({ startOnMenu: true, betaNotice: true });
-    expect(game.$("#beta-notice-never-btn")).not.toBeNull();
-  });
+    expect(betaNoticeSeen()).toBe(false);
 
-  test("remembers a request not to show it again", () => {
-    localStorage.setItem("betaNoticeSeen", "1");
-    game.unmount();
-    game = renderGame({ startOnMenu: true, betaNotice: true });
+    startup.classList.add("hiding");
+    act(() => {
+      window.dispatchEvent(new Event("startup-done"));
+    });
+    expect(betaNoticeSeen()).toBe(true);
 
-    game.click("#beta-notice-never-btn");
-    expect(game.$(".menu-reveal--dripping")).not.toBeNull();
-    expect(betaNoticeHidden()).toBe(true);
-
-    game.wait(1000);
-    expect(game.$("#beta-notice")).toBeNull();
+    startup.remove();
   });
 
   test("is already open under the startup screen, so the menu never shows between them", () => {

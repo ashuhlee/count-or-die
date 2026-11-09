@@ -1,7 +1,7 @@
-const KEY = "betaNoticeHidden";
-const SEEN_KEY = "betaNoticeSeen";
+// whether the beta notice has been shown, so that it only comes up once
+const KEY = "betaNoticeSeen";
 
-export function betaNoticeHidden(): boolean {
+export function betaNoticeSeen(): boolean {
   try {
     return localStorage.getItem(KEY) === "1";
   } catch {
@@ -9,22 +9,8 @@ export function betaNoticeHidden(): boolean {
   }
 }
 
-export function hideBetaNotice(): void {
-  try {
-    localStorage.setItem(KEY, "1");
-  } catch {}
-}
-
-export function betaNoticeSeen(): boolean {
-  try {
-    return localStorage.getItem(SEEN_KEY) === "1";
-  } catch {
-    return false;
-  }
-}
-
 export function markBetaNoticeSeen(): void {
   try {
-    localStorage.setItem(SEEN_KEY, "1");
+    localStorage.setItem(KEY, "1");
   } catch {}
 }

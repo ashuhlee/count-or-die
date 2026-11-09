@@ -1,19 +1,19 @@
-import { useState } from "react";
+import { useEffect } from "react";
 
 import { useGame } from "../../../provider/useGame.ts";
 import { useStartupDone } from "../../../provider/useStartupDone.ts";
-import {
-  betaNoticeSeen,
-  hideBetaNotice,
-  markBetaNoticeSeen,
-} from "../../../utils/storage/betaNotice.ts";
+import { markBetaNoticeSeen } from "../../../utils/storage/betaNotice.ts";
 import AlertButton from "../../components/buttons/alert-button/AlertButton.tsx";
 import PixelPanel from "../../components/hud/pixel-panel/PixelPanel.tsx";
 
 export default function BetaNotice() {
   const { betaNotice, actions } = useGame();
   const loaded = useStartupDone();
-  const [returning] = useState(betaNoticeSeen);
+
+  // once the startup screen is gone it has been shown, and it is not again
+  useEffect(() => {
+    if (loaded) markBetaNoticeSeen();
+  }, [loaded]);
 
   return (
     <div
@@ -57,23 +57,8 @@ export default function BetaNotice() {
             tone="yes"
             label="Let's go!"
             click
-            onClick={() => {
-              markBetaNoticeSeen();
-              actions.dismissBetaNotice();
-            }}
+            onClick={actions.dismissBetaNotice}
           />
-          {returning && (
-            <AlertButton
-              id="beta-notice-never-btn"
-              tone="no"
-              label="Don't show again"
-              click
-              onClick={() => {
-                hideBetaNotice();
-                actions.dismissBetaNotice();
-              }}
-            />
-          )}
         </div>
       </PixelPanel>
     </div>
