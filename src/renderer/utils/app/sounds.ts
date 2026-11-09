@@ -74,7 +74,7 @@ export const audioConfig: Record<SoundName, AudioTrack> = {
   },
   buttonClick: {
     audio: new Audio(buttonClickFxFile),
-    volume: 1,
+    volume: 0.6,
   },
   buttonHover: {
     audio: new Audio(buttonHoverFxFile),
