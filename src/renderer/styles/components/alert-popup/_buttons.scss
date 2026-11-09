@@ -1,70 +1,68 @@
 @use "../../base/button-pop";
 
-.alert-popup {
-  .alert-popup-actions {
-    display: flex;
-    justify-content: center;
-    gap: 22px;
+.alert-popup .alert-popup-actions {
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+}
+
+.alert-popup-button--yes {
+  --button-color: #ffa0ec;
+}
+
+.alert-popup-button--no {
+  --button-color: #c4c4d5;
+}
+
+.alert-popup-button {
+  position: relative;
+  isolation: isolate;
+  margin: 0;
+  padding: 5px 20px 5px;
+  border: 0;
+  background: none;
+  font-family: "Enter the Gungeon Small", sans-serif;
+  font-size: 18px;
+  text-transform: none;
+  color: #fff;
+  text-shadow: 0 3px 0 var(--shadow-overlay-010);
+  filter: drop-shadow(0px 4px 0px var(--shadow-overlay-010));
+  --pop-tilt: 6deg;
+  @include button-pop.button-pop;
+
+  &:active {
+    filter: brightness(0.93) saturate(108%);
   }
 
-  .alert-popup-button--yes {
-    --button-color: #ffa0ec;
+  &::after,
+  > * {
+    @include button-pop.pop-visual;
   }
 
-  .alert-popup-button--no {
-    --button-color: #c4c4d5;
+  &::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    opacity: 0.8;
+    background-color: var(--button-color);
+    box-shadow:
+      -3px 0 0 0 var(--button-color),
+      3px 0 0 0 var(--button-color),
+      0 -3px 0 0 var(--button-color),
+      0 3px 0 0 var(--button-color);
+    transition:
+      background-color 0.3s ease-out,
+      box-shadow 0.3s ease-out;
   }
+  .alert-popup-button-label {
+    display: inline-block;
 
-  .alert-popup-button {
-    position: relative;
-    isolation: isolate;
-    margin: 0;
-    padding: 4px 20px 4px;
-    border: 0;
-    background: none;
-    font-family: "Enter the Gungeon Small", sans-serif;
-    font-size: 18px;
-    text-transform: none;
-    color: #fff;
-    text-shadow: 0 3px 0 var(--shadow-overlay-010);
-    filter: drop-shadow(0px 4px 0px var(--shadow-overlay-010));
-    --pop-tilt: 6deg;
-    @include button-pop.button-pop;
-
-    &:active {
-      filter: brightness(0.93) saturate(108%);
-    }
-
-    &::after,
-    > * {
-      @include button-pop.pop-visual;
-    }
-
-    &::after {
-      content: "";
-      position: absolute;
-      z-index: -1;
-      inset: 0;
-      opacity: 0.8;
-      background-color: var(--button-color);
-      box-shadow:
-        -3px 0 0 0 var(--button-color),
-        3px 0 0 0 var(--button-color),
-        0 -3px 0 0 var(--button-color),
-        0 3px 0 0 var(--button-color);
-      transition:
-        background-color 0.3s ease-out,
-        box-shadow 0.3s ease-out;
-    }
-    .alert-popup-button-label {
+    span {
+      position: relative;
       display: inline-block;
-
-      span {
-        position: relative;
-        display: inline-block;
-        animation: wavy-text-top var(--wave-duration, 2.5s)
-          cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--delay);
-      }
+      animation: wavy-text-top var(--wave-duration, 2.5s)
+        cubic-bezier(0.25, 0.1, 0.25, 1) infinite var(--delay);
     }
   }
 }

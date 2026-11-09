@@ -7,6 +7,7 @@ import closeHoverPng from "@assets/ui/tabs/close-hover.png";
 
 import { useParallax } from "../../../hooks/useParallax.ts";
 import { playSound } from "../../../utils/app/sounds.ts";
+import AlertButton from "../../components/buttons/alert-button/AlertButton.tsx";
 import Letters from "../../components/text/letters/Letters.tsx";
 
 const TABS = { purple: tabPurple, blue: tabBlue };
@@ -27,45 +28,8 @@ type AlertPopupProps = {
   onNo: () => void;
   okLabel?: string;
   onOk?: () => void;
-  // the main button clicks, unless it starts the loading screen
   clickOk?: boolean;
 };
-
-type AlertButtonProps = {
-  id: string;
-  tone: "yes" | "no";
-  label: string;
-  onClick: () => void;
-  click?: boolean;
-  autoFocus?: boolean;
-};
-
-function AlertButton({
-  id,
-  tone,
-  label,
-  onClick,
-  click = false,
-  autoFocus,
-}: AlertButtonProps) {
-  return (
-    <button
-      type="button"
-      id={id}
-      className={`alert-popup-button alert-popup-button--${tone}`}
-      onClick={() => {
-        if (click) playSound("buttonClick");
-        onClick();
-      }}
-      onMouseEnter={() => playSound("buttonHover")}
-      autoFocus={autoFocus}
-    >
-      <span className="alert-popup-button-label">
-        <Letters text={label} step={0.1} height={0.4} duration={1} />
-      </span>
-    </button>
-  );
-}
 
 // the seconds between the letters of the title zooming in
 const TYPING_STEP = 0.02;
