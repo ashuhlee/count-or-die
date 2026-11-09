@@ -121,7 +121,7 @@ export default function MenuBar({
           </Tooltip>
         )}
         {!inGame && (
-          <Tooltip text="Options" side="left">
+          <Tooltip text="Settings" side="left">
             <RoundButton
               {...entering(1)}
               variant={5}

@@ -72,7 +72,7 @@ $half-side: math.div(50%, math.sqrt(2));
     height: 80px;
     background: linear-gradient(to bottom, #846d8c, #3c385f);
     mask: var(--skull) center / 100% 100% no-repeat;
-    animation: jackInTheBox 1.2s ease -0.2s forwards;
+    animation: jackInTheBox 1s ease -0.2s forwards;
   }
 
   &.hiding {
