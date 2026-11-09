@@ -7,19 +7,28 @@
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
+  --center-half: calc(var(--menu-title-width) / 2 + 36px);
+}
+
+.falling-icons--waiting {
+  .falling-icon,
+  .falling-icon-shape {
+    animation-play-state: paused;
+  }
 }
 
 .falling-icon {
   position: absolute;
   top: 0;
-  --stroke: #ff9de9;
-  --stroke-width: 2px;
+  --side-width: max(0px, calc(50% - var(--center-half) - var(--icon-width)));
+  --stroke: #dddaea;
+  --stroke-width: 2.5px;
 
   filter: drop-shadow(var(--stroke-width) 0 0 var(--stroke))
     drop-shadow(calc(var(--stroke-width) * -1) 0 0 var(--stroke))
     drop-shadow(0 var(--stroke-width) 0 var(--stroke))
     drop-shadow(0 calc(var(--stroke-width) * -1) 0 var(--stroke))
-    drop-shadow(0 3px 0 var(--shadow-pink-015));
+    drop-shadow(0 5px 0 var(--shadow-pink-010));
 
   animation: falling-icon-fall var(--life) linear var(--delay) both;
   pointer-events: auto;
@@ -29,6 +38,14 @@
     grab;
   touch-action: none;
   user-select: none;
+
+  &.falling-icon--left {
+    left: calc(var(--along) * var(--side-width));
+  }
+
+  &.falling-icon--right {
+    right: calc(var(--along) * var(--side-width));
+  }
 
   &.falling-icon--held {
     cursor:
@@ -53,7 +70,7 @@
   mask: var(--icon) center / contain no-repeat;
   -webkit-mask: var(--icon) center / contain no-repeat;
   animation: falling-icon-turn var(--life) linear var(--delay) both;
-  @include parallax.parallax(2);
+  @include parallax.parallax(3);
 
   transition: scale 0.1s ease-out;
   .falling-icon:hover > & {
@@ -63,7 +80,7 @@
 
 @keyframes falling-icon-fall {
   from {
-    translate: var(--start-x, 0px) var(--start-y, -50px);
+    translate: var(--start-x, 0px) var(--start-y, -62px);
   }
   to {
     translate: calc(var(--start-x, 0px) + var(--drift)) 100vh;

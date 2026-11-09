@@ -8,23 +8,32 @@ import {
 import divide from "@assets/ui/deco/particles/divide.svg";
 import equal from "@assets/ui/deco/particles/equal.svg";
 import hashtag from "@assets/ui/deco/particles/hashtag.svg";
+import infinity from "@assets/ui/deco/particles/infinity.svg";
 import minus from "@assets/ui/deco/particles/minus.svg";
 import multiply from "@assets/ui/deco/particles/multiply.svg";
+import pi from "@assets/ui/deco/particles/pi.svg";
 import plus from "@assets/ui/deco/particles/plus.svg";
+import sigma from "@assets/ui/deco/particles/sigma.svg";
+import sqrt from "@assets/ui/deco/particles/sqrt.svg";
 
 const ICONS = [
-  { src: divide, width: 64, height: 76 },
+  { src: divide, width: 64, height: 64 },
   { src: equal, width: 64, height: 69 },
   { src: hashtag, width: 64, height: 75 },
+  { src: infinity, width: 64, height: 38.4 },
   { src: minus, width: 64, height: 26 },
   { src: multiply, width: 64, height: 64 },
+  { src: pi, width: 64, height: 54.4 },
   { src: plus, width: 64, height: 64 },
+  { src: sigma, width: 64, height: 64 },
+  { src: sqrt, width: 64, height: 64 },
 ] as const;
 
 type Faller = {
   id: number;
   icon: (typeof ICONS)[number];
-  x: number;
+  side: "left" | "right";
+  along: number;
   color: string;
   from: number;
   to: number;
@@ -35,8 +44,8 @@ type Faller = {
   startY: number;
 };
 
-const COUNT = 4;
-const COLORS = ["#FFE2F9"];
+const COUNT = 3;
+const COLORS = ["#F6F1F5"];
 
 const rand = (from: number, to: number) => from + Math.random() * (to - from);
 const pick = <T,>(list: readonly T[]) =>
@@ -45,20 +54,13 @@ const pick = <T,>(list: readonly T[]) =>
 let nextId = 0;
 
 const FALL_SECONDS = 5;
-const START_Y = -50;
-const SCALE = 0.7;
-
-const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
-
-const LANE_STEP = (() => {
-  let step = 2;
-  while (gcd(step, COUNT) !== 1) step++;
-  return step;
-})();
+const START_AFTER = 1;
+const START_Y = -62;
+const SCALE = 0.72;
 
 function spawn(slot: number, first: boolean, others: Faller[]): Faller {
   const life = FALL_SECONDS;
-  const lane = (slot * LANE_STEP) % COUNT;
+  const side = slot % 2 === 0 ? "left" : "right";
   const tilt = rand(25, 40) * pick([1, -1] as const);
   const fresh = ICONS.filter(
     (icon) => !others.some((other) => other.icon === icon),
@@ -66,13 +68,15 @@ function spawn(slot: number, first: boolean, others: Faller[]): Faller {
   return {
     id: nextId++,
     icon: pick(fresh.length > 0 ? fresh : ICONS),
-    x: ((lane + rand(0.1, 0.9)) / COUNT) * 100,
+    side,
+    along: rand(0, 1),
     color: pick(COLORS),
     from: -tilt,
     to: tilt,
-    drift: rand(-40, 40),
+    // they drift outwards a little more than inwards
+    drift: side === "left" ? rand(-40, 10) : rand(-10, 40),
     life,
-    delay: first ? (-life * slot) / COUNT : 0,
+    delay: first ? START_AFTER + (life * slot) / COUNT : 0,
     startX: 0,
     startY: START_Y,
   };
@@ -100,7 +104,7 @@ function dropped(faller: Faller, el: HTMLElement, dx: number, dy: number) {
   };
 }
 
-export default function FallingIcons() {
+export default function FallingIcons({ active }: { active: boolean }) {
   const [fallers, setFallers] = useState(() => {
     const made: Faller[] = [];
     for (let slot = 0; slot < COUNT; slot++) {
@@ -168,11 +172,14 @@ export default function FallingIcons() {
   };
 
   return (
-    <div className="falling-icons" aria-hidden="true">
+    <div
+      className={`falling-icons${active ? "" : " falling-icons--waiting"}`}
+      aria-hidden="true"
+    >
       {fallers.map((faller, slot) => (
         <span
           key={faller.id}
-          className={`falling-icon${held === slot ? " falling-icon--held" : ""}`}
+          className={`falling-icon falling-icon--${faller.side}${held === slot ? " falling-icon--held" : ""}`}
           onPointerDown={(event) => pickUp(slot, event)}
           onPointerMove={(event) => drag(slot, event)}
           onPointerUp={(event) => letGo(slot, event)}
@@ -182,9 +189,10 @@ export default function FallingIcons() {
           }}
           style={
             {
-              left: `${faller.x}%`,
               width: `${faller.icon.width * SCALE}px`,
               height: `${faller.icon.height * SCALE}px`,
+              "--icon-width": `${faller.icon.width * SCALE}px`,
+              "--along": faller.along,
               "--icon": `url("${faller.icon.src}")`,
               "--from": `${faller.from}deg`,
               "--to": `${faller.to}deg`,

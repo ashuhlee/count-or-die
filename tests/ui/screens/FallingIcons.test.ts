@@ -40,8 +40,24 @@ const pointer = (target: Element, type: string, x: number, y: number) =>
   });
 
 describe("the falling icons", () => {
+  test("fall down the sides, one after the other, and not the middle", () => {
+    const sides = icons().map((icon) =>
+      icon.className.includes("falling-icon--left") ? "left" : "right",
+    );
+    expect(sides).toContain("left");
+    expect(sides).toContain("right");
+    // each is placed by how far across its side it is, so never past it
+    for (const icon of icons()) {
+      const along = parseFloat(icon.style.getPropertyValue("--along"));
+      expect(along).toBeGreaterThanOrEqual(0);
+      expect(along).toBeLessThanOrEqual(1);
+      expect(icon.style.left).toBe("");
+    }
+  });
+
   test("can be dragged, and fall on from where they are let go", () => {
-    expect(icons()).toHaveLength(4);
+    const count = icons().length;
+    expect(count).toBeGreaterThan(0);
     const icon = icons()[0];
     const start = icon.style.getPropertyValue("--start-x");
 
@@ -59,6 +75,32 @@ describe("the falling icons", () => {
     expect(dropped.style.getPropertyValue("--start-x")).toBe("40px");
     expect(dropped.style.getPropertyValue("--start-x")).not.toBe(start);
     expect(dropped.style.getPropertyValue("--delay")).toBe("0s");
-    expect(icons()).toHaveLength(4);
+    expect(icons()).toHaveLength(count);
+  });
+
+  test("wait for the menu, and then start from above the screen", () => {
+    // none of them is already on its way down
+    for (const icon of icons()) {
+      expect(
+        parseFloat(icon.style.getPropertyValue("--delay")),
+      ).toBeGreaterThan(0);
+    }
+
+    // and none moves while the startup screen is still up
+    game.unmount();
+    const startup = document.createElement("div");
+    startup.id = "startup-screen";
+    document.body.append(startup);
+    game = renderGame({ startOnMenu: true });
+    expect(document.querySelector(".falling-icons--waiting")).not.toBeNull();
+
+    startup.classList.add("hiding");
+    act(() => {
+      window.dispatchEvent(new Event("startup-done"));
+    });
+    game.wait(300);
+    expect(document.querySelector(".falling-icons--waiting")).toBeNull();
+
+    startup.remove();
   });
 });

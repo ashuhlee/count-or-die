@@ -54,7 +54,7 @@ export default function StartMenuScreen() {
         visible={ready}
         hueDuration={HUE_DURATION}
       />
-      <FallingIcons />
+      <FallingIcons active={ready} />
       <SkullFloor entrance={ready ? "play" : "wait"} />
       <StartMenuTitle />
       <div className="menu-buttons">
