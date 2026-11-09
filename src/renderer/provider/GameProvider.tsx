@@ -40,6 +40,7 @@ type GameProviderProps = {
   random?: () => number;
   startOnMenu?: boolean;
   startedFromGame?: boolean;
+  betaNotice?: boolean;
 };
 
 export default function GameProvider({
@@ -48,6 +49,7 @@ export default function GameProvider({
   random = () => Math.random(),
   startOnMenu = false,
   startedFromGame = false,
+  betaNotice = false,
 }: GameProviderProps) {
   const [bus] = useState(() => createEventBus());
   const later = useTimeouts();
@@ -58,6 +60,7 @@ export default function GameProvider({
 
   const [screen, setScreen] = useState<Screen>(startOnMenu ? "menu" : "game");
   const [cameFromGame, setCameFromGame] = useState(startedFromGame);
+  const [noticeOpen, setNoticeOpen] = useState(betaNotice);
 
   const stateRef = useRef(state);
 
@@ -120,7 +123,9 @@ export default function GameProvider({
     [bus, clock, later],
   );
 
-  const ready = useStartupDone();
+  const loaded = useStartupDone();
+  // the menu comes in once the notice is closed
+  const ready = loaded && !noticeOpen;
 
   const barStage = useCountdown(
     state,
@@ -172,6 +177,8 @@ export default function GameProvider({
       quit: quitGame,
 
       reportBug,
+
+      dismissBetaNotice: () => setNoticeOpen(false),
 
       collectPowerUp(type) {
         dispatch({
@@ -233,6 +240,7 @@ export default function GameProvider({
       loading,
       actions,
       ready,
+      betaNotice: noticeOpen,
       paused,
       clock,
       screen,
@@ -244,6 +252,7 @@ export default function GameProvider({
       loading,
       actions,
       ready,
+      noticeOpen,
       paused,
       clock,
       screen,

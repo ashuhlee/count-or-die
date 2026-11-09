@@ -14,6 +14,7 @@ type RenderGameOptions = {
   random?: () => number;
   ui?: ComponentType;
   startOnMenu?: boolean;
+  betaNotice?: boolean;
 };
 
 export function renderGame({
@@ -21,12 +22,14 @@ export function renderGame({
   random = () => 0,
   ui: Ui = Game,
   startOnMenu = false,
+  betaNotice = false,
 }: RenderGameOptions = {}) {
   const rendered = renderInto(
     <GameProvider
       initialState={state ? { ...createInitialState(), ...state } : undefined}
       random={random}
       startOnMenu={startOnMenu}
+      betaNotice={betaNotice}
     >
       <Ui />
     </GameProvider>,
@@ -69,7 +72,6 @@ export function renderGame({
       this.wait(540);
     },
 
-    // the score as the player reads it
     counter: () => $("#counter").textContent,
   };
 }

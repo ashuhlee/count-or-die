@@ -5,7 +5,6 @@ import type { GameState } from "../game/gameLogic.ts";
 import type { PowerUpType } from "../game/powerUps.ts";
 import type { AppEvent } from "./eventBus.ts";
 
-// where the player clicked, on screen
 export type Pointer = { x: number; y: number };
 
 export type Screen = "menu" | "game";
@@ -26,6 +25,7 @@ export type GameActions = {
   backToMenu: () => void;
   quit: () => void;
   reportBug: () => void;
+  dismissBetaNotice: () => void;
   collectPowerUp: (type: PowerUpType) => void;
   pause: () => void;
   resume: () => void;
@@ -39,6 +39,7 @@ export type GameContextValue = {
   loading: LoadingScreenState;
   actions: GameActions;
   ready: boolean;
+  betaNotice: boolean;
   paused: boolean;
   clock: GameClock;
   screen: Screen;

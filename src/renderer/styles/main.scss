@@ -23,6 +23,7 @@
 @use "components/alert-popup";
 @use "components/shine";
 
+@use "states/beta-notice";
 @use "states/game-over";
 @use "states/loading";
 @use "states/start-menu";

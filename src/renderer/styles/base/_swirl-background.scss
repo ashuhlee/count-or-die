@@ -1,6 +1,7 @@
 @use "globals";
 
-@mixin swirl-background {
+// the tile that slides behind a screen, the game over one unless another is given
+@mixin swirl-background($tile: globals.$game-over-bg) {
   --tile-size: 112px;
 
   .go-background {
@@ -17,7 +18,7 @@
     position: absolute;
     inset: 0;
     z-index: -12;
-    background: url("#{globals.$game-over-bg}") repeat 0 center;
+    background: url("#{$tile}") repeat 0 center;
     background-size: var(--tile-size) auto;
     image-rendering: pixelated;
     animation: slide-tile 4s linear infinite reverse;

@@ -28,6 +28,7 @@ import PowerUpNotices from "./components/gameplay/power-ups/PowerUpNotices.tsx";
 import SmokePopups from "./components/effects/smoke/SmokePopups.tsx";
 import CRTShader from "./shaders/crt-shader/CRTShader.tsx";
 import LoadingScreen from "./overlays/loading/LoadingScreen.tsx";
+import BetaNotice from "./screens/beta-notice/BetaNotice.tsx";
 import GameOver from "./screens/game-over/GameOver.tsx";
 import RedFlash from "./screens/game-over/RedFlash.tsx";
 import GameScreen from "./screens/game/GameScreen.tsx";
@@ -52,8 +53,10 @@ function readChallenges(): AlertRow[] {
   ];
 }
 
+const MENU_DRIP_MS = 800;
+
 export default function Game() {
-  const { state, screen, ready, actions, loading } = useGame();
+  const { state, screen, ready, betaNotice, actions, loading } = useGame();
   const [page, setPage] = useState(0);
   useGameEvent("pageReset", () => setPage((current) => current + 1));
 
@@ -63,7 +66,9 @@ export default function Game() {
   const asking = endingRun && screen === "game";
 
   const [helpOpen, setHelpOpen] = useState(false);
-  const canHelp = screen === "menu" || (screen === "game" && !state.isGameOver);
+  const canHelp =
+    !betaNotice &&
+    (screen === "menu" || (screen === "game" && !state.isGameOver));
   const helping = helpOpen && canHelp;
 
   const openHelp = useCallback(() => {
@@ -97,11 +102,14 @@ export default function Game() {
   const helpShown = useFadeOut(helping, 300);
   const challengesShown = useFadeOut(challenging, 300);
 
-  // the layers of the start menu and game over follow the mouse, until a modal
-  // opens: then the modal follows it and they stay where they are
   const onParallaxScreen =
-    (screen === "menu" && ready) || (screen === "game" && state.isGameOver);
+    betaNotice ||
+    (screen === "menu" && ready) ||
+    (screen === "game" && state.isGameOver);
   const modalShown = popupShown || helpShown || challengesShown;
+
+  const noticeShown = useFadeOut(betaNotice, MENU_DRIP_MS);
+  const menuDripping = noticeShown && !betaNotice;
   useParallax(onParallaxScreen && !modalShown);
 
   return (
@@ -120,58 +128,63 @@ export default function Game() {
         maxDevicePixelRatio={1}
       />
 
-      <Fragment key={page}>
-        <div className="top-gradient"></div>
+      <div
+        className={`menu-reveal${menuDripping ? " menu-reveal--dripping" : ""}`}
+      >
+        {menuDripping && <div className="menu-flash" />}
+        <Fragment key={page}>
+          <div className="top-gradient"></div>
 
-        <div className="clouds">
-          <img className="cloud-t-left" alt="cloud" src={cloudTopLeft} />
-          <img className="cloud-b-left" alt="cloud" src={cloudBottomLeft} />
-          <img className="cloud-mini" alt="cloud" src={cloudMini} />
-          <img className="cloud-t-right" alt="cloud" src={cloudTopRight} />
-          <img className="cloud-b-right" alt="cloud" src={cloudBottomRight} />
-        </div>
+          <div className="clouds">
+            <img className="cloud-t-left" alt="cloud" src={cloudTopLeft} />
+            <img className="cloud-b-left" alt="cloud" src={cloudBottomLeft} />
+            <img className="cloud-mini" alt="cloud" src={cloudMini} />
+            <img className="cloud-t-right" alt="cloud" src={cloudTopRight} />
+            <img className="cloud-b-right" alt="cloud" src={cloudBottomRight} />
+          </div>
 
-        <MenuBar
-          entrance={screen === "menu" ? (ready ? "play" : "wait") : undefined}
-          inGame={screen === "game"}
-          onHelp={() => setHelpOpen(true)}
-          challenges={{
-            done: challengesCompleted,
-            total: challenges.length,
-            onOpen: openChallenges,
-          }}
-          onHome={
-            screen === "game"
-              ? () => {
-                  if (loading.mounted) return;
-                  if (state.counter === 0) actions.backToMenu();
-                  else setEndingRun(true);
-                }
-              : undefined
-          }
-        />
+          <MenuBar
+            entrance={screen === "menu" ? (ready ? "play" : "wait") : undefined}
+            inGame={screen === "game"}
+            onHelp={() => setHelpOpen(true)}
+            challenges={{
+              done: challengesCompleted,
+              total: challenges.length,
+              onOpen: openChallenges,
+            }}
+            onHome={
+              screen === "game"
+                ? () => {
+                    if (loading.mounted) return;
+                    if (state.counter === 0) actions.backToMenu();
+                    else setEndingRun(true);
+                  }
+                : undefined
+            }
+          />
 
-        {screen === "menu" ? (
-          <StartMenuScreen />
-        ) : (
-          <>
-            <SmokePopups />
-            <RedFlash />
-            <GameOver />
+          {screen === "menu" ? (
+            <StartMenuScreen />
+          ) : (
+            <>
+              <SmokePopups />
+              <RedFlash />
+              <GameOver />
 
-            <div className="app" id="app">
-              <GameScreen />
-            </div>
+              <div className="app" id="app">
+                <GameScreen />
+              </div>
 
-            <CursorCounts />
-            <PowerUps />
-            <PowerUpNotices />
-          </>
-        )}
-        <p id="app-ver" className="app-ver">
-          {__APP_VERSION__}
-        </p>
-      </Fragment>
+              <CursorCounts />
+              <PowerUps />
+              <PowerUpNotices />
+            </>
+          )}
+          <p id="app-ver" className="app-ver">
+            {__APP_VERSION__}
+          </p>
+        </Fragment>
+      </div>
       {popupShown && (
         <AlertPopup
           leaving={!asking}
@@ -200,7 +213,7 @@ export default function Game() {
           title="Daily challenges"
           tab="blue"
           rows={challenges}
-          okLabel={challengesDone ? "Complete!" : "Play"}
+          okLabel={challengesDone ? "Complete!" : "Play!"}
           clickOk={challengesDone}
           onOk={() => {
             setChallengesOpen(false);
@@ -210,6 +223,7 @@ export default function Game() {
         />
       )}
       {(screen === "menu" || !state.isGameOver) && <FpsCounter />}
+      {noticeShown && <BetaNotice />}
       <LoadingScreen />
     </>
   );

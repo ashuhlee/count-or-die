@@ -30,6 +30,7 @@
 $assets: "../assets";
 $body-bg-image: "#{$assets}/ui/textures/tile-2.png";
 $game-over-bg: "#{$assets}/ui/textures/tile-go.png";
+$dark-bg: "#{$assets}/ui/textures/tile-dark.png";
 $loading-bg: "#{$assets}/ui/textures/tile-loading-1.png";
 $loading-bg-2: "#{$assets}/ui/textures/tile-loading-2.png";
 $melt-mask: "#{$assets}/ui/masks/drip-mask.png";
@@ -82,4 +83,10 @@ $fonts: "../assets/fonts";
   font-family: "SMW Text NC";
   font-display: block;
   src: url("#{$fonts}/smw-text-nc.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Jersey 10";
+  font-display: block;
+  src: url("#{$fonts}/jersey-10.ttf") format("truetype");
 }
