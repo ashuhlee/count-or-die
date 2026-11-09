@@ -1,6 +1,8 @@
+import { act } from "react";
 import { afterEach, beforeEach, expect, describe, test, vi } from "vitest";
 
 import { stubWebAnimations } from "../../helpers/dom.ts";
+import { MATH_FACTS } from "../../../src/renderer/game/mathFacts.ts";
 import { renderGame } from "../../helpers/game.tsx";
 
 const audio = vi.hoisted(() => ({ playSound: vi.fn(), pauseSound: vi.fn() }));
@@ -41,6 +43,36 @@ const COVERED = 530;
 const TIME_IS_UP = 19900;
 
 describe("the menu", () => {
+  describe("the skull", () => {
+    const hover = () =>
+      act(() => {
+        game
+          .$(".skull-floor")
+          .dispatchEvent(new MouseEvent("pointerover", { bubbles: true }));
+      });
+    const said = () =>
+      document.querySelector(".chat-box")?.getAttribute("aria-label");
+
+    test("says a math fact in a chat box when it is hovered", () => {
+      expect(said()).toBeUndefined();
+
+      hover();
+      expect(MATH_FACTS).toContain(said());
+      // it is a chat box, and not a tooltip
+      expect(document.querySelector(".tooltip")).toBeNull();
+    });
+
+    test("says a different fact each time the menu is shown", () => {
+      hover();
+      const first = said();
+
+      game.unmount();
+      game = renderGame({ startOnMenu: true });
+      hover();
+      expect(said()).not.toBe(first);
+    });
+  });
+
   test("has two sparkles on the title, which twinkle once the menu is shown", () => {
     const sparkles = [
       ...document.querySelectorAll<HTMLElement>(".menu-sparkle"),

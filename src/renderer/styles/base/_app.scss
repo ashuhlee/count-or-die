@@ -13,7 +13,10 @@ body {
     default;
 }
 
-// the hand shows over anything that can be clicked
+// the hand shows over anything that can be clicked, and over the skull that
+// says something when it is hovered
+.skull-floor-anchor,
+.skull-floor-anchor *,
 button,
 button *,
 #decrease-button img,

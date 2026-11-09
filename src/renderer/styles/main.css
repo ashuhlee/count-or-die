@@ -73,6 +73,8 @@ body {
     url("../assets/ui/cursor.svg") 3 3,
     default;
 }
+.skull-floor-anchor,
+.skull-floor-anchor *,
 button,
 button *,
 #decrease-button img,
@@ -1823,6 +1825,19 @@ img {
   z-index: -1;
   image-rendering: auto;
 }
+.skull-floor-anchor {
+  position: fixed;
+  width: 76px;
+  height: 76px;
+  bottom: -5px;
+  left: 18vw;
+  z-index: -1;
+}
+.skull-floor-anchor > .skull-floor {
+  position: static;
+  width: 100%;
+  height: 100%;
+}
 .fps-counter {
   position: fixed;
   top: 6px;
@@ -1961,6 +1976,88 @@ img {
     scale: 1;
     rotate: 0deg;
   }
+}
+.chat-box {
+  --chat-bg: #fff2fc;
+  --chat-fg: #59517d;
+  --chat-shadow: var(--shadow-pink-010);
+  --chat-shadow-drop: 5px;
+  --chat-edge: 8px;
+  --chat-stroke: #e3e0ef;
+  --chat-stroke-width: 3px;
+  --tooltip-tilt: 30deg;
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  width: max-content;
+  max-width: 230px;
+  translate: calc(-100% + max(0px, 100% + var(--chat-edge) - var(--chat-x)))
+    -100%;
+  transform-origin: right bottom;
+  animation: tooltip-in 0.2s both;
+}
+.chat-box.chat-box--leaving {
+  animation: tooltip-out 0.1s ease-in both;
+}
+.chat-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  translate: 0 var(--chat-shadow-drop);
+  background-color: var(--chat-shadow);
+  box-shadow:
+    -6px 0 0 0 var(--chat-shadow),
+    6px 0 0 0 var(--chat-shadow),
+    0 -6px 0 0 var(--chat-shadow),
+    0 6px 0 0 var(--chat-shadow);
+}
+.chat-box-body {
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+  text-align: left;
+  padding: 5px 8px 3px;
+  font-family: "Enter the Gungeon Small", sans-serif;
+  font-size: 17px;
+  text-transform: none;
+  color: var(--chat-fg);
+  background-color: var(--chat-bg);
+  box-shadow:
+    -3px 0 0 0 var(--chat-bg),
+    3px 0 0 0 var(--chat-bg),
+    0 -3px 0 0 var(--chat-bg),
+    0 3px 0 0 var(--chat-bg);
+  filter: drop-shadow(var(--chat-stroke-width) 0 0 var(--chat-stroke))
+    drop-shadow(calc(var(--chat-stroke-width) * -1) 0 0 var(--chat-stroke))
+    drop-shadow(0 var(--chat-stroke-width) 0 var(--chat-stroke))
+    drop-shadow(0 calc(var(--chat-stroke-width) * -1) 0 var(--chat-stroke));
+}
+.chat-box-body::after {
+  content: "";
+  position: absolute;
+  right: 6px;
+  top: 100%;
+  width: 9px;
+  height: 9px;
+  background-color: var(--chat-bg);
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 100%,
+    66.6% 100%,
+    66.6% 66.6%,
+    33.3% 66.6%,
+    33.3% 33.3%,
+    0 33.3%
+  );
+}
+.chat-box-body .chat-box-word {
+  display: inline-block;
+}
+.chat-box-body .chat-box-word > span {
+  display: inline-block;
+  animation: tooltip-letter-in 0.1s ease-out var(--delay) both;
 }
 .game-notification {
   min-height: 32px;
@@ -2473,7 +2570,7 @@ img {
   filter: drop-shadow(0 4px 0 #9389ee);
 }
 .beta-notice .beta-notice-card {
-  width: min(710px, 100%);
+  width: min(600px, 100%);
   box-sizing: border-box;
   padding: 28px 32px;
   font-family: "Jersey 10", sans-serif;
@@ -2506,9 +2603,7 @@ img {
 }
 .beta-notice .beta-notice-actions {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 16px 22px;
   margin-top: 24px;
 }
 @keyframes beta-notice-zoom {
@@ -3075,17 +3170,23 @@ img {
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
+  --center-half: calc(var(--menu-title-width) / 2 + 36px);
+}
+.falling-icons--waiting .falling-icon,
+.falling-icons--waiting .falling-icon-shape {
+  animation-play-state: paused;
 }
 .falling-icon {
   position: absolute;
   top: 0;
-  --stroke: #ff9de9;
-  --stroke-width: 2px;
+  --side-width: max(0px, calc(50% - var(--center-half) - var(--icon-width)));
+  --stroke: #dddaea;
+  --stroke-width: 2.5px;
   filter: drop-shadow(var(--stroke-width) 0 0 var(--stroke))
     drop-shadow(calc(var(--stroke-width) * -1) 0 0 var(--stroke))
     drop-shadow(0 var(--stroke-width) 0 var(--stroke))
     drop-shadow(0 calc(var(--stroke-width) * -1) 0 var(--stroke))
-    drop-shadow(0 3px 0 var(--shadow-pink-015));
+    drop-shadow(0 5px 0 var(--shadow-pink-010));
   animation: falling-icon-fall var(--life) linear var(--delay) both;
   pointer-events: auto;
   cursor:
@@ -3093,6 +3194,12 @@ img {
     grab;
   touch-action: none;
   user-select: none;
+}
+.falling-icon.falling-icon--left {
+  left: calc(var(--along)*var(--side-width));
+}
+.falling-icon.falling-icon--right {
+  right: calc(var(--along)*var(--side-width));
 }
 .falling-icon.falling-icon--held {
   cursor:
@@ -3113,8 +3220,8 @@ img {
   mask: var(--icon) center/contain no-repeat;
   -webkit-mask: var(--icon) center/contain no-repeat;
   animation: falling-icon-turn var(--life) linear var(--delay) both;
-  translate: calc(var(--parallax-x, 0)*var(--parallax-range)*-2)
-    calc(var(--parallax-y, 0)*var(--parallax-range)*-2);
+  translate: calc(var(--parallax-x, 0)*var(--parallax-range)*-3)
+    calc(var(--parallax-y, 0)*var(--parallax-range)*-3);
   transition: scale 0.1s ease-out;
 }
 .falling-icon:hover > .falling-icon-shape {
@@ -3122,7 +3229,7 @@ img {
 }
 @keyframes falling-icon-fall {
   from {
-    translate: var(--start-x, 0px) var(--start-y, -50px);
+    translate: var(--start-x, 0px) var(--start-y, -62px);
   }
   to {
     translate: calc(var(--start-x, 0px) + var(--drift)) 100vh;
@@ -3284,12 +3391,68 @@ html:has(#menu-screen) .notices {
 }
 .menu-screen {
   flex-direction: column;
-  gap: 32px;
+  gap: 64px;
+  --menu-title-width: clamp(270px, 26vw, 400px);
 }
-.menu-screen .menu-title {
-  width: clamp(270px, 26vw, 400px);
+.menu-screen .menu-title-wrap {
+  position: relative;
+  width: var(--menu-title-width);
   translate: calc(var(--parallax-x, 0)*var(--parallax-range)*-0.8)
     calc(var(--parallax-y, 0)*var(--parallax-range)*-0.8);
+}
+.menu-screen .menu-title {
+  width: 100%;
+}
+.menu-sparkle {
+  position: absolute;
+  width: 8%;
+  height: auto;
+  translate: -50% -50%;
+  opacity: 0;
+  pointer-events: none;
+  --stroke: #ff9fef;
+  --stroke-width: 1px;
+  filter: drop-shadow(var(--stroke-width) 0 0 var(--stroke))
+    drop-shadow(calc(var(--stroke-width) * -1) 0 0 var(--stroke))
+    drop-shadow(0 var(--stroke-width) 0 var(--stroke))
+    drop-shadow(0 calc(var(--stroke-width) * -1) 0 var(--stroke))
+    drop-shadow(2px 2px 0 var(--shadow-pink-010));
+}
+.menu-sparkle.menu-sparkle--top-right {
+  left: 106%;
+  top: 4%;
+  --twinkle-delay: var(--sparkle-delay);
+}
+.menu-sparkle.menu-sparkle--bottom-left {
+  left: 5%;
+  top: 109%;
+  --twinkle-delay: calc(var(--sparkle-delay) - 1.05s);
+}
+.menu-sparkle.menu-sparkle--on {
+  animation:
+    menu-sparkle-in 0.3s ease-out 0.1s both,
+    menu-sparkle-twinkle 2.1s ease-in-out var(--twinkle-delay) infinite
+      backwards;
+}
+@keyframes menu-sparkle-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes menu-sparkle-twinkle {
+  0% {
+    scale: 1;
+  }
+  47.619047619% {
+    scale: 0.6;
+  }
+  95.2380952381%,
+  100% {
+    scale: 1;
+  }
 }
 .startup-screen {
   --progress: 0;

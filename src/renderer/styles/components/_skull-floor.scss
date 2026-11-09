@@ -8,3 +8,19 @@
   z-index: -1;
   image-rendering: auto;
 }
+
+// with a chat box the skull sits in its anchor, which is placed instead
+.skull-floor-anchor {
+  position: fixed;
+  width: 76px;
+  height: 76px;
+  bottom: -5px;
+  left: 18vw;
+  z-index: -1;
+
+  > .skull-floor {
+    position: static;
+    width: 100%;
+    height: 100%;
+  }
+}

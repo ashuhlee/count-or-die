@@ -1,5 +1,6 @@
 import { useEffect, useState, type CSSProperties } from "react";
 
+import { pickMathFact, rememberMathFact } from "../../../game/mathFacts.ts";
 import { useGame } from "../../../provider/useGame.ts";
 import Letters from "../../components/text/letters/Letters.tsx";
 import SkullFloor from "../../components/effects/skull-floor/SkullFloor.tsx";
@@ -30,6 +31,10 @@ const look = (color: string) => ({
 export default function StartMenuScreen() {
   const { actions, loading, ready } = useGame();
 
+  // a new math fact for the skull to say, each time the menu is shown
+  const [fact] = useState(() => pickMathFact());
+  useEffect(() => rememberMathFact(fact), [fact]);
+
   const [buttonsIn, setButtonsIn] = useState(false);
   useEffect(() => {
     if (!ready) return;
@@ -55,7 +60,7 @@ export default function StartMenuScreen() {
         hueDuration={HUE_DURATION}
       />
       <FallingIcons active={ready} />
-      <SkullFloor entrance={ready ? "play" : "wait"} />
+      <SkullFloor entrance={ready ? "play" : "wait"} chat={fact} />
       <StartMenuTitle />
       <div className="menu-buttons">
         <PixelButton
