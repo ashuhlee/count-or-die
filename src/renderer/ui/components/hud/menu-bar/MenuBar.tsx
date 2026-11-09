@@ -182,7 +182,7 @@ export default function MenuBar({
                 still
                 delay={WELCOME_DELAY + 0.1}
                 id="challenges-notice"
-                onClick={challenges.onOpen}
+                onClick={clicked(challenges.onOpen)}
                 hoverSound
               />
             </Tooltip>
