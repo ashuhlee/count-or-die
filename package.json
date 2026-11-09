@@ -9,6 +9,8 @@
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
+    "build:web": "vite build --config vite.renderer.config.ts --outDir ../../dist-web/game --emptyOutDir && vite build --config vite.web.config.ts",
+    "package:web": "npm run build:web && cd dist-web && zip -r ../count-or-die-web.zip .",
     "hearts": "vp dev -c vite.renderer.config.ts --open /debug/hearts.html",
     "test": "vp test run",
     "rebuild": "rm -rf out && npm run package && npm run make",
