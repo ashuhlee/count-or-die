@@ -1,0 +1,102 @@
+@use "../base/globals";
+@use "../base/parallax";
+
+.falling-icons {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.falling-icon {
+  position: absolute;
+  top: 0;
+  --stroke: #ff9de9;
+  --stroke-width: 2px;
+
+  filter: drop-shadow(var(--stroke-width) 0 0 var(--stroke))
+    drop-shadow(calc(var(--stroke-width) * -1) 0 0 var(--stroke))
+    drop-shadow(0 var(--stroke-width) 0 var(--stroke))
+    drop-shadow(0 calc(var(--stroke-width) * -1) 0 var(--stroke))
+    drop-shadow(0 3px 0 var(--shadow-pink-015));
+
+  animation: falling-icon-fall var(--life) linear var(--delay) both;
+  pointer-events: auto;
+  cursor:
+    url("#{globals.$cursor-grab}") #{globals.$cursor-grab-x}
+      #{globals.$cursor-grab-y},
+    grab;
+  touch-action: none;
+  user-select: none;
+
+  &.falling-icon--held {
+    cursor:
+      url("#{globals.$cursor-grabbing}") #{globals.$cursor-grabbing-x}
+        #{globals.$cursor-grabbing-y},
+      grabbing;
+    animation:
+      falling-icon-fall var(--life) linear var(--delay) both paused,
+      falling-icon-grab 0.2s both;
+
+    .falling-icon-shape {
+      animation-play-state: paused;
+    }
+  }
+}
+
+.falling-icon-shape {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color);
+  mask: var(--icon) center / contain no-repeat;
+  -webkit-mask: var(--icon) center / contain no-repeat;
+  animation: falling-icon-turn var(--life) linear var(--delay) both;
+  @include parallax.parallax(2);
+
+  transition: scale 0.1s ease-out;
+  .falling-icon:hover > & {
+    scale: 1.1;
+  }
+}
+
+@keyframes falling-icon-fall {
+  from {
+    translate: var(--start-x, 0px) var(--start-y, -50px);
+  }
+  to {
+    translate: calc(var(--start-x, 0px) + var(--drift)) 100vh;
+  }
+}
+
+@keyframes falling-icon-grab {
+  0% {
+    scale: 0.4 0;
+    rotate: -30deg;
+    animation-timing-function: ease-out;
+  }
+  50% {
+    scale: 1 1;
+    rotate: 0deg;
+    animation-timing-function: ease-in-out;
+  }
+  65% {
+    scale: 1.06 0.9;
+    rotate: 0deg;
+    animation-timing-function: ease-out;
+  }
+  100% {
+    scale: 1 1;
+    rotate: 0deg;
+  }
+}
+
+@keyframes falling-icon-turn {
+  from {
+    rotate: var(--from);
+  }
+  to {
+    rotate: var(--to);
+  }
+}

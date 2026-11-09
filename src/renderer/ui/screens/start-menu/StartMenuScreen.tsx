@@ -7,6 +7,7 @@ import PixelButton from "../../components/buttons/pixel-button/PixelButton.tsx";
 import GameOverBackground, {
   GAME_OVER_HUE,
 } from "../game-over/GameOverBackground.tsx";
+import FallingIcons from "./FallingIcons.tsx";
 import StartMenuTitle from "./StartMenuTitle.tsx";
 
 const BUTTONS_DELAY = 300;
@@ -53,6 +54,7 @@ export default function StartMenuScreen() {
         visible={ready}
         hueDuration={HUE_DURATION}
       />
+      <FallingIcons />
       <SkullFloor entrance={ready ? "play" : "wait"} />
       <StartMenuTitle />
       <div className="menu-buttons">
