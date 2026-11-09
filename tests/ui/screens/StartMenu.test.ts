@@ -41,6 +41,20 @@ const COVERED = 530;
 const TIME_IS_UP = 19900;
 
 describe("the menu", () => {
+  test("has two sparkles on the title, which twinkle once the menu is shown", () => {
+    const sparkles = [
+      ...document.querySelectorAll<HTMLElement>(".menu-sparkle"),
+    ];
+    expect(sparkles).toHaveLength(2);
+    expect(sparkles.map((sparkle) => sparkle.className)).toEqual([
+      expect.stringContaining("menu-sparkle--top-right"),
+      expect.stringContaining("menu-sparkle--bottom-left"),
+    ]);
+    for (const sparkle of sparkles) {
+      expect(sparkle.className).toContain("menu-sparkle--on");
+    }
+  });
+
   test("play covers the menu, then starts a game", () => {
     game.click("#play-btn");
 
