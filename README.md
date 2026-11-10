@@ -27,14 +27,24 @@ https://github.com/user-attachments/assets/31746f90-5190-4f27-89c4-96ff47f62f6b
 
 </div>
 
-## Download
+## Play the beta
+
+### Desktop
+
 To try out the beta, download the latest release for your platform from the [releases page](https://github.com/ashuhlee/count-or-die/releases/tag/1.0.0), or via the links below:
 
-| Platform | File |
-|----------|------|
+| Platform         | File                                                                                                                       |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | Windows (32-bit) | [CountOrDie-1.0.0-win32.zip](https://github.com/ashuhlee/flappy-kitty/releases/download/1.0.0/FlappyKitty-1.0.0-win32.zip) |
 | Windows (64-bit) | [CountOrDie-1.0.0-win64.zip](https://github.com/ashuhlee/flappy-kitty/releases/download/1.0.0/FlappyKitty-1.0.0-win64.zip) |
-| macOS | [CountOrDie-1.0.0-mac.dmg](https://github.com/ashuhlee/flappy-kitty/releases/download/1.0.0/FlappyKitty-1.0.0-mac.dmg) |
+| macOS            | [CountOrDie-1.0.0-mac.dmg](https://github.com/ashuhlee/flappy-kitty/releases/download/1.0.0/FlappyKitty-1.0.0-mac.dmg)     |
+
+### Online
+
+You can also play the beta directly in your browser! No download needed:
+
+- [play.countordie.gg](https://play.countordie.gg)
+- [itch.io](https://ashuhlee.itch.io/count-or-die)
 
 ## Gameplay
 
@@ -79,7 +89,7 @@ As you play, power-ups randomly spawn on the screen, but you have to click them 
 ## Discord Rich Presence
 
 <div>
-    <img width="280" align="right"
+    <img width="300" align="right"
     src="https://github.com/user-attachments/assets/76b878b1-1305-4037-8d1c-5bf0a25dbdf8"/>
 
 Count or Die has support for Discord Rich Presence, allowing friends to see your game status, current mode and rank. Brag about how fast you can click to your friends!
@@ -95,8 +105,12 @@ Count or Die has support for Discord Rich Presence, allowing friends to see your
 | <img align="center" width="40" src="https://github.com/user-attachments/assets/9d9ee416-1912-4259-a0df-ad60a0f85dd8" /> | Speed Demon (High score - 300+)    |
 | <img align="center" width="40" src="https://github.com/user-attachments/assets/0d0a0278-56fb-481e-a9e6-569cf537a11d" /> | Legend 😮‍💨 (High score - 400+)      |
 
+> [!NOTE]
+> Discord Rich Presence is only supported in the desktop version (Windows and macOS), not the web version.
+
 ## Installation
-For play testing, local development, or contributing, run the app locally using the steps below.
+
+For local development or contributing, run the app locally using the steps below.
 
 ### Requirements
 
@@ -144,7 +158,7 @@ git pull origin main
 npm install
 ```
 
-## Features Coming to Beta.2
+## Features Coming to Beta 2
 
 - Additional game mode for the math enjoyers
 - Improved high score management system
