@@ -13,8 +13,6 @@ const WIN_SUFFIX = {
 };
 const winSuffix = WIN_SUFFIX[arch] ?? `win-${arch}`;
 
-// the mac app is signed and notarized when these are set (in the release
-// workflow). Without them it is built unsigned, which is fine to try locally
 const { APPLE_ID, APPLE_APP_PASSWORD, APPLE_TEAM_ID } = process.env;
 const notarize =
   APPLE_ID && APPLE_APP_PASSWORD && APPLE_TEAM_ID
