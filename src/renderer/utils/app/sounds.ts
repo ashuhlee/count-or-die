@@ -46,7 +46,7 @@ export const audioConfig: Record<SoundName, AudioTrack> = {
   },
   useBoost: {
     audio: new Audio(boostFxFile),
-    volume: 0.3,
+    volume: 0.2,
   },
   noBoosts: {
     audio: new Audio(noBoostsFxFile),
