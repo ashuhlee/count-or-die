@@ -13,3 +13,6 @@ old_code/
 
 debug/
 .claude/
+
+# local scripts for trying things out
+test-scripts/
