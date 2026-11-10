@@ -1,4 +1,6 @@
 import path from "node:path";
+import started from "electron-squirrel-startup";
+import { updateElectronApp } from "update-electron-app";
 import { setDiscordStatus } from "./discordRPC.ts";
 import {
   app,
@@ -14,6 +16,9 @@ import type { IpcMainEvent, MenuItemConstructorOptions } from "electron";
 
 import { lockDown } from "./lockDown.ts";
 import { createViewMenu } from "./menu.ts";
+import { canAutoUpdate } from "./updates.ts";
+
+if (started) app.quit();
 
 const isMac = process.platform === "darwin";
 const iconPath = isMac
@@ -33,7 +38,6 @@ ipcMain.on("close", () => {
   app.quit();
 });
 
-// the page is fixed here, so the game can never ask for any other one to open
 const BUG_REPORT_URL = "https://github.com/ashuhlee/count-or-die/issues/new";
 
 ipcMain.on("bug-report", () => {
@@ -75,7 +79,6 @@ function createWindow() {
     maximizable: true,
     fullscreenable: true,
     backgroundColor: "#FFBDEF",
-    // shown once the page has painted, so it never opens as an empty window
     show: false,
     icon: iconPath,
     webPreferences: {
@@ -116,7 +119,16 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+  if (started) return;
+
   createWindow();
+  if (canAutoUpdate(process.platform, app.isPackaged)) {
+    try {
+      updateElectronApp();
+    } catch (error) {
+      console.warn(error);
+    }
+  }
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
