@@ -43,6 +43,7 @@ export type GameState = {
   // what this run has done so far, for daily challenges
   peakScore: number;
   powerUpsCollected: number;
+  boostsUsed: number;
 
   highScore: number;
   highScoreAtStart: number;
@@ -84,6 +85,7 @@ export function createInitialState(
 
     peakScore: 0,
     powerUpsCollected: 0,
+    boostsUsed: 0,
 
     highScore: saved.highScore ?? 0,
     highScoreAtStart: saved.highScore ?? 0,
@@ -215,7 +217,12 @@ function boost(state: GameState, random: number): Update {
   if (boostsAvailable === 0) events.push({ type: "noBoostsLeft" });
 
   const next = scoreAndGoal(
-    { ...state, counter: state.currentGoal, boostsAvailable },
+    {
+      ...state,
+      counter: state.currentGoal,
+      boostsAvailable,
+      boostsUsed: state.boostsUsed + 1,
+    },
     "pop-dec",
     true,
     random,
@@ -234,6 +241,7 @@ function restart(state: GameState, music = true): Update {
       trueGoalsReached: 0,
       peakScore: 0,
       powerUpsCollected: 0,
+      boostsUsed: 0,
       highScoreAtStart: state.highScore,
       isHighScore: false,
       highScoreFxPlayed: false,
@@ -251,8 +259,6 @@ function restart(state: GameState, music = true): Update {
   };
 }
 
-// the rank reached in this run, when it is a new one. The first run earns the
-// first rank, whatever it is
 function rankToAnnounce(state: GameState): string | undefined {
   const reached = getRank(state.highScore);
   if (!hadHighScore(state))
@@ -291,6 +297,7 @@ function endRun(state: GameState): Update {
         score: state.counter,
         peakScore: state.peakScore,
         powerUps: state.powerUpsCollected,
+        boosts: state.boostsUsed,
         newRank: rankToAnnounce(state),
       },
     ],

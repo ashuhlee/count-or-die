@@ -215,6 +215,7 @@ describe("running out of time", () => {
         score: 12,
         peakScore: 0,
         powerUps: 0,
+        boosts: 0,
       },
     ]);
   });
@@ -238,6 +239,22 @@ describe("running out of time", () => {
     const next = play(over.state, { type: "restart" }).state;
     expect(next.peakScore).toBe(0);
     expect(next.powerUpsCollected).toBe(0);
+  });
+
+  test("tells the boosts used in the run, which a restart clears", () => {
+    const run = play(
+      createInitialState({ highScore: 999 }),
+      increase(),
+      boost(),
+      boost(),
+    );
+    expect(run.state.boostsUsed).toBe(2);
+
+    const over = play(run.state, { type: "endRun" });
+    expect(has(over.events, { type: "gameOver", boosts: 2 })).toBe(true);
+
+    const next = play(over.state, { type: "restart" }).state;
+    expect(next.boostsUsed).toBe(0);
   });
 
   test("does nothing if the goal was reached in time", () => {

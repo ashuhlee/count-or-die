@@ -50,6 +50,7 @@ export function performEvent(
       const update = recordRun(loadDailyChallenges(), {
         peakScore: event.peakScore,
         powerUps: event.powerUps,
+        boosts: event.boosts,
       });
       saveDailyChallenges(update.state);
       challenges = update.completed;

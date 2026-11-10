@@ -1,15 +1,27 @@
 export type ChallengeId =
+  | "score-200"
   | "score-300"
+  | "power-ups-3"
   | "power-ups-5"
   | "power-ups-10"
+  | "runs-5"
   | "runs-10"
-  | "runs-15";
+  | "runs-15"
+  | "score-200-no-boosts"
+  | "boosts-4";
 
-export type RunStats = { peakScore: number; powerUps: number };
+export type RunStats = {
+  peakScore: number;
+  powerUps: number;
+  boosts: number;
+};
 
 export type DayTotals = {
   bestScore: number;
   bestPowerUps: number;
+  // the best score of a run that used no boosts
+  bestScoreNoBoosts: number;
+  bestBoosts: number;
   runs: number;
 };
 
@@ -22,10 +34,22 @@ type Challenge = {
 
 export const CHALLENGES: readonly Challenge[] = [
   {
+    id: "score-200",
+    label: "Reach a score of 200",
+    target: 200,
+    progress: (totals) => totals.bestScore,
+  },
+  {
     id: "score-300",
     label: "Reach a score of 300",
     target: 300,
     progress: (totals) => totals.bestScore,
+  },
+  {
+    id: "power-ups-3",
+    label: "Collect 3 powerups in one run",
+    target: 3,
+    progress: (totals) => totals.bestPowerUps,
   },
   {
     id: "power-ups-5",
@@ -40,6 +64,12 @@ export const CHALLENGES: readonly Challenge[] = [
     progress: (totals) => totals.bestPowerUps,
   },
   {
+    id: "runs-5",
+    label: "Complete 5 runs",
+    target: 5,
+    progress: (totals) => totals.runs,
+  },
+  {
     id: "runs-10",
     label: "Complete 10 runs",
     target: 10,
@@ -50,6 +80,18 @@ export const CHALLENGES: readonly Challenge[] = [
     label: "Complete 15 runs",
     target: 15,
     progress: (totals) => totals.runs,
+  },
+  {
+    id: "score-200-no-boosts",
+    label: "Reach a score of 200 without boosts",
+    target: 200,
+    progress: (totals) => totals.bestScoreNoBoosts,
+  },
+  {
+    id: "boosts-4",
+    label: "Use all 4 boosts in one run",
+    target: 4,
+    progress: (totals) => totals.bestBoosts,
   },
 ];
 
@@ -105,7 +147,13 @@ export function newDay(date: string): DailyState {
   return {
     date,
     ids: pickDaily(date),
-    totals: { bestScore: 0, bestPowerUps: 0, runs: 0 },
+    totals: {
+      bestScore: 0,
+      bestPowerUps: 0,
+      bestScoreNoBoosts: 0,
+      bestBoosts: 0,
+      runs: 0,
+    },
     done: [],
   };
 }
@@ -120,6 +168,11 @@ export function recordRun(
   const totals: DayTotals = {
     bestScore: Math.max(state.totals.bestScore, run.peakScore),
     bestPowerUps: Math.max(state.totals.bestPowerUps, run.powerUps),
+    bestScoreNoBoosts:
+      run.boosts === 0
+        ? Math.max(state.totals.bestScoreNoBoosts, run.peakScore)
+        : state.totals.bestScoreNoBoosts,
+    bestBoosts: Math.max(state.totals.bestBoosts, run.boosts),
     runs: state.totals.runs + 1,
   };
 

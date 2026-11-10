@@ -28,7 +28,16 @@ export function loadDailyChallenges(now = new Date()): DailyState {
       isCount(saved.totals?.bestPowerUps) &&
       isCount(saved.totals?.runs);
 
-    if (valid) return saved as DailyState;
+    // a save from before these were counted has none: they start at 0
+    if (valid) {
+      const { bestScoreNoBoosts = 0, bestBoosts = 0 } = saved.totals;
+      if (isCount(bestScoreNoBoosts) && isCount(bestBoosts)) {
+        return {
+          ...saved,
+          totals: { ...saved.totals, bestScoreNoBoosts, bestBoosts },
+        } as DailyState;
+      }
+    }
   } catch {}
   return newDay(today);
 }

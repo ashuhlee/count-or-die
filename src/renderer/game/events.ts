@@ -42,6 +42,7 @@ export type GameEvent =
       score: number;
       peakScore: number;
       powerUps: number;
+      boosts: number;
       newRank?: string;
     }
   | { type: "restarted" }
