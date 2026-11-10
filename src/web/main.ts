@@ -1,3 +1,6 @@
+import { inject } from "@vercel/analytics";
+
+import { shouldTrack } from "./analytics.ts";
 import { viewportScale } from "./scale.ts";
 
 const frame = document.getElementById("game") as HTMLIFrameElement;
@@ -22,3 +25,5 @@ document.addEventListener("fullscreenchange", () => {
 });
 
 frame.addEventListener("load", () => frame.contentWindow?.focus());
+
+if (shouldTrack(window.location.hostname)) inject();

@@ -46,6 +46,7 @@
     "vitest-localstorage-mock": "^0.1.2"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "animate.css": "4.1.1",
     "canvas-confetti": "^1.9.4",
     "react": "^19.3.1",
