@@ -38,7 +38,8 @@ ipcMain.on("close", () => {
   app.quit();
 });
 
-const BUG_REPORT_URL = "https://github.com/ashuhlee/count-or-die/issues/new";
+const BUG_REPORT_URL =
+  "https://github.com/ashuhlee/count-or-die/issues/new?template=bug_report.yml";
 
 ipcMain.on("bug-report", () => {
   void shell.openExternal(BUG_REPORT_URL);
