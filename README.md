@@ -6,9 +6,9 @@
 [![GitHub Repo stars](https://img.shields.io/github/stars/ashuhlee/count-or-die?style=for-the-badge&logo=starship&logoColor=%23D7E0ED&labelColor=%232F2D42&color=%23FFBDF2)](https://github.com/ashuhlee/count-or-die/stargazers)
 [![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/ashuhlee/count-or-die?style=for-the-badge&logo=gitbook&logoColor=%23D9E0EE&labelColor=%232F2D42&color=C1B5FF)](https://github.com/ashuhlee/count-or-die/issues)
 [![GitHub repo size](https://img.shields.io/github/repo-size/ashuhlee/count-or-die?style=for-the-badge&logo=removedotbg&logoColor=%23D9E0EE&labelColor=%232F2D42&color=AEE5FF)](https://github.com/ashuhlee/count-or-die)
-![Static Badge](https://img.shields.io/badge/version-beta.1-A5A2B7?style=for-the-badge&logoColor=%23D9E0EE&labelColor=2F2D42)
+[![GitHub Release](https://img.shields.io/github/v/release/ashuhlee/count-or-die?include_prereleases&label=version&style=for-the-badge&logoColor=%23D9E0EE&labelColor=2F2D42&color=A5A2B7)](https://github.com/ashuhlee/count-or-die/releases)
 
-<a href="https://www.youtube.com/watch?v=l_mUEsx0na8"><img width="170" alt="demo link" src="https://github.com/user-attachments/assets/dbb3d7da-7247-433b-8e1d-a31b979113f5" style="margin-right: 10px;" /></a><a href="https://ashuhlee.notion.site/Count-or-Die-2f5a30a56798803383e7dd6b54a77d4e?source=copy_link"><img width="170" alt="tracker link" src="https://github.com/user-attachments/assets/a3df7a77-42dc-4c1b-93cc-cd844d3f12d7" /></a>
+<a href="https://www.youtube.com/watch?v=l_mUEsx0na8"><img width="170" alt="watch demo" src="https://github.com/user-attachments/assets/5ccf0b8a-1534-4543-a59d-48f33cb7a98a" /></a> <a href="https://github.com/ashuhlee/count-or-die/releases"><img width="170" alt="download" src="https://github.com/user-attachments/assets/73fc2b6a-9571-4893-85b5-dbf2f7eccd92" /></a> <a href="https://play.countordie.gg"><img width="170" alt="play online" src="https://github.com/user-attachments/assets/ea84589e-ab85-424f-8cad-c6bc435ff070" /></a>
 
 </div>
 
@@ -31,13 +31,14 @@ https://github.com/user-attachments/assets/31746f90-5190-4f27-89c4-96ff47f62f6b
 
 ### Desktop
 
-To try out the beta, download the latest release for your platform from the [releases page](https://github.com/ashuhlee/count-or-die/releases/tag/1.0.0), or via the links below:
+To try out the beta, download the latest release for your platform from the [releases page](https://github.com/ashuhlee/count-or-die/releases/tag/v1.0.0-beta.1), or via the links below:
 
-| Platform         | File                                                                                                                       |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| Windows (32-bit) | [CountOrDie-1.0.0-win32.zip](https://github.com/ashuhlee/flappy-kitty/releases/download/1.0.0/FlappyKitty-1.0.0-win32.zip) |
-| Windows (64-bit) | [CountOrDie-1.0.0-win64.zip](https://github.com/ashuhlee/flappy-kitty/releases/download/1.0.0/FlappyKitty-1.0.0-win64.zip) |
-| macOS            | [CountOrDie-1.0.0-mac.dmg](https://github.com/ashuhlee/flappy-kitty/releases/download/1.0.0/FlappyKitty-1.0.0-mac.dmg)     |
+| Platform              | File                                                                                                                                                |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Windows (64-bit)      | [CountOrDie-1.0.0-beta.1-win64.exe](https://github.com/ashuhlee/count-or-die/releases/download/v1.0.0-beta.1/CountOrDie-1.0.0-beta.1-win64.exe)     |
+| macOS (Apple Silicon) | [Count.or.Die-1.0.0-beta.1-arm64.dmg](https://github.com/ashuhlee/count-or-die/releases/download/v1.0.0-beta.1/Count.or.Die-1.0.0-beta.1-arm64.dmg) |
+
+The desktop apps update themselves when a new version is released. Intel Macs aren't supported yet.
 
 ### Online
 
@@ -168,7 +169,7 @@ npm install
 - **Electron:** framework for cross-platform desktop app development
 - **Electron Forge:** for packaging and distributing Electron apps
 - **React:** runs the game and renders its interface
-- **Vite+:** toolchain for bundling, linting, formatting and testing (`vp check`, `vp test`)
+- **Vite+:** toolchain for bundling, linting, formatting and testing
 - **Discord Integration:** Discord Rich Presence support [(simple-discord-rpc)](https://www.npmjs.com/package/simple-discord-rpc)
 
 ## Contributing
@@ -177,9 +178,9 @@ This is a personal project, but suggestions and contributions are welcome!
 
 ### Ways to Contribute
 
-- Report bugs – Open an issue with details
-- Suggest features – Share your ideas for gameplay improvements
-- Playtesting – Try the game and share feedback on gameplay and user experience
+- [Report bugs](https://github.com/ashuhlee/count-or-die/issues/new?template=bug_report.yml): open an issue with details
+- [Suggest features](https://github.com/ashuhlee/count-or-die/issues/new?template=feature_request.yml): share your ideas for gameplay improvements
+- [Feedback](https://forms.gle/zqN2TVqHpaTRiNJSA): try the game and share feedback on gameplay and user experience
 
 Feel free to check out the [project tracker](https://ashuhlee.notion.site/Count-or-Die-2f5a30a56798803383e7dd6b54a77d4e?source=copy_link) to see what's currently in progress.
 
