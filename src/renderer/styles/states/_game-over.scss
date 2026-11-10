@@ -14,7 +14,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-  // one full-height row, so the empty skull-area can't take a second one
   grid-template-rows: 100%;
   place-items: center;
   font-family: "Silkscreen", sans-serif;
@@ -100,8 +99,6 @@
     opacity: 1;
     pointer-events: none;
     transition: opacity 0.5s ease 0.2s;
-    // above what the parallax makes a layer of its own (the text and buttons),
-    // below the title and the tombstone, which show over it
     z-index: 1;
   }
 
