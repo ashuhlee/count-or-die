@@ -212,6 +212,7 @@ export default function Game() {
           leaving={!challenging}
           title="Daily challenges"
           tab="blue"
+          wide
           rows={challenges}
           okLabel={challengesDone ? "Complete!" : "Play!"}
           clickOk={challengesDone}

@@ -5,7 +5,7 @@
     $ring: #fff0fc;
     $band: color-mix(in srgb, #9389ee 30%, transparent);
 
-    --u: calc(536px / 114);
+    --u: calc(var(--panel-w) / 114);
     --v: calc(80px / 17);
 
     position: relative;

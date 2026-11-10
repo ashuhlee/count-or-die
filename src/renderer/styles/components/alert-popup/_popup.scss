@@ -13,12 +13,17 @@
 
   .alert-popup-panel {
     flex: none;
-    width: 536px;
+    --panel-w: 536px;
+    width: var(--panel-w);
     transform: scale(var(--fit, 1));
     filter: drop-shadow(0 5px 0 var(--shadow-overlay-010));
     animation: alert-pop-in $pop-time $pop-easing both;
     @include parallax.parallax(1.5, 1.5, modal-parallax);
   }
+}
+
+.alert-popup .alert-popup-panel--wide {
+  --panel-w: 590px;
 }
 
 .alert-popup--leaving {

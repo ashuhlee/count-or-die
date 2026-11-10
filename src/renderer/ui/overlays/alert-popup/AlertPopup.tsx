@@ -23,6 +23,8 @@ type AlertPopupProps = {
   rows?: AlertRow[];
   title: string;
   tab?: keyof typeof TABS;
+  // a wider popup, for long rows
+  wide?: boolean;
   leaving?: boolean;
   onYes?: () => void;
   onNo: () => void;
@@ -52,6 +54,7 @@ export default function AlertPopup({
   rows,
   title,
   tab = "purple",
+  wide = false,
   leaving = false,
   onYes,
   onNo,
@@ -133,7 +136,11 @@ export default function AlertPopup({
         if (event.target === event.currentTarget) onNo();
       }}
     >
-      <div id="alert-popup" ref={panelRef} className="alert-popup-panel">
+      <div
+        id="alert-popup"
+        ref={panelRef}
+        className={`alert-popup-panel${wide ? " alert-popup-panel--wide" : ""}`}
+      >
         <div className={`alert-popup-tab alert-popup-tab--${tab}`}>
           <img src={TABS[tab]} alt="" className="alert-popup-header" />
           <span className="alert-popup-title" aria-label={title}>
