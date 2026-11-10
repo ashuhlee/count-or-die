@@ -13,6 +13,22 @@ const WIN_SUFFIX = {
 };
 const winSuffix = WIN_SUFFIX[arch] ?? `win-${arch}`;
 
+// the mac app is signed and notarized when these are set (in the release
+// workflow). Without them it is built unsigned, which is fine to try locally
+const { APPLE_ID, APPLE_APP_PASSWORD, APPLE_TEAM_ID } = process.env;
+const notarize =
+  APPLE_ID && APPLE_APP_PASSWORD && APPLE_TEAM_ID
+    ? {
+        osxSign: {},
+        osxNotarize: {
+          tool: "notarytool" as const,
+          appleId: APPLE_ID,
+          appleIdPassword: APPLE_APP_PASSWORD,
+          teamId: APPLE_TEAM_ID,
+        },
+      }
+    : {};
+
 const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
@@ -20,6 +36,7 @@ const config: ForgeConfig = {
     executableName: "CountOrDie",
     icon: "./resources/icons/icon",
     appCategoryType: "public.app-category.games",
+    ...notarize,
   },
   rebuildConfig: {},
   makers: [
@@ -71,6 +88,16 @@ const config: ForgeConfig = {
     {
       name: "@electron-forge/maker-rpm",
       config: {},
+    },
+  ],
+  publishers: [
+    {
+      name: "@electron-forge/publisher-github",
+      config: {
+        repository: { owner: "ashuhlee", name: "count-or-die" },
+        draft: true,
+        prerelease: false,
+      },
     },
   ],
   plugins: [
