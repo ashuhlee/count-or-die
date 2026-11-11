@@ -8,7 +8,7 @@
 [![GitHub repo size](https://img.shields.io/github/repo-size/ashuhlee/count-or-die?style=for-the-badge&logo=removedotbg&logoColor=%23D9E0EE&labelColor=%232F2D42&color=AEE5FF)](https://github.com/ashuhlee/count-or-die)
 [![GitHub Release](https://img.shields.io/github/v/release/ashuhlee/count-or-die?include_prereleases&label=version&style=for-the-badge&logoColor=%23D9E0EE&labelColor=2F2D42&color=A5A2B7)](https://github.com/ashuhlee/count-or-die/releases)
 
-<a href="https://www.youtube.com/watch?v=l_mUEsx0na8"><img height="24" alt="watch demo" src="https://github.com/user-attachments/assets/9dde415f-ecfb-4747-9df3-ae46124b6dad" /></a> <a href="https://github.com/ashuhlee/count-or-die/releases"><img height="24" alt="download" src="https://github.com/user-attachments/assets/0fc5b50d-7d7a-4ee2-b466-4b3040371514" /></a> <a href="https://play.countordie.gg"><img height="24" alt="play online" src="https://github.com/user-attachments/assets/709d4717-4f01-4dca-a93d-7bd1f5a9220d" /></a>
+<a href="https://forms.gle/zqN2TVqHpaTRiNJSA"><img height="26" alt="feedback" src="https://github.com/user-attachments/assets/0c3ea82d-bef9-48bf-a4ff-7a60dcad772b" /></a> <a href="https://github.com/ashuhlee/count-or-die/releases"><img height="26" alt="download" src="https://github.com/user-attachments/assets/0fc5b50d-7d7a-4ee2-b466-4b3040371514" /></a> <a href="https://play.countordie.gg"><img height="26" alt="play online" src="https://github.com/user-attachments/assets/709d4717-4f01-4dca-a93d-7bd1f5a9220d" /></a>
 
 </div>
 
@@ -23,7 +23,7 @@ Count or Die is an arcade counting game with progressive difficulty, randomized 
 
 <div align="center">
 
-https://github.com/user-attachments/assets/31746f90-5190-4f27-89c4-96ff47f62f6b
+https://github.com/user-attachments/assets/9aba7484-a439-43e3-9971-c08586095517
 
 </div>
 
