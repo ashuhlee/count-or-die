@@ -3,14 +3,20 @@
 @use "../base/globals";
 
 $tilt: 30deg;
-$half-side: math.div(50%, math.sqrt(2));
+$half-side: math.div(1, math.sqrt(2));
+$outline-zoom: 1.2;
+$outline-tile: 128px * $outline-zoom;
 
 @function tilted-square($angle) {
   $points: ();
   @each $sx, $sy in (-1 -1), (1 -1), (1 1), (-1 1) {
-    $x: 50% + $half-side * ($sx * math.cos($angle) - $sy * math.sin($angle));
-    $y: 50% + $half-side * ($sx * math.sin($angle) + $sy * math.cos($angle));
-    $points: list.append($points, "#{$x} #{$y}", comma);
+    $x: $half-side * ($sx * math.cos($angle) - $sy * math.sin($angle));
+    $y: $half-side * ($sx * math.sin($angle) + $sy * math.cos($angle));
+    $points: list.append(
+      $points,
+      "calc(50% + #{$x} * var(--r)) calc(50% + #{$y} * var(--r))",
+      comma
+    );
   }
   @return polygon(#{list.join((), $points, comma)});
 }
@@ -29,21 +35,13 @@ $half-side: math.div(50%, math.sqrt(2));
 
   .diamond-wrapper,
   .diamond-outline {
+    --r: max(100vw, 100vh);
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    inset: 0;
     display: grid;
     place-items: center;
-    width: 200vw;
-    height: 200vw;
     animation: expand-clip 0.5s ease-in forwards;
     pointer-events: none;
-
-    @media (max-width: 900px) {
-      width: 300vw;
-      height: 300vw;
-    }
   }
 
   .diamond {
@@ -52,8 +50,8 @@ $half-side: math.div(50%, math.sqrt(2));
     height: 100%;
   }
   .diamond-outline {
+    --r: calc(#{$outline-zoom} * max(100vw, 100vh));
     background: #ff9de9;
-    zoom: 1.2;
     animation: expand-clip 0.5s ease-in forwards -0.06s;
   }
   .diamond::before {
@@ -80,8 +78,9 @@ $half-side: math.div(50%, math.sqrt(2));
       animation: shrink-clip 0.5s ease-out forwards;
     }
     .diamond-outline {
-      animation: shrink-clip 0.5s ease-out forwards 0.05s;
-      background: url("#{globals.$loading-bg-2}") repeat 0 center;
+      animation: shrink-clip 0.5s ease-out both 0.05s;
+      background: url("#{globals.$loading-bg-2}") repeat 0 center /
+        #{$outline-tile} #{$outline-tile};
     }
   }
 }

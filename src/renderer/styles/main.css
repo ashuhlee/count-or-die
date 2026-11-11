@@ -3090,23 +3090,13 @@ img {
 }
 .loading-screen .diamond-wrapper,
 .loading-screen .diamond-outline {
+  --r: max(100vw, 100vh);
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  inset: 0;
   display: grid;
   place-items: center;
-  width: 200vw;
-  height: 200vw;
   animation: expand-clip 0.5s ease-in forwards;
   pointer-events: none;
-}
-@media (max-width: 900px) {
-  .loading-screen .diamond-wrapper,
-  .loading-screen .diamond-outline {
-    width: 300vw;
-    height: 300vw;
-  }
 }
 .loading-screen .diamond {
   position: absolute;
@@ -3114,8 +3104,8 @@ img {
   height: 100%;
 }
 .loading-screen .diamond-outline {
+  --r: calc(1.2 * max(100vw, 100vh));
   background: #ff9de9;
-  zoom: 1.2;
   animation: expand-clip 0.5s ease-in forwards -0.06s;
 }
 .loading-screen .diamond::before {
@@ -3139,8 +3129,9 @@ img {
   animation: shrink-clip 0.5s ease-out forwards;
 }
 .loading-screen.hiding .diamond-outline {
-  animation: shrink-clip 0.5s ease-out forwards 0.05s;
-  background: url("../assets/ui/textures/tile-loading-2.png") repeat 0 center;
+  animation: shrink-clip 0.5s ease-out both 0.05s;
+  background: url("../assets/ui/textures/tile-loading-2.png") repeat 0
+    center/153.6px 153.6px;
 }
 @keyframes expand-clip {
   0% {
@@ -3148,20 +3139,20 @@ img {
   }
   100% {
     clip-path: polygon(
-      1.7037086855% 37.0590477449%,
-      62.9409522551% 1.7037086855%,
-      98.2962913145% 62.9409522551%,
-      37.0590477449% 98.2962913145%
+      calc(50% + -0.9659258263 * var(--r)) calc(50% + -0.2588190451 * var(--r)),
+      calc(50% + 0.2588190451 * var(--r)) calc(50% + -0.9659258263 * var(--r)),
+      calc(50% + 0.9659258263 * var(--r)) calc(50% + 0.2588190451 * var(--r)),
+      calc(50% + -0.2588190451 * var(--r)) calc(50% + 0.9659258263 * var(--r))
     );
   }
 }
 @keyframes shrink-clip {
   0% {
     clip-path: polygon(
-      37.0590477449% 1.7037086855%,
-      98.2962913145% 37.0590477449%,
-      62.9409522551% 98.2962913145%,
-      1.7037086855% 62.9409522551%
+      calc(50% + -0.2588190451 * var(--r)) calc(50% + -0.9659258263 * var(--r)),
+      calc(50% + 0.9659258263 * var(--r)) calc(50% + -0.2588190451 * var(--r)),
+      calc(50% + 0.2588190451 * var(--r)) calc(50% + 0.9659258263 * var(--r)),
+      calc(50% + -0.9659258263 * var(--r)) calc(50% + 0.2588190451 * var(--r))
     );
   }
   100% {
