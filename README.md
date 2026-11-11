@@ -8,7 +8,7 @@
 [![GitHub repo size](https://img.shields.io/github/repo-size/ashuhlee/count-or-die?style=for-the-badge&logo=removedotbg&logoColor=%23D9E0EE&labelColor=%232F2D42&color=AEE5FF)](https://github.com/ashuhlee/count-or-die)
 [![GitHub Release](https://img.shields.io/github/v/release/ashuhlee/count-or-die?include_prereleases&label=version&style=for-the-badge&logoColor=%23D9E0EE&labelColor=2F2D42&color=A5A2B7)](https://github.com/ashuhlee/count-or-die/releases)
 
-<a href="https://www.youtube.com/watch?v=l_mUEsx0na8"><img height="32" alt="watch demo" src="https://github.com/user-attachments/assets/5ccf0b8a-1534-4543-a59d-48f33cb7a98a" /></a> <a href="https://github.com/ashuhlee/count-or-die/releases"><img height="32" alt="download" src="https://github.com/user-attachments/assets/73fc2b6a-9571-4893-85b5-dbf2f7eccd92" /></a> <a href="https://play.countordie.gg"><img height="32" alt="play online" src="https://github.com/user-attachments/assets/ea84589e-ab85-424f-8cad-c6bc435ff070" /></a>
+<a href="https://www.youtube.com/watch?v=l_mUEsx0na8"><img height="24" alt="watch demo" src="https://github.com/user-attachments/assets/9dde415f-ecfb-4747-9df3-ae46124b6dad" /></a> <a href="https://github.com/ashuhlee/count-or-die/releases"><img height="24" alt="download" src="https://github.com/user-attachments/assets/0fc5b50d-7d7a-4ee2-b466-4b3040371514" /></a> <a href="https://play.countordie.gg"><img height="24" alt="play online" src="https://github.com/user-attachments/assets/709d4717-4f01-4dca-a93d-7bd1f5a9220d" /></a>
 
 </div>
 
