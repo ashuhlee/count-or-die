@@ -1,7 +1,7 @@
 @use "shine";
 
 $shine-every: 1.5s;
-$power-up-width: 68px;
+$power-up-width: 74px;
 
 .spawn-area {
   //border: 5px solid red; // debugging
@@ -45,7 +45,7 @@ $power-up-width: 68px;
   position: absolute;
   inset: 0;
   mask: var(--power-up-mask) center / 100% 100% no-repeat;
-  --shine-opacity: 0.5;
+  --shine-opacity: 0.6;
   --shine-delay: 1s;
   --shine-duration: #{$shine-every};
   &::after {

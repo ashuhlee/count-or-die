@@ -1379,7 +1379,7 @@ img {
   filter: drop-shadow(0 4px 0 var(--shadow-pink-015));
 }
 .power-up-melt .melt-in-shader__image {
-  width: 68px;
+  width: 74px;
   height: auto;
 }
 .power-up-art {
@@ -1389,7 +1389,7 @@ img {
   position: absolute;
   inset: 0;
   mask: var(--power-up-mask) center/100% 100% no-repeat;
-  --shine-opacity: 0.5;
+  --shine-opacity: 0.6;
   --shine-delay: 1s;
   --shine-duration: 1.5s;
 }
