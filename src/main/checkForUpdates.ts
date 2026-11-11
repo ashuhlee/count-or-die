@@ -49,8 +49,8 @@ export function checkForUpdates(): void {
     finish();
     say(
       "Couldn't check for updates",
-      "Something went wrong",
-      `Check your internet connection and try again.\n\n${error.message}`,
+      "The update check failed",
+      `${error.message}\n\nTry again later.`,
     );
   }
 
