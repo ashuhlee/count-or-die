@@ -1,10 +1,10 @@
-export type Rank = {
+type Rank = {
   min: number;
   name: string;
   badge?: string;
 };
 
-export const RANKS: readonly Rank[] = [
+const RANKS: readonly Rank[] = [
   { min: 0, name: "Rookie" },
   { min: 100, name: "Slow Fingers", badge: "tier_one" },
   { min: 200, name: "Finger Breaker", badge: "tier_two" },

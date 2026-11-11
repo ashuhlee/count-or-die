@@ -1,5 +1,6 @@
 import { Fragment, useLayoutEffect, useRef, type KeyboardEvent } from "react";
 
+import { playSound } from "../../../utils/app/sounds.ts";
 import PixelPanel from "../../components/hud/pixel-panel/PixelPanel.tsx";
 import Letters from "../../components/text/letters/Letters.tsx";
 
@@ -15,9 +16,13 @@ type GameNotificationProps = {
   still?: boolean;
   leaving?: boolean;
   shine?: boolean;
+  // a longer max width, for long texts
+  wide?: boolean;
   id?: string;
   // makes the whole notification a button
   onClick?: () => void;
+  // the button hover sound, when the mouse enters
+  hoverSound?: boolean;
 };
 
 export default function GameNotification({
@@ -32,8 +37,10 @@ export default function GameNotification({
   still = false,
   leaving = false,
   shine = false,
+  wide = false,
   id,
   onClick,
+  hoverSound = false,
 }: GameNotificationProps) {
   const textRef = useRef<HTMLSpanElement>(null);
 
@@ -71,8 +78,9 @@ export default function GameNotification({
       border={border}
       accent={accent}
       id={id}
-      className={`game-notification${visible ? (leaving ? " slide-out-left" : " bounce-in-left") : ""}${shine ? " shine" : ""}`}
+      className={`game-notification${visible ? (leaving ? " slide-out-left" : " bounce-in-left") : ""}${shine ? " shine" : ""}${wide ? " game-notification--wide" : ""}`}
       style={{ animationDelay: `${leaving ? 0 : delay}s` }}
+      {...(hoverSound && { onMouseEnter: () => playSound("buttonHover") })}
       {...(onClick && {
         role: "button",
         tabIndex: 0,

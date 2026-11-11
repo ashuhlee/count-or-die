@@ -1,0 +1,50 @@
+@use "variables" as *;
+@use "../../base/parallax";
+
+.alert-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 18;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(46, 43, 71, 0.4);
+  animation: alert-fade-in $fade both;
+
+  .alert-popup-panel {
+    flex: none;
+    --panel-w: 536px;
+    width: var(--panel-w);
+    transform: scale(var(--fit, 1));
+    filter: drop-shadow(0 5px 0 var(--shadow-overlay-010));
+    animation: alert-pop-in $pop-time $pop-easing both;
+    @include parallax.parallax(1.5, 1.5, modal-parallax);
+  }
+}
+
+.alert-popup .alert-popup-panel--wide {
+  --panel-w: 590px;
+}
+
+.alert-popup--leaving {
+  animation: alert-fade-out $fade both;
+  pointer-events: none;
+}
+
+@keyframes alert-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes alert-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes alert-pop-in {
+  from {
+    scale: $pop-from;
+  }
+}

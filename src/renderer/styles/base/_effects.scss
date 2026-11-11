@@ -14,13 +14,6 @@
   }
 }
 
-#high-score.new-score {
-  animation:
-    bounce 0.6s,
-    gradient 2s ease;
-  transform-origin: center;
-}
-
 .new-goal,
 .new-goal-reverse {
   transform-style: preserve-3d;
@@ -124,7 +117,6 @@
 .try-again span,
 .tracker-value span,
 .game-notification-text span,
-.alert-popup-text span,
 .menu-btn .pixel-btn-label > span {
   display: inline-block;
   animation: shake var(--wave-duration, 2s) ease infinite var(--delay);

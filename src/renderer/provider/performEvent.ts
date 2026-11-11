@@ -2,6 +2,11 @@ import { pauseSound, playSound } from "../utils/app/sounds.ts";
 import type { GameEvent } from "../game/events.ts";
 import { playConfetti } from "../utils/effects/confetti.ts";
 import { formatCounter } from "../utils/text/formatCounter.ts";
+import { recordRun } from "../game/challenges.ts";
+import {
+  loadDailyChallenges,
+  saveDailyChallenges,
+} from "../utils/storage/dailyChallenges.ts";
 import { saveDeathCount, saveHighScore } from "../utils/storage/savedGame.ts";
 import { youDiedConsole } from "../utils/text/youDiedConsole.ts";
 import type { EventBus } from "./eventBus.ts";
@@ -17,13 +22,12 @@ type Around = {
   pointer?: Pointer;
 };
 
-// Everything the game does for one thing the rules report, other than showing
-// it: play the sound, save the score, tell Discord. Then the components get to
-// hear about it too.
 export function performEvent(
   event: GameEvent,
   { bus, later, deathCount, pointer }: Around,
 ): void {
+  let challenges: string[] = [];
+
   switch (event.type) {
     case "sound":
       playSound(event.name);
@@ -42,21 +46,31 @@ export function performEvent(
       void window.electron?.setDiscordStatus({ highScoreRPC: event.score });
       break;
 
-    case "gameOver":
+    case "gameOver": {
+      const update = recordRun(loadDailyChallenges(), {
+        peakScore: event.peakScore,
+        powerUps: event.powerUps,
+        boosts: event.boosts,
+      });
+      saveDailyChallenges(update.state);
+      challenges = update.completed;
+
       saveDeathCount(deathCount);
       later(() => playSound("gameOverMusic"), GAME_OVER_MUSIC_DELAY);
       void window.electron?.setDiscordStatus({ gameStatusRPC: "game-over" });
       if (!window.electron) youDiedConsole(formatCounter(event.score));
       break;
+    }
 
     case "restarted":
       void window.electron?.setDiscordStatus({ gameStatusRPC: "in-game" });
       break;
   }
 
-  // a floating +N needs to know where to appear; without a click, it doesn't
   if (event.type === "cursorCount") {
     if (pointer) bus.emit({ ...event, x: pointer.x, y: pointer.y });
+  } else if (event.type === "gameOver") {
+    bus.emit({ ...event, challenges });
   } else {
     bus.emit(event);
   }

@@ -1,8 +1,80 @@
+@use "sass:math";
+@use "../base/parallax";
+
 .menu-screen {
   flex-direction: column;
-  gap: 32px;
+  gap: 64px;
+  --menu-title-width: clamp(270px, 26vw, 400px);
+
+  .menu-title-wrap {
+    position: relative;
+    width: var(--menu-title-width);
+    @include parallax.parallax(0.8);
+  }
 
   .menu-title {
-    width: max(26vw, 270px);
+    width: 100%;
+  }
+}
+
+$twinkle: 2s;
+$pause: 0.1s;
+$cycle: $twinkle + $pause;
+
+.menu-sparkle {
+  position: absolute;
+  width: 8%;
+  height: auto;
+  translate: -50% -50%;
+  opacity: 0;
+  pointer-events: none;
+  --stroke: #ff9fef;
+  --stroke-width: 1px;
+
+  filter: drop-shadow(var(--stroke-width) 0 0 var(--stroke))
+    drop-shadow(calc(var(--stroke-width) * -1) 0 0 var(--stroke))
+    drop-shadow(0 var(--stroke-width) 0 var(--stroke))
+    drop-shadow(0 calc(var(--stroke-width) * -1) 0 var(--stroke))
+    drop-shadow(2px 2px 0 var(--shadow-pink-010));
+
+  &.menu-sparkle--top-right {
+    left: 106%;
+    top: 4%;
+    --twinkle-delay: var(--sparkle-delay);
+  }
+
+  &.menu-sparkle--bottom-left {
+    left: 5%;
+    top: 109%;
+    --twinkle-delay: calc(var(--sparkle-delay) - #{math.div($cycle, 2)});
+  }
+
+  &.menu-sparkle--on {
+    animation:
+      menu-sparkle-in 0.3s ease-out 0.1s both,
+      menu-sparkle-twinkle $cycle ease-in-out var(--twinkle-delay) infinite
+        backwards;
+  }
+}
+
+@keyframes menu-sparkle-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes menu-sparkle-twinkle {
+  0% {
+    scale: 1;
+  }
+  #{math.div($twinkle, 2 * $cycle) * 100%} {
+    scale: 0.6;
+  }
+  #{math.div($twinkle, $cycle) * 100%},
+  100% {
+    scale: 1;
   }
 }

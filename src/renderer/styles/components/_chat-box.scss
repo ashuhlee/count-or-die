@@ -1,0 +1,92 @@
+.chat-box {
+  --chat-bg: #fff2fc;
+  --chat-fg: #59517d;
+  --chat-shadow: var(--shadow-pink-010);
+  --chat-shadow-drop: 5px;
+  --chat-edge: 8px;
+  --chat-stroke: #e3e0ef;
+  --chat-stroke-width: 3px;
+  --tooltip-tilt: 30deg;
+
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  width: max-content;
+  max-width: 230px;
+
+  translate: calc(
+      -100% + max(0px, calc(100% + var(--chat-edge) - var(--chat-x)))
+    )
+    -100%;
+  transform-origin: right bottom;
+
+  animation: tooltip-in 0.2s both;
+
+  &.chat-box--leaving {
+    animation: tooltip-out 0.1s ease-in both;
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    translate: 0 var(--chat-shadow-drop);
+    background-color: var(--chat-shadow);
+    box-shadow:
+      -6px 0 0 0 var(--chat-shadow),
+      6px 0 0 0 var(--chat-shadow),
+      0 -6px 0 0 var(--chat-shadow),
+      0 6px 0 0 var(--chat-shadow);
+  }
+}
+
+.chat-box-body {
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+  text-align: left;
+  padding: 5px 8px 3px;
+  font-family: "Enter the Gungeon Small", sans-serif;
+  font-size: 17px;
+  text-transform: none;
+  color: var(--chat-fg);
+  background-color: var(--chat-bg);
+  box-shadow:
+    -3px 0 0 0 var(--chat-bg),
+    3px 0 0 0 var(--chat-bg),
+    0 -3px 0 0 var(--chat-bg),
+    0 3px 0 0 var(--chat-bg);
+
+  filter: drop-shadow(var(--chat-stroke-width) 0 0 var(--chat-stroke))
+    drop-shadow(calc(var(--chat-stroke-width) * -1) 0 0 var(--chat-stroke))
+    drop-shadow(0 var(--chat-stroke-width) 0 var(--chat-stroke))
+    drop-shadow(0 calc(var(--chat-stroke-width) * -1) 0 var(--chat-stroke));
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: 6px;
+    top: 100%;
+    width: 9px;
+    height: 9px;
+    background-color: var(--chat-bg);
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% 100%,
+      66.6% 100%,
+      66.6% 66.6%,
+      33.3% 66.6%,
+      33.3% 33.3%,
+      0 33.3%
+    );
+  }
+
+  .chat-box-word {
+    display: inline-block;
+  }
+  .chat-box-word > span {
+    display: inline-block;
+    animation: tooltip-letter-in 0.1s ease-out var(--delay) both;
+  }
+}

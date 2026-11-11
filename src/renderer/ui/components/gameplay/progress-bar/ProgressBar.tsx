@@ -7,7 +7,7 @@ import { useProgressSparkles } from "./useProgressSparkles.ts";
 const COLORS = {
   rainbow: "var(--rainbow-gradient-bar)",
   primary: "#AD9EFF",
-  warning: "#ffb199",
+  warning: "#ffaeae",
   critical: "#f7628b",
 };
 
@@ -17,7 +17,7 @@ const RAINBOW_STRIPE_SPEED = 3;
 const BLINK_SLOW = "blink 0.8s linear infinite";
 const BLINK_FAST = "blink 0.4s linear infinite";
 
-// the rainbow lasts through the warning, and goes away in critical
+// the rainbow lasts through warning and goes away in critical
 const isRainbowStage = (stage: BarStage) => stage <= 1;
 
 function getBackground(stage: BarStage, rainbow: boolean): string {
@@ -44,7 +44,6 @@ export default function ProgressBar() {
 
   const fill = useRef<HTMLDivElement>(null);
   const sparkles = useRef<HTMLDivElement>(null);
-  // a power-up that is running makes the bar rainbow
   const rainbow = isTimedPowerUp(state) && !state.timeRush;
   useProgressSparkles(
     fill,
@@ -53,7 +52,6 @@ export default function ProgressBar() {
   );
 
   const lines = useRef<HTMLDivElement>(null);
-  // stays rainbow through every stage while the time is frozen
   const rainbowBar = rainbow && (isRainbowStage(barStage) || state.timeFrozen);
   useEffect(() => {
     const animations = lines.current?.getAnimations?.({ subtree: true }) ?? [];
@@ -110,7 +108,7 @@ export default function ProgressBar() {
             : getAnimation(stage, state.roundSeconds),
           animationPlayState: ready ? "running" : "paused",
           transformOrigin: "left",
-          width: "140px",
+          width: "150px",
           background: state.isGameOver
             ? COLORS.critical
             : getBackground(stage, rainbowBar),

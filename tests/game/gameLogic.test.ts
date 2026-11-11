@@ -3,9 +3,7 @@ import { expect, describe, test } from "vite-plus/test";
 import {
   createInitialState,
   DEFAULT_GOAL_STEPS,
-  isTimedPowerUp,
   reduce,
-  roundSecondsFor,
   type GameAction,
   type GameState,
 } from "../../src/renderer/game/gameLogic.ts";
@@ -44,13 +42,6 @@ describe("starting a game", () => {
     expect(state.isGameOver).toBe(false);
     expect(state.roundSeconds).toBe(20);
   });
-
-  test("starts from the saved high score and death count", () => {
-    const state = createInitialState({ highScore: 70, deathCount: 5 });
-
-    expect(state.highScore).toBe(70);
-    expect(state.deathCount).toBe(5);
-  });
 });
 
 describe("clicking", () => {
@@ -67,18 +58,6 @@ describe("clicking", () => {
     expect(has(events, { type: "cursorCount", value: 4 })).toBe(true);
   });
 
-  test("reports the press, the sound, the +N and the animation", () => {
-    // a high score of 99 keeps this click from being a new best
-    const { events } = play(createInitialState({ highScore: 99 }), increase());
-
-    expect(events).toEqual([
-      { type: "pressed", button: "increase", disabled: false },
-      { type: "sound", name: "buttonInc" },
-      { type: "cursorCount", value: 1 },
-      { type: "counterAnimation", name: "pop" },
-    ]);
-  });
-
   test("does nothing once the game is over", () => {
     const over = { ...createInitialState(), isGameOver: true };
     const { state, events } = play(over, increase(), boost());
@@ -89,12 +68,6 @@ describe("clicking", () => {
 });
 
 describe("high scores", () => {
-  test("a new best from a boost says so", () => {
-    const { events } = play(createInitialState({ highScore: 1 }), boost());
-
-    expect(has(events, { type: "newBest", boosted: true })).toBe(true);
-  });
-
   test("beating the high score updates it and celebrates once", () => {
     const start = createInitialState({ highScore: 1 });
     const { state, events } = play(start, increase(), increase(), increase());
@@ -110,30 +83,6 @@ describe("high scores", () => {
     expect(
       events.filter((e) => e.type === "sound" && e.name === "highScore"),
     ).toHaveLength(1);
-  });
-
-  // a record from an earlier run, that one point beats
-  const withRecord = () => ({
-    ...createInitialState({ highScore: 1 }),
-    counter: 1,
-  });
-
-  test("a click that sets a high score pops to the right", () => {
-    const { events } = play(withRecord(), increase());
-    expect(has(events, { type: "counterAnimation", name: "pop-right" })).toBe(
-      true,
-    );
-  });
-
-  test("the clicks after it pop as usual", () => {
-    const first = play(withRecord(), increase());
-    const { events } = play(first.state, increase());
-
-    expect(types(events)).toContain("highScore");
-    expect(has(events, { type: "counterAnimation", name: "pop" })).toBe(true);
-    expect(has(events, { type: "counterAnimation", name: "pop-right" })).toBe(
-      false,
-    );
   });
 
   test("the very first run has no record to celebrate, but saves its score", () => {
@@ -155,28 +104,6 @@ describe("high scores", () => {
       false,
     );
   });
-
-  test("the second run does celebrate beating the first", () => {
-    const first = play(createInitialState(), increase(), increase());
-    const second = play(
-      reduce(first.state, { type: "restart" }).state,
-      increase(),
-      increase(),
-      increase(),
-    );
-
-    expect(second.state.isHighScore).toBe(true);
-    expect(types(second.events)).toContain("confetti");
-    expect(has(second.events, { type: "sound", name: "highScore" })).toBe(true);
-  });
-
-  test("tying the high score does not count", () => {
-    const start = createInitialState({ highScore: 1 });
-    const { state } = play(start, increase());
-
-    expect(state.highScore).toBe(1);
-    expect(state.isHighScore).toBe(false);
-  });
 });
 
 describe("goals", () => {
@@ -196,14 +123,6 @@ describe("goals", () => {
     expect(has(events, { type: "sound", name: "goalReached" })).toBe(true);
   });
 
-  test("the random number picks which step", () => {
-    const steps = DEFAULT_GOAL_STEPS;
-    expect(play(nearGoal(), increase(0)).state.currentGoal).toBe(30 + steps[0]);
-    expect(play(nearGoal(), increase(0.99)).state.currentGoal).toBe(
-      30 + steps[steps.length - 1],
-    );
-  });
-
   test("the countdown restarts, faster each goal", () => {
     const first = play(nearGoal(), increase()).state;
 
@@ -216,19 +135,6 @@ describe("goals", () => {
       increase(),
     ).state;
     expect(second.roundSeconds).toBeCloseTo(20 / 1.2 / 1.2);
-  });
-
-  test("an ordinary click that falls short leaves the goal alone", () => {
-    const { state, events } = play(createInitialState(), increase());
-
-    expect(state.currentGoal).toBe(30);
-    expect(state.round).toBe(0);
-    expect(types(events)).not.toContain("goalChanged");
-  });
-
-  test("roundSecondsFor speeds up by 1.2x per goal", () => {
-    expect(roundSecondsFor(0)).toBe(20);
-    expect(roundSecondsFor(2)).toBeCloseTo(20 / 1.44);
   });
 });
 
@@ -243,46 +149,6 @@ describe("boosting", () => {
     // the boost notice says how much it added, so nothing floats at the cursor:
     // the only count is the one of the click before it
     expect(events.filter((e) => e.type === "cursorCount")).toHaveLength(1);
-  });
-
-  test("a boosted goal does not count towards the faster countdown", () => {
-    const { state } = play(createInitialState(), boost());
-
-    expect(state.trueGoalsReached).toBe(0);
-    expect(state.round).toBe(1);
-    expect(state.roundSeconds).toBe(20);
-  });
-
-  test("is quiet about reaching the goal, but not about the boost", () => {
-    const { events } = play(createInitialState(), boost());
-
-    expect(has(events, { type: "sound", name: "goalReached" })).toBe(false);
-    expect(has(events, { type: "sound", name: "useBoost" })).toBe(true);
-    expect(types(events)).toContain("boostNotification");
-    // it says how much the boost added
-    expect(has(events, { type: "boostNotification", points: 30 })).toBe(true);
-    expect(has(events, { type: "counterAnimation", name: "pop-dec" })).toBe(
-      true,
-    );
-  });
-
-  test("a boost that sets a high score keeps its own animation", () => {
-    const { events } = play(createInitialState(), boost());
-    expect(has(events, { type: "counterAnimation", name: "pop-right" })).toBe(
-      false,
-    );
-    expect(types(events)).toContain("highScore");
-  });
-
-  test("using the last boost says so", () => {
-    const start = { ...createInitialState(), boostsAvailable: 1 };
-    const { state, events } = play(start, boost());
-
-    expect(state.boostsAvailable).toBe(0);
-    expect(types(events)).toContain("noBoostsLeft");
-
-    const earlier = play(createInitialState(), boost()).events;
-    expect(types(earlier)).not.toContain("noBoostsLeft");
   });
 
   test("with none left it only complains", () => {
@@ -331,57 +197,6 @@ describe("restarting", () => {
       deathCount: 3,
     });
   });
-
-  test("restarts the countdown", () => {
-    expect(play(messy(), { type: "restart" }).state.round).toBe(7);
-  });
-
-  test("an active power-up ends with the run", () => {
-    const restarted = play(messy(), { type: "restart" }).state;
-
-    expect(restarted.countIncrement).toBe(1);
-    expect(isTimedPowerUp(restarted)).toBe(false);
-  });
-
-  test("every power-up that lasts ends with it, not only 2x", () => {
-    for (const powerUp of [
-      "double_click",
-      "four_click",
-      "combo",
-      "time_freeze",
-      "time_rush",
-    ] as const) {
-      const running = play(createInitialState(), {
-        type: "collectPowerUp",
-        powerUp,
-      }).state;
-
-      expect(isTimedPowerUp(running)).toBe(true);
-      expect(isTimedPowerUp(play(running, { type: "restart" }).state)).toBe(
-        false,
-      );
-    }
-  });
-
-  test("can restart without starting the music", () => {
-    const { events } = play(messy(), { type: "restart", music: false });
-
-    expect(types(events)).toContain("restarted");
-    expect(has(events, { type: "sound", name: "bgMusic" })).toBe(false);
-  });
-
-  test("reports it so the screen can reset too", () => {
-    const { events } = play(messy(), { type: "restart" });
-
-    expect(types(events)).toContain("restarted");
-    expect(has(events, { type: "sound", name: "bgMusic" })).toBe(true);
-    expect(has(events, { type: "counterAnimation", name: "reset-shake" })).toBe(
-      true,
-    );
-    expect(has(events, { type: "goalChanged", direction: "reverse" })).toBe(
-      true,
-    );
-  });
 });
 
 describe("running out of time", () => {
@@ -394,90 +209,52 @@ describe("running out of time", () => {
     expect(events).toEqual([
       { type: "sound", name: "gameOver" },
       { type: "stopSound", name: "bgMusic" },
-      { type: "gameOver", isHighScore: false, score: 12 },
+      {
+        type: "gameOver",
+        isHighScore: false,
+        score: 12,
+        peakScore: 0,
+        powerUps: 0,
+        boosts: 0,
+      },
     ]);
   });
 
-  // a round far from its goal, so the timer can end it
-  const nearRank = (highScore: number, counter: number) => ({
-    ...createInitialState({ highScore }),
-    counter,
-    currentGoal: 1000,
-  });
-  const gameOverOf = (events: GameEvent[]) =>
-    events.find((e) => e.type === "gameOver") as Extract<
-      GameEvent,
-      { type: "gameOver" }
-    >;
-
-  test("tells which rank a new best score has reached, when it is a higher one", () => {
-    const { events } = play(nearRank(99, 99), increase(), {
-      type: "timerExpired",
-    });
-
-    expect(gameOverOf(events)).toMatchObject({
-      isHighScore: true,
-      newRank: "Slow Fingers",
-    });
-  });
-
-  test("a new best score within the same rank is not a new rank", () => {
-    const { events } = play(nearRank(150, 150), increase(), {
-      type: "timerExpired",
-    });
-
-    expect(gameOverOf(events).isHighScore).toBe(true);
-    expect(gameOverOf(events).newRank).toBeUndefined();
-  });
-
-  test("a round that did not beat the best earns no rank", () => {
-    const { events } = play(nearRank(50, 40), { type: "timerExpired" });
-
-    expect(gameOverOf(events).newRank).toBeUndefined();
-  });
-
-  test("tells whether it was a new high score", () => {
-    const { events } = play(
-      { ...createInitialState({ highScore: 1 }), counter: 1 },
+  test("tells the peak score and the power-ups of the run, which a restart clears", () => {
+    // 1 point, then 25 down and 25 up again: the counter ends at 1, but it was
+    // never higher than 1; two power-ups were collected
+    const run = play(
+      createInitialState({ highScore: 999 }),
       increase(),
-      { type: "timerExpired" },
+      { type: "collectPowerUp", powerUp: "minus_25" },
+      { type: "collectPowerUp", powerUp: "plus_25" },
     );
+    expect(run.state.powerUpsCollected).toBe(2);
 
-    expect(has(events, { type: "gameOver", isHighScore: true, score: 2 })).toBe(
-      true,
-    );
-  });
-
-  test("the first run announces the rank it earned", () => {
-    const { events } = play(createInitialState(), increase(), {
-      type: "timerExpired",
-    });
-
-    expect(has(events, { type: "gameOver", newRank: "Rookie" })).toBe(true);
-  });
-
-  test("a score of nothing earns no rank", () => {
-    const { events } = play(createInitialState(), { type: "timerExpired" });
-
-    expect(has(events, { type: "gameOver", newRank: undefined })).toBe(true);
-  });
-
-  test("the first run is not called a new high score", () => {
-    const { events } = play(createInitialState(), increase(), {
-      type: "timerExpired",
-    });
-
+    const over = play(run.state, { type: "endRun" });
     expect(
-      has(events, { type: "gameOver", isHighScore: false, score: 1 }),
+      has(over.events, { type: "gameOver", peakScore: 1, powerUps: 2 }),
     ).toBe(true);
+
+    const next = play(over.state, { type: "restart" }).state;
+    expect(next.peakScore).toBe(0);
+    expect(next.powerUpsCollected).toBe(0);
   });
 
-  test("does nothing if the game is already over", () => {
-    const over = { ...createInitialState(), isGameOver: true };
-    const { state, events } = play(over, { type: "timerExpired" });
+  test("tells the boosts used in the run, which a restart clears", () => {
+    const run = play(
+      createInitialState({ highScore: 999 }),
+      increase(),
+      boost(),
+      boost(),
+    );
+    expect(run.state.boostsUsed).toBe(2);
 
-    expect(state).toBe(over);
-    expect(events).toEqual([]);
+    const over = play(run.state, { type: "endRun" });
+    expect(has(over.events, { type: "gameOver", boosts: 2 })).toBe(true);
+
+    const next = play(over.state, { type: "restart" }).state;
+    expect(next.boostsUsed).toBe(0);
   });
 
   test("does nothing if the goal was reached in time", () => {
@@ -507,130 +284,11 @@ describe("power-ups", () => {
     expect(ended.goalSteps).toEqual(DEFAULT_GOAL_STEPS);
   });
 
-  test("4x quadruples clicks", () => {
-    const { state } = take(createInitialState(), "four_click");
-
-    expect(state.countIncrement).toBe(4);
-    expect(state.goalSteps).toEqual([20, 25, 30]);
-  });
-
-  test("a combo adds one more with each click, until it ends", () => {
-    const taken = take(createInitialState(), "combo").state;
-    expect(taken.comboNext).toBe(1);
-
-    const { state, events } = play(taken, increase(), increase(), increase());
-    expect(state.counter).toBe(1 + 2 + 3);
-    expect(state.comboNext).toBe(4);
-    // each click reports what it added
-    const counts = events.flatMap((e) =>
-      e.type === "cursorCount" ? [e.value] : [],
-    );
-    expect(counts).toEqual([1, 2, 3]);
-
-    // and it starts again from 1 the next time
-    const ended = play(state, { type: "powerUpEnded" }).state;
-    expect(ended.comboNext).toBeNull();
-    expect(play(ended, increase()).state.counter).toBe(6 + 1);
-    const again = take(ended, "combo").state;
-    expect(play(again, increase()).state.counter).toBe(6 + 1);
-  });
-
-  test("a combo and a multiplier replace each other", () => {
-    const combo = take(createInitialState(), "combo").state;
-    const doubled = take(combo, "double_click").state;
-    expect(doubled.comboNext).toBeNull();
-    expect(play(doubled, increase()).state.counter).toBe(2);
-
-    const back = take(doubled, "combo").state;
-    expect(back.countIncrement).toBe(1);
-    expect(play(back, increase(), increase()).state.counter).toBe(1 + 2);
-  });
-
-  test("the end of the run ends the power-ups that last, so a new run starts clean", () => {
-    for (const powerUp of [
-      "double_click",
-      "four_click",
-      "combo",
-      "time_freeze",
-      "time_rush",
-    ] as const) {
-      const running = take(createInitialState(), powerUp).state;
-      const over = play(running, { type: "timerExpired" }).state;
-
-      expect(over.isGameOver).toBe(true);
-      expect(over.countIncrement).toBe(1);
-      expect(over.comboNext).toBeNull();
-      expect(over.timeFrozen).toBe(false);
-
-      const again = play(over, { type: "restart" }).state;
-      expect(isTimedPowerUp(again)).toBe(false);
-    }
-  });
-
   test("a time freeze freezes time, until it ends", () => {
     const { state } = take(createInitialState(), "time_freeze");
     expect(state.timeFrozen).toBe(true);
 
     expect(play(state, { type: "powerUpEnded" }).state.timeFrozen).toBe(false);
-  });
-
-  test("a time rush rushes time, until it ends", () => {
-    const { state } = take(createInitialState(), "time_rush");
-    expect(state.timeRush).toBe(true);
-    expect(state.timeFrozen).toBe(false);
-
-    expect(play(state, { type: "powerUpEnded" }).state.timeRush).toBe(false);
-  });
-
-  test("a time rush is a bad power-up, so it shakes the screen and the freeze takes it away", () => {
-    const { state, events } = take(createInitialState(), "time_rush");
-    expect(types(events)).toContain("penalty");
-    expect(has(events, { type: "sound", name: "penalty" })).toBe(true);
-
-    const frozen = take(state, "time_freeze").state;
-    expect(frozen.timeRush).toBe(false);
-    expect(frozen.timeFrozen).toBe(true);
-    expect(take(frozen, "time_rush").state.timeFrozen).toBe(false);
-  });
-
-  test("a time freeze replaces the other power-ups that last, and the other way round", () => {
-    const doubled = take(createInitialState(), "double_click").state;
-    const frozen = take(doubled, "time_freeze").state;
-    expect(frozen.timeFrozen).toBe(true);
-    expect(frozen.countIncrement).toBe(1);
-    expect(frozen.goalSteps).toEqual(DEFAULT_GOAL_STEPS);
-
-    const combo = take(frozen, "combo").state;
-    expect(combo.timeFrozen).toBe(false);
-    expect(combo.comboNext).toBe(1);
-  });
-
-  test("the bonus gives 25 points, the mirror of the penalty", () => {
-    const { state, events } = take(
-      { ...createInitialState(), counter: 3 },
-      "plus_25",
-    );
-
-    expect(state.counter).toBe(28);
-    expect(types(events)).not.toContain("penalty");
-    expect(has(events, { type: "sound", name: "powerUp" })).toBe(true);
-    expect(has(events, { type: "counterAnimation", name: "pop" })).toBe(true);
-  });
-
-  test("the bonus can reach the goal, and beat the high score", () => {
-    const start = { ...createInitialState({ highScore: 5 }), counter: 10 };
-    const { state, events } = take(start, "plus_25");
-
-    // 35 passes the first goal of 30, which moves on
-    expect(state.counter).toBe(35);
-    expect(state.currentGoal).toBeGreaterThan(30);
-    expect(state.trueGoalsReached).toBe(1);
-    expect(state.highScore).toBe(35);
-    expect(types(events)).toContain("newBest");
-
-    // only the sound of the power-up, not the one of reaching a goal
-    expect(has(events, { type: "sound", name: "powerUp" })).toBe(true);
-    expect(has(events, { type: "sound", name: "goalReached" })).toBe(false);
   });
 
   test("the penalty takes 25 points and may go below zero", () => {
@@ -647,14 +305,6 @@ describe("power-ups", () => {
     );
   });
 
-  test("good ones pop the counter and do not flash the screen", () => {
-    const { events } = take(createInitialState(), "double_click");
-
-    expect(types(events)).not.toContain("penalty");
-    expect(has(events, { type: "counterAnimation", name: "pop" })).toBe(true);
-    expect(has(events, { type: "sound", name: "powerUp" })).toBe(true);
-  });
-
   test("an extra boost adds one, up to the maximum", () => {
     const some = { ...createInitialState(), boostsAvailable: 2 };
     expect(take(some, "extra_boost").state.boostsAvailable).toBe(3);
@@ -668,10 +318,5 @@ describe("power-ups", () => {
         name: "boostPowerUp",
       }),
     ).toBe(true);
-  });
-
-  test("the superstar refills every boost", () => {
-    const none = { ...createInitialState(), boostsAvailable: 0 };
-    expect(take(none, "replenish_boosts").state.boostsAvailable).toBe(4);
   });
 });

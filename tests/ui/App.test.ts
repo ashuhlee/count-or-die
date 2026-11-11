@@ -28,4 +28,14 @@ describe("App", () => {
     expect(main.querySelector("#quit-game-btn")).not.toBeNull();
     expect(main.querySelector("#counter")).toBeNull();
   });
+
+  test("shows the beta notice the first time it opens, and never again", () => {
+    // the app was opened for the first time in the setup above
+    expect(main.querySelector("#beta-notice")).not.toBeNull();
+
+    act(() => root.unmount());
+    root = createRoot(main);
+    act(() => root.render(createElement(App)));
+    expect(main.querySelector("#beta-notice")).toBeNull();
+  });
 });

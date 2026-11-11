@@ -1,0 +1,10 @@
+:root {
+  --parallax-range: 3px;
+}
+
+@mixin parallax($depth, $depth-y: $depth, $scope: parallax) {
+  translate: calc(
+      var(--#{$scope}-x, 0) * var(--parallax-range) * #{$depth * -1}
+    )
+    calc(var(--#{$scope}-y, 0) * var(--parallax-range) * #{$depth-y * -1});
+}

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Count or Die</title>
+    <meta
+      name="description"
+      content="A fast paced clicker game where speed meets strategy."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Count or Die" />
+    <meta
+      property="og:description"
+      content="A fast paced clicker game where speed meets strategy."
+    />
+    <meta property="og:url" content="https://play.countordie.gg" />
+    <meta
+      property="og:image"
+      content="https://play.countordie.gg/preview.png"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The Count or Die title screen" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background: #171523;
+      }
+
+      #game {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        transform-origin: 0 0;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe
+      id="game"
+      src="./game/index.html"
+      title="Count or Die"
+      allow="autoplay; fullscreen"
+    ></iframe>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

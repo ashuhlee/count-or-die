@@ -1,3 +1,5 @@
+@use "../base/button-pop";
+
 .buttons {
   display: flex;
   gap: 22px;
@@ -14,7 +16,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: drop-shadow(0px 7px 0px var(--shadow-pink-020));
+  filter: drop-shadow(0px 6px 0px var(--shadow-pink-020));
 }
 
 // once the game is over, none of the game's buttons can be pressed
@@ -27,19 +29,16 @@
 
 .end-run {
   .pixel-btn {
-    filter: drop-shadow(0px 7px 0px var(--shadow-pink-020));
-  }
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    filter: drop-shadow(0px 6px 0px var(--shadow-pink-020));
+    @include button-pop.button-pop;
 
-  &:hover {
-    transform: scale(1.05);
-  }
+    &::before,
+    &::after,
+    > * {
+      @include button-pop.pop-visual;
+    }
 
-  &:active {
-    transform: scale(0.75);
-    filter: brightness(0.95) saturate(110%);
-
-    .pixel-btn {
+    &:active {
       filter: none;
     }
   }
@@ -68,12 +67,11 @@
     border: 0;
     background: none;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --pop-press-scale: 0.9;
+    @include button-pop.button-pop;
 
-    &:active {
-      scale: 0.9;
-      rotate: 0deg !important;
-      filter: brightness(0.95) saturate(110%);
+    > * {
+      @include button-pop.pop-visual;
     }
 
     img {
@@ -92,5 +90,7 @@
     left: 50%;
     width: 22px;
     transform: translate(-50%, -50%);
+    // the button's center, so it scales and tilts around that
+    transform-origin: 0 0;
   }
 }

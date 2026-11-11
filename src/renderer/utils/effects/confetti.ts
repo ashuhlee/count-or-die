@@ -24,14 +24,14 @@ const look = () => ({
   shapes: ["square", getSparkle()] as confetti.Shape[],
 });
 
-function burst(): void {
+export function burst(y = 0.2): void {
   confetti({
     ...look(),
     particleCount: 80,
     spread: 800,
     startVelocity: 30,
     ticks: 100,
-    origin: { x: 0.5, y: 0.2 },
+    origin: { x: 0.5, y },
   });
 }
 

@@ -1,5 +1,7 @@
 node_modules/
 dist/
+dist-web/
+count-or-die-web.zip
 out/
 build/
 old_code/
@@ -10,3 +12,7 @@ old_code/
 .archive/
 
 debug/
+.claude/
+
+# local scripts for trying things out
+test-scripts/

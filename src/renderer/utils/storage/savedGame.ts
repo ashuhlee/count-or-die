@@ -1,7 +1,7 @@
 // what the game remembers between sessions
 
-const HIGH_SCORE_KEY = "highScore";
-const DEATH_COUNT_KEY = "deathCount";
+export const HIGH_SCORE_KEY = "highScore";
+export const DEATH_COUNT_KEY = "deathCount";
 
 function readNumber(key: string): number {
   return Number.parseInt(localStorage.getItem(key) ?? "", 10) || 0;

@@ -1,6 +1,6 @@
 import { playSound } from "./sounds.ts";
 
-const QUIT_DELAY = 400;
+const QUIT_DELAY = 300;
 
 export function quitGame(): void {
   playSound("buttonClick");

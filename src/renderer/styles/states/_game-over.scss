@@ -1,4 +1,6 @@
+@use "../base/button-pop";
 @use "../base/globals";
+@use "../base/parallax";
 @use "../base/swirl-background";
 @use "../base/pixel-stripes" as stripes;
 
@@ -12,6 +14,7 @@
   left: 0;
   width: 100%;
   height: 100%;
+  grid-template-rows: 100%;
   place-items: center;
   font-family: "Silkscreen", sans-serif;
   z-index: 10;
@@ -96,6 +99,7 @@
     opacity: 1;
     pointer-events: none;
     transition: opacity 0.5s ease 0.2s;
+    z-index: 1;
   }
 
   .deco-icons {
@@ -103,6 +107,7 @@
     gap: 14px;
     margin-bottom: 20px;
     z-index: -3;
+    @include parallax.parallax(1.4);
     img {
       height: 55px;
       image-rendering: pixelated;
@@ -128,8 +133,14 @@
     text-transform: none;
     top: 50px;
     max-width: 250px;
+    @include parallax.parallax(1);
+  }
+  .notices,
+  .controls {
+    @include parallax.parallax(1);
   }
   .top-right-info {
+    @include parallax.parallax(1);
     z-index: -3;
     position: absolute;
     top: 10px;
@@ -171,6 +182,7 @@
   }
 
   .play-again {
+    @include parallax.parallax(1);
     margin: 32px;
     font-size: 28px;
     font-family: "Enter the Gungeon Small", sans-serif;
@@ -198,7 +210,7 @@
         transparent 0.22em,
         #fff 0.22em,
         #fff 0.4em,
-        #d7d7f1 0.4em
+        #ece5ff 0.4em
       );
       background-clip: text;
     }
@@ -207,6 +219,8 @@
   .go-title {
     width: 80vw;
     max-width: 380px;
+    z-index: 2;
+    @include parallax.parallax(0.8);
   }
   img {
     image-rendering: pixelated;
@@ -217,6 +231,8 @@
     height: 100%;
     pointer-events: none;
     left: 25vw;
+    z-index: 2;
+    @include parallax.parallax(1.8, 0);
 
     @media screen and (max-width: 1100px) {
       display: none;
@@ -245,13 +261,15 @@
     }
   }
   .bottom-section {
+    display: grid;
     place-items: center;
+    @include parallax.parallax(1);
 
     .back-to-menu {
       --back-border: #a1a1ff;
       z-index: -5;
       position: relative;
-      padding: 4px 10px 2px;
+      padding: 5px 18px 4px;
       margin-top: 40px;
       font-family: "Enter the Gungeon Small", sans-serif;
       font-size: 18px;
@@ -294,7 +312,6 @@
         z-index: -3;
         inset: 0;
         transform: scaleX(1);
-        opacity: 0.8;
 
         @include stripes.stripes(
           $stripe-period: 12px,
@@ -303,7 +320,7 @@
           $stripe-opacity: 0.2,
           $stripe-pixel-size: 1.5
         );
-        background-color: #a1a1ff;
+        background-color: var(--back-border);
         background-blend-mode: overlay;
         animation: slide-stripes 2.7s linear infinite;
         box-shadow:
@@ -327,27 +344,21 @@
       gap: 22px;
 
       .wide-btn {
-        filter: drop-shadow(0px 7px 0px var(--shadow-pink-015));
-        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        filter: drop-shadow(0px 5px 0px var(--shadow-pink-015));
+        @include button-pop.button-pop;
 
-        &:hover {
-          scale: 1.05;
+        &::before,
+        &::after,
+        > * {
+          @include button-pop.pop-visual;
         }
       }
 
-      .play-again-btn,
+      .play-again-btn {
+        --pop-tilt: 4deg;
+      }
       .play-again-btn-2 {
-        &:active {
-          scale: 0.75;
-          rotate: 0deg !important;
-          filter: brightness(0.95) saturate(110%);
-        }
-      }
-      .play-again-btn:hover {
-        rotate: 2deg;
-      }
-      .play-again-btn-2:hover {
-        rotate: -2deg;
+        --pop-tilt: -4deg;
       }
     }
   }

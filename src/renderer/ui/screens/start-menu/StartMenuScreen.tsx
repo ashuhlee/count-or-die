@@ -1,5 +1,6 @@
 import { useEffect, useState, type CSSProperties } from "react";
 
+import { pickMathFact, rememberMathFact } from "../../../game/mathFacts.ts";
 import { useGame } from "../../../provider/useGame.ts";
 import Letters from "../../components/text/letters/Letters.tsx";
 import SkullFloor from "../../components/effects/skull-floor/SkullFloor.tsx";
@@ -7,12 +8,17 @@ import PixelButton from "../../components/buttons/pixel-button/PixelButton.tsx";
 import GameOverBackground, {
   GAME_OVER_HUE,
 } from "../game-over/GameOverBackground.tsx";
+import FallingIcons from "./FallingIcons.tsx";
 import StartMenuTitle from "./StartMenuTitle.tsx";
 
-export const BUTTONS_DELAY = 300;
+const BUTTONS_DELAY = 300;
 const HUE_DURATION = 500;
 
-const COLORS = { play: "#b0a1ff", report: "#FF85E3", quit: "#CDC8EA" };
+const COLORS = {
+  play: "#b0a1ff",
+  report: "#FF85E3",
+  quit: "#CDC8EA",
+};
 
 const FILL = "#ffffff";
 const look = (color: string) => ({
@@ -24,6 +30,10 @@ const look = (color: string) => ({
 
 export default function StartMenuScreen() {
   const { actions, loading, ready } = useGame();
+
+  // a new math fact for the skull to say, each time the menu is shown
+  const [fact] = useState(() => pickMathFact());
+  useEffect(() => rememberMathFact(fact), [fact]);
 
   const [buttonsIn, setButtonsIn] = useState(false);
   useEffect(() => {
@@ -49,7 +59,8 @@ export default function StartMenuScreen() {
         visible={ready}
         hueDuration={HUE_DURATION}
       />
-      <SkullFloor entrance={ready ? "play" : "wait"} />
+      <FallingIcons active={ready} />
+      <SkullFloor entrance={ready ? "play" : "wait"} chat={fact} />
       <StartMenuTitle />
       <div className="menu-buttons">
         <PixelButton
@@ -60,13 +71,12 @@ export default function StartMenuScreen() {
           shadeRows={2.5}
           onClick={loading.mounted ? undefined : actions.play}
         >
-          <Letters text="Start game" step={0.2} duration={3} />
+          <Letters text="Classic Mode" step={0.2} duration={3} />
         </PixelButton>
         <PixelButton
           {...look(COLORS.report)}
           className="menu-btn"
           id="report-bug-btn"
-          shine
           shadeRows={2.5}
           onClick={actions.reportBug}
         >
@@ -76,7 +86,6 @@ export default function StartMenuScreen() {
           {...look(COLORS.quit)}
           className="menu-btn"
           id="quit-game-btn"
-          shine
           shadeRows={2.5}
           onClick={actions.quit}
         >

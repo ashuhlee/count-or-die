@@ -1,11 +1,7 @@
-import { playSound } from "./sounds.ts";
-
 export const BUG_REPORT_URL =
-  "https://github.com/ashuhlee/count-or-die/issues/new";
+  "https://github.com/ashuhlee/count-or-die/issues/new?template=bug_report.yml";
 
 export function reportBug(): void {
-  playSound("buttonClick");
-
   if (window.electron) {
     window.electron.reportBug();
   } else {

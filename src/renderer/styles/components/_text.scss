@@ -21,23 +21,15 @@
 
 .count-cursor {
   position: fixed;
-  font-family: "SMW Text NC", sans-serif;
-  font-size: 24px;
+  font-family: "Enter the Gungeon Small", sans-serif;
+  font-size: 32px;
+  text-transform: uppercase;
+  color: #fff;
+  -webkit-text-stroke: 3px var(--count-color);
+  paint-order: stroke fill;
+  filter: drop-shadow(3px 3px 0 var(--count-color));
   pointer-events: none;
   z-index: 5;
-}
-
-#high-score {
-  position: absolute;
-  font-size: 15px;
-  color: white;
-  text-shadow: 0 4px 0 var(--shadow-pink-015);
-  font-family: "Teeny Tiny Pixls", sans-serif;
-  font-weight: bold;
-  bottom: -10px;
-  right: 0;
-  padding: 30px;
-  text-align: right;
 }
 
 .app-ver {

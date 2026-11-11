@@ -1,5 +1,7 @@
 import type { ComponentPropsWithoutRef, CSSProperties } from "react";
 
+import { playSound } from "../../../../utils/app/sounds.ts";
+
 type PixelButtonProps = {
   color: string;
   pixelSize?: number;
@@ -25,6 +27,7 @@ export default function PixelButton({
   className,
   style,
   children,
+  onMouseEnter,
   ...rest
 }: PixelButtonProps) {
   return (
@@ -36,7 +39,7 @@ export default function PixelButton({
           "--btn-fill": color,
           ...(pixelSize !== undefined && { "--px": `${pixelSize}px` }),
           ...(paddingY !== undefined && { "--btn-pad-y": paddingY }),
-          ...(shadeRows !== undefined && { "--btn-shade-rows": shadeRows }),
+          ...(shadeRows !== undefined && { "--btn-shade-base": shadeRows }),
           ...(outline !== undefined && { "--btn-outline": outline }),
           ...(highlight !== undefined && { "--btn-highlight": highlight }),
           ...(shade !== undefined && { "--btn-shade": shade }),
@@ -44,6 +47,10 @@ export default function PixelButton({
           ...style,
         } as CSSProperties
       }
+      onMouseEnter={(event) => {
+        if (!rest.disabled) playSound("buttonHover");
+        onMouseEnter?.(event);
+      }}
       {...rest}
     >
       <span className="pixel-btn-label">{children}</span>

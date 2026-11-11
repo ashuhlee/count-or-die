@@ -40,6 +40,7 @@ type GameProviderProps = {
   random?: () => number;
   startOnMenu?: boolean;
   startedFromGame?: boolean;
+  betaNotice?: boolean;
 };
 
 export default function GameProvider({
@@ -48,6 +49,7 @@ export default function GameProvider({
   random = () => Math.random(),
   startOnMenu = false,
   startedFromGame = false,
+  betaNotice = false,
 }: GameProviderProps) {
   const [bus] = useState(() => createEventBus());
   const later = useTimeouts();
@@ -58,10 +60,10 @@ export default function GameProvider({
 
   const [screen, setScreen] = useState<Screen>(startOnMenu ? "menu" : "game");
   const [cameFromGame, setCameFromGame] = useState(startedFromGame);
+  const [noticeOpen, setNoticeOpen] = useState(betaNotice);
 
   const stateRef = useRef(state);
 
-  // everything that counts game time goes through this, so a pause is one call
   const [clock] = useState(() => createGameClock());
   useEffect(() => () => clock.clear(), [clock]);
 
@@ -71,14 +73,11 @@ export default function GameProvider({
   const [paused, setPaused] = useState(false);
   const pausedRef = useRef(false);
 
-  // lets the style sheet pause the animations that keep game time
   useEffect(() => {
     document.documentElement.toggleAttribute("data-paused", paused);
     return () => document.documentElement.removeAttribute("data-paused");
   }, [paused]);
 
-  // when the power-up that is running ends; a new one takes its place, and the
-  // end of the run takes it away
   const powerUpEnd = useRef<ClockTimer>(undefined);
   useEffect(() => {
     if (state.isGameOver) clock.cancel(powerUpEnd.current);
@@ -124,7 +123,9 @@ export default function GameProvider({
     [bus, clock, later],
   );
 
-  const ready = useStartupDone();
+  const loaded = useStartupDone();
+  // the menu comes in once the notice is closed
+  const ready = loaded && !noticeOpen;
 
   const barStage = useCountdown(
     state,
@@ -150,35 +151,34 @@ export default function GameProvider({
       },
 
       restartFromGameOver() {
-        playSound("buttonClick");
-        pauseSound("gameOverMusic");
         cover(() => {
           dispatch({ type: "restart" });
           bus.emit({ type: "pageReset" });
         });
+        pauseSound("gameOverMusic");
       },
 
       play() {
-        playSound("buttonClick");
-        pauseSound("menuMusic");
         cover(() => setScreen("game"));
+        pauseSound("menuMusic");
       },
 
       backToMenu() {
-        playSound("buttonClick");
-        pauseSound("gameOverMusic");
-        pauseSound("bgMusic");
         cover(() => {
           dispatch({ type: "restart", music: false });
           bus.emit({ type: "pageReset" });
           setScreen("menu");
           setCameFromGame(true);
         });
+        pauseSound("gameOverMusic");
+        pauseSound("bgMusic");
       },
 
       quit: quitGame,
 
       reportBug,
+
+      dismissBetaNotice: () => setNoticeOpen(false),
 
       collectPowerUp(type) {
         dispatch({
@@ -240,6 +240,7 @@ export default function GameProvider({
       loading,
       actions,
       ready,
+      betaNotice: noticeOpen,
       paused,
       clock,
       screen,
@@ -251,6 +252,7 @@ export default function GameProvider({
       loading,
       actions,
       ready,
+      noticeOpen,
       paused,
       clock,
       screen,

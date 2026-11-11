@@ -1,0 +1,111 @@
+// what the popup says
+.alert-popup {
+  .alert-popup-line {
+    display: block;
+
+    // the space between the lines that a new line started
+    & + .alert-popup-line {
+      margin-top: 24px;
+    }
+  }
+
+  .alert-popup-word--highlight {
+    color: #7acaf2;
+  }
+
+  .alert-popup-word {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  // rows: the goal on the left, the progress on the right
+  .alert-popup-body.alert-popup-body--rows {
+    padding: 36px 44px 48px;
+  }
+
+  .alert-popup-rows {
+    display: grid;
+    gap: 26px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .alert-popup-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 24px;
+    color: #3b375d;
+  }
+
+  .alert-popup-row--done {
+    &,
+    .alert-popup-row-value {
+      color: #c1c0cd;
+    }
+  }
+
+  .alert-popup-row-label {
+    white-space: nowrap;
+    font-family: "Enter the Gungeon Small", sans-serif;
+    font-size: 18px;
+  }
+
+  .alert-popup-row-text {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .alert-popup-row--done .alert-popup-row-text::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: -4px;
+    right: -4px;
+    top: 4.5px;
+    height: 4px;
+    background: #c1c0cd;
+    opacity: 0.6;
+    transform-origin: left center;
+    animation: alert-strike-in 0.4s 0.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+
+  .alert-popup-row-value {
+    white-space: nowrap;
+    font-family: "Teeny Tiny Pixls", sans-serif;
+    font-size: 14px;
+    color: #9997ff;
+  }
+
+  .alert-popup-text {
+    position: relative;
+    min-width: 0;
+    max-width: 460px;
+    text-align: center;
+    font-family: "Enter the Gungeon Small", sans-serif;
+    font-size: 18px;
+    line-height: 20px;
+    text-transform: uppercase;
+    text-shadow: none;
+    color: #433e61;
+
+    // the letters stand still
+    [data-char] {
+      display: inline-block;
+    }
+  }
+}
+
+@keyframes alert-strike-in {
+  from {
+    transform: scaleX(0.5);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}

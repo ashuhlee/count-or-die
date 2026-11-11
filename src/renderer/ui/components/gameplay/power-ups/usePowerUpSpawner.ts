@@ -7,16 +7,14 @@ import { useGameEvent } from "../../../../provider/useGameEvent.ts";
 import type { ClockTimer } from "../../../../game/gameClock.ts";
 import type { Falling } from "./FallingPowerUp.tsx";
 
-const MIN_WAIT = 6000;
-const MAX_WAIT = 12000;
+// how long it takes for the next power-up to come, ms
+export const MIN_WAIT = 5000;
+export const MAX_WAIT = 8000;
 
-// Sends power-ups down the screen: one after a wait, then the next wait starts
-// once it has been collected or has fallen off the screen
 export function usePowerUpSpawner() {
   const { state, actions, ready, clock } = useGame();
   const [falling, setFalling] = useState<Falling[]>([]);
 
-  // the timer reads this when it fires, not when it was started
   const latest = useRef(state);
   useEffect(() => {
     latest.current = state;

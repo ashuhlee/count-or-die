@@ -8,7 +8,9 @@ export type SoundName =
   | "goalReached"
   | "gameOver"
   | "gameOverMusic"
+  | "loading"
   | "buttonClick"
+  | "buttonHover"
   | "mouseClick"
   | "powerUp"
   | "boostPowerUp"
@@ -38,6 +40,9 @@ export type GameEvent =
       type: "gameOver";
       isHighScore: boolean;
       score: number;
+      peakScore: number;
+      powerUps: number;
+      boosts: number;
       newRank?: string;
     }
   | { type: "restarted" }

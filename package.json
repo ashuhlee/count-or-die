@@ -3,13 +3,15 @@
   "productName": "Count or Die",
   "version": "1.0.0-beta.1",
   "author": "ashuhlee",
-  "description": "",
+  "description": "An arcade clicker game where speed meets strategy",
   "main": ".vite/build/main.js",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "hearts": "vp dev -c vite.renderer.config.ts --open /debug/hearts.html",
+    "publish": "electron-forge publish",
+    "build:web": "vite build --config vite.renderer.config.ts --outDir ../../dist-web/game --emptyOutDir && vite build --config vite.web.config.ts",
+    "package:web": "npm run build:web && cd dist-web && zip -r ../count-or-die-web.zip .",
     "test": "vp test run",
     "rebuild": "rm -rf out && npm run package && npm run make",
     "format": "vp fmt \"src/**/*.{ts,tsx,js,jsx,scss,css,json}\" \"tests/**/*.{ts,tsx,js,jsx}\"",
@@ -25,10 +27,12 @@
     "@electron-forge/maker-deb": "^7.11.1",
     "@electron-forge/maker-dmg": "^7.11.1",
     "@electron-forge/maker-rpm": "^7.11.1",
+    "@electron-forge/maker-squirrel": "^7.11.2",
     "@electron-forge/maker-zip": "^7.11.1",
     "@electron-forge/plugin-auto-unpack-natives": "^7.11.1",
     "@electron-forge/plugin-fuses": "^7.11.1",
     "@electron-forge/plugin-vite": "^7.11.1",
+    "@electron-forge/publisher-github": "^7.11.2",
     "@electron/fuses": "^1.8.0",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
@@ -43,11 +47,14 @@
     "vitest-localstorage-mock": "^0.1.2"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "animate.css": "4.1.1",
     "canvas-confetti": "^1.9.4",
+    "electron-squirrel-startup": "^1.0.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "simple-discord-rpc": "^1.0.1"
+    "simple-discord-rpc": "^1.0.1",
+    "update-electron-app": "^3.3.0"
   },
   "packageManager": "npm@12.0.2",
   "overrides": {

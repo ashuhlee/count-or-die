@@ -2,24 +2,12 @@
   --shadow-pink-005: rgba(206, 42, 133, 0.05);
   --shadow-pink-008: rgba(206, 42, 133, 0.08);
   --shadow-pink-010: rgba(206, 42, 133, 0.1);
-  --shadow-pink-012: rgba(206, 42, 133, 0.12);
   --shadow-pink-015: rgba(206, 42, 133, 0.15);
   --shadow-pink-020: rgba(206, 42, 133, 0.2);
 
-  --shadow-purple-010: rgba(94, 40, 255, 0.1);
   --shadow-purple-015: rgba(94, 40, 255, 0.15);
-  --shadow-purple-025: rgba(94, 40, 255, 0.25);
-  --shadow-purple-030: rgba(94, 40, 255, 0.3);
 
   --shadow-overlay-010: rgba(0, 0, 0, 0.1);
-  --shadow-overlay-015: rgba(0, 0, 0, 0.15);
-  --shadow-overlay-020: rgba(0, 0, 0, 0.2);
-  --shadow-overlay-025: rgba(0, 0, 0, 0.25);
-  --shadow-overlay-030: rgba(0, 0, 0, 0.3);
-  --shadow-overlay-035: rgba(0, 0, 0, 0.35);
-  --shadow-overlay-040: rgba(0, 0, 0, 0.4);
-  --shadow-overlay-045: rgba(0, 0, 0, 0.45);
-  --shadow-overlay-050: rgba(0, 0, 0, 0.5);
 
   --rainbow-gradient-bar: linear-gradient(
     to right,
@@ -42,12 +30,24 @@
 $assets: "../assets";
 $body-bg-image: "#{$assets}/ui/textures/tile-2.png";
 $game-over-bg: "#{$assets}/ui/textures/tile-go.png";
+$dark-bg: "#{$assets}/ui/textures/tile-dark.png";
 $loading-bg: "#{$assets}/ui/textures/tile-loading-1.png";
 $loading-bg-2: "#{$assets}/ui/textures/tile-loading-2.png";
 $melt-mask: "#{$assets}/ui/masks/drip-mask.png";
+// the arrow shown everywhere else, held at its tip
+$cursor-default: "#{$assets}/ui/cursor.svg";
+$cursor-default-x: 3;
+$cursor-default-y: 3;
 $cursor-hand: "#{$assets}/ui/hand.svg";
 $cursor-hand-x: 11;
 $cursor-hand-y: 2;
+// the open and closed hands, held at the middle of the palm
+$cursor-grab: "#{$assets}/ui/grab.svg";
+$cursor-grab-x: 22;
+$cursor-grab-y: 23;
+$cursor-grabbing: "#{$assets}/ui/grabbing.svg";
+$cursor-grabbing-x: 21;
+$cursor-grabbing-y: 21;
 $delay-step: 0.3s;
 
 $fonts: "../assets/fonts";
@@ -96,14 +96,8 @@ $fonts: "../assets/fonts";
   src: url("#{$fonts}/smw-text-nc.woff") format("woff");
 }
 
-$rainbow-gradient: linear-gradient(
-  to right,
-  #ffacad,
-  #ffd5a5,
-  #fdffb6,
-  #cbffbf,
-  #9bf6ff,
-  #a0c4ff,
-  #bdb2ff,
-  #ffc6ff
-);
+@font-face {
+  font-family: "Jersey 10";
+  font-display: block;
+  src: url("#{$fonts}/jersey-10.ttf") format("truetype");
+}

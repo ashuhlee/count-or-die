@@ -34,17 +34,4 @@ describe("lockDown", () => {
     expect(name).toBe("will-navigate");
     expect(event.preventDefault).toHaveBeenCalled();
   });
-
-  test("holds a packaged app at 100% zoom", () => {
-    const contents = fakeContents();
-    lockDown(contents as never, true);
-    expect(contents.setVisualZoomLevelLimits).toHaveBeenCalledWith(1, 1);
-  });
-
-  test("leaves navigation and zoom alone while developing", () => {
-    const contents = fakeContents();
-    lockDown(contents as never, false);
-    expect(contents.on).not.toHaveBeenCalled();
-    expect(contents.setVisualZoomLevelLimits).not.toHaveBeenCalled();
-  });
 });

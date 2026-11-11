@@ -4,7 +4,19 @@
   box-sizing: border-box;
 }
 
-// the hand shows over anything that can be clicked
+// the arrow is the cursor everywhere, and what is inside takes it from here
+html,
+body {
+  cursor:
+    url("#{globals.$cursor-default}") #{globals.$cursor-default-x}
+      #{globals.$cursor-default-y},
+    default;
+}
+
+// the hand shows over anything that can be clicked, and over the skull that
+// says something when it is hovered
+.skull-floor-anchor,
+.skull-floor-anchor *,
 button,
 button *,
 #decrease-button img,
@@ -55,15 +67,6 @@ body {
   user-select: none;
   -webkit-user-select: none;
   -webkit-app-region: no-drag;
-}
-
-.game-background {
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  opacity: 0.1;
-  mix-blend-mode: multiply;
-  pointer-events: none;
 }
 
 button,

@@ -1,4 +1,6 @@
 import path from "node:path";
+import started from "electron-squirrel-startup";
+import { updateElectronApp } from "update-electron-app";
 import { setDiscordStatus } from "./discordRPC.ts";
 import {
   app,
@@ -12,8 +14,15 @@ import {
 
 import type { IpcMainEvent, MenuItemConstructorOptions } from "electron";
 
+import type { MenuAction } from "../renderer/utils/app/menuActions.ts";
+
+import { setUpAboutPanel, showAbout } from "./about.ts";
+import { checkForUpdates } from "./checkForUpdates.ts";
 import { lockDown } from "./lockDown.ts";
-import { createViewMenu } from "./menu.ts";
+import { createGameMenu, createViewMenu } from "./menu.ts";
+import { canAutoUpdate } from "./updates.ts";
+
+if (started) app.quit();
 
 const isMac = process.platform === "darwin";
 const iconPath = isMac
@@ -33,8 +42,9 @@ ipcMain.on("close", () => {
   app.quit();
 });
 
-// the page is fixed here, so the game can never ask for any other one to open
-const BUG_REPORT_URL = "https://github.com/ashuhlee/count-or-die/issues/new";
+const BUG_REPORT_URL =
+  "https://github.com/ashuhlee/count-or-die/issues/new?template=bug_report.yml";
+const FEEDBACK_URL = "https://forms.gle/zqN2TVqHpaTRiNJSA";
 
 ipcMain.on("bug-report", () => {
   void shell.openExternal(BUG_REPORT_URL);
@@ -75,7 +85,6 @@ function createWindow() {
     maximizable: true,
     fullscreenable: true,
     backgroundColor: "#FFBDEF",
-    // shown once the page has painted, so it never opens as an empty window
     show: false,
     icon: iconPath,
     webPreferences: {
@@ -116,7 +125,16 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+  if (started) return;
+
   createWindow();
+  if (canAutoUpdate(process.platform, app.isPackaged)) {
+    try {
+      updateElectronApp();
+    } catch (error) {
+      console.warn(error);
+    }
+  }
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
@@ -130,10 +148,45 @@ app.on("window-all-closed", () => {
   }
 });
 
+function sendMenuAction(action: MenuAction): void {
+  const window =
+    BrowserWindow.getFocusedWindow() ?? BrowserWindow.getAllWindows()[0];
+  window?.webContents.send("menu:action", action);
+}
+
+async function confirmResetProgress(): Promise<void> {
+  const options = {
+    icon: iconPath,
+    type: "warning" as const,
+    buttons: ["Reset Progress", "Cancel"],
+    defaultId: 1,
+    cancelId: 1,
+    title: "Reset Progress",
+    message: "Reset all your progress?",
+    detail:
+      "This erases your high score, death count and daily challenges, and restarts the game. It can't be undone.",
+    noLink: true,
+  };
+  const window = BrowserWindow.getFocusedWindow();
+  const { response } = window
+    ? await dialog.showMessageBox(window, options)
+    : await dialog.showMessageBox(options);
+  if (response === 0) sendMenuAction("reset-progress");
+}
+
+const checkForUpdatesItem: MenuItemConstructorOptions = {
+  label: "Check for Updates…",
+  enabled: canAutoUpdate(process.platform, app.isPackaged),
+  click: checkForUpdates,
+};
+
+if (isMac) setUpAboutPanel();
+
 const macAppMenu: MenuItemConstructorOptions = {
   label: app.name,
   submenu: [
     { role: "about" },
+    checkForUpdatesItem,
     { type: "separator" },
     { role: "services" },
     { type: "separator" },
@@ -147,8 +200,38 @@ const macAppMenu: MenuItemConstructorOptions = {
 
 const fileMenu: MenuItemConstructorOptions = {
   label: "File",
-  submenu: [{ role: isMac ? "close" : "quit" }],
+  submenu: [
+    ...(isMac ? [] : [checkForUpdatesItem, { type: "separator" as const }]),
+    { role: isMac ? "close" : "quit" },
+  ],
 };
+
+function menuSymbol(name: string) {
+  const symbol = nativeImage.createFromNamedImage(name).resize({ height: 32 });
+  const icon = nativeImage.createFromBuffer(symbol.toPNG(), {
+    scaleFactor: 2,
+  });
+  icon.setTemplateImage(true);
+  return icon;
+}
+
+const gameMenuIcons = isMac
+  ? {
+      challenges: menuSymbol("trophy"),
+      howToPlay: menuSymbol("questionmark"),
+    }
+  : undefined;
+
+const gameMenu = createGameMenu(
+  {
+    openChallenges: () => sendMenuAction("open-challenges"),
+    openHowToPlay: () => sendMenuAction("open-help"),
+    muteSound: () => sendMenuAction("mute-sound"),
+    toggleMusic: () => sendMenuAction("toggle-music"),
+    resetProgress: () => void confirmResetProgress(),
+  },
+  gameMenuIcons,
+);
 
 const viewMenu = createViewMenu(app.isPackaged);
 
@@ -172,17 +255,48 @@ const helpMenu: MenuItemConstructorOptions = {
   role: "help",
   submenu: [
     {
+      label: "View Changelog",
+      icon: isMac ? menuSymbol("document") : undefined,
+      click: async () => {
+        await shell.openExternal(CHANGELOG_URL);
+      },
+    },
+    { type: "separator" },
+    {
       label: "Learn More",
       click: async () => {
         await shell.openExternal("https://countordie.gg");
       },
     },
+    { type: "separator" },
+    {
+      label: "Report a Bug",
+      click: async () => {
+        await shell.openExternal(BUG_REPORT_URL);
+      },
+    },
+    {
+      label: "Leave Feedback",
+      click: async () => {
+        await shell.openExternal(FEEDBACK_URL);
+      },
+    },
+    ...(isMac
+      ? []
+      : [
+          { type: "separator" as const },
+          {
+            label: "About Count or Die",
+            click: () => showAbout(iconPath),
+          },
+        ]),
   ],
 };
 
 const template: MenuItemConstructorOptions[] = [
   ...(isMac ? [macAppMenu] : []),
   fileMenu,
+  gameMenu,
   viewMenu,
   windowMenu,
   helpMenu,

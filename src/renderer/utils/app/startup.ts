@@ -1,4 +1,4 @@
-export const STARTUP_FONTS = [
+const STARTUP_FONTS = [
   "24px Silkscreen",
   "bold 24px Silkscreen",
   "24px 'Alien Cyborg'",
@@ -40,7 +40,7 @@ export function whenStartupDone(callback: () => void) {
   return () => window.removeEventListener(STARTUP_DONE, callback);
 }
 
-export const showStartupProgress = (fraction: number) =>
+const showStartupProgress = (fraction: number) =>
   startupScreen()?.style.setProperty("--progress", String(fraction));
 
 export async function preload(

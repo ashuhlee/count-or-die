@@ -1,6 +1,6 @@
 import { useEffect, type RefObject } from "react";
 
-const BAR_WIDTH = 140;
+const BAR_WIDTH = 150;
 const BAR_HEIGHT = 13;
 
 const SPAWN_EVERY = 180;

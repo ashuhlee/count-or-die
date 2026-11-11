@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 
 import cloudTopLeft from "@assets/ui/deco/clouds/cloud_1.png";
 import cloudBottomLeft from "@assets/ui/deco/clouds/cloud_2.png";
@@ -7,12 +7,24 @@ import cloudBottomRight from "@assets/ui/deco/clouds/cloud_4.png";
 import cloudMini from "@assets/ui/deco/clouds/cloud_5.png";
 
 import { useKeyboardControls } from "../hooks/useKeyboardControls.ts";
+import { useParallax } from "../hooks/useParallax.ts";
 import { useGame } from "../provider/useGame.ts";
 import { useGameEvent } from "../provider/useGameEvent.ts";
-import AlertPopup from "./overlays/alert-popup/AlertPopup.tsx";
+import { describeDaily } from "../game/challenges.ts";
+import { burst } from "../utils/effects/confetti.ts";
+import {
+  onChallengesRequested,
+  onHelpRequested,
+} from "../utils/events/dialogRequests.ts";
+import {
+  loadDailyChallenges,
+  takeCelebration,
+} from "../utils/storage/dailyChallenges.ts";
+import AlertPopup, {
+  type AlertRow,
+} from "./overlays/alert-popup/AlertPopup.tsx";
 import { useFadeOut } from "./overlays/alert-popup/useFadeOut.ts";
 import CursorCounts from "./components/effects/cursor-counts/CursorCounts.tsx";
-import HighScore from "./components/gameplay/high-score/HighScore.tsx";
 import FpsCounter from "./components/hud/fps-counter/FpsCounter.tsx";
 import MenuBar from "./components/hud/menu-bar/MenuBar.tsx";
 import PowerUps from "./components/gameplay/power-ups/PowerUps.tsx";
@@ -20,14 +32,35 @@ import PowerUpNotices from "./components/gameplay/power-ups/PowerUpNotices.tsx";
 import SmokePopups from "./components/effects/smoke/SmokePopups.tsx";
 import CRTShader from "./shaders/crt-shader/CRTShader.tsx";
 import LoadingScreen from "./overlays/loading/LoadingScreen.tsx";
+import BetaNotice from "./screens/beta-notice/BetaNotice.tsx";
 import GameOver from "./screens/game-over/GameOver.tsx";
 import RedFlash from "./screens/game-over/RedFlash.tsx";
 import GameScreen from "./screens/game/GameScreen.tsx";
 import StartMenuScreen from "./screens/start-menu/StartMenuScreen.tsx";
 
+const HOW_TO_PLAY = [
+  "Reach the goal before the timer runs out!",
+  "Click *+* or the *D* arrow key to count. Use *(space)* to jump straight to the goal.",
+].join("\n");
+
+function readChallenges(): AlertRow[] {
+  const rows = describeDaily(loadDailyChallenges()).map(
+    ({ label, progress, target, done }) => ({
+      label,
+      value: `${done ? target : progress}/${target}`,
+      done,
+    }),
+  );
+  return [
+    ...rows.filter((row) => !row.done),
+    ...rows.filter((row) => row.done),
+  ];
+}
+
+const MENU_DRIP_MS = 900;
+
 export default function Game() {
-  useKeyboardControls();
-  const { state, screen, ready, actions, loading } = useGame();
+  const { state, screen, ready, betaNotice, actions, loading } = useGame();
   const [page, setPage] = useState(0);
   useGameEvent("pageReset", () => setPage((current) => current + 1));
 
@@ -35,13 +68,70 @@ export default function Game() {
   useGameEvent("gameOver", () => setEndingRun(false));
   useGameEvent("restarted", () => setEndingRun(false));
   const asking = endingRun && screen === "game";
+
+  const [helpOpen, setHelpOpen] = useState(false);
+  const canHelp =
+    !betaNotice &&
+    (screen === "menu" || (screen === "game" && !state.isGameOver));
+  const helping = helpOpen && canHelp;
+
+  const openHelp = useCallback(() => {
+    if (canHelp) setHelpOpen(true);
+  }, [canHelp]);
+  useKeyboardControls(openHelp);
+
+  const [challengesOpen, setChallengesOpen] = useState(false);
+  const [challenges, setChallenges] = useState(readChallenges);
+  useGameEvent("gameOver", () => setChallenges(readChallenges()));
+
+  const openChallenges = () => {
+    const rows = readChallenges();
+    setChallenges(rows);
+    setChallengesOpen(true);
+    if (rows.every((row) => row.done) && takeCelebration()) burst(0.4);
+  };
+
+  const challengesCompleted = challenges.filter((row) => row.done).length;
+  const challengesDone = challengesCompleted === challenges.length;
+  const challenging = challengesOpen && screen === "menu";
+
   const { pause, resume } = actions;
   useEffect(() => {
-    if (!asking) return;
+    if (!asking && !helping && !challenging) return;
     pause();
     return resume;
-  }, [asking, pause, resume]);
+  }, [asking, helping, challenging, pause, resume]);
+
+  // the app menu can open these too, but not on top of something else
+  const nothingOpen = !asking && !helping && !challenging;
+  const canOpenChallenges =
+    nothingOpen &&
+    !betaNotice &&
+    ready &&
+    screen === "menu" &&
+    !loading.mounted;
+  useEffect(
+    () => onHelpRequested(() => nothingOpen && openHelp()),
+    [nothingOpen, openHelp],
+  );
+  useEffect(
+    () => onChallengesRequested(() => canOpenChallenges && openChallenges()),
+    [canOpenChallenges],
+  );
+
   const popupShown = useFadeOut(asking, 300);
+  const helpShown = useFadeOut(helping, 300);
+  const challengesShown = useFadeOut(challenging, 300);
+
+  const onParallaxScreen =
+    betaNotice ||
+    (screen === "menu" && ready) ||
+    (screen === "game" && state.isGameOver);
+  const modalShown = popupShown || helpShown || challengesShown;
+
+  const noticeShown = useFadeOut(betaNotice, MENU_DRIP_MS);
+  const menuDripping = noticeShown && !betaNotice;
+  useParallax(onParallaxScreen && !modalShown);
 
   return (
     <>
@@ -59,60 +149,70 @@ export default function Game() {
         maxDevicePixelRatio={1}
       />
 
-      <Fragment key={page}>
-        <div className="top-gradient"></div>
+      <div
+        className={`menu-reveal${menuDripping ? " menu-reveal--dripping" : ""}`}
+      >
+        {menuDripping && <div className="menu-flash" />}
+        <Fragment key={page}>
+          <div className="top-gradient"></div>
 
-        <div className="clouds">
-          <img className="cloud-t-left" alt="cloud" src={cloudTopLeft} />
-          <img className="cloud-b-left" alt="cloud" src={cloudBottomLeft} />
-          <img className="cloud-mini" alt="cloud" src={cloudMini} />
-          <img className="cloud-t-right" alt="cloud" src={cloudTopRight} />
-          <img className="cloud-b-right" alt="cloud" src={cloudBottomRight} />
-        </div>
+          <div className="clouds">
+            <img className="cloud-t-left" alt="cloud" src={cloudTopLeft} />
+            <img className="cloud-b-left" alt="cloud" src={cloudBottomLeft} />
+            <img className="cloud-mini" alt="cloud" src={cloudMini} />
+            <img className="cloud-t-right" alt="cloud" src={cloudTopRight} />
+            <img className="cloud-b-right" alt="cloud" src={cloudBottomRight} />
+          </div>
 
-        <MenuBar
-          entrance={screen === "menu" ? (ready ? "play" : "wait") : undefined}
-          inGame={screen === "game"}
-          onHome={
-            screen === "game"
-              ? () => {
-                  if (loading.mounted) return;
-                  if (state.counter === 0) actions.backToMenu();
-                  else setEndingRun(true);
-                }
-              : undefined
-          }
-        />
+          <MenuBar
+            entrance={screen === "menu" ? (ready ? "play" : "wait") : undefined}
+            inGame={screen === "game"}
+            onHelp={() => setHelpOpen(true)}
+            challenges={{
+              done: challengesCompleted,
+              total: challenges.length,
+              onOpen: openChallenges,
+            }}
+            onHome={
+              screen === "game"
+                ? () => {
+                    if (loading.mounted) return;
+                    if (state.counter === 0) actions.backToMenu();
+                    else setEndingRun(true);
+                  }
+                : undefined
+            }
+          />
 
-        {screen === "menu" ? (
-          <StartMenuScreen />
-        ) : (
-          <>
-            <SmokePopups />
-            <RedFlash />
-            <GameOver />
+          {screen === "menu" ? (
+            <StartMenuScreen />
+          ) : (
+            <>
+              <SmokePopups />
+              <RedFlash />
+              <GameOver />
 
-            <div className="app" id="app">
-              <GameScreen />
-            </div>
-            {/*<HighScore />*/}
+              <div className="app" id="app">
+                <GameScreen />
+              </div>
 
-            <CursorCounts />
-            <PowerUps />
-            <PowerUpNotices />
-          </>
-        )}
-        <p id="app-ver" className="app-ver">
-          {__APP_VERSION__}
-        </p>
-      </Fragment>
+              <CursorCounts />
+              <PowerUps />
+              <PowerUpNotices />
+            </>
+          )}
+          <p id="app-ver" className="app-ver">
+            {__APP_VERSION__}
+          </p>
+        </Fragment>
+      </div>
       {popupShown && (
         <AlertPopup
           leaving={!asking}
+          title="End run?"
           text={
             "Are you sure you want to end this run?\nYour score will be saved."
           }
-          border="#bfb3ff"
           onYes={() => {
             setEndingRun(false);
             actions.backToMenu();
@@ -120,7 +220,34 @@ export default function Game() {
           onNo={() => setEndingRun(false)}
         />
       )}
-      {(screen === "menu" || !state.isGameOver) && <FpsCounter />}
+      {helpShown && (
+        <AlertPopup
+          leaving={!helping}
+          title="? How to play"
+          text={HOW_TO_PLAY}
+          onNo={() => setHelpOpen(false)}
+        />
+      )}
+      {challengesShown && (
+        <AlertPopup
+          leaving={!challenging}
+          title="Daily challenges"
+          tab="blue"
+          wide
+          rows={challenges}
+          okLabel={challengesDone ? "Complete!" : "Play!"}
+          clickOk={challengesDone}
+          onOk={() => {
+            setChallengesOpen(false);
+            if (!challengesDone && !loading.mounted) actions.play();
+          }}
+          onNo={() => setChallengesOpen(false)}
+        />
+      )}
+      {window.electron && (screen === "menu" || !state.isGameOver) && (
+        <FpsCounter />
+      )}
+      {noticeShown && <BetaNotice />}
       <LoadingScreen />
     </>
   );

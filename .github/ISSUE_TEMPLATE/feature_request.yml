@@ -1,0 +1,62 @@
+name: Feature request
+description: Suggest an idea for Count or Die
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Got an idea? Tell me more about it!
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you submit
+      options:
+        - label: I searched the [open and closed issues](https://github.com/ashuhlee/count-or-die/issues?q=is%3Aissue) and this hasn't been suggested yet
+          required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem or need is this for?
+      description: What are you trying to do, or what feels missing?
+      placeholder: I'd like to be able to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: What would you like to see?
+      description: Describe the feature as you imagine it.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you've considered
+      description: Other ways to solve it, or things from other games you like.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part of the game is it about?
+      options:
+        - Game modes
+        - Power-ups and boosts
+        - Scores and leaderboard
+        - Menus and visuals
+        - Sound and music
+        - Web version
+        - Discord integration
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?
+      description: Mockups, screenshots or links that help explain the idea.

@@ -19,12 +19,15 @@
 @use "components/skull-floor";
 @use "components/fps-counter";
 @use "components/tooltip";
+@use "components/chat-box";
 @use "components/game-notification";
 @use "components/alert-popup";
 @use "components/shine";
 
+@use "states/beta-notice";
 @use "states/game-over";
 @use "states/loading";
+@use "states/falling-icons";
 @use "states/start-menu";
 @use "states/start-menu-title";
 @use "states/startup";

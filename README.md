@@ -1,21 +1,21 @@
 <div align="center">
-  <img width="90" alt="mac-icon" src="https://github.com/user-attachments/assets/d3fb5cbf-1d1b-4d77-ab94-0447968a994e" />
+  <img width="90" alt="mac-icon" src="https://github.com/user-attachments/assets/6e20b57d-ebc2-435a-9af9-0ddef5458834" />
   <h1>Count or Die</h1>
-  <p>A cutesy arcade clicker game where speed meets strategy</p>
+  <p>An arcade clicker game where speed meets strategy</p>
 
 [![GitHub Repo stars](https://img.shields.io/github/stars/ashuhlee/count-or-die?style=for-the-badge&logo=starship&logoColor=%23D7E0ED&labelColor=%232F2D42&color=%23FFBDF2)](https://github.com/ashuhlee/count-or-die/stargazers)
 [![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/ashuhlee/count-or-die?style=for-the-badge&logo=gitbook&logoColor=%23D9E0EE&labelColor=%232F2D42&color=C1B5FF)](https://github.com/ashuhlee/count-or-die/issues)
 [![GitHub repo size](https://img.shields.io/github/repo-size/ashuhlee/count-or-die?style=for-the-badge&logo=removedotbg&logoColor=%23D9E0EE&labelColor=%232F2D42&color=AEE5FF)](https://github.com/ashuhlee/count-or-die)
-![Static Badge](https://img.shields.io/badge/version-beta-A5A2B7?style=for-the-badge&logoColor=%23D9E0EE&labelColor=2F2D42)
+[![GitHub Release](https://img.shields.io/github/v/release/ashuhlee/count-or-die?include_prereleases&label=version&style=for-the-badge&logoColor=%23D9E0EE&labelColor=2F2D42&color=A5A2B7)](https://github.com/ashuhlee/count-or-die/releases)
 
-<a href="https://www.youtube.com/watch?v=l_mUEsx0na8"><img width="170" alt="demo link" src="https://github.com/user-attachments/assets/dbb3d7da-7247-433b-8e1d-a31b979113f5" style="margin-right: 10px;" /></a><a href="https://ashuhlee.notion.site/Count-or-Die-2f5a30a56798803383e7dd6b54a77d4e?source=copy_link"><img width="170" alt="tracker link" src="https://github.com/user-attachments/assets/a3df7a77-42dc-4c1b-93cc-cd844d3f12d7" /></a>
+<a href="https://forms.gle/zqN2TVqHpaTRiNJSA"><img height="26" alt="feedback" src="https://github.com/user-attachments/assets/0c3ea82d-bef9-48bf-a4ff-7a60dcad772b" /></a> <a href="https://github.com/ashuhlee/count-or-die/releases"><img height="26" alt="download" src="https://github.com/user-attachments/assets/0fc5b50d-7d7a-4ee2-b466-4b3040371514" /></a> <a href="https://play.countordie.gg"><img height="26" alt="play online" src="https://github.com/user-attachments/assets/709d4717-4f01-4dca-a93d-7bd1f5a9220d" /></a>
 
 </div>
 
 ## About the Game
 
 **Platforms:** Windows, MacOS, Browser <br>
-**Status:** In Development - Beta
+**Status:** In Development - Beta 1 Released
 
 Count or Die is an arcade counting game with progressive difficulty, randomized power-ups, multiple game modes, and a timer that gets faster as you level up!
 
@@ -23,9 +23,29 @@ Count or Die is an arcade counting game with progressive difficulty, randomized 
 
 <div align="center">
 
-https://github.com/user-attachments/assets/31746f90-5190-4f27-89c4-96ff47f62f6b
+https://github.com/user-attachments/assets/9aba7484-a439-43e3-9971-c08586095517
 
 </div>
+
+## Play the Beta
+
+### Desktop
+
+To try out the beta, download the latest release for your platform from the [releases page](https://github.com/ashuhlee/count-or-die/releases/tag/v1.0.0-beta.1), or via the links below:
+
+| Platform              | File                                                                                                                                                |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Windows (64-bit)      | [CountOrDie-1.0.0-beta.1-win64.exe](https://github.com/ashuhlee/count-or-die/releases/download/v1.0.0-beta.1/CountOrDie-1.0.0-beta.1-win64.exe)     |
+| macOS (Apple Silicon) | [Count.or.Die-1.0.0-beta.1-arm64.dmg](https://github.com/ashuhlee/count-or-die/releases/download/v1.0.0-beta.1/Count.or.Die-1.0.0-beta.1-arm64.dmg) |
+
+The desktop apps update themselves when a new version is released. Intel Macs aren't supported yet.
+
+### Online
+
+You can also play the beta directly in your browser! No download needed:
+
+- [play.countordie.gg](https://play.countordie.gg)
+- [itch.io](https://ashuhlee.itch.io/count-or-die)
 
 ## Gameplay
 
@@ -33,15 +53,15 @@ https://github.com/user-attachments/assets/31746f90-5190-4f27-89c4-96ff47f62f6b
 
 The main objective is straightforward, reach the counting goal before the timer runs out. The game however, will do its best to stop you.
 
-- **Progressive Difficulty:** Each completed goal makes the timer 1.2x quicker. Don't get too comfortable!
-- **Strategic Boosts:** 4 boosts per game let you skip straight to the goal. Use them early and you'll regret it. Use them too late and you'll also regret it.
+- **Progressive Difficulty:** each completed goal makes the timer 1.2x quicker
+- **Strategic Boosts:** boosts let you skip straight to the goal. Use them early and you'll regret it. Use them too late and you'll also regret it. You can pick up extra boosts via power ups.
 
 Compete against your personal best high score. In future versions, compare your scores with others via the global leaderboard!
 
 ### Game Modes
 
 - **Regular Mode:** Classic sequential counting with regular numbers only
-- **Nerd-Out Mode:** A random mix of numbers and math equations (e.g., 25, 4 × 10, 100 ÷ 2) _(Coming soon)_
+- **Nerd-Out Mode:** Math equations only (e.g., 4 × 10, 100 ÷ 2). Solve in your head and keep clicking _(Coming soon)_
 
 ### Power-Up System
 
@@ -70,7 +90,7 @@ As you play, power-ups randomly spawn on the screen, but you have to click them 
 ## Discord Rich Presence
 
 <div>
-    <img width="280" align="right"
+    <img width="300" align="right"
     src="https://github.com/user-attachments/assets/76b878b1-1305-4037-8d1c-5bf0a25dbdf8"/>
 
 Count or Die has support for Discord Rich Presence, allowing friends to see your game status, current mode and rank. Brag about how fast you can click to your friends!
@@ -86,9 +106,12 @@ Count or Die has support for Discord Rich Presence, allowing friends to see your
 | <img align="center" width="40" src="https://github.com/user-attachments/assets/9d9ee416-1912-4259-a0df-ad60a0f85dd8" /> | Speed Demon (High score - 300+)    |
 | <img align="center" width="40" src="https://github.com/user-attachments/assets/0d0a0278-56fb-481e-a9e6-569cf537a11d" /> | Legend 😮‍💨 (High score - 400+)      |
 
+> [!NOTE]
+> Discord Rich Presence is only supported in the desktop version (Windows and macOS), not the web version.
+
 ## Installation
 
-Downloadable installers (`.exe`, `.dmg`) are not yet available in the beta. For play testing, local development, or contributing, run the app locally using the steps below.
+For local development or contributing, run the app locally using the steps below.
 
 ### Requirements
 
@@ -136,60 +159,31 @@ git pull origin main
 npm install
 ```
 
-## Features Currently in Development
-
-- Additional game mode for the math enjoyers
-- Improved high score management system
-
-## Tech Stack
-
-- **Electron:** Framework for cross-platform desktop application development
-- **React:** Runs the game and renders its interface
-- **Vite:** Build tool for fast development and bundling
-- **Vite+:** Toolchain for linting, formatting and testing (`vp check`, `vp test`)
-- **Discord Integration:** Discord Rich Presence support [(simple-discord-rpc)](https://www.npmjs.com/package/simple-discord-rpc)
-- **Electron Forge:** For packaging and distributing Electron apps
-
-## Project Structure
-
-```
-src/
-├── main/              Electron main process (window, Discord Rich Presence)
-├── preload/           Bridge between Electron and the game
-└── renderer/
-    ├── index.html, index.tsx, App.tsx   The page and where React starts
-    ├── preload.d.ts   Types for what the preload exposes on `window`
-    ├── assets/        Images and audio files
-    ├── styles/        SCSS and the compiled main.css
-    ├── game/          The game rules: plain functions, no React or DOM
-    ├── provider/      Runs the game in React: GameProvider (state, timers,
-    │                  sounds, saving), useGame and the event bus
-    ├── hooks/         Shared hooks
-    ├── utils/         Sound, confetti, saving and other small helpers
-    └── ui/            What is drawn
-        ├── screens/      Full screens: game, game over
-        ├── overlays/     Drawn over the whole screen: loading screen
-        ├── shaders/      WebGL effects: PixelSwirlShader, CRTShader, MeltInShader
-        └── components/   One folder per feature (counter, hearts, goal, ...)
-tests/
-├── game/              The rules
-├── provider/          Running the game: saving, timers, errors
-├── ui/                The game played like a person would: clicks, keys, time
-│                      (one file per component or screen, named after it)
-└── helpers/           Shared test utilities
-```
-
 ## Contributing
 
 This is a personal project, but suggestions and contributions are welcome!
 
 ### Ways to Contribute
 
-- Report bugs – Open an issue with details
-- Suggest features – Share your ideas for gameplay improvements
-- Playtesting – Try the game and share feedback on gameplay and user experience
+- [Report bugs](https://github.com/ashuhlee/count-or-die/issues/new?template=bug_report.yml): open an issue with details
+- [Suggest features](https://github.com/ashuhlee/count-or-die/issues/new?template=feature_request.yml): share your ideas for gameplay improvements
+- [Feedback](https://forms.gle/zqN2TVqHpaTRiNJSA): try the game and share feedback on gameplay and user experience
 
 Feel free to check out the [project tracker](https://ashuhlee.notion.site/Count-or-Die-2f5a30a56798803383e7dd6b54a77d4e?source=copy_link) to see what's currently in progress.
+
+
+## Features Coming to Beta 2
+
+- Additional game mode for the math enjoyers
+- Improved high score management system
+
+## Tech Stack
+
+- **Electron:** framework for cross-platform desktop app development
+- **Electron Forge:** for packaging and distributing Electron apps
+- **React:** runs the game and renders its interface
+- **Vite+:** toolchain for bundling, linting, formatting and testing
+- **Discord Integration:** Discord Rich Presence support [(simple-discord-rpc)](https://www.npmjs.com/package/simple-discord-rpc)
 
 <br>
 ⭐ If you like this project, please consider giving this repo a star!
