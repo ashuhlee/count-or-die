@@ -30,8 +30,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # puts the Apple certificate in a keychain of its own, so the mac app can
-      # be signed. It is skipped until the secrets are added
       - name: Import the Apple certificate
         if: runner.os == 'macOS' && env.HAS_APPLE_CERT == 'true'
         env:
