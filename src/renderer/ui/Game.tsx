@@ -223,7 +223,9 @@ export default function Game() {
           onNo={() => setChallengesOpen(false)}
         />
       )}
-      {(screen === "menu" || !state.isGameOver) && <FpsCounter />}
+      {window.electron && (screen === "menu" || !state.isGameOver) && (
+        <FpsCounter />
+      )}
       {noticeShown && <BetaNotice />}
       <LoadingScreen />
     </>
