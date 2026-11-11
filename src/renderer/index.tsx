@@ -7,6 +7,7 @@ import gameOverGif from "@assets/ui/deco/game_over.gif";
 
 import App from "./App.tsx";
 import { checkHardwareAcceleration } from "./utils/app/hardwareAcceleration.ts";
+import { handleMenuAction } from "./utils/app/menuActions.ts";
 import { afterPaint, hideStartupScreen, preload } from "./utils/app/startup.ts";
 
 const pictures = import.meta.glob(
@@ -62,5 +63,6 @@ async function start(): Promise<void> {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  window.electron?.onMenuAction(handleMenuAction);
   void start();
 });

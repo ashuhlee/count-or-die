@@ -6,7 +6,7 @@ import {
   type DailyState,
 } from "../../game/challenges.ts";
 
-const KEY = "dailyChallenges";
+export const DAILY_CHALLENGES_KEY = "dailyChallenges";
 
 const isCount = (value: unknown): value is number =>
   typeof value === "number" && Number.isFinite(value) && value >= 0;
@@ -15,7 +15,9 @@ export function loadDailyChallenges(now = new Date()): DailyState {
   const today = dateKey(now);
 
   try {
-    const saved = JSON.parse(localStorage.getItem(KEY) ?? "null");
+    const saved = JSON.parse(
+      localStorage.getItem(DAILY_CHALLENGES_KEY) ?? "null",
+    );
 
     const valid =
       saved?.date === today &&
@@ -28,7 +30,6 @@ export function loadDailyChallenges(now = new Date()): DailyState {
       isCount(saved.totals?.bestPowerUps) &&
       isCount(saved.totals?.runs);
 
-    // a save from before these were counted has none: they start at 0
     if (valid) {
       const { bestScoreNoBoosts = 0, bestBoosts = 0 } = saved.totals;
       if (isCount(bestScoreNoBoosts) && isCount(bestBoosts)) {
@@ -43,10 +44,10 @@ export function loadDailyChallenges(now = new Date()): DailyState {
 }
 
 export function saveDailyChallenges(state: DailyState): void {
-  localStorage.setItem(KEY, JSON.stringify(state));
+  localStorage.setItem(DAILY_CHALLENGES_KEY, JSON.stringify(state));
 }
 
-const CELEBRATED_KEY = "dailyChallengesCelebrated";
+export const CELEBRATED_KEY = "dailyChallengesCelebrated";
 
 export function takeCelebration(now = new Date()): boolean {
   const today = dateKey(now);

@@ -4,6 +4,7 @@ import { afterEach, beforeEach, expect, describe, test, vi } from "vitest";
 import { stubWebAnimations } from "../../helpers/dom.ts";
 import { MATH_FACTS } from "../../../src/renderer/game/mathFacts.ts";
 import { renderGame } from "../../helpers/game.tsx";
+import { handleMenuAction } from "../../../src/renderer/utils/app/menuActions.ts";
 
 const audio = vi.hoisted(() => ({ playSound: vi.fn(), pauseSound: vi.fn() }));
 
@@ -111,6 +112,46 @@ describe("the menu", () => {
       game.wait(COVERED);
       expect(game.$("#alert-popup")).toBeNull();
       expect(game.$("#menu-screen")).not.toBeNull();
+    });
+  });
+
+  describe("the app menu", () => {
+    const popupTitle = () => game.$("#alert-popup")?.textContent ?? "";
+
+    test("opens how to play and daily challenges", () => {
+      act(() => handleMenuAction("open-help"));
+      expect(popupTitle()).toContain("Reach the goal");
+
+      game.click("#alert-close");
+      game.wait(COVERED);
+      expect(game.$("#alert-popup")).toBeNull();
+
+      act(() => handleMenuAction("open-challenges"));
+      expect(popupTitle()).toMatch(/Daily\s+challenges/);
+    });
+
+    test("does not stack one dialog on top of another", () => {
+      act(() => handleMenuAction("open-help"));
+      act(() => handleMenuAction("open-challenges"));
+
+      expect(game.$$("#alert-popup")).toHaveLength(1);
+      expect(popupTitle()).toContain("Reach the goal");
+    });
+
+    test("only opens how to play during a game, not the challenges", () => {
+      game.click("#play-btn");
+      game.wait(COVERED + 600);
+
+      act(() => handleMenuAction("open-challenges"));
+      expect(game.$("#alert-popup")).toBeNull();
+
+      act(() => handleMenuAction("open-help"));
+      expect(popupTitle()).toContain("Reach the goal");
+      game.click("#alert-ok");
+      game.wait(COVERED);
+
+      // and the challenges did not wait to open on the menu
+      expect(game.$("#alert-popup")).toBeNull();
     });
   });
 

@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useSyncExternalStore, type CSSProperties } from "react";
 
 import soundBtnMuted from "@assets/ui/svg/sound-button-muted.svg";
 import soundBtnNoMusic from "@assets/ui/svg/sound-button-no_music.svg";
@@ -10,11 +10,13 @@ import lockIcon from "@assets/ui/deco/lock_grey.svg";
 import skullIcon from "@assets/ui/deco/skull_grey.svg";
 import trophyIcon from "@assets/ui/deco/trophy_grey.svg";
 
+import { playSound } from "../../../../utils/app/sounds.ts";
 import {
-  muteMusic,
-  playSound,
-  toggleAudio,
-} from "../../../../utils/app/sounds.ts";
+  cycleSoundMode,
+  getSoundMode,
+  restoreSoundMode,
+  subscribeSoundMode,
+} from "../../../../utils/app/soundState.ts";
 import { openChangelog } from "../../../../utils/app/openChangelog.ts";
 import {
   onSettingsRequested,
@@ -25,22 +27,8 @@ import { useTimedNotification } from "../../../overlays/game-notification/useTim
 import RoundButton from "../../buttons/round-button/RoundButton.tsx";
 import Tooltip from "../../../overlays/tooltip/Tooltip.tsx";
 
-const SOUND_STATE_KEY = "soundState";
-
-// 0: sfx + music, 1: sfx + no music, 2: no sfx + no music
 const SOUND_ICONS = [soundBtnUnmuted, soundBtnNoMusic, soundBtnMuted];
 const SOUND_LABELS = ["Music", "Sfx", "Muted"];
-
-function applySoundState(state: number): void {
-  muteMusic(state !== 0);
-  toggleAudio(state >= 2);
-  localStorage.setItem(SOUND_STATE_KEY, state.toString());
-}
-
-function readSavedState(): number {
-  const saved = localStorage.getItem(SOUND_STATE_KEY);
-  return saved === null ? 0 : parseInt(saved);
-}
 
 const ENTRANCE = { delay: 0, step: 0.14 };
 const WELCOME_DELAY = 0.2;
@@ -64,20 +52,10 @@ export default function MenuBar({
 }: MenuBarProps) {
   const options = useTimedNotification();
   useEffect(() => onSettingsRequested(options.show), [options.show]);
-  const [soundState, setSoundState] = useState(readSavedState);
+  const soundState = useSyncExternalStore(subscribeSoundMode, getSoundMode);
 
   // restore saved audio settings
-  useEffect(() => {
-    if (localStorage.getItem(SOUND_STATE_KEY) !== null) {
-      applySoundState(soundState);
-    }
-  }, []);
-
-  function onSoundClick(): void {
-    const next = (soundState + 1) % 3;
-    setSoundState(next);
-    applySoundState(next);
-  }
+  useEffect(restoreSoundMode, []);
 
   // the welcome only shows until the first run starts
   useEffect(() => {
@@ -151,7 +129,7 @@ export default function MenuBar({
             iconAlt="sound icon"
             iconSize={28}
             iconId="soundBtn"
-            onClick={clicked(onSoundClick)}
+            onClick={clicked(cycleSoundMode)}
           />
         </Tooltip>
       </div>

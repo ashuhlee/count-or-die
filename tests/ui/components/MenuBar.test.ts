@@ -5,6 +5,7 @@ import { renderInto } from "../../helpers/dom.ts";
 
 import MenuBar from "../../../src/renderer/ui/components/hud/menu-bar/MenuBar.tsx";
 import { audioConfig } from "../../../src/renderer/utils/app/sounds.ts";
+import { handleMenuAction } from "../../../src/renderer/utils/app/menuActions.ts";
 
 describe("MenuBar", () => {
   let container: HTMLDivElement;
@@ -52,5 +53,33 @@ describe("MenuBar", () => {
     expect(audioConfig.gameOverMusic.audio.muted).toBe(false);
     expect(sound().getAttribute("src")).toBe(first);
     expect(second).not.toBe(first);
+  });
+
+  test("the app menu can mute the sound and bring it back", () => {
+    click(); // music off, so there is something to go back to
+    const musicOff = sound().getAttribute("src");
+
+    act(() => handleMenuAction("mute-sound"));
+    expect(localStorage.getItem("soundState")).toBe("2");
+    expect(audioConfig.buttonClick.audio.volume).toBe(0);
+    expect(sound().getAttribute("src")).not.toBe(musicOff);
+
+    act(() => handleMenuAction("mute-sound"));
+    expect(localStorage.getItem("soundState")).toBe("1");
+    expect(audioConfig.buttonClick.audio.volume).toBe(
+      audioConfig.buttonClick.volume,
+    );
+    expect(sound().getAttribute("src")).toBe(musicOff);
+  });
+
+  test("the app menu can turn the music off and on", () => {
+    act(() => handleMenuAction("toggle-music"));
+    expect(localStorage.getItem("soundState")).toBe("1");
+    expect(audioConfig.bgMusic.audio.muted).toBe(true);
+    expect(audioConfig.buttonClick.audio.muted).toBe(false);
+
+    act(() => handleMenuAction("toggle-music"));
+    expect(localStorage.getItem("soundState")).toBe("0");
+    expect(audioConfig.bgMusic.audio.muted).toBe(false);
   });
 });

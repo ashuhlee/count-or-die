@@ -13,6 +13,10 @@ import { useGameEvent } from "../provider/useGameEvent.ts";
 import { describeDaily } from "../game/challenges.ts";
 import { burst } from "../utils/effects/confetti.ts";
 import {
+  onChallengesRequested,
+  onHelpRequested,
+} from "../utils/events/dialogRequests.ts";
+import {
   loadDailyChallenges,
   takeCelebration,
 } from "../utils/storage/dailyChallenges.ts";
@@ -97,6 +101,23 @@ export default function Game() {
     pause();
     return resume;
   }, [asking, helping, challenging, pause, resume]);
+
+  // the app menu can open these too, but not on top of something else
+  const nothingOpen = !asking && !helping && !challenging;
+  const canOpenChallenges =
+    nothingOpen &&
+    !betaNotice &&
+    ready &&
+    screen === "menu" &&
+    !loading.mounted;
+  useEffect(
+    () => onHelpRequested(() => nothingOpen && openHelp()),
+    [nothingOpen, openHelp],
+  );
+  useEffect(
+    () => onChallengesRequested(() => canOpenChallenges && openChallenges()),
+    [canOpenChallenges],
+  );
 
   const popupShown = useFadeOut(asking, 300);
   const helpShown = useFadeOut(helping, 300);
