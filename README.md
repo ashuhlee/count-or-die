@@ -27,7 +27,7 @@ https://github.com/user-attachments/assets/9aba7484-a439-43e3-9971-c08586095517
 
 </div>
 
-## Play the beta
+## Play the Beta
 
 ### Desktop
 
@@ -159,6 +159,19 @@ git pull origin main
 npm install
 ```
 
+## Contributing
+
+This is a personal project, but suggestions and contributions are welcome!
+
+### Ways to Contribute
+
+- [Report bugs](https://github.com/ashuhlee/count-or-die/issues/new?template=bug_report.yml): open an issue with details
+- [Suggest features](https://github.com/ashuhlee/count-or-die/issues/new?template=feature_request.yml): share your ideas for gameplay improvements
+- [Feedback](https://forms.gle/zqN2TVqHpaTRiNJSA): try the game and share feedback on gameplay and user experience
+
+Feel free to check out the [project tracker](https://ashuhlee.notion.site/Count-or-Die-2f5a30a56798803383e7dd6b54a77d4e?source=copy_link) to see what's currently in progress.
+
+
 ## Features Coming to Beta 2
 
 - Additional game mode for the math enjoyers
@@ -171,18 +184,6 @@ npm install
 - **React:** runs the game and renders its interface
 - **Vite+:** toolchain for bundling, linting, formatting and testing
 - **Discord Integration:** Discord Rich Presence support [(simple-discord-rpc)](https://www.npmjs.com/package/simple-discord-rpc)
-
-## Contributing
-
-This is a personal project, but suggestions and contributions are welcome!
-
-### Ways to Contribute
-
-- [Report bugs](https://github.com/ashuhlee/count-or-die/issues/new?template=bug_report.yml): open an issue with details
-- [Suggest features](https://github.com/ashuhlee/count-or-die/issues/new?template=feature_request.yml): share your ideas for gameplay improvements
-- [Feedback](https://forms.gle/zqN2TVqHpaTRiNJSA): try the game and share feedback on gameplay and user experience
-
-Feel free to check out the [project tracker](https://ashuhlee.notion.site/Count-or-Die-2f5a30a56798803383e7dd6b54a77d4e?source=copy_link) to see what's currently in progress.
 
 <br>
 ⭐ If you like this project, please consider giving this repo a star!
