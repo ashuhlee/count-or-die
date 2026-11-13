@@ -30,6 +30,22 @@ button *,
     auto !important;
 }
 
+// everything is sized in rem, so the root font size scales the whole game:
+// down to half to fit a window smaller than 1440x825, up from 1517x864 on a
+// big screen, and 16px in between (and on a phone), as on the web version
+html {
+  --fit: min(calc(100vw / 1440), calc(100vh / 825));
+  --s: min(calc(100vw / 1264), calc(100vh / 720));
+  font-size: max(
+    clamp(8px, calc(var(--fit) * 16), 16px),
+    calc(var(--s) * 16 / 1.2)
+  );
+
+  @media (max-width: 699px) {
+    font-size: 16px;
+  }
+}
+
 ::-webkit-scrollbar {
   display: none;
 }
