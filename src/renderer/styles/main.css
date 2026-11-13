@@ -2190,6 +2190,11 @@ img {
 .game-notification.game-notification--wide {
   --notification-max-width: 36.25rem;
 }
+.game-notification.game-notification--collapse {
+  animation:
+    slide-out-left 0.2s ease-in both,
+    notification-collapse 0.25s ease-in-out 0.2s both;
+}
 .game-notification.game-notification--long {
   padding: 0.75rem 1rem;
 }
@@ -2233,7 +2238,8 @@ img {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 2rem;
+  --notices-gap: 2rem;
+  gap: var(--notices-gap);
   filter: url(#tracker-bulge);
 }
 
@@ -2241,6 +2247,20 @@ img {
   animation-duration: 0.7s;
 }
 
+@keyframes notification-collapse {
+  from {
+    height: var(--collapse-from);
+    min-height: 0;
+    margin-bottom: 0;
+  }
+  to {
+    height: 0;
+    min-height: 0;
+    margin-bottom: calc(var(--notices-gap, 2rem) * -1);
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
 :root {
   --parallax-range: 0.1875rem;
 }

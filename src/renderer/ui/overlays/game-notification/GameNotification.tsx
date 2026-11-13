@@ -17,6 +17,7 @@ type GameNotificationProps = {
   still?: boolean;
   leaving?: boolean;
   shine?: boolean;
+  collapse?: boolean;
   // a longer max width, for long texts
   wide?: boolean;
   id?: string;
@@ -38,6 +39,7 @@ export default function GameNotification({
   still = false,
   leaving = false,
   shine = false,
+  collapse = false,
   wide = false,
   id,
   onClick,
@@ -74,12 +76,18 @@ export default function GameNotification({
     void document.fonts?.ready.then(fit);
   }, [text, iconSize, visible, leaving, shine]);
 
+  useLayoutEffect(() => {
+    if (!leaving || !collapse) return;
+    const panel = textRef.current?.closest<HTMLElement>(".game-notification");
+    panel?.style.setProperty("--collapse-from", `${panel.offsetHeight}px`);
+  }, [leaving, collapse]);
+
   return (
     <PixelPanel
       border={border}
       accent={accent}
       id={id}
-      className={`game-notification${visible ? (leaving ? " slide-out-left" : " bounce-in-left") : ""}${shine ? " shine" : ""}${wide ? " game-notification--wide" : ""}`}
+      className={`game-notification${visible ? (leaving ? " slide-out-left" : " bounce-in-left") : ""}${shine ? " shine" : ""}${wide ? " game-notification--wide" : ""}${leaving && collapse ? " game-notification--collapse" : ""}`}
       style={{ animationDelay: `${leaving ? 0 : delay}s` }}
       {...(hoverSound && { onMouseEnter: () => playSound("buttonHover") })}
       {...(onClick && {
