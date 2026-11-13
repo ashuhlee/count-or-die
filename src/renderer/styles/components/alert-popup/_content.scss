@@ -5,7 +5,7 @@
 
     // the space between the lines that a new line started
     & + .alert-popup-line {
-      margin-top: 24px;
+      margin-top: 1.5rem;
     }
   }
 
@@ -20,12 +20,12 @@
 
   // rows: the goal on the left, the progress on the right
   .alert-popup-body.alert-popup-body--rows {
-    padding: 36px 44px 48px;
+    padding: 2.25rem 2.75rem 3rem;
   }
 
   .alert-popup-rows {
     display: grid;
-    gap: 26px;
+    gap: 1.625rem;
     width: 100%;
     margin: 0;
     padding: 0;
@@ -38,7 +38,7 @@
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    gap: 24px;
+    gap: 1.5rem;
     color: #3b375d;
   }
 
@@ -52,7 +52,7 @@
   .alert-popup-row-label {
     white-space: nowrap;
     font-family: "Enter the Gungeon Small", sans-serif;
-    font-size: 18px;
+    font-size: 1.125rem;
   }
 
   .alert-popup-row-text {
@@ -64,10 +64,10 @@
     content: "";
     position: absolute;
     z-index: -1;
-    left: -4px;
-    right: -4px;
-    top: 4.5px;
-    height: 4px;
+    left: -0.25rem;
+    right: -0.25rem;
+    top: 0.28125rem;
+    height: 0.25rem;
     background: #c1c0cd;
     opacity: 0.6;
     transform-origin: left center;
@@ -77,18 +77,18 @@
   .alert-popup-row-value {
     white-space: nowrap;
     font-family: "Teeny Tiny Pixls", sans-serif;
-    font-size: 14px;
+    font-size: 0.875rem;
     color: #9997ff;
   }
 
   .alert-popup-text {
     position: relative;
     min-width: 0;
-    max-width: 460px;
+    max-width: 28.75rem;
     text-align: center;
     font-family: "Enter the Gungeon Small", sans-serif;
-    font-size: 18px;
-    line-height: 20px;
+    font-size: 1.125rem;
+    line-height: 1.25rem;
     text-transform: uppercase;
     text-shadow: none;
     color: #433e61;

@@ -1,9 +1,9 @@
 .skull-floor {
   transform: rotate(-8deg);
   position: fixed;
-  width: 76px;
-  height: 76px;
-  bottom: -5px;
+  width: 4.75rem;
+  height: 4.75rem;
+  bottom: -0.3125rem;
   left: 18vw;
   z-index: -1;
   image-rendering: auto;
@@ -12,9 +12,9 @@
 // with a chat box the skull sits in its anchor, which is placed instead
 .skull-floor-anchor {
   position: fixed;
-  width: 76px;
-  height: 76px;
-  bottom: -5px;
+  width: 4.75rem;
+  height: 4.75rem;
+  bottom: -0.3125rem;
   left: 18vw;
   z-index: -1;
 

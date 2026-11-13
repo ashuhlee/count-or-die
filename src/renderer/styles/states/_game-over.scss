@@ -86,7 +86,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 0.625rem;
   }
 
   #red-overlay {
@@ -104,14 +104,14 @@
 
   .deco-icons {
     display: flex;
-    gap: 14px;
-    margin-bottom: 20px;
+    gap: 0.875rem;
+    margin-bottom: 1.25rem;
     z-index: -3;
     @include parallax.parallax(1.4);
     img {
-      height: 55px;
+      height: 3.4375rem;
       image-rendering: pixelated;
-      filter: drop-shadow(5px 5px 0px var(--shadow-pink-010));
+      filter: drop-shadow(0.3125rem 0.3125rem 0px var(--shadow-pink-010));
     }
   }
 
@@ -119,20 +119,20 @@
     font-family: "Silkscreen", serif;
     font-style: normal;
     font-weight: 400;
-    font-size: 28px;
+    font-size: 1.75rem;
     text-align: center;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color: #ffffff;
-    text-shadow: 0 3px 0 var(--shadow-pink-020);
+    text-shadow: 0 0.1875rem 0 var(--shadow-pink-020);
   }
   .you-died {
-    font-size: 24px;
+    font-size: 1.5rem;
     font-family: "Enter the Gungeon Small", sans-serif;
-    padding-top: 20px;
+    padding-top: 1.25rem;
     text-transform: none;
-    top: 50px;
-    max-width: 250px;
+    top: 3.125rem;
+    max-width: 15.625rem;
     @include parallax.parallax(1);
   }
   .notices,
@@ -143,52 +143,52 @@
     @include parallax.parallax(1);
     z-index: -3;
     position: absolute;
-    top: 10px;
+    top: 0.625rem;
     right: 0;
-    margin: 30px;
+    margin: 1.875rem;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 28px;
+    gap: 1.75rem;
     filter: url(#tracker-bulge);
   }
   .tracker-container {
-    height: 30px;
+    height: 1.875rem;
     width: fit-content;
     display: flex;
-    gap: 14px;
+    gap: 0.875rem;
     align-items: center;
     justify-content: center;
-    padding: 16px 12px;
+    padding: 1rem 0.75rem;
     transition: transform 1s ease;
 
     .tracker-icon {
-      width: 17px;
-      height: 17px;
+      width: 1.0625rem;
+      height: 1.0625rem;
     }
 
     .tracker-value {
       --shake-scale: 0.965;
-      --shake-distance: -2px;
+      --shake-distance: -0.125rem;
       font-family: "Teeny Tiny Pixls", sans-serif;
-      font-size: 16px;
-      letter-spacing: 1.2px;
+      font-size: 1rem;
+      letter-spacing: 0.075rem;
       text-shadow: none;
       color: #3b375f;
       position: relative;
       top: 0.1em;
-      margin-right: calc(-0.2em - 1.2px);
+      margin-right: calc(-0.2em - 0.075rem);
     }
   }
 
   .play-again {
     @include parallax.parallax(1);
-    margin: 32px;
-    font-size: 28px;
+    margin: 2rem;
+    font-size: 1.75rem;
     font-family: "Enter the Gungeon Small", sans-serif;
-    letter-spacing: 1.7px;
-    -webkit-text-stroke: 9px #595480;
-    filter: drop-shadow(4px 4px 0px var(--shadow-pink-015));
+    letter-spacing: 0.10625rem;
+    -webkit-text-stroke: 0.5625rem #595480;
+    filter: drop-shadow(0.25rem 0.25rem 0px var(--shadow-pink-015));
     paint-order: stroke fill;
   }
 
@@ -218,7 +218,7 @@
 
   .go-title {
     width: 80vw;
-    max-width: 380px;
+    max-width: 23.75rem;
     z-index: 2;
     @include parallax.parallax(0.8);
   }
@@ -243,15 +243,15 @@
     transition:
       bottom 0.5s ease,
       opacity 0.5s ease;
-    bottom: -50px;
-    width: 140px;
-    left: calc(50% - 62px);
+    bottom: -3.125rem;
+    width: 8.75rem;
+    left: calc(50% - 3.875rem);
   }
   .ghost {
     position: absolute;
-    width: 120px;
-    bottom: 120px;
-    left: calc(50% + 90px);
+    width: 7.5rem;
+    bottom: 7.5rem;
+    left: calc(50% + 5.625rem);
     z-index: 2;
     image-rendering: auto;
 
@@ -269,14 +269,14 @@
       --back-border: #a1a1ff;
       z-index: -5;
       position: relative;
-      padding: 5px 18px 4px;
-      margin-top: 40px;
+      padding: 0.3125rem 1.125rem 0.25rem;
+      margin-top: 2.5rem;
       font-family: "Enter the Gungeon Small", sans-serif;
-      font-size: 18px;
+      font-size: 1.125rem;
       text-transform: none;
-      text-shadow: 0 3px 0 var(--shadow-purple-015);
+      text-shadow: 0 0.1875rem 0 var(--shadow-purple-015);
       transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.85);
-      filter: drop-shadow(0px 4px 0px var(--shadow-pink-015));
+      filter: drop-shadow(0px 0.25rem 0px var(--shadow-pink-015));
 
       &:active {
         scale: 0.8;
@@ -287,21 +287,21 @@
       &::before {
         content: ">";
         font-family: "Teeny Tiny Pixls", sans-serif;
-        font-size: 13px;
-        margin-right: 6px;
+        font-size: 0.8125rem;
+        margin-right: 0.375rem;
         position: relative;
         top: 0.1em;
         transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.85);
       }
       &:hover {
-        transform: translateY(4px);
+        transform: translateY(0.25rem);
       }
       &:hover::before {
-        margin-right: 11px;
+        margin-right: 0.6875rem;
         color: var(--arr-color);
       }
       &:active::before {
-        margin-right: 3px;
+        margin-right: 0.1875rem;
         color: #b9efff;
       }
     }
@@ -314,9 +314,9 @@
         transform: scaleX(1);
 
         @include stripes.stripes(
-          $stripe-period: 12px,
-          $stripe-width: 6px,
-          $stripe-step: 2px,
+          $stripe-period: 0.75rem,
+          $stripe-width: 0.375rem,
+          $stripe-step: 0.125rem,
           $stripe-opacity: 0.2,
           $stripe-pixel-size: 1.5
         );
@@ -324,10 +324,10 @@
         background-blend-mode: overlay;
         animation: slide-stripes 2.7s linear infinite;
         box-shadow:
-          -3px 0 0 0 var(--back-border),
-          3px 0 0 0 var(--back-border),
-          0 -3px 0 0 var(--back-border),
-          0 3px 0 0 var(--back-border);
+          -0.1875rem 0 0 0 var(--back-border),
+          0.1875rem 0 0 0 var(--back-border),
+          0 -0.1875rem 0 0 var(--back-border),
+          0 0.1875rem 0 0 var(--back-border);
         transition: all 0.3s ease-out;
       }
 
@@ -341,10 +341,10 @@
 
     .game-over-btns {
       display: flex;
-      gap: 22px;
+      gap: 1.375rem;
 
       .wide-btn {
-        filter: drop-shadow(0px 5px 0px var(--shadow-pink-015));
+        filter: drop-shadow(0px 0.3125rem 0px var(--shadow-pink-015));
         @include button-pop.button-pop;
 
         &::before,

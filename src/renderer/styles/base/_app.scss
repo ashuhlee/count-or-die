@@ -4,7 +4,6 @@
   box-sizing: border-box;
 }
 
-// the arrow is the cursor everywhere, and what is inside takes it from here
 html,
 body {
   cursor:
@@ -13,8 +12,6 @@ body {
     default;
 }
 
-// the hand shows over anything that can be clicked, and over the skull that
-// says something when it is hovered
 .skull-floor-anchor,
 .skull-floor-anchor *,
 button,
@@ -42,7 +39,7 @@ button *,
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 40px;
+  padding: 2.5rem;
   z-index: 1;
 }
 
@@ -57,11 +54,11 @@ body {
   align-items: center;
   justify-content: center;
 
-  gap: 32px;
+  gap: 2rem;
   text-align: center;
 
   background: #ffbff0 url("#{globals.$body-bg-image}") repeat 0 center;
-  background-size: 128px auto;
+  background-size: 8rem auto;
   animation: slide 3s linear infinite;
 
   user-select: none;

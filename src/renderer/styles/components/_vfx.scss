@@ -22,29 +22,34 @@
 
   .cloud-t-left {
     position: fixed;
-    top: 100px;
+    top: 6.25rem;
     left: 0;
+    width: 14.25rem;
   }
   .cloud-b-left {
     position: fixed;
-    bottom: 190px;
-    left: -50px;
+    bottom: 11.875rem;
+    left: -3.125rem;
+    width: 25.625rem;
   }
   .cloud-mini {
     position: fixed;
-    bottom: 310px;
-    left: 300px;
+    bottom: 19.375rem;
+    left: 18.75rem;
+    width: 7.25rem;
     animation: clouds-min 3s ease-in-out infinite;
   }
   .cloud-t-right {
     position: fixed;
-    top: 200px;
-    right: -155px;
+    top: 12.5rem;
+    right: -9.6875rem;
+    width: 39.875rem;
     animation: clouds-min 4s ease-in-out infinite reverse;
   }
   .cloud-b-right {
     position: fixed;
-    bottom: 140px;
+    bottom: 8.75rem;
     right: 0;
+    width: 14.1875rem;
   }
 }

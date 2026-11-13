@@ -6,15 +6,15 @@
     $band: color-mix(in srgb, #9389ee 30%, transparent);
 
     --u: calc(var(--panel-w) / 114);
-    --v: calc(80px / 17);
+    --v: calc(5rem / 17);
 
     position: relative;
     z-index: 1;
-    margin-top: calc(var(--v) * -2 - 2px);
+    margin-top: calc(var(--v) * -2 - 0.125rem);
     display: grid;
     justify-items: center;
-    gap: 24px;
-    padding: 30px 32px 40px;
+    gap: 1.5rem;
+    padding: 1.875rem 2rem 2.5rem;
     background:
       linear-gradient($ring, $ring) left top / var(--u)
         calc(100% - var(--v) * 2) no-repeat,

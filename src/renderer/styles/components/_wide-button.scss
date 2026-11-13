@@ -3,11 +3,11 @@
   padding: 0;
   color: #fdfffe;
   font-family: "Mem Prop 5x6", sans-serif;
-  font-size: 24px;
+  font-size: 1.5rem;
   letter-spacing: 0;
   cursor: pointer;
   text-shadow: 0 calc(var(--px) / 2 / 0.9) 0 var(--btn-text-shadow-color);
-  --btn-text-down: -3px;
+  --btn-text-down: -0.1875rem;
   --btn-text-right: 0;
 
   .pixel-btn-label {

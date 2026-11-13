@@ -1,45 +1,45 @@
 .title,
 .no-boosts {
   color: #fff;
-  text-shadow: 0 5px 0 rgba(255, 163, 231, 0.8);
+  text-shadow: 0 0.3125rem 0 rgba(255, 163, 231, 0.8);
   font-family: "Silkscreen", sans-serif;
-  letter-spacing: -1.75px;
+  letter-spacing: -0.109375rem;
   font-weight: bold;
   font-style: normal;
   margin: 0 auto;
   text-align: center;
 }
 .title {
-  transform: translateY(60px);
-  font-size: 30px;
+  transform: translateY(3.75rem);
+  font-size: 1.875rem;
 }
 .no-boosts {
   display: none;
-  padding-top: 10px !important;
-  font-size: 26px;
+  padding-top: 0.625rem !important;
+  font-size: 1.625rem;
 }
 
 .count-cursor {
   position: fixed;
   font-family: "Enter the Gungeon Small", sans-serif;
-  font-size: 32px;
+  font-size: 2rem;
   text-transform: uppercase;
   color: #fff;
-  -webkit-text-stroke: 3px var(--count-color);
+  -webkit-text-stroke: 0.1875rem var(--count-color);
   paint-order: stroke fill;
-  filter: drop-shadow(3px 3px 0 var(--count-color));
+  filter: drop-shadow(0.1875rem 0.1875rem 0 var(--count-color));
   pointer-events: none;
   z-index: 5;
 }
 
 .app-ver {
   position: absolute;
-  font-size: 16px;
+  font-size: 1rem;
   color: white;
   opacity: 0.9;
-  letter-spacing: -2px;
+  letter-spacing: -0.125rem;
   font-family: "Silkscreen", sans-serif;
-  bottom: -4px;
-  left: 8px;
-  padding: 4px;
+  bottom: -0.25rem;
+  left: 0.5rem;
+  padding: 0.25rem;
 }

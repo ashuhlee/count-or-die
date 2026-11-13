@@ -9,11 +9,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    filter: drop-shadow(0px 5px 0px var(--shadow-pink-008));
+    filter: drop-shadow(0px 0.3125rem 0px var(--shadow-pink-008));
   }
 
   .next-goal {
-    padding: 6px 12px;
+    padding: 0.375rem 0.75rem;
     filter: none;
     text-align: center;
     image-rendering: pixelated;
@@ -23,11 +23,11 @@
 
     .goal-text {
       --shake-scale: 0.97;
-      --shake-distance: -1.5px;
+      --shake-distance: -0.09375rem;
       color: #4a475e;
       font-family: "Silkscreen", monospace;
-      font-size: 20px;
-      letter-spacing: -1.5px;
+      font-size: 1.25rem;
+      letter-spacing: -0.09375rem;
       font-weight: bold;
 
       > span {

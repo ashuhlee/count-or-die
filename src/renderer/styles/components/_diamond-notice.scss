@@ -7,8 +7,8 @@ $diamond-delay: 0.02s;
 $diamond-time: $shown-for + 0.03s;
 
 $text-color: #fff5fd;
-$text-size: 32px;
-$letter-spacing: 5px;
+$text-size: 2rem;
+$letter-spacing: 0.3125rem;
 $text-centering: calc(#{$letter-spacing} / 2) calc(#{$text-size} / 12);
 
 .diamond-notice-group {
@@ -31,8 +31,8 @@ $text-centering: calc(#{$letter-spacing} / 2) calc(#{$text-size} / 12);
 
   .diamond-notice-shape {
     display: block;
-    width: 90px;
-    height: 90px;
+    width: 5.625rem;
+    height: 5.625rem;
   }
 
   .diamond-notice-shape {
@@ -65,7 +65,7 @@ $text-centering: calc(#{$letter-spacing} / 2) calc(#{$text-size} / 12);
 @keyframes diamond-letter {
   0% {
     scale: 0;
-    translate: -8px 0;
+    translate: -0.5rem 0;
   }
   60% {
     scale: 1.2;
@@ -112,7 +112,7 @@ $text-centering: calc(#{$letter-spacing} / 2) calc(#{$text-size} / 12);
 
   .diamond-notice-text {
     color: black;
-    translate: calc(#{$letter-spacing} / 2) calc(#{$text-size} / 12 + 3px);
+    translate: calc(#{$letter-spacing} / 2) calc(#{$text-size} / 12 + 0.1875rem);
   }
 }
 
@@ -125,21 +125,21 @@ $text-centering: calc(#{$letter-spacing} / 2) calc(#{$text-size} / 12);
 }
 
 .diamond-notice--left {
-  left: max(120px, calc(50% - 340px));
+  left: max(7.5rem, calc(50% - 21.25rem));
   top: 38%;
 }
 
 .diamond-notice--right {
-  left: min(calc(100% - 120px), calc(50% + 324px));
+  left: min(calc(100% - 7.5rem), calc(50% + 20.25rem));
   top: 56%;
 }
 
 #new-best-notice .diamond-notice--left {
-  margin: 40px 0 0 -36px;
+  margin: 2.5rem 0 0 -2.25rem;
 }
 #new-best-notice .diamond-notice--right {
   top: 38%;
-  margin: 40px 0 0 36px;
+  margin: 2.5rem 0 0 2.25rem;
 }
 
 .diamond-notice--sparkles {
@@ -152,8 +152,8 @@ $text-centering: calc(#{$letter-spacing} / 2) calc(#{$text-size} / 12);
 
 .diamond-notice-sparkles {
   position: relative;
-  width: 70px;
-  height: 70px;
+  width: 4.375rem;
+  height: 4.375rem;
 }
 
 .diamond-notice-sparkle {
@@ -167,17 +167,17 @@ $text-centering: calc(#{$letter-spacing} / 2) calc(#{$text-size} / 12);
       var(--sparkle-delay) both;
 
   &--top {
-    top: -38px;
-    right: -42px;
-    width: 24px;
-    height: 24px;
+    top: -2.375rem;
+    right: -2.625rem;
+    width: 1.5rem;
+    height: 1.5rem;
     --turn: -100deg;
   }
   &--bottom {
-    bottom: -36px;
-    left: -42px;
-    width: 24px;
-    height: 24px;
+    bottom: -2.25rem;
+    left: -2.625rem;
+    width: 1.5rem;
+    height: 1.5rem;
     --sparkle-delay: #{$sparkle-delay + 0.06s};
     --turn: 20deg;
   }
