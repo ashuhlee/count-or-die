@@ -5,6 +5,8 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 
+import { rem, unit } from "../../../utils/app/scale.ts";
+
 import divide from "@assets/ui/deco/particles/divide.svg";
 import equal from "@assets/ui/deco/particles/equal.svg";
 import hashtag from "@assets/ui/deco/particles/hashtag.svg";
@@ -74,11 +76,11 @@ function spawn(slot: number, first: boolean, others: Faller[]): Faller {
     from: -tilt,
     to: tilt,
     // they drift outwards a little more than inwards
-    drift: side === "left" ? rand(-40, 10) : rand(-10, 40),
+    drift: (side === "left" ? rand(-40, 10) : rand(-10, 40)) * unit(),
     life,
     delay: first ? START_AFTER + (life * slot) / COUNT : 0,
     startX: 0,
-    startY: START_Y,
+    startY: START_Y * unit(),
   };
 }
 
@@ -90,7 +92,7 @@ function dropped(faller: Faller, el: HTMLElement, dx: number, dy: number) {
   const angle = shape ? pixels(getComputedStyle(shape).rotate) : faller.from;
 
   const startY = y + dy;
-  const speed = (window.innerHeight - START_Y) / FALL_SECONDS;
+  const speed = (window.innerHeight - START_Y * unit()) / FALL_SECONDS;
   const life = Math.max(0.3, (window.innerHeight - startY) / speed);
   return {
     ...faller,
@@ -189,9 +191,9 @@ export default function FallingIcons({ active }: { active: boolean }) {
           }}
           style={
             {
-              width: `${faller.icon.width * SCALE}px`,
-              height: `${faller.icon.height * SCALE}px`,
-              "--icon-width": `${faller.icon.width * SCALE}px`,
+              width: rem(faller.icon.width * SCALE),
+              height: rem(faller.icon.height * SCALE),
+              "--icon-width": rem(faller.icon.width * SCALE),
               "--along": faller.along,
               "--icon": `url("${faller.icon.src}")`,
               "--from": `${faller.from}deg`,

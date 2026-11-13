@@ -3,6 +3,7 @@ import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { isRare, type PowerUpType } from "../../../../game/powerUps.ts";
 import MeltInShader from "../../../shaders/melt-in-shader/MeltInShader.tsx";
 import { POWER_UP_ICONS } from "./powerUpIcons.ts";
+import { unit } from "../../../../utils/app/scale.ts";
 
 const WIDE_SCREEN = 600;
 const MAX_NUDGE = 150;
@@ -35,7 +36,9 @@ export default function FallingPowerUp({
   useLayoutEffect(() => {
     const width = areaRef.current.offsetWidth;
     if (width > WIDE_SCREEN) {
-      setNudge(Math.floor(xRand * (Math.min(width / 3, MAX_NUDGE) + 1)));
+      setNudge(
+        Math.floor(xRand * (Math.min(width / 3, MAX_NUDGE * unit()) + 1)),
+      );
     }
   }, [xRand]);
 

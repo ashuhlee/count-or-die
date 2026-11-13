@@ -1,6 +1,7 @@
 import type { ComponentPropsWithoutRef, CSSProperties } from "react";
 
 import { playSound } from "../../../../utils/app/sounds.ts";
+import { rem } from "../../../../utils/app/scale.ts";
 
 type PixelButtonProps = {
   color: string;
@@ -37,7 +38,7 @@ export default function PixelButton({
       style={
         {
           "--btn-fill": color,
-          ...(pixelSize !== undefined && { "--px": `${pixelSize}px` }),
+          ...(pixelSize !== undefined && { "--px": rem(pixelSize) }),
           ...(paddingY !== undefined && { "--btn-pad-y": paddingY }),
           ...(shadeRows !== undefined && { "--btn-shade-base": shadeRows }),
           ...(outline !== undefined && { "--btn-outline": outline }),

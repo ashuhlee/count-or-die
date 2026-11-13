@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { rem } from "../../../../utils/app/scale.ts";
 
 type LettersProps = {
   text: string;
@@ -26,7 +27,7 @@ export default function Letters({
               "--delay": `${(index + offset) * step}s`,
               "--index": index + offset,
               "--count": text.length,
-              ...(height !== undefined && { "--wave-height": `${height}px` }),
+              ...(height !== undefined && { "--wave-height": rem(height) }),
               ...(duration !== undefined && {
                 "--wave-duration": `${duration}s`,
               }),

@@ -1,5 +1,6 @@
 import { Fragment, useLayoutEffect, useRef, type KeyboardEvent } from "react";
 
+import { measured, rem } from "../../../utils/app/scale.ts";
 import { playSound } from "../../../utils/app/sounds.ts";
 import PixelPanel from "../../components/hud/pixel-panel/PixelPanel.tsx";
 import Letters from "../../components/text/letters/Letters.tsx";
@@ -66,7 +67,7 @@ export default function GameNotification({
       panel?.classList.toggle("game-notification--long", lines > 1.5);
 
       const longest = longestLine();
-      if (longest > 0) element.style.width = `${Math.ceil(longest) + 1}px`;
+      if (longest > 0) element.style.width = measured(Math.ceil(longest) + 1);
     };
 
     fit();
@@ -95,7 +96,11 @@ export default function GameNotification({
           src={icon}
           alt={iconAlt}
           className="game-notification-icon"
-          style={iconSize ? { width: iconSize, height: iconSize } : undefined}
+          style={
+            iconSize
+              ? { width: rem(iconSize), height: rem(iconSize) }
+              : undefined
+          }
         />
       )}
       <span

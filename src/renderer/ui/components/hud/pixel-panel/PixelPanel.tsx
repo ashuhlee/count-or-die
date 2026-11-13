@@ -3,6 +3,7 @@ import type {
   CSSProperties,
   ElementType,
 } from "react";
+import { rem } from "../../../../utils/app/scale.ts";
 
 type PixelPanelProps<T extends ElementType> = {
   as?: T;
@@ -51,7 +52,7 @@ export default function PixelPanel<T extends ElementType = "div">({
             "--panel-shadow-height": `${shadowHeight * 100}%`,
           }),
           ...(borderSize !== undefined && {
-            "--panel-border-size": `${borderSize}px`,
+            "--panel-border-size": rem(borderSize),
           }),
           ...style,
         } as CSSProperties
