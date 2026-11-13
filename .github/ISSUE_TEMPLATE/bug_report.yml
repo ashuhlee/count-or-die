@@ -36,8 +36,8 @@ body:
     id: version
     attributes:
       label: Game version
-      description: Desktop version number, e.g. 1.0.0-beta.1.1. Leave blank if you play in the browser.
-      placeholder: 1.0.0-beta.1.1
+      description: Desktop version number, e.g. 1.0.0-beta.1. Leave blank if you play in the browser.
+      placeholder: 1.0.0-beta.1
 
   - type: input
     id: system

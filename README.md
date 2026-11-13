@@ -31,12 +31,12 @@ https://github.com/user-attachments/assets/9aba7484-a439-43e3-9971-c08586095517
 
 ### Desktop
 
-To try out the beta, download the latest release for your platform from the [releases page](https://github.com/ashuhlee/count-or-die/releases/tag/v1.0.0-beta.1.1), or via the links below:
+To try out the beta, download the latest release for your platform from the [releases page](https://github.com/ashuhlee/count-or-die/releases/tag/v1.0.0-beta.1), or via the links below:
 
-| Platform              | File                                                                                                                                                      |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Windows (64-bit)      | [CountOrDie-1.0.0-beta.1.1-win64.exe](https://github.com/ashuhlee/count-or-die/releases/download/v1.0.0-beta.1.1/CountOrDie-1.0.0-beta.1.1-win64.exe)     |
-| macOS (Apple Silicon) | [Count.or.Die-1.0.0-beta.1.1-arm64.dmg](https://github.com/ashuhlee/count-or-die/releases/download/v1.0.0-beta.1.1/Count.or.Die-1.0.0-beta.1.1-arm64.dmg) |
+| Platform              | File                                                                                                                                                |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Windows (64-bit)      | [CountOrDie-1.0.0-beta.1-win64.exe](https://github.com/ashuhlee/count-or-die/releases/download/v1.0.0-beta.1/CountOrDie-1.0.0-beta.1-win64.exe)     |
+| macOS (Apple Silicon) | [Count.or.Die-1.0.0-beta.1-arm64.dmg](https://github.com/ashuhlee/count-or-die/releases/download/v1.0.0-beta.1/Count.or.Die-1.0.0-beta.1-arm64.dmg) |
 
 The desktop apps update themselves when a new version is released. Intel Macs aren't supported yet.
 

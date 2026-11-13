@@ -18,12 +18,9 @@ type GameNotificationProps = {
   leaving?: boolean;
   shine?: boolean;
   collapse?: boolean;
-  // a longer max width, for long texts
   wide?: boolean;
   id?: string;
-  // makes the whole notification a button
   onClick?: () => void;
-  // the button hover sound, when the mouse enters
   hoverSound?: boolean;
 };
 
