@@ -3373,7 +3373,7 @@ img {
 
 @keyframes falling-icon-fall {
   from {
-    translate: var(--start-x, 0px) var(--start-y, -3.875rem);
+    translate: var(--start-x, 0px) var(--start-y, -6rem);
   }
   to {
     translate: calc(var(--start-x, 0px) + var(--drift)) 100vh;

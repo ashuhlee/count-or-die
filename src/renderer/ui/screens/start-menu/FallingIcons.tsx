@@ -44,6 +44,7 @@ type Faller = {
   delay: number;
   startX: number;
   startY: number;
+  startAt: number;
 };
 
 const COUNT = 3;
@@ -56,12 +57,36 @@ const pick = <T,>(list: readonly T[]) =>
 let nextId = 0;
 
 const FALL_SECONDS = 5;
+const SPACING = (FALL_SECONDS * 1000) / COUNT;
 const START_AFTER = 1;
-const START_Y = -62;
+// far enough above the screen to hide the tallest of them, turned, with its
+// outline and shadow, while it waits to start
+const START_Y = -96;
 const SCALE = 0.9;
+
+// How long a new one waits to start, so that none starts within a third of a
+// fall of another. When the tab was hidden, they all finished at once while
+// nothing was looking, and they all start at once as it comes back.
+function freeDelay(now: number, others: Faller[]) {
+  let start = now;
+  for (let moved = true; moved;) {
+    moved = false;
+    for (const other of others) {
+      if (Math.abs(start - other.startAt) < SPACING) {
+        start = other.startAt + SPACING;
+        moved = true;
+      }
+    }
+  }
+  return (start - now) / 1000;
+}
 
 function spawn(slot: number, first: boolean, others: Faller[]): Faller {
   const life = FALL_SECONDS;
+  const now = Date.now();
+  const wait = first
+    ? START_AFTER + (life * slot) / COUNT
+    : freeDelay(now, others);
   const side = slot % 2 === 0 ? "left" : "right";
   const tilt = rand(25, 40) * pick([1, -1] as const);
   const fresh = ICONS.filter(
@@ -78,7 +103,8 @@ function spawn(slot: number, first: boolean, others: Faller[]): Faller {
     // they drift outwards a little more than inwards
     drift: (side === "left" ? rand(-40, 10) : rand(-10, 40)) * unit(),
     life,
-    delay: first ? START_AFTER + (life * slot) / COUNT : 0,
+    delay: wait,
+    startAt: now + wait * 1000,
     startX: 0,
     startY: START_Y * unit(),
   };
@@ -103,6 +129,7 @@ function dropped(faller: Faller, el: HTMLElement, dx: number, dy: number) {
     delay: 0,
     startX: x + dx,
     startY,
+    startAt: Date.now(),
   };
 }
 
