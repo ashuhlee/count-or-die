@@ -58,7 +58,7 @@ let nextId = 0;
 const FALL_SECONDS = 5;
 const START_AFTER = 1;
 const START_Y = -62;
-const SCALE = 0.8;
+const SCALE = 0.9;
 
 function spawn(slot: number, first: boolean, others: Faller[]): Faller {
   const life = FALL_SECONDS;
