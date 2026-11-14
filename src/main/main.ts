@@ -10,6 +10,7 @@ import {
   shell,
   Menu,
   BrowserWindow,
+  screen,
 } from "electron";
 
 import type { IpcMainEvent, MenuItemConstructorOptions } from "electron";
@@ -76,9 +77,9 @@ ipcMain.handle("gpu:warning", async () => {
 });
 
 function createWindow() {
+  const display = screen.getPrimaryDisplay();
   const mainWindow = new BrowserWindow({
-    width: 1920,
-    height: 1100,
+    ...display.workArea,
     minWidth: 450,
     minHeight: 800,
     resizable: true,
