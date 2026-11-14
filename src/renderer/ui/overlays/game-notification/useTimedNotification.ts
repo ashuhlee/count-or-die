@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 export const SHOWN_FOR = 4000;
 export const EXIT = 200;
+export const COLLAPSE_EXIT = 450;
 
 export function useTimedNotification(shownFor = SHOWN_FOR, exit = EXIT) {
   const [shown, setShown] = useState<{ id: number; leaving: boolean } | null>(

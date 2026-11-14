@@ -16,18 +16,18 @@
   box-sizing: border-box;
   text-align: center;
   transition: width 0.05s ease-out;
-  padding: 5px 8px 3px;
+  padding: 0.3125rem 0.5rem 0.1875rem;
   font-family: "Enter the Gungeon Small", sans-serif;
-  font-size: 17px;
+  font-size: 1.0625rem;
   text-transform: none;
   color: var(--tooltip-fg);
   background-color: var(--tooltip-bg);
   box-shadow:
-    -3px 0 0 0 var(--tooltip-bg),
-    3px 0 0 0 var(--tooltip-bg),
-    0 -3px 0 0 var(--tooltip-bg),
-    0 3px 0 0 var(--tooltip-bg);
-  filter: drop-shadow(0 5px 0 var(--shadow-pink-015));
+    -0.1875rem 0 0 0 var(--tooltip-bg),
+    0.1875rem 0 0 0 var(--tooltip-bg),
+    0 -0.1875rem 0 0 var(--tooltip-bg),
+    0 0.1875rem 0 0 var(--tooltip-bg);
+  filter: drop-shadow(0 0.3125rem 0 var(--shadow-pink-015));
   animation: tooltip-in 0.2s both;
 
   &.tooltip--right {
@@ -48,27 +48,27 @@
   &::before {
     content: "";
     position: absolute;
-    inset: -3px;
+    inset: -0.1875rem;
     z-index: -1;
     pointer-events: none;
     clip-path: polygon(
-      3px 0,
-      calc(100% - 3px) 0,
-      calc(100% - 3px) 3px,
-      100% 3px,
-      100% calc(100% - 3px),
-      calc(100% - 3px) calc(100% - 3px),
-      calc(100% - 3px) 100%,
-      3px 100%,
-      3px calc(100% - 3px),
-      0 calc(100% - 3px),
-      0 3px,
-      3px 3px
+      0.1875rem 0,
+      calc(100% - 0.1875rem) 0,
+      calc(100% - 0.1875rem) 0.1875rem,
+      100% 0.1875rem,
+      100% calc(100% - 0.1875rem),
+      calc(100% - 0.1875rem) calc(100% - 0.1875rem),
+      calc(100% - 0.1875rem) 100%,
+      0.1875rem 100%,
+      0.1875rem calc(100% - 0.1875rem),
+      0 calc(100% - 0.1875rem),
+      0 0.1875rem,
+      0.1875rem 0.1875rem
     );
     @include stripes.stripes(
-      $stripe-period: 8px,
-      $stripe-width: 4px,
-      $stripe-step: 2px,
+      $stripe-period: 0.5rem,
+      $stripe-width: 0.25rem,
+      $stripe-step: 0.125rem,
       $stripe-opacity: 0.04,
       $stripe-pixel-size: 2
     );

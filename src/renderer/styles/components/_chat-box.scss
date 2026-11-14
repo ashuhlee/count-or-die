@@ -2,17 +2,17 @@
   --chat-bg: #fff2fc;
   --chat-fg: #59517d;
   --chat-shadow: var(--shadow-pink-010);
-  --chat-shadow-drop: 5px;
-  --chat-edge: 8px;
+  --chat-shadow-drop: 0.3125rem;
+  --chat-edge: 0.5rem;
   --chat-stroke: #e3e0ef;
-  --chat-stroke-width: 3px;
+  --chat-stroke-width: 0.1875rem;
   --tooltip-tilt: 30deg;
 
   position: fixed;
   z-index: 1000;
   pointer-events: none;
   width: max-content;
-  max-width: 230px;
+  max-width: 14.375rem;
 
   translate: calc(
       -100% + max(0px, calc(100% + var(--chat-edge) - var(--chat-x)))
@@ -33,10 +33,10 @@
     translate: 0 var(--chat-shadow-drop);
     background-color: var(--chat-shadow);
     box-shadow:
-      -6px 0 0 0 var(--chat-shadow),
-      6px 0 0 0 var(--chat-shadow),
-      0 -6px 0 0 var(--chat-shadow),
-      0 6px 0 0 var(--chat-shadow);
+      -0.375rem 0 0 0 var(--chat-shadow),
+      0.375rem 0 0 0 var(--chat-shadow),
+      0 -0.375rem 0 0 var(--chat-shadow),
+      0 0.375rem 0 0 var(--chat-shadow);
   }
 }
 
@@ -45,17 +45,17 @@
   position: relative;
   box-sizing: border-box;
   text-align: left;
-  padding: 5px 8px 3px;
+  padding: 0.3125rem 0.5rem 0.1875rem;
   font-family: "Enter the Gungeon Small", sans-serif;
-  font-size: 17px;
+  font-size: 1.0625rem;
   text-transform: none;
   color: var(--chat-fg);
   background-color: var(--chat-bg);
   box-shadow:
-    -3px 0 0 0 var(--chat-bg),
-    3px 0 0 0 var(--chat-bg),
-    0 -3px 0 0 var(--chat-bg),
-    0 3px 0 0 var(--chat-bg);
+    -0.1875rem 0 0 0 var(--chat-bg),
+    0.1875rem 0 0 0 var(--chat-bg),
+    0 -0.1875rem 0 0 var(--chat-bg),
+    0 0.1875rem 0 0 var(--chat-bg);
 
   filter: drop-shadow(var(--chat-stroke-width) 0 0 var(--chat-stroke))
     drop-shadow(calc(var(--chat-stroke-width) * -1) 0 0 var(--chat-stroke))
@@ -65,10 +65,10 @@
   &::after {
     content: "";
     position: absolute;
-    right: 6px;
+    right: 0.375rem;
     top: 100%;
-    width: 9px;
-    height: 9px;
+    width: 0.5625rem;
+    height: 0.5625rem;
     background-color: var(--chat-bg);
     clip-path: polygon(
       0 0,

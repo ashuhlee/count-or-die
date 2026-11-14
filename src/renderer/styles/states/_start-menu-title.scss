@@ -3,8 +3,8 @@
 
 .menu-screen {
   flex-direction: column;
-  gap: 64px;
-  --menu-title-width: clamp(270px, 26vw, 400px);
+  gap: 4rem;
+  --menu-title-width: clamp(16.875rem, 26vw, 25rem);
 
   .menu-title-wrap {
     position: relative;
@@ -29,13 +29,13 @@ $cycle: $twinkle + $pause;
   opacity: 0;
   pointer-events: none;
   --stroke: #ff9fef;
-  --stroke-width: 1px;
+  --stroke-width: 0.0625rem;
 
   filter: drop-shadow(var(--stroke-width) 0 0 var(--stroke))
     drop-shadow(calc(var(--stroke-width) * -1) 0 0 var(--stroke))
     drop-shadow(0 var(--stroke-width) 0 var(--stroke))
     drop-shadow(0 calc(var(--stroke-width) * -1) 0 var(--stroke))
-    drop-shadow(2px 2px 0 var(--shadow-pink-010));
+    drop-shadow(0.125rem 0.125rem 0 var(--shadow-pink-010));
 
   &.menu-sparkle--top-right {
     left: 106%;

@@ -1,5 +1,6 @@
 import { Fragment, useLayoutEffect, useRef, type KeyboardEvent } from "react";
 
+import { measured, rem } from "../../../utils/app/scale.ts";
 import { playSound } from "../../../utils/app/sounds.ts";
 import PixelPanel from "../../components/hud/pixel-panel/PixelPanel.tsx";
 import Letters from "../../components/text/letters/Letters.tsx";
@@ -16,12 +17,10 @@ type GameNotificationProps = {
   still?: boolean;
   leaving?: boolean;
   shine?: boolean;
-  // a longer max width, for long texts
+  collapse?: boolean;
   wide?: boolean;
   id?: string;
-  // makes the whole notification a button
   onClick?: () => void;
-  // the button hover sound, when the mouse enters
   hoverSound?: boolean;
 };
 
@@ -37,6 +36,7 @@ export default function GameNotification({
   still = false,
   leaving = false,
   shine = false,
+  collapse = false,
   wide = false,
   id,
   onClick,
@@ -66,19 +66,25 @@ export default function GameNotification({
       panel?.classList.toggle("game-notification--long", lines > 1.5);
 
       const longest = longestLine();
-      if (longest > 0) element.style.width = `${Math.ceil(longest) + 1}px`;
+      if (longest > 0) element.style.width = measured(Math.ceil(longest) + 1);
     };
 
     fit();
     void document.fonts?.ready.then(fit);
   }, [text, iconSize, visible, leaving, shine]);
 
+  useLayoutEffect(() => {
+    if (!leaving || !collapse) return;
+    const panel = textRef.current?.closest<HTMLElement>(".game-notification");
+    panel?.style.setProperty("--collapse-from", `${panel.offsetHeight}px`);
+  }, [leaving, collapse]);
+
   return (
     <PixelPanel
       border={border}
       accent={accent}
       id={id}
-      className={`game-notification${visible ? (leaving ? " slide-out-left" : " bounce-in-left") : ""}${shine ? " shine" : ""}${wide ? " game-notification--wide" : ""}`}
+      className={`game-notification${visible ? (leaving ? " slide-out-left" : " bounce-in-left") : ""}${shine ? " shine" : ""}${wide ? " game-notification--wide" : ""}${leaving && collapse ? " game-notification--collapse" : ""}`}
       style={{ animationDelay: `${leaving ? 0 : delay}s` }}
       {...(hoverSound && { onMouseEnter: () => playSound("buttonHover") })}
       {...(onClick && {
@@ -95,7 +101,11 @@ export default function GameNotification({
           src={icon}
           alt={iconAlt}
           className="game-notification-icon"
-          style={iconSize ? { width: iconSize, height: iconSize } : undefined}
+          style={
+            iconSize
+              ? { width: rem(iconSize), height: rem(iconSize) }
+              : undefined
+          }
         />
       )}
       <span

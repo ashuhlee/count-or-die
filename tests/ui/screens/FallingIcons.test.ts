@@ -1,7 +1,7 @@
 import { act } from "react";
 import { afterEach, beforeEach, expect, describe, test, vi } from "vitest";
 
-import { stubWebAnimations } from "../../helpers/dom.ts";
+import { fireAnimationEnd, stubWebAnimations } from "../../helpers/dom.ts";
 import { renderGame } from "../../helpers/game.tsx";
 
 vi.mock("../../../src/renderer/utils/app/sounds.ts", async (original) => ({
@@ -76,6 +76,23 @@ describe("the falling icons", () => {
     expect(dropped.style.getPropertyValue("--start-x")).not.toBe(start);
     expect(dropped.style.getPropertyValue("--delay")).toBe("0s");
     expect(icons()).toHaveLength(count);
+  });
+
+  test("never start together, even if they all finish at once", () => {
+    // as when the tab was hidden while they fell: all of them end together
+    const before = icons();
+    for (const icon of before) fireAnimationEnd(icon, "falling-icon-fall");
+
+    // each one is a new one, not the one that ended
+    for (const icon of icons()) expect(before).not.toContain(icon);
+
+    const delays = icons()
+      .map((icon) => parseFloat(icon.style.getPropertyValue("--delay")))
+      .sort((a, b) => a - b);
+    expect(delays).toHaveLength(3);
+    for (let i = 1; i < delays.length; i++) {
+      expect(delays[i] - delays[i - 1]).toBeGreaterThanOrEqual(5 / 3 - 0.001);
+    }
   });
 
   test("wait for the menu, and then start from above the screen", () => {

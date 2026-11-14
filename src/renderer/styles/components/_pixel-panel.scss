@@ -8,7 +8,7 @@
 .pixel-panel {
   --panel-border: #fff;
   --panel-accent: var(--panel-border);
-  --panel-pixel: 5px;
+  --panel-pixel: 0.3125rem;
   --panel-border-size: var(--panel-pixel);
   --panel-shadow: color-mix(
     in srgb,

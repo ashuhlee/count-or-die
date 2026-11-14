@@ -1,3 +1,5 @@
+import { rem } from "../../../../utils/app/scale.ts";
+
 const SHAPE = "M56 8V0L0 0V8L8 8L8 16H16V24H24V32H32V24H40V16H48V8L56 8Z";
 
 type ChatTipProps = {
@@ -9,21 +11,20 @@ export default function ChatTip({ border, overlap }: ChatTipProps) {
   const reach = border * 2;
   const width = 56 + reach * 2;
   const height = 32 + reach;
+  const size = { width: rem(width / 2), height: rem(height / 2) };
   const view = {
     viewBox: `${-reach} 0 ${width} ${height}`,
-    width: width / 2,
-    height: height / 2,
+    style: size,
     "aria-hidden": true,
   };
 
   return (
-    <div
-      className="chat-tip"
-      style={{ width: width / 2, height: height / 2, marginTop: -overlap }}
-    >
+    <div className="chat-tip" style={{ ...size, marginTop: rem(-overlap) }}>
       <div
         className="chat-tip-frame"
-        style={{ clipPath: `inset(${overlap}px -50px -50px -50px)` }}
+        style={{
+          clipPath: `inset(${rem(overlap)} -3.125rem -3.125rem -3.125rem)`,
+        }}
       >
         <svg className="chat-tip-art" {...view}>
           <defs>

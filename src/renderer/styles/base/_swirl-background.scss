@@ -2,7 +2,7 @@
 
 // the tile that slides behind a screen, the game over one unless another is given
 @mixin swirl-background($tile: globals.$game-over-bg) {
-  --tile-size: 112px;
+  --tile-size: 7rem;
 
   .go-background {
     position: absolute;

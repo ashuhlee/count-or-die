@@ -140,7 +140,7 @@ export default function MenuBar({
               <GameNotification
                 icon={skullIcon}
                 iconAlt="skull"
-                text="Welcome to beta.1!"
+                text="Welcome to beta 1!"
                 border="#B0A1FF"
                 still
                 delay={WELCOME_DELAY}

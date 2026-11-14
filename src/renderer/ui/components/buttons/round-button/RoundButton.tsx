@@ -1,5 +1,6 @@
 import type { ButtonHTMLAttributes } from "react";
 
+import { rem } from "../../../../utils/app/scale.ts";
 import { playSound } from "../../../../utils/app/sounds.ts";
 
 import button1 from "@assets/ui/buttons/button-1.png";
@@ -44,7 +45,7 @@ export default function RoundButton({
         className="round-btn-icon"
         alt={iconAlt}
         src={icon}
-        style={{ width: iconSize }}
+        style={{ width: rem(iconSize) }}
       />
     </button>
   );

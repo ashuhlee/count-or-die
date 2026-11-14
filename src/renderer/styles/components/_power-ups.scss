@@ -1,7 +1,7 @@
 @use "shine";
 
 $shine-every: 1.5s;
-$power-up-width: 74px;
+$power-up-width: 4.625rem;
 
 .spawn-area {
   //border: 5px solid red; // debugging
@@ -28,10 +28,10 @@ $power-up-width: 74px;
 .power-up-img {
   position: absolute;
   pointer-events: visible;
-  top: -60px;
+  top: -3.75rem;
   transform: rotate(0);
-  padding: 10px;
-  filter: drop-shadow(0 4px 0 var(--shadow-pink-015));
+  padding: 0.625rem;
+  filter: drop-shadow(0 0.25rem 0 var(--shadow-pink-015));
 }
 
 .power-up-melt .melt-in-shader__image {

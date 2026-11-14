@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { isTimedPowerUp, RUSH_RATE } from "../../../../game/gameLogic.ts";
 import { useGame, type BarStage } from "../../../../provider/useGame.ts";
 import { useProgressSparkles } from "./useProgressSparkles.ts";
+import { rem } from "../../../../utils/app/scale.ts";
 
 const COLORS = {
   rainbow: "var(--rainbow-gradient-bar)",
@@ -101,14 +102,14 @@ export default function ProgressBar() {
         className="progress-bar"
         id="progress-bar"
         style={{
-          height: "13px",
+          height: rem(13),
           gridArea: "1 / 1",
           animation: state.isGameOver
             ? "none"
             : getAnimation(stage, state.roundSeconds),
           animationPlayState: ready ? "running" : "paused",
           transformOrigin: "left",
-          width: "150px",
+          width: rem(150),
           background: state.isGameOver
             ? COLORS.critical
             : getBackground(stage, rainbowBar),

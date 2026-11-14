@@ -1,4 +1,5 @@
 import { useEffect, type RefObject } from "react";
+import { rem } from "../../../../utils/app/scale.ts";
 
 const BAR_WIDTH = 150;
 const BAR_HEIGHT = 13;
@@ -29,15 +30,15 @@ export function useProgressSparkles(
       const dot = document.createElement("span");
       dot.className = "pg-sparkle";
 
-      dot.style.setProperty("--size", `${size}px`);
+      dot.style.setProperty("--size", rem(size));
       dot.style.setProperty("--rot", `${between(0, 90)}deg`);
-      dot.style.setProperty("--x", `${end - size / 2}px`);
+      dot.style.setProperty("--x", rem(end - size / 2));
       dot.style.setProperty(
         "--y",
-        `${between(-size / 4, BAR_HEIGHT - (size * 3) / 4)}px`,
+        rem(between(-size / 4, BAR_HEIGHT - (size * 3) / 4)),
       );
-      dot.style.setProperty("--dx", `${between(10, 30)}px`);
-      dot.style.setProperty("--dy", `${between(-3.5, 3.5)}px`);
+      dot.style.setProperty("--dx", rem(between(10, 30)));
+      dot.style.setProperty("--dy", rem(between(-3.5, 3.5)));
 
       area.current.appendChild(dot);
 

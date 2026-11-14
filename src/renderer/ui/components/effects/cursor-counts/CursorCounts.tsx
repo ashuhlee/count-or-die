@@ -7,6 +7,7 @@ import {
 } from "react";
 
 import { useGameEvent } from "../../../../provider/useGameEvent.ts";
+import { rem } from "../../../../utils/app/scale.ts";
 
 const COLORS = ["#FDA9E3", "#b5d9ff", "#aaa3ff"];
 
@@ -34,12 +35,12 @@ function FloatingCount({
       [
         {
           opacity: 0.7,
-          transform: `translateY(-20px) translateX(0) rotate(0) scale(1)`,
+          transform: `translateY(${rem(-20)}) translateX(0) rotate(0) scale(1)`,
         },
         {
           opacity: 0,
-          transform: `translateY(-80px)
-						translateX(${xPos}px)
+          transform: `translateY(${rem(-80)})
+						translateX(${rem(xPos)})
 						rotate(${xPos}deg)
 						scale(1.2)`,
         },

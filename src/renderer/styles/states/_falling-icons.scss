@@ -7,7 +7,7 @@
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
-  --center-half: calc(var(--menu-title-width) / 2 + 36px);
+  --center-half: calc(var(--menu-title-width) / 2 + 2.25rem);
 }
 
 .falling-icons--waiting {
@@ -22,13 +22,13 @@
   top: 0;
   --side-width: max(0px, calc(50% - var(--center-half) - var(--icon-width)));
   --stroke: #dddaea;
-  --stroke-width: 2.5px;
+  --stroke-width: 0.15625rem;
 
   filter: drop-shadow(var(--stroke-width) 0 0 var(--stroke))
     drop-shadow(calc(var(--stroke-width) * -1) 0 0 var(--stroke))
     drop-shadow(0 var(--stroke-width) 0 var(--stroke))
     drop-shadow(0 calc(var(--stroke-width) * -1) 0 var(--stroke))
-    drop-shadow(0 5px 0 var(--shadow-pink-010));
+    drop-shadow(0 0.3125rem 0 var(--shadow-pink-010));
 
   animation: falling-icon-fall var(--life) linear var(--delay) both;
   pointer-events: auto;
@@ -80,7 +80,7 @@
 
 @keyframes falling-icon-fall {
   from {
-    translate: var(--start-x, 0px) var(--start-y, -62px);
+    translate: var(--start-x, 0px) var(--start-y, -6rem);
   }
   to {
     translate: calc(var(--start-x, 0px) + var(--drift)) 100vh;

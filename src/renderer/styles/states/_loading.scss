@@ -5,7 +5,7 @@
 $tilt: 30deg;
 $half-side: math.div(1, math.sqrt(2));
 $outline-zoom: 1.2;
-$outline-tile: 128px * $outline-zoom;
+$outline-tile: 8rem * $outline-zoom;
 
 @function tilted-square($angle) {
   $points: ();
@@ -58,7 +58,7 @@ $outline-tile: 128px * $outline-zoom;
     content: "";
     position: absolute;
     inset: 0;
-    background: url("#{globals.$loading-bg}") repeat 0 center;
+    background: url("#{globals.$loading-bg}") repeat 0 center / 8rem 8rem;
     animation: slide 4s linear infinite reverse;
   }
 
@@ -66,8 +66,8 @@ $outline-tile: 128px * $outline-zoom;
     position: relative;
     z-index: 10;
     display: block;
-    width: 80px;
-    height: 80px;
+    width: 5rem;
+    height: 5rem;
     background: linear-gradient(to bottom, #846d8c, #3c385f);
     mask: var(--skull) center / 100% 100% no-repeat;
     animation: jackInTheBox 1s ease -0.2s forwards;

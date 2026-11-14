@@ -7,6 +7,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 
+import { measured } from "../../../utils/app/scale.ts";
 import Letters from "../../components/text/letters/Letters.tsx";
 import { useFadeOut } from "../alert-popup/useFadeOut.ts";
 
@@ -60,7 +61,7 @@ export default function Tooltip({
     const style = getComputedStyle(box.current);
     const padding =
       parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
-    box.current.style.width = `${label.current.offsetWidth + padding}px`;
+    box.current.style.width = measured(label.current.offsetWidth + padding);
   }, [text, mounted]);
 
   return (

@@ -6,6 +6,7 @@ import closePng from "@assets/ui/tabs/close.png";
 import closeHoverPng from "@assets/ui/tabs/close-hover.png";
 
 import { useParallax } from "../../../hooks/useParallax.ts";
+import { measured } from "../../../utils/app/scale.ts";
 import { playSound } from "../../../utils/app/sounds.ts";
 import AlertButton from "../../components/buttons/alert-button/AlertButton.tsx";
 import Letters from "../../components/text/letters/Letters.tsx";
@@ -79,7 +80,7 @@ export default function AlertPopup({
           (word) => word.offsetLeft + word.offsetWidth,
         ),
       );
-      if (longest > 0) element.style.width = `${Math.ceil(longest) + 1}px`;
+      if (longest > 0) element.style.width = measured(Math.ceil(longest) + 1);
     };
 
     fit();

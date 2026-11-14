@@ -12,7 +12,6 @@ export type Rendered = {
   unmount: () => void;
 };
 
-// renders a component (or element) into a fresh div on the page
 export function renderInto(component: ReactElement | ComponentType): Rendered {
   const container = document.createElement("div");
   document.body.appendChild(container);
@@ -31,19 +30,20 @@ export function renderInto(component: ReactElement | ComponentType): Rendered {
   };
 }
 
-// jsdom has no AnimationEvent, so React listens for the prefixed event name
 const ANIMATION_END =
   "AnimationEvent" in window ? "animationend" : "webkitAnimationEnd";
 
-// pretends an element's CSS animation just finished
-export function fireAnimationEnd(element: Element): void {
+export function fireAnimationEnd(
+  element: Element,
+  animationName?: string,
+): void {
+  const end = new Event(ANIMATION_END, { bubbles: true });
+  if (animationName) Object.assign(end, { animationName });
   act(() => {
-    element.dispatchEvent(new Event(ANIMATION_END, { bubbles: true }));
+    element.dispatchEvent(end);
   });
 }
 
-// jsdom has no Web Animations API (element.animate). This stands in for it,
-// remembering each animation so a test can decide when it has finished.
 export function stubWebAnimations() {
   const pending: Array<() => void> = [];
   const animate = vi.fn(() => ({

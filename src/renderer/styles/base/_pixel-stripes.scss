@@ -4,9 +4,9 @@
 // of the tile starts one step further left than the row above it, so the
 // stripes lean "/" with a staircase edge. The step has to divide the period.
 // These are the defaults, and each bar can give its own to the mixin
-$period: 30px;
-$width: 15px;
-$step: 3px;
+$period: 1.875rem;
+$width: 0.9375rem;
+$step: 0.1875rem;
 $color: "white";
 $opacity: 0.2;
 
@@ -16,9 +16,9 @@ $opacity: 0.2;
   $stripe-step: $step,
   $stripe-opacity: $opacity
 ) {
-  $size: math.div($stripe-period, 1px);
-  $step-size: math.div($stripe-step, 1px);
-  $stripe: math.div($stripe-width, 1px);
+  $size: math.div($stripe-period, 0.0625rem);
+  $step-size: math.div($stripe-step, 0.0625rem);
+  $stripe: math.div($stripe-width, 0.0625rem);
   $svg: "<svg xmlns='http://www.w3.org/2000/svg' width='#{$size}' height='#{$size}' shape-rendering='crispEdges'>";
 
   @for $row from 0 to math.div($size, $step-size) {

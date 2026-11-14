@@ -142,7 +142,7 @@ export default function Game() {
         brightness={1.02}
         saturation={1}
         vignetteStrength={0.02}
-        curvature={0.03}
+        curvature={window.electron ? 0.03 : 0}
         edgeBlur={6}
         bezel={0}
         flickerStrength={0}

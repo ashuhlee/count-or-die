@@ -4,12 +4,12 @@ $shine-every: 5.5s;
 
 .hearts {
   display: flex;
-  gap: 18px;
-  height: 64px;
+  gap: 1.125rem;
+  height: 4rem;
   justify-content: center;
   flex-direction: row;
   align-items: center;
-  filter: drop-shadow(0 4px 0 var(--shadow-pink-010));
+  filter: drop-shadow(0 0.25rem 0 var(--shadow-pink-010));
 
   .heart-pink,
   .heart-purple,
@@ -18,7 +18,7 @@ $shine-every: 5.5s;
     transform: rotate(-3deg);
   }
   img {
-    width: 64px;
+    width: 4rem;
   }
   > div {
     position: relative;
@@ -64,17 +64,17 @@ $shine-every: 5.5s;
   position: absolute;
   top: 0;
   left: 0;
-  width: 64px;
+  width: 4rem;
 }
 
 .boost-stuff {
-  max-height: 64px;
+  max-height: 4rem;
 }
 
 .smoke-puff {
   position: fixed;
-  width: 70px;
-  height: 70px;
+  width: 4.375rem;
+  height: 4.375rem;
   z-index: 2;
   pointer-events: none;
   filter: brightness(1.03) saturate(110%);

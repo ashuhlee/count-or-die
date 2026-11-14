@@ -13,6 +13,22 @@ const WIN_SUFFIX = {
 };
 const winSuffix = WIN_SUFFIX[arch] ?? `win-${arch}`;
 
+const platform =
+  process.argv.find((arg) => arg.startsWith("--platform="))?.slice(11) ??
+  process.platform;
+
+// The version resource of the Windows exe takes at most four numbers, so
+// 1.0.0-beta.1.1 is stamped on it as 1.0.0.11 (the installer and the updater
+// keep the full version from package.json)
+const exeVersion = (() => {
+  const [core, prerelease = ""] = pkg.version.split("-");
+  const build = prerelease
+    .split(".")
+    .filter((part) => /^\d+$/.test(part))
+    .join("");
+  return build ? `${core}.${build}` : core;
+})();
+
 const { APPLE_ID, APPLE_APP_PASSWORD, APPLE_TEAM_ID } = process.env;
 const notarize =
   APPLE_ID && APPLE_APP_PASSWORD && APPLE_TEAM_ID
@@ -34,6 +50,7 @@ const config: ForgeConfig = {
     executableName: "CountOrDie",
     icon: "./resources/icons/icon",
     appCategoryType: "public.app-category.games",
+    ...(platform === "win32" && { appVersion: exeVersion }),
     ...notarize,
   },
   rebuildConfig: {},

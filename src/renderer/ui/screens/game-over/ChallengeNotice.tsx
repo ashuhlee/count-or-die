@@ -4,6 +4,7 @@ import checkIcon from "@assets/ui/deco/check_grey.svg";
 
 import GameNotification from "../../overlays/game-notification/GameNotification.tsx";
 import {
+  COLLAPSE_EXIT,
   SHOWN_FOR,
   useTimedNotification,
 } from "../../overlays/game-notification/useTimedNotification.ts";
@@ -23,7 +24,10 @@ export default function ChallengeNotice({
   delay,
   id,
 }: ChallengeNoticeProps) {
-  const { shown, show } = useTimedNotification(delay * 1000 + SHOWN_FOR);
+  const { shown, show } = useTimedNotification(
+    delay * 1000 + SHOWN_FOR,
+    COLLAPSE_EXIT,
+  );
 
   useEffect(() => {
     if (visible) show();
@@ -37,6 +41,7 @@ export default function ChallengeNotice({
       iconAlt="check"
       text={text}
       wide
+      collapse
       border={border}
       leaving={shown.leaving}
       delay={delay}
